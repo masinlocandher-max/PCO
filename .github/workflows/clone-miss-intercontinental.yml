@@ -1,0 +1,65 @@
+name: Clone MissIntercontinental Production Page
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - .github/workflows/clone-miss-intercontinental.yml
+
+permissions:
+  contents: write
+
+jobs:
+  clone-production-page:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out PCO
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Copy exact deployed MissIntercontinental source
+        shell: bash
+        run: |
+          set -euo pipefail
+          TMP_DIR="$(mktemp -d)"
+          git clone --depth 1 https://github.com/masinlocandher-max/FMB-Ecosystem.git "$TMP_DIR/source"
+          SRC="$TMP_DIR/source/apps/withlovefmb/MissIntercontinental"
+
+          test -f "$SRC/index.html"
+          test -f "$SRC/app.css"
+          test -f "$SRC/app.js"
+          test -d "$SRC/assets"
+
+          cp -a "$SRC/index.html" ./index.html
+          cp -a "$SRC/app.css" ./app.css
+          cp -a "$SRC/app.js" ./app.js
+          rm -rf ./assets
+          cp -a "$SRC/assets" ./assets
+
+          # Byte-for-byte verification against the production source folder.
+          while IFS= read -r -d '' SOURCE_FILE; do
+            REL="${SOURCE_FILE#"$SRC/"}"
+            if ! cmp -s "$SOURCE_FILE" "./$REL"; then
+              echo "Mismatch after copy: $REL"
+              exit 1
+            fi
+          done < <(find "$SRC" -type f -print0)
+
+          echo "Production source copied and verified byte-for-byte."
+
+      - name: Commit exact clone
+        shell: bash
+        run: |
+          set -euo pipefail
+          git add index.html app.css app.js assets
+          if git diff --cached --quiet; then
+            echo "PCO already matches the production MissIntercontinental source."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Clone deployed MissIntercontinental page"
+          git push origin HEAD:main
