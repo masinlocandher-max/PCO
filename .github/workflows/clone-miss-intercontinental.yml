@@ -27,39 +27,49 @@ jobs:
           TMP_DIR="$(mktemp -d)"
           git clone --depth 1 https://github.com/masinlocandher-max/FMB-Ecosystem.git "$TMP_DIR/source"
           SRC="$TMP_DIR/source/apps/withlovefmb/MissIntercontinental"
+          DEST="./MissIntercontinental"
 
           test -f "$SRC/index.html"
           test -f "$SRC/app.css"
           test -f "$SRC/app.js"
           test -d "$SRC/assets"
 
-          cp -a "$SRC/index.html" ./index.html
-          cp -a "$SRC/app.css" ./app.css
-          cp -a "$SRC/app.js" ./app.js
+          rm -rf "$DEST"
+          mkdir -p "$DEST"
+          cp -a "$SRC/." "$DEST/"
+
+          # Remove the temporary root-level copy made by the first migration run.
+          rm -f ./index.html ./app.css ./app.js
           rm -rf ./assets
-          cp -a "$SRC/assets" ./assets
 
           # Byte-for-byte verification against the production source folder.
           while IFS= read -r -d '' SOURCE_FILE; do
             REL="${SOURCE_FILE#"$SRC/"}"
-            if ! cmp -s "$SOURCE_FILE" "./$REL"; then
+            if ! cmp -s "$SOURCE_FILE" "$DEST/$REL"; then
               echo "Mismatch after copy: $REL"
               exit 1
             fi
           done < <(find "$SRC" -type f -print0)
 
-          echo "Production source copied and verified byte-for-byte."
+          # Confirm the copied file set is identical too, not only individual bytes.
+          SOURCE_LIST="$(mktemp)"
+          DEST_LIST="$(mktemp)"
+          (cd "$SRC" && find . -type f -print | LC_ALL=C sort) > "$SOURCE_LIST"
+          (cd "$DEST" && find . -type f -print | LC_ALL=C sort) > "$DEST_LIST"
+          diff -u "$SOURCE_LIST" "$DEST_LIST"
+
+          echo "Production source copied to /MissIntercontinental and verified byte-for-byte."
 
       - name: Commit exact clone
         shell: bash
         run: |
           set -euo pipefail
-          git add index.html app.css app.js assets
+          git add -A -- MissIntercontinental index.html app.css app.js assets
           if git diff --cached --quiet; then
             echo "PCO already matches the production MissIntercontinental source."
             exit 0
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git commit -m "Clone deployed MissIntercontinental page"
+          git commit -m "Preserve exact MissIntercontinental route structure"
           git push origin HEAD:main
