@@ -25,15 +25,16 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
 
+      # Requires Pages to be enabled once by hand:
+      # Settings -> Pages -> Build and deployment -> Source: GitHub Actions.
+      # enablement: true does NOT work here. GITHUB_TOKEN can deploy to an
+      # existing Pages site but cannot create one — that needs repo-admin
+      # scope, which no `permissions:` block can grant. Enabling it in the
+      # workflow fails with "Create Pages site failed. Error: Resource not
+      # accessible by integration". Once Pages is on, this workflow deploys
+      # on every push to main with no further setup.
       - name: Configure Pages
         uses: actions/configure-pages@v5
-        with:
-          # Pages was never switched on for this repository, so every run failed
-          # at this step with "Get Pages site failed ... Not Found". The default
-          # is enablement: false, which means the action reads the Pages config
-          # but will not create it. The workflow already requests pages: write,
-          # so it can enable Pages itself and no manual settings toggle is needed.
-          enablement: true
 
       - name: Upload static site
         uses: actions/upload-pages-artifact@v4
