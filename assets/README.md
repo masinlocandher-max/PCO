@@ -8,8 +8,8 @@ generated, or substituted.
 
 | Drive original | In this repo | Used for |
 |---|---|---|
-| `471AAC07-…png` | `img/portrait-hero.webp` | Chapter 01 Presence |
-| `C9F5292E-…png` | `img/portrait-close.webp` | Chapter 06 Professional value |
+| `IMG_0418.JPG` | `img/portrait-hero.webp` | Chapter 01 Presence |
+| `IMG_0417.JPG` | `img/portrait-close.webp` | Chapter 06 Professional value |
 | `IMG_8167.jpg` | `img/education-graduation.webp` | Chapter 02 Education |
 | `64F14DE6-…png` | `img/service-01.webp` | Chapter 03 Service |
 | `79E0C9FA-…png` | `img/service-02.webp` | Chapter 03 Service |
@@ -48,8 +48,17 @@ strongest were swapped into the two portrait slots:
 
 | Drive original | Now | Replaces |
 |---|---|---|
-| `471AAC07-…png` | `img/portrait-hero.webp` | `F5D6A52E-…png` |
-| `C9F5292E-…png` | `img/portrait-close.webp` | `B8431C06-…png` |
+| `IMG_0418.JPG` | `img/portrait-hero.webp` | (latest in the folder) |
+| `IMG_0417.JPG` | `img/portrait-close.webp` | (second latest) |
+
+Earlier terno frames (`471AAC07`, `C9F5292E`, `F5D6A52E`, `B8431C06`,
+`E92AD5AB`, `C622E06A`) remain in Drive as the archive and are not shipped.
+
+These two are JPEG sources rather than PNG, so they were encoded at
+WebP q88 instead of q82 — a low setting compounds existing JPEG artifacts.
+Both still land under their source file size. They are also 922x1152
+rather than 1122x1402; same 4:5 ratio, so nothing in the layout moves, and
+922px still covers the hero slot at 2x on a 1440px viewport.
 
 The remaining four (`F5D6A52E`, `B8431C06`, `E92AD5AB`, `C622E06A`) stay
 in Drive as the archive and are deliberately not shipped. The page has two
