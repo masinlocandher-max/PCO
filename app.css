@@ -54,7 +54,7 @@ h1,h2,h3{font-family:var(--serif);font-weight:500;letter-spacing:-.042em;margin:
 .gate-sheet{position:relative;width:min(560px,100%);text-align:center;
   transform:translateY(14px);opacity:0;animation:gateIn 1.5s var(--ease) .25s forwards}
 @keyframes gateIn{to{transform:none;opacity:1}}
-.gate-mark{width:min(380px,80%);margin:0 auto 30px;mix-blend-mode:screen;opacity:.98}
+.gate-mark{width:min(400px,84%);margin:0 auto 34px;opacity:.97}
 .gate-title{color:#fff;font-size:clamp(27px,4.4vw,42px);line-height:1.08}
 .gate-copy{margin:14px auto 40px;max-width:400px;color:var(--muted);font-size:15.5px}
 .gate-actions{display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
@@ -268,7 +268,7 @@ h1,h2,h3{font-family:var(--serif);font-weight:500;letter-spacing:-.042em;margin:
 
 /* ============ 09 FINAL IDENTITY ============ */
 .final{min-height:88svh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:34px;padding:var(--gutter);text-align:center}
-.final-mark{width:min(500px,80vw);mix-blend-mode:screen;opacity:.98}
+.final-mark{width:min(520px,84vw);opacity:.97}
 .final-place{margin:0;color:var(--faint);font-size:10.5px;letter-spacing:.26em;text-transform:uppercase}
 
 /* ============ FOOTER ============ */
