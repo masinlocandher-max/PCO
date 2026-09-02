@@ -31,7 +31,7 @@ or from a subpath without editing anything.
 | 03 | Service | quieter, documentary |
 | 04 | Talent | more dynamic, opens to a cinematic frame |
 | — | Identity sequence | Education → Service → Talent → the name |
-| 05 | Selected work | confident, structured — Masinloc Connect |
+| 05 | Selected work | two projects — Masinloc Connect, then MABAYANI |
 | 06 | Professional value | restrained |
 | 07 | Continuing journey | cinematic; the frame grows to full screen |
 | 08 | Invitation | slows down |
@@ -82,6 +82,19 @@ Two implementation notes:
   reported as intersecting and stays clipped or transparent forever. This
   was reproduced during the build — 25 of 48 elements silently failed to
   appear. Sweeping by position cannot skip.
+
+## The manuscript is deliberately not in this repo
+
+The Work chapter describes **MABAYANI: History, Expression, Remembrance**
+but does not link, host, or quote the manuscript. That is on purpose. The
+author's own project register states that copyright belongs to her and
+that the complete manuscript must not be reproduced, distributed,
+commercially printed, or publicly released without her approval, and that
+the Tina Sambal passages are still awaiting review by qualified speakers.
+
+Publishing it here would breach both. Every fact in that section comes
+from the register document, and the section says plainly that the edition
+is in review and not yet released.
 
 ## Before this goes to anyone
 
