@@ -8,8 +8,8 @@ generated, or substituted.
 
 | Drive original | In this repo | Used for |
 |---|---|---|
-| `F5D6A52E-…png` | `img/portrait-hero.webp` | Chapter 01 Presence |
-| `B8431C06-…png` | `img/portrait-close.webp` | Chapter 06 Professional value |
+| `471AAC07-…png` | `img/portrait-hero.webp` | Chapter 01 Presence |
+| `C9F5292E-…png` | `img/portrait-close.webp` | Chapter 06 Professional value |
 | `IMG_8167.jpg` | `img/education-graduation.webp` | Chapter 02 Education |
 | `64F14DE6-…png` | `img/service-01.webp` | Chapter 03 Service |
 | `79E0C9FA-…png` | `img/service-02.webp` | Chapter 03 Service |
@@ -39,6 +39,23 @@ from this repo to match — the folder is the source of truth:
 The Professional value frame changed from 16:9 to 4:5 because the new
 portrait is a vertical crop — reshaping the frame rather than cropping
 the subject out of it.
+
+## Updated 2 Sept 2026
+
+Four further portraits from the same terno session were added to the
+folder. Nothing was removed there, so nothing was removed here — the two
+strongest were swapped into the two portrait slots:
+
+| Drive original | Now | Replaces |
+|---|---|---|
+| `471AAC07-…png` | `img/portrait-hero.webp` | `F5D6A52E-…png` |
+| `C9F5292E-…png` | `img/portrait-close.webp` | `B8431C06-…png` |
+
+The remaining four (`F5D6A52E`, `B8431C06`, `E92AD5AB`, `C622E06A`) stay
+in Drive as the archive and are deliberately not shipped. The page has two
+portrait slots; adding a third and fourth frame of the same outfit would
+repeat one card template rather than give each photograph its own
+treatment.
 
 Every image now in `img/` is referenced by the page. There are no orphans.
 
