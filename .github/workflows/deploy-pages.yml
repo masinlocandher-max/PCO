@@ -27,6 +27,13 @@ jobs:
 
       - name: Configure Pages
         uses: actions/configure-pages@v5
+        with:
+          # Pages was never switched on for this repository, so every run failed
+          # at this step with "Get Pages site failed ... Not Found". The default
+          # is enablement: false, which means the action reads the Pages config
+          # but will not create it. The workflow already requests pages: write,
+          # so it can enable Pages itself and no manual settings toggle is needed.
+          enablement: true
 
       - name: Upload static site
         uses: actions/upload-pages-artifact@v4
