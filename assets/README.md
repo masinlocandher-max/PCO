@@ -1,51 +1,54 @@
-# Assets needed
+# Asset provenance
 
-Everything below is optional in the sense that the page is complete and
-presentable without it. Nothing is broken while these are missing — the
-image slots are commented out in `index.html`, not left as empty boxes.
+Every image, the audio and the case study in this folder came from the
+**FMB About Me Consultant** folder in Google Drive. Nothing here is stock,
+generated, or substituted.
 
-Send files as **WebP** where possible (JPEG is fine, I will convert).
-Keep them large — at least 1200px on the long edge. I will size and crop.
+## Source → destination
 
-## 1. Portraits — highest priority
-
-| File | Use | Orientation | Notes |
-|---|---|---|---|
-| `img/portrait-front.webp` | Hero, top of page | Portrait, ~4:5 | Professional, neutral background preferred. This is the first thing a reviewer sees. |
-| `img/portrait-angle.webp` | Background / credentials section | Portrait, ~4:5 | Can be softer, more human than the hero shot. |
-
-## 2. In-context photos
-
-| File | Use | Orientation |
+| Drive original | In this repo | Used for |
 |---|---|---|
-| `img/speaking-01.webp` | Public presence section | Landscape, 16:9 |
+| `049EECDA-…png` | `img/portrait-hero.webp` | Chapter 01 Presence |
+| `IMG_7778.jpg` | `img/portrait-alt.webp` | held in reserve |
+| `IMG_9443.jpg` | `img/portrait-seated.webp` | Chapter 06 Professional value |
+| `IMG_8167.jpg` | `img/education-graduation.webp` | Chapter 02 Education |
+| `64F14DE6-…png` | `img/service-01.webp` | Chapter 03 Service |
+| `79E0C9FA-…png` | `img/service-02.webp` | Chapter 03 Service |
+| `8617711D-…png` | `img/service-03.webp` | Chapter 03 Service |
+| `BBFE1445-…png` | `img/service-04.webp` | Chapter 03 Service |
+| `44C87DD7-…png` | `img/talent-stage.webp` | Chapter 04 Talent |
+| `F2FAB827-…png` | `img/talent-keynote.webp` | Chapter 04 + Chapter 07 |
+| `03D76DA6-…png` | `img/work-desk.webp` | Chapter 05 Selected work |
+| `9FC22779-…png` | `img/work-field.webp` | Chapter 05 Selected work |
+| `A1B4F77E-…png` | `img/work-press.webp` | Chapter 05 Selected work |
+| `F6F6197B-…png` | `img/work-media.webp` | Chapter 05 Selected work |
+| `65922687-…png` | `img/wordmark.webp` | Opening frame + Chapter 09 |
+| `September 2, 2026.mp3` | `audio/portfolio-score.mp3` | Optional audio experience |
+| `Masinloc_Connect_Case_Study_2026.pdf` | `doc/…pdf` | Linked from Chapter 05 |
 
-Speaking, training, facilitating, or working with a team. Something that
-shows you doing the work, not posing.
+## Processing
 
-## 3. Work samples — the section that decides this application
+Images were converted to WebP at quality 82 with no cropping — aspect
+ratios are untouched and framing is handled in CSS, so any image can be
+re-placed without re-exporting. Nothing was upscaled; anything over
+1800px on the long edge was reduced to 1800px.
 
-Name them `img/work-01.webp`, `img/work-02.webp`, and so on. For each one
-send me a line of context:
+**37.0 MB of PNG/JPG became 1.3 MB of WebP.** That matters: this page is a
+first impression, often opened on a phone on mobile data.
 
-- what the piece was for
-- who it had to reach
-- what it had to make them do
+The audio is the **original file, byte for byte**. It was not re-encoded,
+trimmed, normalised, or replaced.
 
-Strongest candidates, in order:
+## One thing to know about the audio
 
-1. Public information material you wrote or designed — advisories,
-   explainers, program announcements, infographics.
-2. Editorial or campaign work with a visible point of view.
-3. Anything involving research, sourcing, or fact verification —
-   even a working document. This is your rarest asset. Do not skip it.
-4. Training or capacity-building material.
-5. Local history / Tina Sambal preservation work.
+`September 2, 2026.mp3` is 3 min 16 s. Measured, it behaves like a
+**music bed, not spoken narration**: its loudness sits in a 6.4 dB band
+(speech normally spans 20–40 dB), it contains only three pauses longer
+than 0.6 s in the whole runtime, its energy envelope peaks sharply at
+2.13 Hz — 128 BPM — and its spectrum is dominated by the 50–150 Hz bass
+region rather than the 150–1000 Hz range where speech lives.
 
-Avoid: pageant sash, crown and gown studies. They were the right proof for
-Miss Intercontinental. They are the wrong proof here.
-
-## 4. Contact
-
-Replace `CONTACT-EMAIL` in `index.html` with the email address you want a
-reviewer to use.
+The page is built so this does not matter: the audio is treated as
+atmosphere, the written content carries all the information, and the
+silent version is a complete portfolio. But if a spoken voiceover was
+supposed to be in this folder, it is not the file that is here.

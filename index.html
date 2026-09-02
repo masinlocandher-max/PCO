@@ -3,218 +3,296 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="theme-color" content="#0f1d33">
+  <meta name="theme-color" content="#08060b">
   <meta name="robots" content="noindex,nofollow">
-  <meta name="description" content="Francine Marie Bautista — personal application profile for communications work with the Presidential Communications Office of the Philippines.">
-  <title>Francine Marie Bautista | Presidential Communications Office</title>
+  <meta name="description" content="Francine Marie Bautista — strategist, creative director and storyteller. Masinloc, Zambales, Philippines.">
+  <title>Francine Marie Bautista</title>
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="app.css">
+  <noscript><style>.gate{display:none}body.is-gated{overflow:visible}[data-mask],[data-mask-text],[data-line]{clip-path:none}[data-fade],[data-step]{opacity:1;transform:none}.identity,.journey{height:auto}.identity-sticky,.journey-sticky{position:static;height:auto}.id-word,.id-name{position:static;opacity:1;transform:none}.journey-frame{position:static}.journey-frame img{width:100%;height:auto}.journey-copy{opacity:1}</style></noscript>
 </head>
-<body>
+<body class="is-gated">
   <div class="progress" aria-hidden="true"><span id="progressBar"></span></div>
+  <a class="skip" href="#presence">Skip to content</a>
 
-  <a class="skip" href="#about">Skip to content</a>
+  <!-- ============ OPENING FRAME ============ -->
+  <div class="gate" id="gate" role="dialog" aria-modal="true" aria-labelledby="gateTitle">
+    <div class="gate-veil" aria-hidden="true"></div>
+    <div class="gate-sheet">
+      <img class="gate-mark" src="assets/img/wordmark.webp" alt="Francine Marie Bautista" width="1254" height="1254">
+      <h1 class="gate-title" id="gateTitle">Experience with sound?</h1>
+      <p class="gate-copy">This portfolio includes an optional audio experience.</p>
+      <div class="gate-actions">
+        <button class="gate-primary" id="gateSound" type="button">Enter with sound</button>
+        <button class="gate-secondary" id="gateSilent" type="button">Continue without sound</button>
+      </div>
+      <p class="gate-note">Sound only begins after you choose. You can change it at any time.</p>
+    </div>
+  </div>
+
+  <!-- ============ PERSISTENT SOUND CONTROL ============ -->
+  <button class="sound" id="soundToggle" type="button" hidden aria-pressed="false" aria-label="Turn sound on">
+    <span class="sound-icon" aria-hidden="true">
+      <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M4 9.5v5h3.2L12 18.5v-13L7.2 9.5H4z"></path>
+        <path class="wave wave-1" d="M15.4 9.2a4 4 0 0 1 0 5.6"></path>
+        <path class="wave wave-2" d="M17.9 6.8a7.5 7.5 0 0 1 0 10.4"></path>
+        <path class="cross" d="M15.6 9.9l4.6 4.2M20.2 9.9l-4.6 4.2"></path>
+      </svg>
+    </span>
+    <span class="sound-label" id="soundLabel">Sound</span>
+  </button>
+  <audio id="score" preload="none" loop src="assets/audio/portfolio-score.mp3"></audio>
 
   <header class="topbar" id="top">
     <a class="mark" href="#top" aria-label="Francine Marie Bautista">FMB</a>
-    <nav aria-label="Sections">
-      <a href="#about">Position</a>
-      <a href="#origin">Origin</a>
-      <a href="#practice">Practice</a>
-      <a href="#education">Background</a>
-      <a href="#contribution">Contribution</a>
-      <a href="#regional">Regional</a>
+    <nav aria-label="Chapters">
+      <a href="#education">Education</a>
+      <a href="#service">Service</a>
+      <a href="#talent">Talent</a>
+      <a href="#work">Work</a>
+      <a href="#value">Value</a>
+      <a href="#invitation">Invitation</a>
     </nav>
   </header>
 
   <main>
-    <section class="hero" aria-labelledby="heroTitle">
-      <div class="hero-copy">
-        <p class="kicker">Masinloc, Zambales &middot; Philippines</p>
-        <h1 id="heroTitle">Francine<br>Marie Bautista</h1>
-        <p class="lead">I am applying for communications work with the Presidential Communications Office. My background is strategic communications, public information, research and creative direction. My training as a historian is why I care so much about whether what gets published is actually true.</p>
-        <div class="hero-actions">
-          <a class="line-link" href="#contribution">What I would contribute <span aria-hidden="true">&#8600;</span></a>
+
+    <!-- ============ HERO ============ -->
+    <section class="hero" data-chapter="near-black" aria-labelledby="heroTitle">
+      <div class="hero-atmos" data-parallax="0.14" aria-hidden="true"></div>
+      <div class="hero-inner">
+        <p class="kicker" data-line>Masinloc, Zambales &middot; Philippines</p>
+        <h1 class="hero-title" id="heroTitle"><span data-line>Francine</span><span data-line>Marie Bautista</span></h1>
+        <p class="hero-role" data-line>Strategist &nbsp;&middot;&nbsp; Creative Director &nbsp;&middot;&nbsp; Storyteller</p>
+      </div>
+      <div class="hero-foot">
+        <p class="hero-lead" data-line>I build the strategy, the story and the thing itself &mdash; brand, communication, culture and product, treated as one problem instead of four.</p>
+        <span class="scroll-cue" aria-hidden="true"><i></i>Scroll</span>
+      </div>
+    </section>
+
+    <!-- ============ 01 PRESENCE ============ -->
+    <section class="chapter presence" id="presence" data-chapter="near-black">
+      <div class="chapter-rule"><span class="ch-num">01</span><span class="ch-name">Presence</span></div>
+      <div class="presence-grid">
+        <figure class="frame frame-tall" data-mask data-parallax="0.08">
+          <img src="assets/img/portrait-hero.webp" alt="Francine Marie Bautista, studio portrait in a white shirt" width="1122" height="1402" fetchpriority="high">
+        </figure>
+        <div class="presence-copy">
+          <h2 data-mask-text>I would rather be understood than admired.</h2>
+          <p data-fade>Most work fails long before the design stage. It fails when nobody decided who it was for, what it had to change, or what it refused to pretend to be.</p>
+          <p data-fade>So I start with the argument. Positioning, audience, voice, evidence, and the boundaries a project should never cross. Only then does it become something you can look at.</p>
+          <p data-fade>I have worked as a creative director, a brand and PR strategist, an educator, a researcher and a builder. The range is not a résumé decoration. It is what lets me carry an idea from a sentence to a system without handing it to four different people who each lose a little of it.</p>
         </div>
       </div>
-      <!-- PORTRAIT: when you send a portrait, drop it at assets/img/portrait-front.webp,
-           uncomment the figure below, and add class "has-photo" to <section class="hero">.
-      <figure class="hero-photo">
-        <img src="assets/img/portrait-front.webp" alt="Portrait of Francine Marie Bautista" width="1122" height="1402" fetchpriority="high">
-        <figcaption>Francine Marie Bautista</figcaption>
+    </section>
+
+    <!-- ============ 02 EDUCATION ============ -->
+    <section class="chapter education" id="education" data-chapter="deep-violet">
+      <div class="chapter-rule"><span class="ch-num">02</span><span class="ch-name">Education</span></div>
+      <div class="education-grid">
+        <div class="education-copy">
+          <h2 data-mask-text>Structure came from study.</h2>
+          <p data-fade>Tourism taught me how a place presents itself to the world. History taught me to ask whether the presentation is true. I have never stopped using both.</p>
+          <ol class="timeline" data-timeline>
+            <li data-step>
+              <span class="t-year">01</span>
+              <h3>BS Tourism Management</h3>
+              <p>People, destinations, hospitality, events, culture &mdash; and the way a place is packaged for an outsider.</p>
+            </li>
+            <li data-step>
+              <span class="t-year">02</span>
+              <h3>Graduate studies in History</h3>
+              <p>University of the Philippines Baguio. Research method, source comparison, and the discipline of separating what is documented from what is merely repeated.</p>
+            </li>
+            <li data-step>
+              <span class="t-year">03</span>
+              <h3>College instructor</h3>
+              <p>Teaching forced me to explain complicated things plainly, and to read a room while doing it.</p>
+            </li>
+            <li data-step>
+              <span class="t-year">04</span>
+              <h3>BPO trainer &middot; local government training</h3>
+              <p>Training adults with very different levels of confidence taught me pacing, patience, and how to tell when instructions are not landing.</p>
+            </li>
+          </ol>
+        </div>
+        <figure class="frame frame-portrait" data-mask>
+          <img src="assets/img/education-graduation.webp" alt="Francine Marie Bautista in academic regalia" width="912" height="1166" loading="lazy">
+        </figure>
+      </div>
+    </section>
+
+    <!-- ============ 03 SERVICE ============ -->
+    <section class="chapter service" id="service" data-chapter="near-black">
+      <div class="chapter-rule"><span class="ch-num">03</span><span class="ch-name">Service</span></div>
+      <div class="service-head">
+        <h2 data-mask-text>Community work is where ideas get tested.</h2>
+        <p data-fade>Strategy is easy to defend in a room. It is harder to defend standing in front of the people it is supposed to help. Service is how I check whether what I believe about communication survives contact with real life.</p>
+      </div>
+      <div class="service-gallery">
+        <figure class="frame sg-a" data-mask data-parallax="0.05"><img src="assets/img/service-01.webp" alt="Volunteers serving food during a community outreach activity" width="1023" height="1537" loading="lazy"></figure>
+        <figure class="frame sg-b" data-mask data-parallax="0.09"><img src="assets/img/service-02.webp" alt="Volunteers preparing and distributing food to community members" width="1535" height="1024" loading="lazy"></figure>
+        <figure class="frame sg-c" data-mask data-parallax="0.07"><img src="assets/img/service-03.webp" alt="Francine Marie Bautista handing food to a child at a community activity" width="1023" height="1537" loading="lazy"></figure>
+        <figure class="frame sg-d" data-mask data-parallax="0.11"><img src="assets/img/service-04.webp" alt="Volunteers and families gathered at an outdoor outreach activity" width="1536" height="1024" loading="lazy"></figure>
+      </div>
+      <blockquote class="pull-quote" data-fade>
+        <p>&#8220;How can what I know become useful to someone other than me?&#8221;</p>
+        <cite>That question decides most of what I take on.</cite>
+      </blockquote>
+    </section>
+
+    <!-- ============ 04 TALENT ============ -->
+    <section class="chapter talent" id="talent" data-chapter="rich-plum">
+      <div class="chapter-rule"><span class="ch-num">04</span><span class="ch-name">Talent</span></div>
+      <div class="talent-grid">
+        <figure class="frame frame-tall" data-mask data-parallax="0.12">
+          <img src="assets/img/talent-stage.webp" alt="Francine Marie Bautista speaking at a lectern" width="1122" height="1402" loading="lazy">
+        </figure>
+        <div class="talent-copy">
+          <h2 data-mask-text>I can be in front of the room. I can also build what is being presented.</h2>
+          <p data-fade>Hosting, speaking, facilitating, teaching. I am comfortable holding a room, and I know what it costs to hold one badly.</p>
+          <p data-fade>The useful part is that I do not stop at delivery. I can write the argument, direct the visual, brief the team, structure the information, and still keep track of how the whole thing is landing with the people watching it.</p>
+        </div>
+      </div>
+      <figure class="frame frame-cinema" data-mask data-scale>
+        <img src="assets/img/talent-keynote.webp" alt="Francine Marie Bautista presenting on stage to an audience" width="1672" height="941" loading="lazy">
+        <figcaption>On stage &middot; conference presentation</figcaption>
       </figure>
-      -->
-      <div class="hero-rule" aria-hidden="true">
-        <span>Strategic communications</span>
-        <span>Public information</span>
-        <span>Research &amp; verification</span>
-        <span>Creative direction</span>
-      </div>
     </section>
 
-    <section class="intro" id="about">
-      <p class="num">01</p>
-      <div class="intro-head reveal"><h2>Public information only works if people can find it, understand it, and believe it.</h2></div>
-      <div class="copy reveal">
-        <p>Government does not have a shortage of information. It has a delivery problem. Information arrives late, or in the wrong language, or in a form nobody can act on, or without enough context to be trusted by the person reading it.</p>
-        <p>So I treat communication as an access problem before it is a messaging problem. Before asking how something should be said, I ask who needs it, what they already believe, and what would actually make them act.</p>
-        <p>That is not a soft concern. When public information fails, people miss deadlines, skip programs they qualify for, and fill the gap with whatever explanation reached them first.</p>
-      </div>
-    </section>
-
-    <section class="origin" id="origin">
-      <div class="origin-head reveal">
-        <p class="num light">02</p>
-        <h2>I learned fact&#8209;checking on my own hometown.</h2>
-      </div>
-      <div class="origin-body">
-        <div class="copy reveal">
-          <p>I come from Masinloc, a coastal municipality in Zambales. Most of the work I care about started with noticing something at home that I did not want to lose.</p>
-          <p>I began looking closely at local history because details kept getting repeated for years without anyone checking where they came from. Not inventions, exactly &mdash; just claims that had been said often enough to sound settled. Tracing them back taught me the difference between what is documented and what is merely repeated.</p>
-          <p>That pulled me into source checking, cultural documentation, and the preservation of Tina Sambal, the language tied to my community. I prefer preservation people can actually use. A language survives when it is spoken. History matters when people know it.</p>
-        </div>
-        <blockquote class="origin-quote reveal">
-          <p>&#8220;A correction never travels as far as the original.&#8221;</p>
-          <cite>Which is why verification has to happen before publication, not after.</cite>
-        </blockquote>
-      </div>
-    </section>
-
-    <section class="practice" id="practice">
-      <div class="practice-head reveal">
-        <p class="num">03</p>
-        <h2>What I actually do</h2>
-        <p>Written plainly, because a capability list that could belong to anyone is not a capability list.</p>
-      </div>
-      <div class="practice-grid">
-        <article class="reveal"><span>01</span><h3>Strategic communications planning</h3><p>Message, audience, sequence and channel decided together &mdash; with a written rationale someone else can follow after I leave the room.</p></article>
-        <article class="reveal"><span>02</span><h3>Public information campaigns</h3><p>Turning a policy, program or advisory into something a person can act on without needing it explained to them twice.</p></article>
-        <article class="reveal"><span>03</span><h3>Research and fact verification</h3><p>Sourcing claims before they are published, and keeping a record of where each one came from.</p></article>
-        <article class="reveal"><span>04</span><h3>Editorial and content development</h3><p>Plain language without losing accuracy. Most public writing fails one of those two. Rarely both at once.</p></article>
-        <article class="reveal"><span>05</span><h3>Digital communications management</h3><p>Platform-native work &mdash; not the same paragraph pasted across five channels and called a campaign.</p></article>
-        <article class="reveal"><span>06</span><h3>Crisis and reputation communication</h3><p>Speed and accuracy held at the same time, with a decision trail that survives review afterwards.</p></article>
-        <article class="reveal"><span>07</span><h3>Multimedia and creative direction</h3><p>I can brief it, direct it, and produce it myself when the timeline does not allow for anything else.</p></article>
-        <article class="reveal"><span>08</span><h3>Training and capacity building</h3><p>I have taught. I would rather leave a team able to do the work than be the only person who can do it.</p></article>
-      </div>
-    </section>
-
-    <section class="education" id="education">
-      <div class="education-copy reveal">
-        <p class="num">04</p>
-        <h2>Where the discipline came from.</h2>
-        <div class="credentials">
-          <article><span>01</span><div><h3>Bachelor of Science in Tourism Management</h3><p>Tourism taught me to think about people, destinations, hospitality, events, culture, and the way a place presents itself to the world.</p></div></article>
-          <article><span>02</span><div><h3>Graduate studies in History, University of the Philippines Baguio</h3><p>History sharpened how I research, compare sources, and separate what is documented from what is simply repeated.</p></div></article>
-          <article><span>03</span><div><h3>Former college instructor</h3><p>Teaching forced me to explain complicated things plainly, and to read a room while I was doing it.</p></div></article>
-          <article><span>04</span><div><h3>Former BPO trainer, and training work with local government</h3><p>Training adults with very different levels of confidence taught me pacing, patience, and how to tell when instructions are not landing.</p></div></article>
-        </div>
-        <p class="pull">Tourism taught me how a place presents itself. History taught me to ask whether the presentation is true.</p>
-      </div>
-      <!-- PORTRAIT: drop assets/img/portrait-angle.webp and uncomment.
-      <figure class="education-photo reveal"><img src="assets/img/portrait-angle.webp" alt="Professional portrait of Francine Marie Bautista" width="922" height="1152" loading="lazy"></figure>
-      -->
-    </section>
-
-    <section class="presence">
-      <div class="presence-copy reveal">
-        <p class="num light">05</p>
-        <h2>I can be in front of the room. I can also do the work behind it.</h2>
-        <p>I have presented on stage and I have built the thing being presented. I can shape a message, direct a visual, brief a team, organise information, and still keep track of how the whole thing is landing with the people watching.</p>
-        <p>I have also competed and placed in a regional pageant, as Ms Gay Zambales 1st Runner-Up. I include it for one reason: it is where I learned how differently a message lands when you are the one holding it in public, under time pressure, in front of people who did not choose to listen.</p>
-      </div>
-      <!-- PHOTO: drop assets/img/speaking-01.webp and uncomment.
-      <figure class="presence-photo reveal"><img src="assets/img/speaking-01.webp" alt="Francine Marie Bautista speaking on stage at a professional conference" width="1600" height="900" loading="lazy"></figure>
-      -->
-    </section>
-
-    <!-- ============================================================
-         SELECTED WORK — currently hidden until assets are supplied.
-         To publish it:
-           1. Place images in assets/img/ (see assets/README.md)
-           2. Delete this comment marker and the closing one below
-         The full-screen viewer in app.js is already wired to .plate.
-    <section class="work" id="work">
-      <div class="work-head reveal">
-        <p class="num">06</p>
-        <div>
-          <h2>Selected work</h2>
-          <p class="work-lead">Public information material, campaign work and editorial design.</p>
+    <!-- ============ IDENTITY SEQUENCE ============ -->
+    <section class="identity" data-chapter="near-black" aria-label="Identity">
+      <div class="identity-sticky">
+        <div class="identity-stage" data-identity>
+          <span class="id-word" data-id-word="0">Education</span>
+          <span class="id-word" data-id-word="1">Service</span>
+          <span class="id-word" data-id-word="2">Talent</span>
+          <span class="id-name" data-id-word="3">Francine<br>Marie Bautista</span>
         </div>
       </div>
-      <div class="work-group reveal">
-        <div class="work-label"><h3>Group title</h3><p>One sentence on what the problem was and what the work had to do.</p></div>
-        <div class="work-rail">
-          <button class="plate tall" type="button" data-full="assets/img/work-01.webp" data-caption="Caption shown in the viewer"><img src="assets/img/work-01.webp" alt="Describe the image for someone who cannot see it" width="1122" height="1402" loading="lazy"></button>
-        </div>
-      </div>
-      <p class="rail-hint reveal">Scroll each row sideways. Select any image to open it full screen.</p>
-    </section>
-         ============================================================ -->
-
-    <section class="why" id="contribution">
-      <div class="why-head reveal">
-        <p class="num">06</p>
-        <h2>What I would contribute</h2>
-        <p>I would not arrive asking only what needs to be posted. Verification, language, operations and public trust affect each other, and I am used to looking at them together.</p>
-      </div>
-      <div class="why-list">
-        <article class="reveal"><span>01</span><h3>Verification before publication.</h3><p>I would rather hold a post for an hour than spend a week recovering from it. Sourcing checks can be light enough to survive a real deadline and still catch the thing that would have cost credibility.</p></article>
-        <article class="reveal"><span>02</span><h3>Reach past the language line.</h3><p>National messaging often stops at English and Tagalog. In Zambales I have watched information die at exactly that point. Having worked on language preservation, I treat regional-language reach as a design requirement, not a translation afterthought.</p></article>
-        <article class="reveal"><span>03</span><h3>Plain language for complicated programs.</h3><p>Most public programs are not rejected. They are misunderstood and then abandoned. Rewriting for comprehension is unglamorous, measurable work, and I am willing to do it.</p></article>
-        <article class="reveal"><span>04</span><h3>Communication that reflects operations.</h3><p>An unclear advisory becomes an operational problem at the frontline, and a weak explanation becomes a trust problem afterwards. I am used to watching both at once.</p></article>
-        <article class="reveal"><span>05</span><h3>Capacity, not dependency.</h3><p>I have trained adults with very different levels of confidence. I can help agency and local staff produce their own material properly, instead of leaving them waiting on the centre.</p></article>
-        <article class="reveal"><span>06</span><h3>A view from the ground.</h3><p>I come from a municipality, not a newsroom. I know the difference between information that reached people and information that only looks like it did.</p></article>
-      </div>
     </section>
 
-    <section class="regional" id="regional">
-      <div class="route-line" aria-hidden="true"><span>MANILA</span><i></i><strong>ZAMBALES / CENTRAL LUZON</strong></div>
-      <div class="regional-grid">
-        <div class="reveal">
-          <p class="num light">07</p>
-          <h2>Being outside Metro Manila is the point.</h2>
-          <p>National communication is written and judged in the capital, but it lands somewhere else. The distance between those two places is where most public messaging quietly fails.</p>
-          <p>Working from Zambales gives that work a real contact point on the ground &mdash; someone who can check whether a message arrived, in what form, and what people understood it to mean.</p>
+    <!-- ============ 05 WORK ============ -->
+    <section class="chapter work" id="work" data-chapter="deep-violet">
+      <div class="chapter-rule"><span class="ch-num">05</span><span class="ch-name">Selected work</span></div>
+      <div class="work-head">
+        <h2 data-mask-text>Masinloc Connect</h2>
+        <p class="work-sub" data-fade>An independent community platform for a town of 56,579 people. Conceived, designed, written and built by one person.</p>
+        <p data-fade>Masinloc Connect began with a local idea: nobody should have to leave the identity of their hometown behind in order to reach opportunity, information, livelihood or the wider world. It is deliberately <em>not</em> a government portal and says so on its own front page.</p>
+      </div>
+
+      <div class="pillars">
+        <article data-fade><span>01</span><h3>Jobs &amp; Career</h3><p>Opportunity browsing with the source named, a private career profile, resume tooling, saved roles, and an application path that hands the user back to the official employer instead of pretending to be one.</p></article>
+        <article data-fade><span>02</span><h3>Marketplace</h3><p>Local food, services, accommodation, shops and makers made discoverable in one place, with merchant and ordering tools as the next layer.</p></article>
+        <article data-fade><span>03</span><h3>Sambal Tina</h3><p>A searchable dictionary with visible review status and provenance, so the language becomes usable rather than ceremonial.</p></article>
+        <article data-fade><span>04</span><h3>Community Record</h3><p>Businesses, professionals, stories and historical material submitted for review before publication &mdash; never published automatically.</p></article>
+      </div>
+
+      <div class="claims" data-fade>
+        <p class="claims-lead">The part I am most proud of is the least visible: every historical claim carries its certainty on its face.</p>
+        <div class="claims-grid">
+          <div><strong>Documented</strong><span>Supported by identifiable sources. State it, and show the trail.</span></div>
+          <div><strong>Reconstructed</strong><span>Built from several pieces of evidence. Say what is inferred.</span></div>
+          <div><strong>Remembered</strong><span>Oral history and family memory. Attribute it; never disguise it as record.</span></div>
+          <div><strong>Still open</strong><span>Unresolved or conflicting. Say so, and invite better evidence.</span></div>
         </div>
-        <div class="regional-list reveal">
-          <p>Regional and local government communication coordination</p>
-          <p>Community-level checks on what actually reached people</p>
-          <p>Regional-language and cultural context</p>
-          <p>Local partner, supplier and creative coordination</p>
-          <p>Field documentation, photo and video capture</p>
-          <p>Rapid regional response during urgent advisories</p>
+        <p class="claims-close">A hometown archive should be brave enough to say &#8220;we do not know yet.&#8221;</p>
+      </div>
+
+      <div class="rail-wrap" data-rail>
+        <div class="rail" data-rail-track>
+          <button class="plate" type="button" data-full="assets/img/work-desk.webp" data-caption="Planning and strategy — Masinloc Connect">
+            <img src="assets/img/work-desk.webp" alt="A desk with planning documents, a laptop showing a project schedule, and a Philippine flag" width="1254" height="1254" loading="lazy">
+            <span class="plate-cap">Strategy &amp; planning</span>
+          </button>
+          <button class="plate" type="button" data-full="assets/img/work-field.webp" data-caption="Public information material in use at a community event">
+            <img src="assets/img/work-field.webp" alt="A community event under a tent, with an attendee reading a printed information sheet" width="1254" height="1254" loading="lazy">
+            <span class="plate-cap">Information in the field</span>
+          </button>
+          <button class="plate" type="button" data-full="assets/img/work-press.webp" data-caption="Press and public statement setting">
+            <img src="assets/img/work-press.webp" alt="A lectern with microphones and a Philippine flag, prepared statement in hand" width="1254" height="1254" loading="lazy">
+            <span class="plate-cap">Statements &amp; briefings</span>
+          </button>
+          <button class="plate" type="button" data-full="assets/img/work-media.webp" data-caption="Media set-up before a public briefing">
+            <img src="assets/img/work-media.webp" alt="A bank of broadcast microphones and a television camera set up before a briefing" width="1254" height="1254" loading="lazy">
+            <span class="plate-cap">Media relations</span>
+          </button>
         </div>
       </div>
-      <p class="regional-close reveal">The value is not only proximity. I understand communication, public perception, culture and verification, so I can represent the office&#8217;s standards properly while working outside it.</p>
+      <p class="rail-hint" data-fade>Select any image to open it full screen. <a class="doc-link" href="assets/doc/Masinloc-Connect-Case-Study-2026.pdf" target="_blank" rel="noopener">Read the full case study (PDF)</a></p>
     </section>
 
-    <section class="closing">
-      <p class="num">08</p>
-      <h2 class="reveal">I am not applying to make government look good.</h2>
-      <p class="closing-accent reveal">I am applying to make government information usable.</p>
-      <p class="closing-copy reveal">I would bring research discipline, public-facing experience, teaching, creative direction, and a perspective from outside the capital. I would also bring the habit of asking one question whenever I join a project: <strong>how do we make this clearer for the person who has to rely on it?</strong></p>
-      <div class="closing-contact reveal">
-        <a class="line-link" href="mailto:CONTACT-EMAIL">Contact <span aria-hidden="true">&#8600;</span></a>
+    <!-- ============ 06 PROFESSIONAL VALUE ============ -->
+    <section class="chapter value" id="value" data-chapter="near-black">
+      <div class="chapter-rule"><span class="ch-num">06</span><span class="ch-name">Professional value</span></div>
+      <div class="value-grid">
+        <div class="value-copy">
+          <h2 data-mask-text>One person carried every one of these roles.</h2>
+          <p data-fade>Not as a boast &mdash; as a description of range. On Masinloc Connect these were not delegated. They were personally held, at the same time, on the same project.</p>
+          <ul class="role-list" data-fade>
+            <li>Founder &amp; vision lead</li>
+            <li>Brand strategist &amp; architect</li>
+            <li>Creative director</li>
+            <li>Product strategist</li>
+            <li>UX &amp; information architecture</li>
+            <li>Editorial director &amp; copywriter</li>
+            <li>Cultural researcher &amp; history curator</li>
+            <li>Tina Sambal preservation advocate</li>
+            <li>Photographer &amp; visual storyteller</li>
+            <li>PR &amp; communications strategist</li>
+            <li>Product builder &amp; technical direction</li>
+            <li>Project manager &amp; quality control</li>
+          </ul>
+          <p data-fade>What that buys a client is fewer handoffs. The strategy does not get diluted on its way to the design, and the design does not quietly contradict the strategy.</p>
+        </div>
+        <figure class="frame frame-wide" data-mask>
+          <img src="assets/img/portrait-seated.webp" alt="Francine Marie Bautista, seated portrait" width="1364" height="768" loading="lazy">
+        </figure>
       </div>
+    </section>
+
+    <!-- ============ 07 CONTINUING JOURNEY ============ -->
+    <section class="journey" data-chapter="rich-plum" aria-label="Continuing journey">
+      <div class="journey-sticky">
+        <figure class="journey-frame" data-cinema>
+          <img src="assets/img/talent-keynote.webp" alt="Francine Marie Bautista presenting on stage" width="1672" height="941" loading="lazy">
+        </figure>
+        <div class="journey-copy">
+          <p class="ch-num">07</p>
+          <h2>The work is not finished, and that is the point.</h2>
+          <p>A platform that helps one town is not a finished idea. It is a working answer to a question I keep asking: how do you make something useful enough that it outlasts the person who made it?</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 08 INVITATION ============ -->
+    <section class="chapter invitation" id="invitation" data-chapter="near-black">
+      <div class="chapter-rule"><span class="ch-num">08</span><span class="ch-name">Invitation</span></div>
+      <div class="invitation-inner">
+        <h2 data-mask-text>If you are building something that has to be believed, I would like to hear about it.</h2>
+        <p data-fade>Brand and positioning. Communications and public information. Editorial and creative direction. Research and verification. Cultural and community work. Whole systems, or the one part that is stuck.</p>
+        <a class="cta" href="mailto:CONTACT-EMAIL" data-fade>Start a conversation <span aria-hidden="true">&#8600;</span></a>
+      </div>
+    </section>
+
+    <!-- ============ 09 FINAL IDENTITY ============ -->
+    <section class="final" data-chapter="near-black" aria-label="Francine Marie Bautista">
+      <img class="final-mark" src="assets/img/wordmark.webp" alt="Francine Marie Bautista — strategist, creative, storyteller" width="1254" height="1254" data-mask>
+      <p class="final-place" data-fade>Masinloc, Zambales &middot; Philippines</p>
     </section>
   </main>
 
   <footer>
     <div><strong>Francine Marie Bautista</strong><span>Masinloc, Zambales, Philippines</span></div>
-    <p>Independent personal application profile. This is not an official Presidential Communications Office website and is not affiliated with, endorsed by, or produced for the office. All work shown is personal.</p>
+    <p>Independent personal portfolio. Masinloc Connect is an independent community platform and is not an official publication of the Municipal Government of Masinloc. Population figure (56,579) from the Philippine Statistics Authority, 2024 POPCEN, as cited in the project case study.</p>
   </footer>
 
   <div class="viewer" id="viewer" aria-hidden="true" role="dialog" aria-label="Image viewer">
     <button class="viewer-close" id="viewerClose" type="button">Done</button>
     <div class="viewer-stage"><img id="viewerImage" alt=""><p id="viewerCaption"></p></div>
   </div>
-
-  <nav class="dock" aria-label="Quick navigation">
-    <a href="#about"><span>Position</span></a>
-    <a href="#practice"><span>Practice</span></a>
-    <a href="#contribution"><span>Fit</span></a>
-    <a href="#regional"><span>Regional</span></a>
-  </nav>
 
   <script src="app.js"></script>
 </body>
