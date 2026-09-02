@@ -81,16 +81,34 @@ first impression, often opened on a phone on mobile data.
 The audio is the **original file, byte for byte**. It was not re-encoded,
 trimmed, normalised, or replaced.
 
-## One thing to know about the audio
+## About the audio
 
-`September 2, 2026.mp3` is 3 min 16 s. Measured, it behaves like a
-**music bed, not spoken narration**: its loudness sits in a 6.4 dB band
-(speech normally spans 20–40 dB), it contains only three pauses longer
-than 0.6 s in the whole runtime, its energy envelope peaks sharply at
-2.13 Hz — 128 BPM — and its spectrum is dominated by the 50–150 Hz bass
-region rather than the 150–1000 Hz range where speech lives.
+`September 2, 2026.mp3` is 3 min 16 s: **a voiceover mixed with a music
+bed at roughly 128 BPM.**
 
-The page is built so this does not matter: the audio is treated as
-atmosphere, the written content carries all the information, and the
-silent version is a complete portfolio. But if a spoken voiceover was
-supposed to be in this folder, it is not the file that is here.
+An earlier note in this file claimed the track was music only. That was
+wrong, and it was wrong because the measurement was too blunt. Across the
+full band the music dominates every statistic — a 6.4 dB loudness range,
+only three pauses longer than 0.6 s, a sharp 2.13 Hz envelope peak, and a
+spectrum weighted to 50-150 Hz. Those numbers describe the bed, not the
+whole recording, and speech mixed under a bed produces exactly that
+signature because the music fills the pauses.
+
+Band-limiting the analysis shows the voice clearly:
+
+| Band | Dominant modulation | Syllable-to-beat energy |
+|---|---|---|
+| 20-200 Hz (kick, bass) | 2.13 Hz — the beat | 0.45 |
+| 300-3400 Hz (speech) | **3.04 Hz — syllables** | 0.77 |
+| 3400-8000 Hz (sibilance) | 2.02 / 3.16 Hz | 0.66 |
+
+In the speech band the beat peak drops out and a 3 Hz modulation takes
+over, which is the rate of deliberate, paced narration. Pitch tracking
+over voiced frames gives a 220 Hz median with an 884-cent spread — more
+than seven semitones of continuous glide. A sung melody or an instrumental
+line lands on discrete scale steps; that spread is speech intonation.
+
+The page treats the recording as atmosphere and narrative spine, never as
+a source of information. Nothing on the page depends on hearing it, and
+the silent version remains a complete portfolio. The file ships as the
+original, byte for byte.
