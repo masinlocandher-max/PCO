@@ -2,44 +2,43 @@
 
 This repository is the canonical source for Francine Marie Bautista's standalone PCO portfolio/application dossier.
 
-## Deployment status (2 Sept 2026)
+## Target production architecture
 
-Neither hosting path is serving the site yet. Both are blocked on a step
-that cannot be performed from the repository or an API token:
+PCO follows the same static-site model used for the Intercontinental application project:
 
-- **GitHub Pages** — the workflow in `.github/workflows/deploy-pages.yml`
-  is correct, but all four runs failed at `Configure Pages`, because Pages
-  has never been enabled for this repository. `GITHUB_TOKEN` can deploy to
-  an existing Pages site but cannot create one; that needs repo-admin
-  scope, so `enablement: true` fails with *"Create Pages site failed.
-  Resource not accessible by integration"*. **Fix: Settings → Pages →
-  Build and deployment → Source: GitHub Actions.** One toggle, once. The
-  next push to `main` then deploys, or re-run the latest workflow.
-- **Lovable** — project `614aae88-27b3-4aa9-9442-56e4a1dcc462` returns
-  `404 project_not_found`, so the recorded fallback URL is not serving.
-  Re-create or re-link the project, then update the ID below.
-
-## Current production
-
-- Hosting: Lovable
-- Lovable project: `614aae88-27b3-4aa9-9442-56e4a1dcc462`
-- Lovable project slug: `francine-pco-showcase`
-- Published fallback URL: `https://francine-pco-showcase.lovable.app`
-- Custom domain target: `https://pco.francinemariebautista.com`
+- Source of truth: `masinlocandher-max/PCO` branch `main`
+- Production host: GitHub Pages
+- Custom domain: `https://pco.francinemariebautista.com`
+- DNS target: `masinlocandher-max.github.io`
+- Framework/runtime: none; plain `index.html`, `app.css`, `app.js`, and local assets
 - Search behavior: `noindex,nofollow`
-- Main website relationship: standalone; do not add navigation from or to the main Francine Marie Bautista website unless explicitly approved.
+- Main FMB website relationship: standalone and not linked from the main site
+- Lovable: editing/preview only, not the intended production serving layer
 
-## Branches
+The repository includes `CNAME` with `pco.francinemariebautista.com` and `.nojekyll` so GitHub Pages serves the static files without a Jekyll build layer.
 
-- `main`: canonical static source and assets.
-- `lovable-production`: production deployment record based on the same static source. Keep this branch aligned with what is approved for Lovable hosting.
+## One-time GitHub Pages activation
 
-## Domain
+`.github/workflows/deploy-pages.yml` deploys every push to `main`, but GitHub Pages must first be enabled once in the repository UI:
 
-The PCO project should use the subdomain `pco.francinemariebautista.com`, not the apex `francinemariebautista.com`, so the main website remains technically separate.
+`Settings -> Pages -> Build and deployment -> Source: GitHub Actions`
 
-Lovable currently requires the custom domain to be attached from Project Settings → Domains. The DNS zone is on Cloudflare. Use Lovable's Cloudflare/proxy setup and copy the generated CNAME target and TXT verification value into Cloudflare DNS. Do not change the apex or `www` records for this PCO deployment.
+The GitHub integration token can deploy to an existing Pages site but cannot create the Pages site itself. Previous workflow attempts failed at `Configure Pages` for that reason. After the one-time setting is enabled, the existing workflow can deploy without changing the site code.
+
+## DNS
+
+In the DNS zone for `francinemariebautista.com`, use only the PCO subdomain:
+
+- Type: `CNAME`
+- Name/Host: `pco`
+- Target: `masinlocandher-max.github.io`
+
+Do not change the apex `francinemariebautista.com` or `www` records for PCO. If Cloudflare is managing DNS, keep the record DNS-only while GitHub validates the domain and provisions HTTPS.
+
+## Lovable preview
+
+The Lovable project may remain available as an editing or preview surface during migration, but it is not the target public architecture. Once `pco.francinemariebautista.com` is confirmed live from GitHub Pages, the Lovable-hosted URL is optional and can be unpublished.
 
 ## Preservation rule
 
-The visual design, page content, section order, photographs, audio behavior, motion, reduced-motion handling, contact information, linked case-study PDF, and noindex/nofollow behavior are locked unless explicitly changed by Francine Marie Bautista.
+The visual design, page content, section order, photographs, audio behavior, motion, reduced-motion handling, contact information, linked case-study PDF, and `noindex,nofollow` behavior are locked unless explicitly changed by Francine Marie Bautista.
