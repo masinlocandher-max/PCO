@@ -8,9 +8,8 @@ generated, or substituted.
 
 | Drive original | In this repo | Used for |
 |---|---|---|
-| `049EECDA-…png` | `img/portrait-hero.webp` | Chapter 01 Presence |
-| `IMG_7778.jpg` | `img/portrait-alt.webp` | held in reserve |
-| `IMG_9443.jpg` | `img/portrait-seated.webp` | Chapter 06 Professional value |
+| `F5D6A52E-…png` | `img/portrait-hero.webp` | Chapter 01 Presence |
+| `B8431C06-…png` | `img/portrait-close.webp` | Chapter 06 Professional value |
 | `IMG_8167.jpg` | `img/education-graduation.webp` | Chapter 02 Education |
 | `64F14DE6-…png` | `img/service-01.webp` | Chapter 03 Service |
 | `79E0C9FA-…png` | `img/service-02.webp` | Chapter 03 Service |
@@ -25,6 +24,23 @@ generated, or substituted.
 | `65922687-…png` | `img/wordmark.webp` | Opening frame + Chapter 09 |
 | `September 2, 2026.mp3` | `audio/portfolio-score.mp3` | Optional audio experience |
 | `Masinloc_Connect_Case_Study_2026.pdf` | `doc/…pdf` | Linked from Chapter 05 |
+
+## Removed 2 Sept 2026
+
+Three portraits were deleted from the Drive folder and have been deleted
+from this repo to match — the folder is the source of truth:
+
+| Drive original | Was | Status |
+|---|---|---|
+| `049EECDA-…png` | `img/portrait-hero.webp` | replaced by `F5D6A52E-…png` |
+| `IMG_9443.jpg` | `img/portrait-seated.webp` | replaced by `B8431C06-…png` |
+| `IMG_7778.jpg` | `img/portrait-alt.webp` | deleted, was unused |
+
+The Professional value frame changed from 16:9 to 4:5 because the new
+portrait is a vertical crop — reshaping the frame rather than cropping
+the subject out of it.
+
+Every image now in `img/` is referenced by the page. There are no orphans.
 
 ## Processing
 
