@@ -96,13 +96,14 @@ Publishing it here would breach both. Every fact in that section comes
 from the register document, and the section says plainly that the edition
 is in review and not yet released.
 
-## Before this goes to anyone
+## Still to decide before this is public
 
-1. **Replace `CONTACT-EMAIL`** in `index.html` — it is still a literal
-   placeholder in the Invitation chapter.
-2. `<meta name="robots" content="noindex,nofollow">` is set on purpose.
+1. `<meta name="robots" content="noindex,nofollow">` is set on purpose.
    Remove it only when this is meant to be publicly discoverable.
-3. Read the audio note in `assets/README.md`.
+2. Read the audio note in `assets/README.md`.
+
+Contact is live: the Invitation chapter links and displays
+`withlovefmb@gmail.com`.
 
 ## Accuracy
 

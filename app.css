@@ -262,6 +262,9 @@ h1,h2,h3{font-family:var(--serif);font-weight:500;letter-spacing:-.042em;margin:
   color:#1a0d22;background:linear-gradient(120deg,var(--gold-soft),var(--peach));border-radius:999px;
   transition:transform .3s var(--ease),filter .3s}
 .cta:hover{transform:translateY(-2px);filter:brightness(1.06)}
+.invitation .cta-address{margin:24px 0 0;font-size:15px}
+.invitation .cta-address a{color:var(--muted);text-decoration:none;box-shadow:inset 0 -1px 0 rgba(239,208,129,.32);transition:color .3s}
+.invitation .cta-address a:hover{color:var(--gold-soft)}
 
 /* ============ 09 FINAL IDENTITY ============ */
 .final{min-height:88svh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:34px;padding:var(--gutter);text-align:center}
