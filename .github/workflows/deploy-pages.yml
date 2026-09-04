@@ -34,7 +34,7 @@ jobs:
           test ! -d .vercel
           grep -q 'masinlocandher-max/PCO' README.md
           grep -q 'masinlocandher-max/FMBNews' README.md
-          grep -q 'FMBNews owns `/news/`' README.md
+          grep -q 'FMBNews owns `/news' README.md
           ! find . -maxdepth 1 -type d -name news -print -quit | grep -q .
           ! grep -R -n -E 'FMB-Ecosystem' . \
             --include='*.html' --include='*.js' --include='*.css'
@@ -72,12 +72,19 @@ jobs:
           set -euo pipefail
 
           echo "=== PCO root ==="
+          rm -f /tmp/pco-root.h /tmp/pco-root.html
           curl --fail --location --silent --show-error \
             --connect-timeout 10 --max-time 30 \
             -H 'Cache-Control: no-cache' \
+            -D /tmp/pco-root.h \
             "https://francinemariebautista.com/?pages=${GITHUB_SHA}" \
             -o /tmp/pco-root.html
           grep -qi 'Francine' /tmp/pco-root.html
+          if tr -d '\r' < /tmp/pco-root.h | grep -Eqi '^(server: Vercel|x-vercel-)'; then
+            echo '::error::Canonical root is still being served by Vercel instead of the PCO/GitHub Pages origin path.'
+            cat /tmp/pco-root.h
+            exit 1
+          fi
 
           echo "=== FMB News edge route ==="
           for attempt in 1 2 3 4 5 6; do
