@@ -1,4 +1,5 @@
 /* Canonical one-page CV additions. Keeps the existing portfolio visual system. */
+body.route-locked{overflow:hidden}
 .gate[hidden]{display:none!important}
 .route-gate{z-index:130}
 .route-gate .gate-sheet{width:min(760px,100%)}
