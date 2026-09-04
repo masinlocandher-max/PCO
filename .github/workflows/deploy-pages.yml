@@ -22,7 +22,7 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - name: Checkout
+      - name: Checkout PCO
         uses: actions/checkout@v6
 
       - name: Enforce canonical deployment boundary
@@ -39,13 +39,55 @@ jobs:
           ! grep -R -n -E 'masinlocandher-max/FMB-Ecosystem' . \
             --include='*.html' --include='*.js' --include='*.css'
 
+      - name: Checkout FMB News source
+        uses: actions/checkout@v6
+        with:
+          repository: masinlocandher-max/FMBNews
+          ref: main
+          path: fmbnews-source
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Build and verify FMB News
+        working-directory: fmbnews-source
+        shell: bash
+        run: |
+          set -euxo pipefail
+          npm run build
+          npm run verify
+          test -f dist/news/index.html
+          grep -qi 'FMB News' dist/news/index.html
+
+      - name: Stage canonical production site
+        shell: bash
+        run: |
+          set -euxo pipefail
+          rm -rf _site
+          mkdir -p _site
+          rsync -a ./ _site/ \
+            --exclude '.git' \
+            --exclude '.github' \
+            --exclude 'fmbnews-source' \
+            --exclude '_site'
+          rm -rf _site/news
+          cp -a fmbnews-source/dist/news _site/news
+          test "$(tr -d '\r\n' < _site/CNAME)" = "francinemariebautista.com"
+          test -f _site/index.html
+          test -f _site/news/index.html
+          grep -qi 'FMB News' _site/news/index.html
+          ! grep -R -n -E 'masinlocandher-max/FMB-Ecosystem' _site \
+            --include='*.html' --include='*.js' --include='*.css'
+
       - name: Configure Pages
         uses: actions/configure-pages@v5
 
-      - name: Upload static site
+      - name: Upload composed static site
         uses: actions/upload-pages-artifact@v4
         with:
-          path: '.'
+          path: '_site'
 
       - name: Deploy to GitHub Pages
         id: deployment
@@ -63,5 +105,24 @@ jobs:
           curl -sSI --max-time 20 https://francinemariebautista.com/ || true
           echo "=== WWW response, no redirect following ==="
           curl -sSI --max-time 20 https://www.francinemariebautista.com/ || true
-          echo "=== FMB News response, no redirect following ==="
-          curl -sSI --max-time 20 https://www.francinemariebautista.com/news/ || true
+          echo "=== FMB News response ==="
+          for attempt in 1 2 3 4 5 6; do
+            rm -f /tmp/news.h /tmp/news.html
+            if curl --fail --location --silent --show-error \
+              --connect-timeout 10 --max-time 30 \
+              -H 'Cache-Control: no-cache' \
+              -D /tmp/news.h \
+              "https://www.francinemariebautista.com/news/?pages=${GITHUB_SHA}-${attempt}" \
+              -o /tmp/news.html; then
+              cat /tmp/news.h
+              if grep -qi 'FMB News' /tmp/news.html && grep -qi 'Filipino Media Bulletin' /tmp/news.html; then
+                echo 'RESOLVED: PCO serves the root and FMBNews is live at /news.'
+                exit 0
+              fi
+            fi
+            sleep 5
+          done
+          echo '::error::FMB News /news did not verify after Pages deployment.'
+          cat /tmp/news.h || true
+          head -c 500 /tmp/news.html || true
+          exit 1
