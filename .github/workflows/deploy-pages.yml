@@ -30,40 +30,16 @@ jobs:
         run: |
           set -euxo pipefail
           test "$(tr -d '\r\n' < CNAME)" = "francinemariebautista.com"
-          test -f vercel.json
+          test ! -f vercel.json
           test ! -d .vercel
-          grep -q 'fmb-news.info-senz-pr.workers.dev/news/' vercel.json
-          ! grep -q 'FMB-Ecosystem' vercel.json
           grep -q 'masinlocandher-max/PCO' README.md
           grep -q 'masinlocandher-max/FMBNews' README.md
-          grep -q 'masinlocandher-max/FMB-Ecosystem' DEPLOYMENT.md
-          grep -q 'has no production role' DEPLOYMENT.md
-          ! grep -R -n -E 'masinlocandher-max/FMB-Ecosystem' . \
+          grep -q 'FMBNews owns `/news/`' README.md
+          ! find . -maxdepth 1 -type d -name news -print -quit | grep -q .
+          ! grep -R -n -E 'FMB-Ecosystem' . \
             --include='*.html' --include='*.js' --include='*.css'
 
-      - name: Checkout FMB News source
-        uses: actions/checkout@v6
-        with:
-          repository: masinlocandher-max/FMBNews
-          ref: main
-          path: fmbnews-source
-
-      - name: Set up Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22
-
-      - name: Build and verify FMB News
-        working-directory: fmbnews-source
-        shell: bash
-        run: |
-          set -euxo pipefail
-          npm run build
-          npm run verify
-          test -f dist/news/index.html
-          grep -qi 'FMB News' dist/news/index.html
-
-      - name: Stage canonical production site
+      - name: Stage canonical PCO root only
         shell: bash
         run: |
           set -euxo pipefail
@@ -72,60 +48,57 @@ jobs:
           rsync -a ./ _site/ \
             --exclude '.git' \
             --exclude '.github' \
-            --exclude 'fmbnews-source' \
-            --exclude 'vercel.json' \
             --exclude '_site'
-          rm -rf _site/news
-          cp -a fmbnews-source/dist/news _site/news
           test "$(tr -d '\r\n' < _site/CNAME)" = "francinemariebautista.com"
           test -f _site/index.html
-          test -f _site/news/index.html
-          grep -qi 'FMB News' _site/news/index.html
-          ! grep -R -n -E 'masinlocandher-max/FMB-Ecosystem' _site \
-            --include='*.html' --include='*.js' --include='*.css'
+          test ! -d _site/news
 
       - name: Configure Pages
         uses: actions/configure-pages@v5
 
-      - name: Upload composed static site
+      - name: Upload PCO root artifact
         uses: actions/upload-pages-artifact@v4
         with:
           path: '_site'
 
-      - name: Deploy to GitHub Pages
+      - name: Deploy PCO root to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
 
-      - name: Verify production routing
+      - name: Verify production ownership and routing
         if: always()
         shell: bash
         run: |
-          echo "=== Apex IPv4 resolution ==="
-          getent ahostsv4 francinemariebautista.com || true
-          echo "=== WWW IPv4 resolution ==="
-          getent ahostsv4 www.francinemariebautista.com || true
-          echo "=== Apex response, no redirect following ==="
-          curl -sSI --max-time 20 https://francinemariebautista.com/ || true
-          echo "=== WWW response, no redirect following ==="
-          curl -sSI --max-time 20 https://www.francinemariebautista.com/ || true
-          echo "=== FMB News response ==="
+          set -euo pipefail
+
+          echo "=== PCO root ==="
+          curl --fail --location --silent --show-error \
+            --connect-timeout 10 --max-time 30 \
+            -H 'Cache-Control: no-cache' \
+            "https://francinemariebautista.com/?pages=${GITHUB_SHA}" \
+            -o /tmp/pco-root.html
+          grep -qi 'Francine' /tmp/pco-root.html
+
+          echo "=== FMB News edge route ==="
           for attempt in 1 2 3 4 5 6; do
             rm -f /tmp/news.h /tmp/news.html
             if curl --fail --location --silent --show-error \
               --connect-timeout 10 --max-time 30 \
               -H 'Cache-Control: no-cache' \
               -D /tmp/news.h \
-              "https://www.francinemariebautista.com/news/?pages=${GITHUB_SHA}-${attempt}" \
+              "https://www.francinemariebautista.com/news/?ownership=${GITHUB_SHA}-${attempt}" \
               -o /tmp/news.html; then
-              cat /tmp/news.h
-              if grep -qi 'FMB News' /tmp/news.html && grep -qi 'Filipino Media Bulletin' /tmp/news.html; then
-                echo 'RESOLVED: PCO serves the root and FMBNews is live at /news.'
+              if grep -qi 'FMB News' /tmp/news.html && \
+                 grep -qi 'Filipino Media Bulletin' /tmp/news.html && \
+                 tr -d '\r' < /tmp/news.h | grep -Eqi '^x-fmb-news-worker: fmb-news$'; then
+                echo 'RESOLVED: PCO owns the root; FMBNews Worker owns /news at the Cloudflare edge.'
                 exit 0
               fi
             fi
             sleep 5
           done
-          echo '::error::FMB News /news did not verify after Pages deployment.'
+
+          echo '::error::Canonical ownership check failed: /news is not confirmed on the FMBNews Worker.'
           cat /tmp/news.h || true
           head -c 500 /tmp/news.html || true
           exit 1
