@@ -1,3 +1,13 @@
 # Francine Marie Bautista — Official Website
 
-Canonical source for francinemariebautista.com, the full CV experience, consultation intake, and professional homepage.
+Canonical source for `francinemariebautista.com`, the full CV experience, consultation intake, and professional homepage.
+
+## Hard production boundary
+
+- Main website repository: `masinlocandher-max/PCO`
+- Canonical domain: `https://francinemariebautista.com`
+- News repository: `masinlocandher-max/FMBNews`
+- News route: `https://www.francinemariebautista.com/news/`
+- Forbidden production source: `masinlocandher-max/FMB-Ecosystem`
+
+`FMB-Ecosystem` must not own, source, proxy, redirect, or deploy `francinemariebautista.com`, `www.francinemariebautista.com`, or `/news/`. PCO is the root website. FMBNews owns `/news/`.
