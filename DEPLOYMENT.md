@@ -1,44 +1,54 @@
-# PCO Production Deployment
+# Francine Marie Bautista production deployment
 
-This repository is the canonical source for Francine Marie Bautista's standalone PCO portfolio/application dossier.
+This repository is the canonical static source for the public Francine Marie Bautista website.
 
-## Target production architecture
+## Public architecture
 
-PCO follows the same static-site model used for the Intercontinental application project:
-
-- Source of truth: `masinlocandher-max/PCO` branch `main`
+- Repository: `masinlocandher-max/PCO`
+- Branch: `main`
 - Production host: GitHub Pages
-- Custom domain: `https://pco.francinemariebautista.com`
-- DNS target: `masinlocandher-max.github.io`
-- Framework/runtime: none; plain `index.html`, `app.css`, `app.js`, and local assets
-- Search behavior: `noindex,nofollow`
-- Main FMB website relationship: standalone and not linked from the main site
-- Lovable: editing/preview only, not the intended production serving layer
+- Canonical domain: `https://francinemariebautista.com`
+- Homepage: `index.html`
+- Full curriculum vitae experience: `cv.html`
+- Filipino Media Bulletin route: `https://www.francinemariebautista.com/news/`
+- Framework/runtime: none; static HTML, CSS, JS and local assets
 
-The repository includes `CNAME` with `pco.francinemariebautista.com` and `.nojekyll` so GitHub Pages serves the static files without a Jekyll build layer.
+The root homepage is indexable. The preserved CV experience retains its own prior crawler metadata unless explicitly changed later.
 
-## One-time GitHub Pages activation
+## Homepage routing
 
-`.github/workflows/deploy-pages.yml` deploys every push to `main`, but GitHub Pages must first be enabled once in the repository UI:
+On every homepage load, a transparent route confirmation asks whether the visitor is looking for:
 
-`Settings -> Pages -> Build and deployment -> Source: GitHub Actions`
+1. Curriculum Vitae
+2. Filipino Media Bulletin
 
-The GitHub integration token can deploy to an existing Pages site but cannot create the Pages site itself. Previous workflow attempts failed at `Configure Pages` for that reason. After the one-time setting is enabled, the existing workflow can deploy without changing the site code.
+Choosing Curriculum Vitae reveals the professional homepage and provides a direct link to the full CV experience in `cv.html`. Choosing Filipino Media Bulletin opens the existing FMB News route on `www`.
 
-## DNS
+## Consultation intake
 
-In the DNS zone for `francinemariebautista.com`, use only the PCO subdomain:
+The homepage publishes a deliberately limited set of consultation request windows for September–November 2026.
 
-- Type: `CNAME`
-- Name/Host: `pco`
-- Target: `masinlocandher-max.github.io`
+This is **not** a fake “booked calendar.” The public site exposes only selected windows while the private Google Calendar remains authoritative. Each released slot opens a Google Calendar event request addressed to `withlovefmb@gmail.com`; email remains available as the fallback contact.
 
-Do not change the apex `francinemariebautista.com` or `www` records for PCO. If Cloudflare is managing DNS, keep the record DNS-only while GitHub validates the domain and provisions HTTPS.
+Office by appointment:
+`32nd St cor 11th Ave, Bonifacio Global City, Taguig`
 
-## Lovable preview
+## Photography source of truth
 
-The Lovable project may remain available as an editing or preview surface during migration, but it is not the target public architecture. Once `pco.francinemariebautista.com` is confirmed live from GitHub Pages, the Lovable-hosted URL is optional and can be unpublished.
+The Google Drive folder **FMB About Me Consultant** is authoritative for photographs and source media. Repository WebP files are optimized derivatives only. A photograph removed from Drive must not remain shipped in this repository.
 
-## Preservation rule
+## Domain / DNS
 
-The visual design, page content, section order, photographs, audio behavior, motion, reduced-motion handling, contact information, linked case-study PDF, and `noindex,nofollow` behavior are locked unless explicitly changed by Francine Marie Bautista.
+`CNAME` is set to `francinemariebautista.com`.
+
+GitHub Pages still requires the domain's DNS in Cloudflare (or the active DNS provider) to point the apex domain to GitHub Pages. Do not repoint or remove `www` until the Filipino Media Bulletin `/news/` route has been verified under the intended final DNS architecture.
+
+## Deployment
+
+`.github/workflows/deploy-pages.yml` deploys every push to `main`.
+
+GitHub Pages must be enabled once in the repository UI:
+
+`Settings → Pages → Build and deployment → Source: GitHub Actions`
+
+After that, pushes to `main` deploy automatically.
