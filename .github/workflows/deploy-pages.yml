@@ -25,14 +25,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
 
-      # Requires Pages to be enabled once by hand:
-      # Settings -> Pages -> Build and deployment -> Source: GitHub Actions.
-      # enablement: true does NOT work here. GITHUB_TOKEN can deploy to an
-      # existing Pages site but cannot create one — that needs repo-admin
-      # scope, which no `permissions:` block can grant. Enabling it in the
-      # workflow fails with "Create Pages site failed. Error: Resource not
-      # accessible by integration". Once Pages is on, this workflow deploys
-      # on every push to main with no further setup.
       - name: Configure Pages
         uses: actions/configure-pages@v5
 
@@ -51,7 +43,11 @@ jobs:
         run: |
           echo "=== Apex IPv4 resolution ==="
           getent ahostsv4 francinemariebautista.com || true
-          echo "=== Apex HTTPS ==="
-          curl -sSIL --max-time 20 https://francinemariebautista.com/ || true
-          echo "=== FMB News HTTPS ==="
-          curl -sSIL --max-time 20 https://www.francinemariebautista.com/news/ || true
+          echo "=== WWW IPv4 resolution ==="
+          getent ahostsv4 www.francinemariebautista.com || true
+          echo "=== Apex response, no redirect following ==="
+          curl -sSI --max-time 20 https://francinemariebautista.com/ || true
+          echo "=== WWW response, no redirect following ==="
+          curl -sSI --max-time 20 https://www.francinemariebautista.com/ || true
+          echo "=== FMB News response, no redirect following ==="
+          curl -sSI --max-time 20 https://www.francinemariebautista.com/news/ || true
