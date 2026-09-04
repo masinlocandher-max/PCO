@@ -25,6 +25,20 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
 
+      - name: Enforce canonical deployment boundary
+        shell: bash
+        run: |
+          set -euxo pipefail
+          test "$(tr -d '\r\n' < CNAME)" = "francinemariebautista.com"
+          test ! -f vercel.json
+          test ! -d .vercel
+          grep -q 'masinlocandher-max/PCO' README.md
+          grep -q 'masinlocandher-max/FMBNews' README.md
+          grep -q 'masinlocandher-max/FMB-Ecosystem' DEPLOYMENT.md
+          grep -q 'has no production role' DEPLOYMENT.md
+          ! grep -R -n -E 'masinlocandher-max/FMB-Ecosystem' . \
+            --include='*.html' --include='*.js' --include='*.css'
+
       - name: Configure Pages
         uses: actions/configure-pages@v5
 
