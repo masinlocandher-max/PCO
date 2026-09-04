@@ -120,3 +120,5 @@ jobs:
           cat /tmp/news.h || true
           head -c 500 /tmp/news.html || true
           exit 1
+
+# Trigger marker: 2026-09-04 search and AI discovery canonical cutover.
