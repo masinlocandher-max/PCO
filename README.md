@@ -11,3 +11,7 @@ Canonical source for `francinemariebautista.com`, the full CV experience, consul
 - Forbidden production source: `masinlocandher-max/FMB-Ecosystem`
 
 `FMB-Ecosystem` must not own, source, proxy, redirect, or deploy `francinemariebautista.com`, `www.francinemariebautista.com`, or `/news/`. PCO is the root website. FMBNews owns `/news/`.
+
+## Image quality policy
+
+High-resolution originals and newly approved masters are preserved in Google Drive. The production website should use high-resolution, web-optimized derivatives sourced from those masters rather than tiny placeholder exports or multi-megabyte raw originals. This preserves visible detail while keeping the one-page CV responsive.
