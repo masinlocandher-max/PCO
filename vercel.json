@@ -1,0 +1,27 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "cleanUrls": false,
+  "trailingSlash": false,
+  "redirects": [
+    {
+      "source": "/fmbnews",
+      "destination": "/news/",
+      "permanent": true
+    },
+    {
+      "source": "/fmbnews/:path*",
+      "destination": "/news/:path*",
+      "permanent": true
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/news",
+      "destination": "https://fmb-news.info-senz-pr.workers.dev/news/"
+    },
+    {
+      "source": "/news/:path*",
+      "destination": "https://fmb-news.info-senz-pr.workers.dev/news/:path*"
+    }
+  ]
+}
