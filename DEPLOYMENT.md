@@ -47,8 +47,4 @@ GitHub Pages still requires the domain's DNS in Cloudflare (or the active DNS pr
 
 `.github/workflows/deploy-pages.yml` deploys every push to `main`.
 
-GitHub Pages must be enabled once in the repository UI:
-
-`Settings → Pages → Build and deployment → Source: GitHub Actions`
-
-After that, pushes to `main` deploy automatically.
+GitHub Pages was enabled for this repository on September 4, 2026, using GitHub Actions as the deployment source. The custom domain `francinemariebautista.com` was also entered in the Pages settings. A fresh push should be used to validate the custom-domain deployment state rather than re-running an existing workflow attempt, because a same-run retry can create duplicate `github-pages` artifacts.
