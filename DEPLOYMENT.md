@@ -10,10 +10,23 @@ This repository is the canonical static source for the public Francine Marie Bau
 - Canonical domain: `https://francinemariebautista.com`
 - Homepage: `index.html`
 - Full curriculum vitae experience: `cv.html`
+- Filipino Media Bulletin repository: `masinlocandher-max/FMBNews`
 - Filipino Media Bulletin route: `https://www.francinemariebautista.com/news/`
 - Framework/runtime: none; static HTML, CSS, JS and local assets
 
 The root homepage is indexable. The preserved CV experience retains its own prior crawler metadata unless explicitly changed later.
+
+## Hard deployment boundary
+
+The following architecture is mandatory and must not be silently changed by Vercel, GitHub integrations, automation, or future agents:
+
+1. `masinlocandher-max/PCO` owns `francinemariebautista.com` and `www.francinemariebautista.com` as the main public website.
+2. `masinlocandher-max/FMBNews` owns the `/news/` application and its assets.
+3. `masinlocandher-max/FMB-Ecosystem` has no production role for these domains or the `/news/` route.
+4. A Vercel project sourced from `FMB-Ecosystem` must never be used as the production source, origin, proxy, redirect target, or domain owner for `francinemariebautista.com`, `www.francinemariebautista.com`, or `/news/`.
+5. The canonical newsroom route is `/news/`. `/fmbnews` is not a canonical public route.
+
+If a hosting dashboard shows one of the canonical domains attached to an `FMB-Ecosystem`-sourced project, that attachment is a configuration error and must be removed rather than treated as authoritative.
 
 ## Homepage routing
 
