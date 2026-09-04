@@ -29,8 +29,10 @@ Repository images may be optimized WebP derivatives, but no shipped photograph m
 
 Drive removed the previous sources for the shipped hero, close portrait and tall Talent photograph. Those repository image contents were replaced with current Drive sources above. The old photographs are no longer shipped.
 
+The three replacement portraits were re-encoded as web-optimized derivatives after binary validation. The committed files must identify as RIFF WebP assets before release.
+
 ## Processing
 
-Photography is converted to WebP without cropping or upscaling. CSS controls framing. PNG sources use quality 82; JPEG sources use quality 88 to avoid compounding existing JPEG artifacts. Long edges are capped at 1800px.
+Photography is converted to WebP without cropping or upscaling. CSS controls framing. Web delivery derivatives may be resized below the source resolution to reduce page weight while preserving the original aspect ratio. The Drive originals remain the source of truth.
 
 The source audio remains the original file and is not re-encoded.
