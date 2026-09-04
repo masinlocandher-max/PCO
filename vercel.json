@@ -1,0 +1,13 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "rewrites": [
+    {
+      "source": "/news",
+      "destination": "https://fmb-news.info-senz-pr.workers.dev/news/"
+    },
+    {
+      "source": "/news/:path*",
+      "destination": "https://fmb-news.info-senz-pr.workers.dev/news/:path*"
+    }
+  ]
+}
