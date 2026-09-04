@@ -80,21 +80,21 @@
     var ps=profile.querySelectorAll('p');
     if(ps[0])ps[0].textContent='My practice spans strategic communications, public relations, brand strategy, creative direction, reputation and perception management, editorial systems, digital products, photography, multimedia, training, research and community-facing communication.';
     if(ps[1])ps[1].textContent='I work across disciplines because public perception is rarely created by one thing. Positioning, visual identity, language, evidence, user experience, media handling and execution all have to reinforce the same argument.';
-    if(ps[2])ps[2].textContent='I have worked as an educator and trainer, communications strategist, creative director, founder, photographer, storyteller and product builder. I am equally comfortable shaping the system behind the work and presenting the message in front of a room.';
+    if(ps[2])ps[2].textContent='My professional path has included teaching units in an academic setting, remote executive and career-development work, sales and acquisitions, political public relations, founder-led strategy, creative direction, photography, storytelling and product building.';
   }
 
   var educationItems=document.querySelectorAll('#education .timeline li');
   if(educationItems[2]){
     var h3a=educationItems[2].querySelector('h3');
     var pa=educationItems[2].querySelector('p');
-    if(h3a)h3a.textContent='College Instructor · 2019–2021';
-    if(pa)pa.textContent='Northern Zambales College Inc. Teaching strengthened my ability to translate complex material into language people can understand and use.';
+    if(h3a)h3a.textContent='Teaching Units · Northern Zambales College Inc.';
+    if(pa)pa.textContent='Handled teaching units and classroom-based learning. The experience strengthened my ability to explain complex material clearly, structure information and communicate for understanding.';
   }
   if(educationItems[3]){
     var h3b=educationItems[3].querySelector('h3');
     var pb=educationItems[3].querySelector('p');
-    if(h3b)h3b.textContent='BPO Trainer · 2021–2022';
-    if(pb)pb.textContent='Optum / UnitedHealthcare. Adult learning, facilitation, coaching, quality communication and structured instruction across different levels of confidence and experience.';
+    if(h3b)h3b.textContent='Virtual Professional · Freelance';
+    if(pb)pb.textContent='Worked across executive assistance, career-development direction, and sales and acquisitions in remote professional environments.';
   }
 
   function section(id,label,title,inner){
@@ -107,11 +107,11 @@
 
   var presence=document.getElementById('presence');
   if(presence && presence.parentNode){
-    var career=section('experience','Career experience','A career built across communication, education, training and independent creative practice.',
+    var career=section('experience','Career experience','A career built across communication, education, remote professional work, sales and public relations.',
       '<div class="career-grid">'+
-        '<article class="career-card cv-reveal"><span class="career-year">2019–2021</span><h3>College Instructor</h3><p class="career-org">Northern Zambales College Inc.</p><p>Delivered classroom instruction, translated complex material into practical learning, and developed the communication discipline that now informs strategy, facilitation and public-facing work.</p></article>'+
-        '<article class="career-card cv-reveal"><span class="career-year">2021–2022</span><h3>BPO Trainer</h3><p class="career-org">Optum / UnitedHealthcare</p><p>Handled adult learning, coaching, process communication and performance-oriented training where clarity, pacing and accuracy had direct operational consequences.</p></article>'+
-        '<article class="career-card cv-reveal"><span class="career-year">2024</span><h3>Local Government Trainer</h3><p class="career-org">Training &amp; facilitation</p><p>Applied structured communication and facilitation to public-sector learning environments, adapting information for mixed audiences and practical use.</p></article>'+
+        '<article class="career-card cv-reveal"><span class="career-year">2019–2021</span><h3>Teaching Units</h3><p class="career-org">Northern Zambales College Inc.</p><p>Handled teaching units and classroom-based learning, strengthening the communication, facilitation and information-structuring skills that now inform strategic and public-facing work.</p></article>'+
+        '<article class="career-card cv-reveal"><span class="career-year">Freelance</span><h3>Virtual Professional</h3><p class="career-org">Executive Assistant · Director of Career Development · Sales &amp; Acquisitions</p><p>Worked remotely across executive support, career-development direction, and sales and acquisitions, combining coordination, communication and commercial execution.</p></article>'+
+        '<article class="career-card cv-reveal"><span class="career-year">Philippines</span><h3>PR Manager to Politicians</h3><p class="career-org">Political Public Relations</p><p>Managed public relations and communications work for politicians in the Philippines, with attention to public messaging, reputation, media-facing communication and perception.</p></article>'+
         '<article class="career-card cv-reveal"><span class="career-year">Current practice</span><h3>Founder · Creative Director · Communications Strategist</h3><p class="career-org">Independent founder-led work</p><p>Leads brand, PR, communications, digital product, editorial, cultural and creative initiatives from strategy through execution, with a focus on trust, visibility and long-term brand value.</p></article>'+
       '</div>');
     presence.parentNode.insertBefore(career,presence.nextSibling);
@@ -127,7 +127,7 @@
         '<article class="expertise-card cv-reveal"><span>04</span><h3>Creative Direction</h3><p>Campaign concepts, visual storytelling, photography, editorial art direction, content systems and multimedia production.</p></article>'+
         '<article class="expertise-card cv-reveal"><span>05</span><h3>Digital Products &amp; UX Direction</h3><p>Information architecture, product positioning, user journeys, mobile-first experiences, websites and platform concepts.</p></article>'+
         '<article class="expertise-card cv-reveal"><span>06</span><h3>Research &amp; Editorial</h3><p>Source comparison, fact verification, cultural research, explanatory writing and evidence-aware publishing.</p></article>'+
-        '<article class="expertise-card cv-reveal"><span>07</span><h3>Training &amp; Facilitation</h3><p>Adult learning, workshops, teaching, presentations, speaking, hosting and translating complexity into usable instruction.</p></article>'+
+        '<article class="expertise-card cv-reveal"><span>07</span><h3>Training &amp; Facilitation</h3><p>Workshops, teaching, presentations, speaking, hosting and translating complexity into usable instruction.</p></article>'+
         '<article class="expertise-card cv-reveal"><span>08</span><h3>Photography, Video &amp; Audio</h3><p>Photography, visual direction, storytelling, music production, songwriting, audio concepts and integrated creative production.</p></article>'+
       '</div>');
     education.parentNode.insertBefore(expertise,education.nextSibling);
