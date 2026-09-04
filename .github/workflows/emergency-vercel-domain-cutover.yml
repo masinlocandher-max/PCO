@@ -1,0 +1,122 @@
+name: Emergency remove FMB domains from withlovefmb
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/emergency-vercel-domain-cutover.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  cutover:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Select existing Vercel API credential
+        id: auth
+        shell: bash
+        env:
+          VERCEL_TOKEN_1: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_TOKEN_2: ${{ secrets.VERCEL_API_TOKEN }}
+          VERCEL_TOKEN_3: ${{ secrets.VERCEL_ACCESS_TOKEN }}
+        run: |
+          set -euo pipefail
+          token=''
+          for candidate in "$VERCEL_TOKEN_1" "$VERCEL_TOKEN_2" "$VERCEL_TOKEN_3"; do
+            if [ -n "$candidate" ]; then token="$candidate"; break; fi
+          done
+          if [ -z "$token" ]; then
+            echo '::error::No existing Vercel API token secret is available to this repository.'
+            exit 2
+          fi
+          echo "token=$token" >> "$GITHUB_OUTPUT"
+          echo 'Vercel API credential found.'
+
+      - name: Inspect current Vercel ownership and DNS
+        id: inspect
+        shell: bash
+        env:
+          VERCEL_TOKEN: ${{ steps.auth.outputs.token }}
+        run: |
+          set -euo pipefail
+          api='https://api.vercel.com'
+          team='team_KRSlI8wfigrmTrcCfbLIu9C6'
+          project='prj_NQROYIgMZ5bvNeRBhhH5wPTuGZeL'
+          auth=(-H "Authorization: Bearer ${VERCEL_TOKEN}" -H 'Content-Type: application/json')
+
+          project_domains="$(curl --fail-with-body -sS "${auth[@]}" "${api}/v9/projects/${project}/domains?teamId=${team}&limit=100")"
+          echo "$project_domains" | jq '{domains:(.domains|map(.name))}'
+          echo "$project_domains" | jq -e '.domains | map(.name) | index("francinemariebautista.com") != null' >/dev/null
+          echo "$project_domains" | jq -e '.domains | map(.name) | index("www.francinemariebautista.com") != null' >/dev/null
+
+          dns="$(curl --fail-with-body -sS "${auth[@]}" "${api}/v5/domains/francinemariebautista.com/records?teamId=${team}&limit=100")"
+          echo "$dns" | jq '{records:(.records|map({id,type,name,value}))}'
+          echo "$dns" > /tmp/vercel-dns-before.json
+
+      - name: Point apex and www DNS to GitHub Pages
+        shell: bash
+        env:
+          VERCEL_TOKEN: ${{ steps.auth.outputs.token }}
+        run: |
+          set -euo pipefail
+          api='https://api.vercel.com'
+          team='team_KRSlI8wfigrmTrcCfbLIu9C6'
+          domain='francinemariebautista.com'
+          auth=(-H "Authorization: Bearer ${VERCEL_TOKEN}" -H 'Content-Type: application/json')
+
+          # Remove only address/alias records that conflict with GitHub Pages for the apex or www.
+          jq -r '.records[] | select((.name=="" or .name=="@" or .name=="www") and (["A","AAAA","ALIAS","ANAME","CNAME"] | index(.type))) | .id' /tmp/vercel-dns-before.json | while read -r id; do
+            [ -n "$id" ] || continue
+            curl --fail-with-body -sS -X DELETE "${auth[@]}" "${api}/v2/domains/${domain}/records/${id}?teamId=${team}" >/dev/null
+            echo "Removed conflicting DNS record ${id}."
+          done
+
+          for ip in 185.199.108.153 185.199.109.153 185.199.110.153 185.199.111.153; do
+            payload="$(jq -nc --arg value "$ip" '{type:"A",name:"",value:$value,ttl:60,comment:"PCO GitHub Pages canonical apex"}')"
+            curl --fail-with-body -sS -X POST "${auth[@]}" "${api}/v2/domains/${domain}/records?teamId=${team}" --data "$payload" | jq '{uid,id,name,type,value}'
+          done
+
+          payload='{"type":"CNAME","name":"www","value":"masinlocandher-max.github.io","ttl":60,"comment":"PCO GitHub Pages canonical www"}'
+          curl --fail-with-body -sS -X POST "${auth[@]}" "${api}/v2/domains/${domain}/records?teamId=${team}" --data "$payload" | jq '{uid,id,name,type,value}'
+
+      - name: Detach apex and www from withlovefmb
+        shell: bash
+        env:
+          VERCEL_TOKEN: ${{ steps.auth.outputs.token }}
+        run: |
+          set -euo pipefail
+          api='https://api.vercel.com'
+          team='team_KRSlI8wfigrmTrcCfbLIu9C6'
+          project='prj_NQROYIgMZ5bvNeRBhhH5wPTuGZeL'
+          auth=(-H "Authorization: Bearer ${VERCEL_TOKEN}" -H 'Content-Type: application/json')
+          for hostname in www.francinemariebautista.com francinemariebautista.com; do
+            curl --fail-with-body -sS -X DELETE "${auth[@]}" "${api}/v9/projects/${project}/domains/${hostname}?teamId=${team}" | jq '{name,apexName,projectId,verified}'
+            echo "Detached ${hostname} from withlovefmb."
+          done
+
+      - name: Verify DNS and public /news
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo 'Expected GitHub Pages apex A records:'
+          printf '%s\n' 185.199.108.153 185.199.109.153 185.199.110.153 185.199.111.153
+          for attempt in $(seq 1 12); do
+            echo "Verification attempt ${attempt}"
+            getent ahostsv4 francinemariebautista.com || true
+            getent ahostsv4 www.francinemariebautista.com || true
+            rm -f /tmp/news.h /tmp/news.html
+            if curl --fail --location --silent --show-error --connect-timeout 10 --max-time 30 -H 'Cache-Control: no-cache' -D /tmp/news.h "https://www.francinemariebautista.com/news/?cutover=${GITHUB_SHA}-${attempt}" -o /tmp/news.html; then
+              cat /tmp/news.h
+              if grep -qi 'FMB News' /tmp/news.html && grep -qi 'Filipino Media Bulletin' /tmp/news.html && ! tr -d '\r' < /tmp/news.h | grep -Eqi '^server: Vercel$'; then
+                echo 'RESOLVED: PCO is canonical and FMBNews is live at /news; withlovefmb is out of the request path.'
+                exit 0
+              fi
+            fi
+            sleep 5
+          done
+          echo '::error::DNS cutover was submitted but the public route has not verified yet.'
+          cat /tmp/news.h || true
+          head -c 500 /tmp/news.html || true
+          exit 1
