@@ -44,3 +44,14 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+      - name: Verify production routing
+        if: always()
+        shell: bash
+        run: |
+          echo "=== Apex IPv4 resolution ==="
+          getent ahostsv4 francinemariebautista.com || true
+          echo "=== Apex HTTPS ==="
+          curl -sSIL --max-time 20 https://francinemariebautista.com/ || true
+          echo "=== FMB News HTTPS ==="
+          curl -sSIL --max-time 20 https://www.francinemariebautista.com/news/ || true
