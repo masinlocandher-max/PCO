@@ -1,0 +1,14 @@
+/* Three-destination entry gate: CV, News, Book. */
+.route-gate .gate-sheet{width:min(1080px,100%)}
+.route-options{grid-template-columns:repeat(3,minmax(0,1fr))}
+.route-choice-book{border-color:rgba(239,208,129,.32);background:linear-gradient(145deg,rgba(52,18,59,.54),rgba(8,6,11,.34))}
+.route-choice-book strong{color:#f7eefc}
+.route-choice-book .route-no,.route-choice-book .route-arrow{color:#efd081}
+@media(max-width:980px){
+  .route-options{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .route-choice-book{grid-column:1/-1;min-height:150px}
+}
+@media(max-width:760px){
+  .route-options{grid-template-columns:1fr}
+  .route-choice-book{grid-column:auto}
+}
