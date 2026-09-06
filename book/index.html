@@ -15,7 +15,15 @@
   <title>The Right Way to Live | Francine Marie Bautista</title>
   <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
   <link rel="preload" as="image" href="../assets/img/book-hero-portrait.jpg">
+  <link rel="preload" as="image" href="../assets/img/book-cover-art.jpg">
   <link rel="stylesheet" href="landing.css">
+  <style>
+    /* Design safety: exact artwork lives inside coded mockup frames. */
+    .cover-asset{display:block;width:100%;height:100%;object-fit:cover;object-position:center;background:#fbf6ea}
+    .tablet .cover-asset{border-radius:3px}
+    .phone .cover-asset{border-radius:16px}
+    .pocketbook .cover-asset{border-radius:1px}
+  </style>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"Book","name":"The Right Way to Live","author":{"@type":"Person","name":"Francine Marie Bautista"},"inLanguage":"en-PH","datePublished":"2026","bookFormat":"EBook","description":"A book for a more intentional life.","offers":{"@type":"Offer","price":"999","priceCurrency":"PHP","availability":"https://schema.org/InStock","url":"https://francinemariebautista.com/book/"}}</script>
 </head>
 <body class="book-campaign">
@@ -55,36 +63,18 @@
         <a class="text-link" href="#book">Explore the Book <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg></a>
       </div>
 
-      <!-- CODE-NATIVE PRODUCT ART. Text remains real HTML for accuracy and safety. -->
+      <!-- Exact book artwork is used inside coded device/book frames for visual fidelity. -->
       <div class="product-stage" id="book" aria-label="The Right Way to Live shown on tablet, phone, and pocketbook">
         <div class="device tablet" aria-hidden="true">
           <div class="bezel-dot"></div>
-          <div class="book-cover-art compact">
-            <span class="cover-fabric f1"></span><span class="cover-fabric f2"></span><span class="cover-fabric f3"></span>
-            <p class="cover-sub cover-kicker" style="margin:0 0 10px">A book for a more<br>intentional you</p>
-            <div class="cover-main"><small>The</small><strong>Right Way</strong><em>to <b>Live</b></em></div>
-            <p class="cover-sub">A gentler, stronger,<br>more meaningful life.</p>
-            <p class="cover-author">Francine Marie Bautista</p>
-          </div>
+          <img class="cover-asset" src="../assets/img/book-cover-art.jpg" alt="" loading="lazy">
         </div>
         <div class="device phone" aria-hidden="true">
           <span class="phone-island"></span>
-          <div class="book-cover-art phone-art">
-            <span class="cover-fabric f1"></span><span class="cover-fabric f2"></span><span class="cover-fabric f3"></span>
-            <p class="cover-sub cover-kicker" style="margin:0 0 5px">A book for a more<br>intentional you</p>
-            <div class="cover-main"><small>The</small><strong>Right Way</strong><em>to <b>Live</b></em></div>
-            <p class="cover-sub">A gentler, stronger,<br>more meaningful life.</p>
-            <p class="cover-author">Francine Marie Bautista</p>
-          </div>
+          <img class="cover-asset" src="../assets/img/book-cover-art.jpg" alt="" loading="lazy">
         </div>
         <div class="pocketbook" aria-hidden="true">
-          <div class="book-cover-art print-art">
-            <span class="cover-fabric f1"></span><span class="cover-fabric f2"></span><span class="cover-fabric f3"></span>
-            <p class="cover-sub cover-kicker" style="margin:0 0 9px">A book for a more<br>intentional you</p>
-            <div class="cover-main"><small>The</small><strong>Right Way</strong><em>to <b>Live</b></em></div>
-            <p class="cover-sub">A gentler, stronger,<br>more meaningful life.</p>
-            <p class="cover-author">Francine Marie Bautista</p>
-          </div>
+          <img class="cover-asset" src="../assets/img/book-cover-art.jpg" alt="" loading="lazy">
           <span class="page-edge"></span>
         </div>
         <div class="stone-base" aria-hidden="true"></div>
