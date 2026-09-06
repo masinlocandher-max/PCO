@@ -1,0 +1,54 @@
+name: Repair PCO Pages custom domain
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/repair-pages-domain.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+
+jobs:
+  repair-domain:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Inspect and repair Pages custom domain
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          api='https://api.github.com/repos/${{ github.repository }}/pages'
+          headers=(-H 'Accept: application/vnd.github+json' -H 'X-GitHub-Api-Version: 2026-03-10' -H "Authorization: Bearer ${GH_TOKEN}")
+
+          code="$(curl -sS -o /tmp/pages.json -w '%{http_code}' "${headers[@]}" "$api")"
+          echo "Pages GET HTTP ${code}"
+          cat /tmp/pages.json | jq '{status,cname,html_url,build_type,https_enforced,pending_domain_unverified_at,protected_domain_state,https_certificate}' || cat /tmp/pages.json
+
+          if [ "$code" != '200' ]; then
+            echo '::error::Could not read GitHub Pages configuration.'
+            exit 1
+          fi
+
+          current="$(jq -r '.cname // ""' /tmp/pages.json)"
+          if [ "$current" != 'francinemariebautista.com' ]; then
+            echo "Repairing Pages cname from '${current}' to 'francinemariebautista.com'."
+            payload='{"cname":"francinemariebautista.com","build_type":"workflow"}'
+            put_code="$(curl -sS -o /tmp/pages-put.json -w '%{http_code}' -X PUT "${headers[@]}" -H 'Content-Type: application/json' "$api" --data "$payload")"
+            echo "Pages PUT HTTP ${put_code}"
+            cat /tmp/pages-put.json || true
+            if [ "$put_code" != '204' ]; then
+              echo '::error::GitHub rejected the custom-domain update with this workflow credential.'
+              exit 1
+            fi
+          else
+            echo 'Pages custom domain is already configured correctly.'
+          fi
+
+          health_code="$(curl -sS -o /tmp/pages-health.json -w '%{http_code}' "${headers[@]}" "$api/health")"
+          echo "Pages health HTTP ${health_code}"
+          cat /tmp/pages-health.json | jq . || cat /tmp/pages-health.json
