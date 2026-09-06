@@ -25,11 +25,11 @@ Repository images may be optimized WebP derivatives, but no shipped photograph m
 | `September 2, 2026.mp3` | `audio/portfolio-score.mp3` | Optional CV audio |
 | `Masinloc_Connect_Case_Study_2026.pdf` | `doc/Masinloc-Connect-Case-Study-2026.pdf` | CV linked case study |
 
-## September 4, 2026 reconciliation
+## September 7, 2026 production repair
 
-Drive removed the previous sources for the shipped hero, close portrait and tall Talent photograph. Those repository image contents were replaced with current Drive sources above. The old photographs are no longer shipped.
+A production audit found that `portrait-hero.webp` and `portrait-close.webp` on `main` were not valid RIFF/WebP binaries, and that the shipped Talent portrait was only 420×525 while the page declared a much larger presentation size. The three CV portrait assets were restored to the last repository versions that had already passed binary, browser, and responsive validation so the live CV no longer ships broken or placeholder-quality portrait files.
 
-The three replacement portraits were re-encoded as web-optimized derivatives after binary validation. The committed files must identify as RIFF WebP assets before release.
+The current Drive HD masters remain the canonical replacement source. Before a future visual refresh replaces these fallback derivatives, the generated files must pass the repository asset validation gate. This prevents a corrupt conversion from replacing a working production portrait again.
 
 ## Processing
 
