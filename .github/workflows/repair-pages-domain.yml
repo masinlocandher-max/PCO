@@ -52,3 +52,24 @@ jobs:
           health_code="$(curl -sS -o /tmp/pages-health.json -w '%{http_code}' "${headers[@]}" "$api/health")"
           echo "Pages health HTTP ${health_code}"
           cat /tmp/pages-health.json | jq . || cat /tmp/pages-health.json
+
+      - name: Diagnose public DNS and delivery
+        shell: bash
+        run: |
+          set -u
+          echo '=== DNS apex A ==='
+          dig +short A francinemariebautista.com || true
+          echo '=== DNS apex AAAA ==='
+          dig +short AAAA francinemariebautista.com || true
+          echo '=== DNS www CNAME/A ==='
+          dig +short CNAME www.francinemariebautista.com || true
+          dig +short A www.francinemariebautista.com || true
+
+          echo '=== HTTP apex ==='
+          curl -sS -I --max-time 20 http://francinemariebautista.com/ || true
+          echo '=== HTTPS apex ==='
+          curl -sS -I --max-time 20 https://francinemariebautista.com/ || true
+          echo '=== HTTP www ==='
+          curl -sS -I --max-time 20 http://www.francinemariebautista.com/ || true
+          echo '=== HTTPS www ==='
+          curl -sS -I --max-time 20 https://www.francinemariebautista.com/ || true
