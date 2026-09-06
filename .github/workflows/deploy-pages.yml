@@ -39,6 +39,12 @@ jobs:
           ! grep -R -n -E 'FMB-Ecosystem' . \
             --include='*.html' --include='*.js' --include='*.css'
 
+      - name: Validate shipped media and local references
+        shell: bash
+        run: |
+          set -euxo pipefail
+          python3 scripts/validate-site-assets.py
+
       - name: Stage canonical PCO root only
         shell: bash
         run: |
