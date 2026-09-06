@@ -1,14 +1,27 @@
 /* Three-destination entry gate: CV, News, Book. */
-.route-gate .gate-sheet{width:min(1080px,100%)}
-.route-options{grid-template-columns:repeat(3,minmax(0,1fr))}
-.route-choice-book{border-color:rgba(239,208,129,.32);background:linear-gradient(145deg,rgba(52,18,59,.54),rgba(8,6,11,.34))}
-.route-choice-book strong{color:#f7eefc}
+.route-gate .gate-sheet{width:min(1120px,100%)}
+.route-options{grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.route-choice{position:relative;isolation:isolate;overflow:hidden;min-height:250px;background:#0b0710}
+.route-choice::before,.route-choice::after{content:"";position:absolute;inset:0;pointer-events:none}
+.route-choice::before{z-index:-2;background-position:center;background-size:cover;opacity:.34;transform:scale(1.025);transition:transform .55s var(--ease),opacity .4s ease}
+.route-choice::after{z-index:-1;background:linear-gradient(180deg,rgba(8,6,11,.18) 0%,rgba(8,6,11,.55) 45%,rgba(8,6,11,.96) 100%)}
+.route-choice:hover::before{opacity:.46;transform:scale(1.06)}
+.route-choice:nth-child(1)::before{background-image:url('assets/img/portrait-hero.webp');background-position:center 24%}
+.route-choice:nth-child(2)::before{background-image:url('assets/img/work-media.webp');background-position:center}
+.route-choice-book::before{background-image:url('assets/img/book-author-portrait.webp');background-position:center 24%;opacity:.45}
+.route-choice-book{border-color:rgba(239,208,129,.38);background:#160d13}
+.route-choice-book::after{background:linear-gradient(180deg,rgba(47,26,9,.08) 0%,rgba(23,11,20,.48) 42%,rgba(8,6,11,.96) 100%)}
+.route-choice-book strong{color:#fff7e8}
 .route-choice-book .route-no,.route-choice-book .route-arrow{color:#efd081}
+.route-choice small{max-width:28ch;color:rgba(247,242,248,.76);text-shadow:0 1px 12px rgba(0,0,0,.7)}
+.route-choice strong{text-shadow:0 2px 24px rgba(0,0,0,.65)}
 @media(max-width:980px){
   .route-options{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .route-choice-book{grid-column:1/-1;min-height:150px}
+  .route-choice-book{grid-column:1/-1;min-height:190px}
+  .route-choice-book::before{background-position:center 31%}
 }
 @media(max-width:760px){
   .route-options{grid-template-columns:1fr}
-  .route-choice-book{grid-column:auto}
+  .route-choice,.route-choice-book{grid-column:auto;min-height:190px}
+  .route-choice::before{background-position:center 27%}
 }
