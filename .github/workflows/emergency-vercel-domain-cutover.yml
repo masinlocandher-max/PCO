@@ -49,9 +49,19 @@ jobs:
           echo "$project_domains" | jq '{domains:(.domains|map(.name))}'
           echo "$project_domains" > /tmp/project-domains-before.json
 
-          dns="$(curl --fail-with-body -sS "${auth[@]}" "${api}/v5/domains/francinemariebautista.com/records?teamId=${team}&limit=100")"
-          echo "$dns" | jq '{records:(.records|map({id,type,name,value}))}'
-          echo "$dns" > /tmp/vercel-dns-before.json
+          dns_code="$(curl -sS -o /tmp/vercel-dns-before.json -w '%{http_code}' "${auth[@]}" "${api}/v5/domains/francinemariebautista.com/records?teamId=${team}&limit=100")"
+          if [ "$dns_code" = '200' ]; then
+            echo 'FMB domain is still DNS-managed by Vercel.'
+            jq '{records:(.records|map({id,type,name,value}))}' /tmp/vercel-dns-before.json
+          elif [ "$dns_code" = '404' ]; then
+            echo 'FMB domain is no longer DNS-managed by Vercel; DNS mutation steps will be skipped.'
+            echo '{"records":[]}' > /tmp/vercel-dns-before.json
+            touch /tmp/vercel-dns-unmanaged
+          else
+            echo "::error::Unable to inspect FMB DNS in Vercel; HTTP ${dns_code}."
+            cat /tmp/vercel-dns-before.json || true
+            exit 1
+          fi
 
       - name: Point FMB apex and www DNS to GitHub Pages
         shell: bash
@@ -59,12 +69,16 @@ jobs:
           VERCEL_TOKEN: ${{ steps.auth.outputs.token }}
         run: |
           set -euo pipefail
+          if [ -f /tmp/vercel-dns-unmanaged ]; then
+            echo 'Skipped: francinemariebautista.com is no longer DNS-managed by Vercel.'
+            exit 0
+          fi
+
           api='https://api.vercel.com'
           team='team_KRSlI8wfigrmTrcCfbLIu9C6'
           domain='francinemariebautista.com'
           auth=(-H "Authorization: Bearer ${VERCEL_TOKEN}" -H 'Content-Type: application/json')
 
-          # Remove address/alias records for apex and www before recreating the canonical GitHub Pages records.
           jq -r '.records[] | select((.name=="" or .name=="@" or .name=="www") and (["A","AAAA","ALIAS","ANAME","CNAME"] | index(.type))) | .id' /tmp/vercel-dns-before.json | while read -r id; do
             [ -n "$id" ] || continue
             curl --fail-with-body -sS -X DELETE "${auth[@]}" "${api}/v2/domains/${domain}/records/${id}?teamId=${team}" >/dev/null
@@ -87,12 +101,16 @@ jobs:
           VERCEL_TOKEN: ${{ steps.auth.outputs.token }}
         run: |
           set -euo pipefail
+          if [ -f /tmp/vercel-dns-unmanaged ]; then
+            echo 'Skipped: francinemariebautista.com is no longer DNS-managed by Vercel.'
+            exit 0
+          fi
+
           api='https://api.vercel.com'
           team='team_KRSlI8wfigrmTrcCfbLIu9C6'
           domain='francinemariebautista.com'
           auth=(-H "Authorization: Bearer ${VERCEL_TOKEN}" -H 'Content-Type: application/json')
 
-          # These subdomains are intentionally being retired from the old Vercel project.
           jq -r '.records[] | select((.name=="app" or .name=="data" or .name=="yoni") and (["A","AAAA","ALIAS","ANAME","CNAME"] | index(.type))) | .id' /tmp/vercel-dns-before.json | while read -r id; do
             [ -n "$id" ] || continue
             curl --fail-with-body -sS -X DELETE "${auth[@]}" "${api}/v2/domains/${domain}/records/${id}?teamId=${team}" >/dev/null
@@ -161,7 +179,7 @@ jobs:
               exit 1
             fi
           done
-          echo 'Vercel project cleanup verified. Only project-owned Vercel preview aliases may remain.'
+          echo 'Vercel project cleanup verified. No stale custom domains remain attached.'
 
       - name: Verify public FMB root is no longer served by Vercel
         shell: bash
@@ -180,4 +198,4 @@ jobs:
           done
           echo '::warning::Vercel project cleanup succeeded, but public DNS/CDN propagation has not verified yet.'
 
-# Trigger marker: 2026-09-07 complete stale-domain cleanup.
+# Trigger marker: 2026-09-07 idempotent post-detach verification.
