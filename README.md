@@ -5,7 +5,7 @@ This repository (`masinlocandher-max/PCO`) is the canonical source for the root 
 ## Deployment ownership
 
 - `masinlocandher-max/PCO` owns the root portfolio and CV experience.
-- `masinlocandher-max/FMBNews` owns `/news/` and its newsroom routes at the Cloudflare edge.
+- FMBNews owns `/news/` and its newsroom routes at the Cloudflare edge; the canonical source is `masinlocandher-max/FMBNews`.
 - PCO must not contain a local `news/` directory or copy FMB News production files.
 - PCO must not contain Vercel project metadata or a `vercel.json` production binding.
 - The root custom domain is declared by `CNAME` and is intended to resolve to the GitHub Pages deployment of this repository.
