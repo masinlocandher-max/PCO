@@ -1,20 +1,26 @@
-# Francine Marie Bautista — Official Website
+# Francine Marie Bautista — Canonical Portfolio
 
-Canonical source for `francinemariebautista.com`, the full CV experience, consultation intake, and professional homepage.
+This repository (`masinlocandher-max/PCO`) is the canonical source for the root website at `francinemariebautista.com` and `www.francinemariebautista.com`.
 
-## Hard production boundary
+## Deployment ownership
 
-- Main website repository: `masinlocandher-max/PCO`
-- Main website host: GitHub Pages
-- Canonical domain: `https://francinemariebautista.com`
-- News repository: `masinlocandher-max/FMBNews`
-- News route: `https://www.francinemariebautista.com/news/`
-- News delivery: Cloudflare Worker `fmb-news` on `/news*`
-- Vercel production role: none
-- Forbidden production source: `masinlocandher-max/FMB-Ecosystem`
+- `masinlocandher-max/PCO` owns the root portfolio and CV experience.
+- `masinlocandher-max/FMBNews` owns `/news/` and its newsroom routes at the Cloudflare edge.
+- PCO must not contain a local `news/` directory or copy FMB News production files.
+- PCO must not contain Vercel project metadata or a `vercel.json` production binding.
+- The root custom domain is declared by `CNAME` and is intended to resolve to the GitHub Pages deployment of this repository.
 
-PCO owns the root website. FMBNews owns `/news*`. PCO must not copy, proxy, rewrite, build, or embed FMBNews into its GitHub Pages deployment. Cloudflare routes `/news*` directly to the FMBNews Worker. Vercel and FMB-Ecosystem must not own, source, proxy, redirect, or deploy `francinemariebautista.com`, `www.francinemariebautista.com`, or `/news/`.
+## Current experiences
 
-## Image quality policy
+- `/` — three-choice entry into the professional CV, FMB News, or the book storefront.
+- `/cv.html` — compatibility entry that routes into the main one-page CV experience.
+- `/book/` — storefront for *The Right Way to Live*.
+- `/book/reader.html` — protected preview reader with a server-side entitlement integration point for future verified purchase access.
 
-High-resolution originals and newly approved masters are preserved in Google Drive. The production website should use high-resolution, web-optimized derivatives sourced from those masters rather than tiny placeholder exports or multi-megabyte raw originals. This preserves visible detail while keeping the one-page CV responsive.
+## Asset policy
+
+Portfolio photography is sourced from the approved Google Drive masters and shipped as optimized local WebP derivatives. `scripts/validate-site-assets.py` is the release guard for broken WebP binaries, undersized primary CV portraits, and missing local HTML references.
+
+## Production note
+
+The repository may deploy successfully to GitHub Pages while the public domain still resolves through another provider. The deployment workflow treats provider ownership as a separate production verification gate and fails if Vercel is still serving the canonical root or if the FMB News Worker is not confirmed on `/news/`.
