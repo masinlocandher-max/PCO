@@ -8,7 +8,9 @@
   <meta name="referrer" content="no-referrer">
   <title>The Right Way to Live | Ebook</title>
   <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="manifest.webmanifest">
   <link rel="apple-touch-icon" href="/book/app-icon-apple.png">
+  <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-title" content="Right Way">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -135,10 +137,54 @@
     html[data-theme="night"] .silk:after{background:linear-gradient(180deg,rgba(20,16,13,0) 0,rgba(20,16,13,.6) 52%,var(--bg) 100%)}
     html[data-theme="sepia"] .silk:after{background:linear-gradient(180deg,rgba(242,228,205,0) 0,rgba(242,228,205,.55) 52%,var(--bg) 100%)}
 
-    .error-card{max-width:520px;margin:12vh auto 0;padding:30px;border:1px solid var(--rule);border-radius:24px;background:var(--paper);text-align:center}
-    .error-card h1{margin:0 0 14px;font-family:var(--display);font-size:34px;font-weight:400}
-    .error-card p{font:15px/1.65 var(--ui);color:var(--muted)}
-    .error-card a{display:inline-flex;align-items:center;min-height:46px;margin-top:14px;padding:0 20px;border-radius:999px;background:var(--plum);color:#fff;text-decoration:none;font:500 12px/1 var(--ui);letter-spacing:.12em;text-transform:uppercase}
+    /* ── The gate ────────────────────────────────────────────────────────── */
+    .gate{max-width:520px;margin:0 auto;padding:8vh 0 60px;text-align:center}
+    .gate-icon{display:grid;place-items:center;width:56px;height:56px;margin:0 auto 20px;border-radius:18px;background:var(--gold);color:#fff8ec}
+    .gate-icon svg{width:25px;height:25px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+    .gate h1{margin:0 0 14px;font-family:var(--display);font-size:clamp(28px,7.6vw,38px);line-height:1.1;font-weight:400;letter-spacing:-.02em;text-wrap:balance}
+    .gate p{margin:0 auto;max-width:38ch;font:15px/1.65 var(--ui);color:var(--muted)}
+    .gate form{margin:26px auto 0;text-align:left;max-width:400px}
+    .gate label{display:block;margin:0 0 9px;font:500 10.5px/1 var(--ui);letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+    .gate input{width:100%;min-height:52px;padding:0 16px;border:1px solid var(--rule);border-radius:14px;
+      background:var(--paper);color:var(--ink);font:16px/1 var(--ui);
+      user-select:text;-webkit-user-select:text}
+    .gate input:focus{outline:2px solid rgba(143,105,50,.4);outline-offset:1px}
+    .gate-go{width:100%;min-height:52px;margin-top:12px;border:0;border-radius:999px;background:var(--gold);color:#fff8ec;
+      font:500 12px/1 var(--ui);letter-spacing:.14em;text-transform:uppercase;cursor:pointer;-webkit-tap-highlight-color:transparent}
+    .gate-go[disabled]{opacity:.55}
+    .gate-status{margin:14px auto 0;min-height:22px;max-width:400px;font:14px/1.55 var(--ui);color:var(--muted)}
+    .gate-alt{margin:26px auto 0;padding-top:22px;max-width:400px;border-top:1px solid var(--rule);
+      font:14px/1.6 var(--ui);color:var(--muted);text-align:left}
+    .gate-alt a{color:var(--gold);text-decoration:underline;text-underline-offset:3px}
+    .gate-link{display:inline-flex;align-items:center;min-height:48px;margin-top:6px;padding:0 20px;border-radius:999px;
+      background:var(--gold);color:#fff8ec;text-decoration:none;font:500 12px/1 var(--ui);letter-spacing:.13em;text-transform:uppercase}
+    .gate-ghost{display:inline-flex;align-items:center;min-height:48px;margin-top:10px;padding:0 20px;border-radius:999px;
+      border:0;box-shadow:inset 0 0 0 1px var(--rule);background:transparent;color:var(--soft);
+      font:500 12px/1 var(--ui);letter-spacing:.13em;text-transform:uppercase;cursor:pointer}
+    .gate-url{display:block;margin:14px auto 0;max-width:400px;padding:12px 14px;border:1px dashed var(--rule);border-radius:12px;
+      background:var(--paper);color:var(--soft);font:12px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace;
+      overflow-wrap:anywhere;text-align:left;user-select:text;-webkit-user-select:text}
+
+    /* ── Add to home screen ──────────────────────────────────────────────── */
+    .install{position:fixed;left:12px;right:12px;bottom:calc(14px + var(--safe-b));z-index:88;
+      display:none;gap:14px;align-items:flex-start;
+      padding:16px 16px 15px;border-radius:20px;background:var(--paper);
+      box-shadow:0 18px 50px rgba(38,24,8,.24),inset 0 0 0 1px var(--rule)}
+    .install[data-open]{display:flex}
+    .install-icon{flex:none;width:44px;height:44px;border-radius:13px;overflow:hidden;background:var(--bg)}
+    .install-icon img{width:100%;height:100%;display:block}
+    .install-body{flex:1;min-width:0}
+    .install-body>strong{display:block;font-family:var(--display);font-size:18px;font-weight:400;line-height:1.2}
+    .install-body p strong{font-weight:600;color:var(--ink)}
+    .install-body p{margin:5px 0 0;font:13.5px/1.5 var(--ui);color:var(--muted)}
+    .install-body .step{display:inline-flex;align-items:center;gap:5px;white-space:nowrap}
+    .install-body svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;vertical-align:-2px}
+    .install-actions{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+    .install-actions button{min-height:44px;padding:0 16px;border:0;border-radius:999px;
+      font:500 11.5px/1 var(--ui);letter-spacing:.12em;text-transform:uppercase;cursor:pointer;-webkit-tap-highlight-color:transparent}
+    .install-yes{background:var(--gold);color:#fff8ec}
+    .install-no{background:transparent;color:var(--muted);box-shadow:inset 0 0 0 1px var(--rule)}
+    @media(min-width:700px){.install{left:auto;right:24px;width:380px}}
 
     /* ── Bottom sheet ────────────────────────────────────────────────────── */
     .sheet{position:fixed;inset:0;z-index:80;display:none}
@@ -354,6 +400,15 @@
     </div>
   </div>
 
+  <aside class="install" id="install" aria-hidden="true">
+    <span class="install-icon" aria-hidden="true"><img src="/book/app-icon-192.png" width="44" height="44" alt=""></span>
+    <div class="install-body">
+      <strong>Keep the book on your home screen</strong>
+      <p id="installCopy"></p>
+      <div class="install-actions" id="installActions"></div>
+    </div>
+  </aside>
+
   <div class="watermark" id="watermark" aria-hidden="true"></div>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
   <div class="shield" id="shield"><div><strong>Your page is held</strong><span>Return to this window to continue reading.</span></div></div>
@@ -362,7 +417,9 @@
   (function(){'use strict';
     var API='https://wjnavdpppnhxbuydkrkd.supabase.co/functions/v1/book-gift-api';
     var SESSION='trwtl.gift.session',EMAIL='trwtl.gift.email',PROGRESS='trwtl.gift.progress',
-        PREF='trwtl.gift.prefs',MARKS='trwtl.gift.bookmarks',NOTES='trwtl.gift.highlights';
+        PREF='trwtl.gift.prefs',MARKS='trwtl.gift.bookmarks',NOTES='trwtl.gift.highlights',
+        INSTALL='trwtl.gift.install',WEBVIEW_OK='trwtl.gift.webview-ok';
+    var SUPPORT='withlovefmb@gmail.com';
 
     var manifest=[],session='',email='',current=null,currentPct=0,
         toastTimer=null,syncTimer=null,prefetching=false,loadingPrev=false,ended=false,
@@ -397,10 +454,62 @@
     }
     function token(){var p=new URLSearchParams(location.hash.charAt(0)==='#'?location.hash.slice(1):'');var t=p.get('gift')||'';return/^[0-9a-f]{64}$/.test(t)?t:''}
     function strip(){if(location.hash)history.replaceState(null,'',location.pathname+location.search)}
-    function fail(title,copy){
-      strip();
-      main.innerHTML='<section class="error-card"><h1>'+esc(title)+'</h1><p>'+esc(copy)+'</p><a href="mailto:withlovefmb@gmail.com?subject=Ebook%20access">Request a new access email</a></section>';
+    var LOCK_ICON='<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="10.5" width="14" height="9.5" rx="2.6"/><path d="M8.2 10.5V7.6a3.8 3.8 0 0 1 7.6 0v2.9"/></svg>';
+    var MAIL_ICON='<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.2" y="5.5" width="17.6" height="13" rx="2.6"/><path d="m3.8 7 8.2 6 8.2-6"/></svg>';
+
+    /*
+      One screen for every way a reader can arrive without a live copy, and it
+      always offers a way forward rather than only an explanation. The email form
+      is the path she asked for: verify once, and this device is the key from
+      then on.
+    */
+    function gate(title,copy,opts){
+      opts=opts||{};strip();
       document.querySelector('.bar').style.display='none';$('silk').style.display='none';
+      hideInstall();
+      var html='<section class="gate"><span class="gate-icon">'+(opts.icon||LOCK_ICON)+'</span>'+
+        '<h1>'+esc(title)+'</h1><p>'+esc(copy)+'</p>';
+      if(opts.email!==false){
+        html+='<form id="gateForm" novalidate>'+
+          '<label for="gateEmail">Continue with your email</label>'+
+          '<input id="gateEmail" type="email" inputmode="email" autocomplete="email" spellcheck="false" placeholder="you@example.com" value="'+esc(read(EMAIL))+'">'+
+          '<button class="gate-go" type="submit" id="gateGo">Send my reading link</button>'+
+          '</form><p class="gate-status" id="gateStatus" role="status" aria-live="polite"></p>'+
+          '<div class="gate-alt">One verification is all it takes. Open the link on the device you read on, and the book stays open there — you will not need your email again.</div>';
+      }
+      html+='</section>';
+      main.innerHTML=html;
+      var form=$('gateForm');
+      if(form)form.onsubmit=function(e){e.preventDefault();requestLink()};
+    }
+    function fail(title,copy){gate(title,copy,{})}
+
+    function validEmail(v){return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v)}
+    function handoffLink(addr){
+      return 'mailto:'+SUPPORT+'?subject='+encodeURIComponent('Reading link — The Right Way to Live')+
+        '&body='+encodeURIComponent('Hello FMB,\n\nCould you send my reading link for The Right Way to Live?\n\nEmail on my copy: '+(addr||'')+'\n\nThank you.');
+    }
+    async function requestLink(){
+      var input=$('gateEmail'),status=$('gateStatus'),go=$('gateGo');
+      var addr=String(input.value||'').trim();
+      if(!validEmail(addr)){status.textContent='Please check the email address and try again.';input.focus();return}
+      write(EMAIL,addr);
+      go.disabled=true;status.textContent='Sending your reading link…';
+      try{
+        var d=await api('link_request',{email:addr});
+        if(!d||d.sent!==true)throw new Error(d&&d.error||'unavailable');
+        status.textContent='Sent. Open the link from '+addr+' on this device, and your copy stays open here.';
+        go.disabled=false;
+      }catch(e){
+        /*
+          The automatic path is not answered by the access service yet. Rather
+          than leave a reader at a dead end, hand them the one that already
+          works today: a message to FMB, with their email already in it.
+        */
+        go.disabled=false;
+        status.innerHTML='Links are still being sent by hand. Tap below and your request goes straight to Francine — she will reply with your reading link.'+
+          '<br><a class="gate-link" href="'+esc(handoffLink(addr))+'">Ask for my link</a>';
+      }
     }
     function clean(t){return String(t||'').replace(/^PART\s+[IVX]+:\s*/i,'').replace(/^Interlude:\s*/i,'').replace(/^\d{2}\.\s*/,'')}
     function rows(){return manifest.filter(function(r){return r.kind!=='part'})}
@@ -645,8 +754,8 @@
       finally{loadingPrev=false}
     }
     function lostAccess(){
-      removeKey(SESSION);removeKey(EMAIL);
-      fail('Your access needs a fresh link','For security, this device no longer has an active ebook session.');
+      removeKey(SESSION);
+      gate('This device needs a fresh link','For security your reading session has ended. Send yourself a new link and this device opens straight into the book again.',{});
     }
 
     /* ── reading state ───────────────────────────────────────────────────── */
@@ -695,7 +804,7 @@
         });
       }catch(e){
         if(e.message==='access_required')lostAccess();
-        else fail('This section could not be opened','Please try your access email again.');
+        else gate('This section could not be opened','Check your connection and open the book again.',{email:false});
       }
     }
 
@@ -866,6 +975,102 @@
       });
     }
 
+    /* ── Home screen ─────────────────────────────────────────────────────── */
+    function standalone(){
+      return (window.matchMedia&&window.matchMedia('(display-mode: standalone)').matches)||navigator.standalone===true;
+    }
+    var UA=navigator.userAgent||'';
+    function isIOS(){return /iPad|iPhone|iPod/.test(UA)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1)}
+    /*
+      A one-time link opened inside an email app's built-in browser is spent
+      there: that browser has its own storage, so the copy never reaches the
+      browser the reader actually uses, and the link cannot be opened twice.
+      This is the reason a reader ends up going back to their email every time.
+      On iOS, Safari puts "Safari/" in the agent string and the embedded
+      browsers other apps use do not; on Android the embedded ones say "wv".
+    */
+    function looksInApp(){
+      if(standalone())return false;
+      if(/\bwv\b/.test(UA))return true;
+      if(/FBAN|FBAV|Instagram|Line\/|Twitter|MicroMessenger|GSA\//.test(UA))return true;
+      if(isIOS()&&!/Safari\//.test(UA))return true;
+      return false;
+    }
+
+    var installEvent=null,installShown=false,bookOpen=false;
+    function hideInstall(){var el=$('install');if(el){el.removeAttribute('data-open');el.setAttribute('aria-hidden','true')}}
+    function dismissInstall(forGood){
+      writeJ(INSTALL,{state:forGood?'no':'later',at:Date.now()});
+      hideInstall();
+    }
+    function installAllowed(){
+      if(standalone()||installShown)return false;
+      var st=readJ(INSTALL)||{};
+      if(st.state==='no'||st.state==='done')return false;
+      if(st.state==='later'&&Date.now()-Number(st.at||0)<1000*60*60*72)return false;
+      return !!installEvent||isIOS();
+    }
+    function showInstall(){
+      if(!installAllowed())return;
+      installShown=true;
+      var el=$('install'),copy=$('installCopy'),actions=$('installActions');
+      if(installEvent){
+        copy.textContent='Add it once and it opens like an app — straight to your page, no email, no link.';
+        actions.innerHTML='<button class="install-yes" type="button" id="installYes">Add to home screen</button>'+
+                          '<button class="install-no" type="button" id="installNo">Not now</button>';
+        $('installYes').onclick=async function(){
+          var evt=installEvent;installEvent=null;hideInstall();
+          try{evt.prompt();var res=await evt.userChoice;
+            if(res&&res.outcome==='accepted'){writeJ(INSTALL,{state:'done',at:Date.now()});toastMsg('Added to your home screen')}
+            else writeJ(INSTALL,{state:'later',at:Date.now()});
+          }catch(e){writeJ(INSTALL,{state:'later',at:Date.now()})}
+        };
+      }else{
+        /* iOS has no install API, so the reader is shown the two taps. */
+        copy.innerHTML='Tap <span class="step"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15.5V4m0 0L8.4 7.6M12 4l3.6 3.6"/><path d="M6 12.5v6.2a1.3 1.3 0 0 0 1.3 1.3h9.4a1.3 1.3 0 0 0 1.3-1.3v-6.2"/></svg> Share</span>, then <strong>Add to Home Screen</strong>. It opens like an app after that — straight to your page.';
+        actions.innerHTML='<button class="install-no" type="button" id="installNo">Got it</button>';
+      }
+      $('installNo').onclick=function(){dismissInstall($('installYes')?false:true)};
+      el.setAttribute('data-open','');el.setAttribute('aria-hidden','false');
+    }
+    /*
+      Chrome usually raises beforeinstallprompt after the page has settled, so a
+      single check at boot would decide "not installable" a second before the
+      browser says otherwise. The timer is always set; showInstall does the
+      deciding, and a late event asks again.
+    */
+    function offerInstall(delay){setTimeout(showInstall,delay||2600)}
+
+    function registerWorker(){
+      if(!('serviceWorker' in navigator))return;
+      window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js',{scope:'/ebook/'})['catch'](function(){})});
+    }
+
+    /*
+      Shown before the one-time link is spent, never after. The reader keeps the
+      choice — the detection is a heuristic and a wrong guess must not stand
+      between somebody and their book.
+    */
+    function webviewGuard(){
+      strip=strip;
+      document.querySelector('.bar').style.display='none';$('silk').style.display='none';
+      main.innerHTML='<section class="gate"><span class="gate-icon">'+MAIL_ICON+'</span>'+
+        '<h1>Open this in your own browser first</h1>'+
+        '<p>You have opened your link inside your email app. Your link works once, and a copy activated in here will not be there when you come back through Safari or Chrome — which is why the book keeps asking for your email.</p>'+
+        '<div class="gate-alt" style="text-align:center">Use your email app\'s menu and choose <strong>Open in browser</strong>. Or copy the link below and paste it into Safari or Chrome.</div>'+
+        '<div class="gate-url" id="guardUrl">'+esc(location.href)+'</div>'+
+        '<button class="gate-link" type="button" id="guardCopy" style="border:0;cursor:pointer">Copy my link</button>'+
+        '<br><button class="gate-ghost" type="button" id="guardGo">Continue here anyway</button>'+
+        '</section>';
+      $('guardCopy').onclick=function(){
+        var url=location.href;
+        if(navigator.clipboard&&navigator.clipboard.writeText)
+          navigator.clipboard.writeText(url).then(function(){toastMsg('Link copied')},function(){toastMsg('Press and hold the link above to copy it')});
+        else toastMsg('Press and hold the link above to copy it');
+      };
+      $('guardGo').onclick=function(){write(WEBVIEW_OK,'1');location.reload()};
+    }
+
     function wm(){
       watermark.innerHTML='';if(!email)return;
       for(var i=0;i<48;i++){var x=document.createElement('span');x.textContent=('PERSONAL COPY · '+email).toUpperCase();watermark.appendChild(x)}
@@ -994,6 +1199,11 @@
       addEventListener('beforeprint',function(){shield.classList.add('show')});
       addEventListener('afterprint',function(){shield.classList.remove('show')});
       addEventListener('resize',function(){hidePop()});
+      addEventListener('beforeinstallprompt',function(e){
+        e.preventDefault();installEvent=e;
+        if(bookOpen&&!installShown)offerInstall(1200);
+      });
+      addEventListener('appinstalled',function(){writeJ(INSTALL,{state:'done',at:Date.now()});hideInstall()});
     }
 
     /* ── boot (access contract unchanged) ────────────────────────────────── */
@@ -1014,24 +1224,36 @@
       return d;
     }
     async function start(){
-      wire();applyPrefs();
+      wire();applyPrefs();registerWorker();
       var t=token(),a=await stored();
+      /* Spend the one-time link in the browser the reader will come back to. */
+      if(!a&&t&&looksInApp()&&read(WEBVIEW_OK)!=='1'){webviewGuard();return}
+      var fresh=false;
       if(!a&&t){
-        try{a=await exchange(t)}
+        try{a=await exchange(t);fresh=true}
         catch(e){
-          if(e.message==='access_link_expired')fail('This access link has expired','Ask FMB for a fresh access email.');
-          else fail('This private link is no longer active','The link may already have been opened on another device. Ask FMB for a fresh access email.');
+          if(e.message==='access_link_expired')
+            gate('This access link has expired','Links are good for a short window. Send yourself a new one and this device will stay open from then on.',{});
+          else
+            gate('This link has already been used','A reading link opens one device. If this is the device you read on, send yourself a fresh one below.',{});
           return;
         }
       }
-      if(!a){fail('Open the ebook from your access email','This app does not use registration. Open the private button in your complimentary or paid access email.');return}
+      if(!a){
+        gate('Open your copy on this device','Enter the email your copy is under and we will send you one link. Open it here, and the book stays open on this device.',{icon:MAIL_ICON});
+        return;
+      }
+      removeKey(WEBVIEW_OK);
       buildPages();wm();
       var p=await bestProgress(),r=rows(),
           first=r.find(function(x){return Number(x.sequence)===Number(p.sequence)})||r[0];
-      if(!first){fail('The ebook is not available yet','Please try again shortly.');return}
+      if(!first){gate('The ebook is not available yet','Please try again shortly.',{email:false});return}
       await jump(first.sequence,Number(p.percent)||0);
+      bookOpen=true;
+      if(fresh)toastMsg('This device is activated — no email needed next time');
+      offerInstall(fresh?2200:3200);
     }
-    start().catch(function(){fail('The ebook could not open','Please use the access email again. If the problem continues, ask FMB to resend it.')});
+    start().catch(function(){gate('The ebook could not open','Send yourself a fresh reading link below. If it keeps happening, tell Francine and she will sort it out.',{})});
   })();
   </script>
 </body>
