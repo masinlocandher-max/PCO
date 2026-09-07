@@ -57,6 +57,10 @@ img{max-width:100%}
 
 /* ── Navigation ────────────────────────────────────────────────────────── */
 .book-nav{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:clamp(14px,2.6vw,40px);width:var(--shell);margin:0 auto;padding:24px var(--gutter) 10px}
+.book-logo{grid-column:1}
+.book-nav nav{grid-column:2}
+.nav-buy{grid-column:3}
+.nav-toggle{display:none}
 .book-logo,.footer-logo{display:inline-flex;flex-direction:column;width:max-content;text-decoration:none;font-family:var(--serif);line-height:.82}
 .book-logo small,.footer-logo small{font-size:17px;font-style:italic;line-height:1;padding-left:2px}
 .book-logo strong,.footer-logo strong{font-size:28px;font-weight:400;letter-spacing:-.045em}
@@ -202,9 +206,22 @@ img{max-width:100%}
 }
 
 @media(max-width:860px){
-  .book-nav{grid-template-columns:1fr auto;padding:16px 20px 8px}
-  .book-nav nav{display:none}
-  .nav-buy{min-height:42px;padding:0 18px;font-size:15px}
+  .book-nav{grid-template-columns:1fr auto auto;gap:12px;padding:16px 20px 8px}
+  .nav-toggle{display:inline-flex;grid-column:2;align-items:center;justify-content:center;width:40px;height:40px;padding:0;border:1px solid rgba(111,77,31,.3);border-radius:999px;background:rgba(255,251,243,.62);color:var(--ink);cursor:pointer;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+  .nav-toggle:hover{background:rgba(255,251,243,.9)}
+  .nav-toggle span{display:flex;flex-direction:column;gap:4px;width:17px}
+  .nav-toggle i{display:block;height:1.5px;border-radius:2px;background:currentColor;transition:transform .2s ease,opacity .2s ease}
+  .book-nav[data-nav-open] .nav-toggle i:nth-child(1){transform:translateY(5.5px) rotate(45deg)}
+  .book-nav[data-nav-open] .nav-toggle i:nth-child(2){opacity:0}
+  .book-nav[data-nav-open] .nav-toggle i:nth-child(3){transform:translateY(-5.5px) rotate(-45deg)}
+  .nav-buy{grid-column:3;min-height:44px;padding:0 18px;font-size:15px}
+
+  /* visibility:hidden keeps the closed panel out of the accessibility tree. */
+  .book-nav nav{position:absolute;z-index:30;grid-column:1/-1;top:100%;left:20px;right:20px;flex-direction:column;gap:0;padding:6px;border:1px solid rgba(111,77,31,.22);border-radius:16px;background:rgba(253,248,238,.97);box-shadow:0 20px 44px rgba(76,46,10,.18);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);opacity:0;visibility:hidden;transform:translateY(-8px);transition:opacity .2s ease,transform .2s ease,visibility 0s linear .2s}
+  .book-nav[data-nav-open] nav{opacity:1;visibility:visible;transform:none;transition:opacity .2s ease,transform .2s ease}
+  .book-nav nav a{display:flex;align-items:center;min-height:46px;padding:0 14px;border-radius:10px;font-size:17px}
+  .book-nav nav a+a{border-top:1px solid rgba(111,77,31,.14)}
+  .book-nav nav a:hover{background:rgba(200,160,90,.14);text-decoration:none}
 
   /* Stacked: headline first, then the portrait as a full-width plate. */
   .campaign-hero{display:flex;flex-direction:column;min-height:0;padding:clamp(16px,3vw,28px) 20px 0}
@@ -270,6 +287,8 @@ img{max-width:100%}
   .book-logo small{font-size:12px}
   .nav-buy{font-size:12px;padding:0 12px;gap:6px}
   .nav-buy svg{width:13px;height:13px}
+  .book-nav{gap:9px}
+  .nav-toggle{width:36px;height:36px}
 }
 
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important;animation:none!important}}

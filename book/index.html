@@ -11,7 +11,16 @@
   <meta property="og:description" content="A gentler, stronger, more meaningful life. Protected digital reader access: ₱999.">
   <meta property="og:url" content="https://francinemariebautista.com/book/">
   <meta property="og:type" content="book">
-  <meta property="og:image" content="https://francinemariebautista.com/assets/img/book-cover-art.webp">
+  <!-- Landscape share card: social crops to roughly 1.91:1, which would cut the
+       title and byline off the 4:5 cover artwork. -->
+  <meta property="og:image" content="https://francinemariebautista.com/assets/img/book-share-card.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="The Right Way to Live — a gentler, stronger, more meaningful life. By Francine Marie Bautista.">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="The Right Way to Live — Francine Marie Bautista">
+  <meta name="twitter:description" content="A gentler, stronger, more meaningful life. Protected digital reader access: ₱999.">
+  <meta name="twitter:image" content="https://francinemariebautista.com/assets/img/book-share-card.jpg">
   <title>The Right Way to Live | Francine Marie Bautista</title>
   <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
   <link rel="preload" as="image" href="../assets/img/book-silk-field.webp" fetchpriority="high">
@@ -35,9 +44,13 @@
     <i class="silk-bloom"></i>
   </div>
 
-  <header class="book-nav">
+  <header class="book-nav" id="bookNav">
     <a class="book-logo" href="#home" aria-label="The Right Way to Live home"><small>The</small><strong>Right Way to Live</strong></a>
-    <nav aria-label="Book navigation">
+    <!-- Toggle precedes the panel it controls, so tab order runs logo, menu, links, CTA. -->
+    <button class="nav-toggle" id="navToggle" type="button" aria-expanded="false" aria-controls="bookNavLinks" aria-label="Open menu">
+      <span aria-hidden="true"><i></i><i></i><i></i></span>
+    </button>
+    <nav id="bookNavLinks" aria-label="Book navigation">
       <a href="#home">Home</a><a href="#about">About</a><a href="#book">The Book</a><a href="#principles">Principles</a><a href="#for-you">For You</a><a href="#contact">Contact</a>
     </nav>
     <a class="gold-button nav-buy" href="#purchase">Get the Ebook <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg></a>
