@@ -1,64 +1,92 @@
 /* Three-destination entry gate: CV, News, Book. */
 
 /*
-  iOS-safe route mode.
-  While the destination chooser is open, let the document itself scroll normally
-  instead of trying to scroll a fixed modal inside an overflow-locked body.
-  Underlying CV content is hidden until single-page.js removes route-locked.
+  iPhone/Safari hardening.
+  The route chooser is ordinary document content, never a nested scroll trap.
+  The CV stays hidden until single-page.js finishes the route choice.
 */
-body.route-locked{
-  overflow-x:hidden!important;
-  overflow-y:auto!important;
+html{
   height:auto!important;
   min-height:100%!important;
-  position:static!important;
+  overflow-x:hidden!important;
+  overflow-y:auto!important;
+  overscroll-behavior-y:auto!important;
   touch-action:pan-y!important;
-  -webkit-overflow-scrolling:touch;
 }
+body.route-locked{
+  margin:0!important;
+  width:100%!important;
+  height:auto!important;
+  min-height:100%!important;
+  max-height:none!important;
+  overflow-x:hidden!important;
+  overflow-y:visible!important;
+  position:static!important;
+  overscroll-behavior-y:auto!important;
+  touch-action:pan-y!important;
+  -webkit-overflow-scrolling:touch!important;
+}
+
+/* Hide the CV while the three destinations are visible. */
 body.route-locked > :not(.gate):not(script){display:none!important}
 
 body.route-locked > .route-gate{
   position:relative!important;
   inset:auto!important;
-  z-index:130;
-  display:grid!important;
-  grid-template-columns:minmax(0,1fr);
-  align-items:center;
-  width:100%;
-  min-height:100svh;
+  display:block!important;
+  width:100%!important;
+  min-height:0!important;
   height:auto!important;
+  max-height:none!important;
   overflow:visible!important;
+  padding:max(28px,env(safe-area-inset-top)) max(24px,env(safe-area-inset-right)) max(72px,env(safe-area-inset-bottom)) max(24px,env(safe-area-inset-left))!important;
+  z-index:130;
   touch-action:pan-y!important;
-  padding-top:max(28px,env(safe-area-inset-top));
-  padding-right:max(24px,env(safe-area-inset-right));
-  padding-bottom:max(34px,env(safe-area-inset-bottom));
-  padding-left:max(24px,env(safe-area-inset-left));
+  overscroll-behavior-y:auto!important;
 }
 body.route-locked > .route-gate .gate-veil{
-  position:absolute;
-  inset:0;
-  min-height:100%;
-  pointer-events:none;
+  position:absolute!important;
+  inset:0!important;
+  width:100%!important;
+  height:100%!important;
+  min-height:100%!important;
+  pointer-events:none!important;
 }
 .route-gate .gate-sheet{
-  position:relative;
+  position:relative!important;
   z-index:1;
-  width:min(1120px,100%);
-  margin:0 auto;
-  padding:18px 0;
+  width:min(1120px,100%)!important;
+  max-width:1120px!important;
+  height:auto!important;
+  max-height:none!important;
+  margin:0 auto!important;
+  padding:18px 0!important;
+  overflow:visible!important;
+  transform:none!important;
+  opacity:1!important;
+  animation:none!important;
+  touch-action:pan-y!important;
+}
+.route-gate,
+.route-gate .gate-sheet,
+.route-gate .route-options,
+.route-gate .route-choice,
+.route-gate .route-choice *{
+  touch-action:pan-y!important;
 }
 
-/* Keep the short sound-choice gate modal-like after CV is chosen. */
+/* Sound gate stays modal only after Professional is chosen. */
 body.route-locked > #soundGate:not([hidden]){
   position:fixed!important;
   inset:0!important;
+  display:flex!important;
   z-index:140;
-  overflow-y:auto;
-  -webkit-overflow-scrolling:touch;
-  touch-action:pan-y;
+  overflow-y:auto!important;
+  -webkit-overflow-scrolling:touch!important;
+  touch-action:pan-y!important;
 }
 
-.route-options{grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.route-options{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:34px;text-align:left}
 .route-choice{position:relative;isolation:isolate;overflow:hidden;min-height:250px;background:#0b0710}
 .route-choice::before,.route-choice::after{content:"";position:absolute;inset:0;pointer-events:none}
 .route-choice::before{z-index:-2;background-position:center;background-size:cover;opacity:.34;transform:scale(1.025);transition:transform .55s var(--ease),opacity .4s ease}
@@ -67,7 +95,7 @@ body.route-locked > #soundGate:not([hidden]){
 .route-choice:nth-child(1)::before{background-image:url('assets/img/portrait-hero.webp');background-position:center 24%}
 .route-choice:nth-child(2)::before{background-image:url('assets/img/work-media.webp');background-position:center}
 
-/* DESIGN LOCK: option 03 uses the canonical book COVER artwork, never the hero portrait. */
+/* DESIGN LOCK: option 03 always uses the canonical book cover. */
 .route-choice-book::before{
   background-image:url('assets/img/book-cover-art.jpg');
   background-position:center 36%;
@@ -88,23 +116,34 @@ body.route-locked > #soundGate:not([hidden]){
 }
 
 @media(max-width:760px){
+  html,body.route-locked{overflow-y:auto!important;-webkit-overflow-scrolling:touch!important}
   body.route-locked > .route-gate{
-    align-items:start;
-    padding-top:max(18px,env(safe-area-inset-top));
-    padding-right:max(16px,env(safe-area-inset-right));
-    padding-bottom:max(30px,env(safe-area-inset-bottom));
-    padding-left:max(16px,env(safe-area-inset-left));
+    display:block!important;
+    padding-top:max(18px,env(safe-area-inset-top))!important;
+    padding-right:max(16px,env(safe-area-inset-right))!important;
+    padding-bottom:max(132px,env(safe-area-inset-bottom))!important;
+    padding-left:max(16px,env(safe-area-inset-left))!important;
   }
-  .route-gate .gate-sheet{padding:0 0 18px}
+  .route-gate .gate-sheet{display:block!important;padding:0!important}
   .route-gate .gate-mark{margin-bottom:20px}
   .route-gate .gate-copy{margin-bottom:24px}
-  .route-options{grid-template-columns:1fr;margin-top:22px}
-  .route-choice,.route-choice-book{grid-column:auto;min-height:190px}
+  .route-options{display:block!important;margin-top:22px!important}
+  .route-choice,
+  .route-choice-book{
+    display:flex!important;
+    width:100%!important;
+    min-height:178px!important;
+    margin:0 0 16px!important;
+    grid-column:auto!important;
+    transform:none!important;
+    -webkit-backdrop-filter:none!important;
+    backdrop-filter:none!important;
+  }
+  .route-choice:last-child{margin-bottom:0!important}
   .route-choice::before{background-position:center 27%}
   .route-choice-book::before{background-position:center 34%;background-size:cover}
 }
 
 @media(max-height:760px){
-  body.route-locked > .route-gate{align-items:start}
-  .route-gate .gate-sheet{padding-top:0}
+  body.route-locked > .route-gate{padding-top:max(16px,env(safe-area-inset-top))!important}
 }
