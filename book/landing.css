@@ -90,9 +90,9 @@ img{max-width:100%}
 .hero-copy h1>span{display:block;font-size:clamp(52px,10.2vw,132px)}
 .hero-copy h1 .last-line i{font-weight:400;margin-right:.08em}
 .hero-rule{display:block;width:clamp(52px,7vw,90px);height:2px;margin:clamp(14px,2.2vw,28px) auto 0;background:var(--gold-soft)}
-.hero-promise{margin:clamp(10px,1.5vw,18px) 0 0;font-size:clamp(10.5px,1.35vw,16px);font-weight:600;letter-spacing:.29em;line-height:1.6;text-transform:uppercase}
+.hero-promise{margin:clamp(12px,1.8vw,22px) 0 0;font-size:clamp(10.5px,1.35vw,16px);font-weight:600;letter-spacing:.29em;line-height:1.6;text-transform:uppercase}
 .hero-buy{margin-top:clamp(16px,2.2vw,30px);min-width:clamp(186px,18vw,238px)}
-.hero-note{margin:clamp(14px,2.1vw,30px) 0 0;font-size:clamp(9px,1.03vw,12.5px);font-weight:500;letter-spacing:.27em;line-height:1.75;text-transform:uppercase}
+.hero-hook{margin:clamp(14px,2vw,26px) 0 0;font-family:var(--serif);font-style:italic;font-size:clamp(17px,2vw,27px);line-height:1.42;letter-spacing:-.015em;color:#2c2318}
 
 /* ── The book, in three forms ──────────────────────────────────────────── */
 .book-intro{position:relative;z-index:4;display:grid;grid-template-columns:minmax(0,.76fr) minmax(0,1.24fr);align-items:center;gap:clamp(16px,3vw,48px);width:var(--shell);margin:0 auto;padding:clamp(18px,3vw,44px) var(--gutter) 0}
@@ -151,6 +151,38 @@ img{max-width:100%}
 .strip-inner h3{margin:clamp(4px,.6vw,10px) 0 2px;font-family:var(--serif);font-size:clamp(20px,2.35vw,32px);font-weight:400;letter-spacing:-.025em}
 .strip-inner p{margin:0;color:var(--muted);font-size:clamp(11px,1.22vw,15px)}
 
+/* ── The quote journey ────────────────────────────────────────────────── */
+/* Set on the fabric with air around it rather than in cards: cards make quotes
+   look like testimonials, and these are pages from a book. */
+.journey{position:relative;z-index:5;width:var(--shell);margin:0 auto;
+  padding:clamp(46px,7vw,104px) var(--gutter) clamp(40px,6vw,88px)}
+.journey:before{content:"";position:absolute;z-index:-1;left:50%;top:0;bottom:0;width:100vw;
+  transform:translateX(-50%);pointer-events:none;background:linear-gradient(180deg,
+    rgba(255,252,245,0) 0%,rgba(255,252,245,.86) 9%,rgba(255,252,245,.9) 50%,
+    rgba(255,252,245,.86) 91%,rgba(255,252,245,0) 100%)}
+.passage{position:relative;width:min(100%,var(--passage,540px));
+  margin:0 0 clamp(40px,5.6vw,86px)}
+.passage:last-child{margin-bottom:0}
+.passage-right{margin-left:auto;text-align:right}
+.passage-label{margin:0 0 clamp(12px,1.5vw,18px);font-size:clamp(9.5px,1vw,11.5px);
+  font-weight:600;letter-spacing:.28em;text-transform:uppercase;color:#8b5f22}
+.passage blockquote{margin:0;font-family:var(--serif);font-weight:400;
+  font-size:clamp(23px,3vw,41px);line-height:1.24;letter-spacing:-.03em;color:#1c1610}
+.passage-lead blockquote{font-size:clamp(30px,4vw,56px);line-height:1.14}
+.passage-beat{margin:clamp(16px,2vw,24px) 0 0;font-family:var(--serif);font-style:italic;
+  font-size:clamp(17px,1.9vw,25px);color:#7d5518}
+/* The short line reads as an aside, so it sits slightly apart from the thought
+   it follows rather than lining up as a second sentence. */
+.passage:not(.passage-right) .passage-beat{padding-left:clamp(18px,2.4vw,34px);border-left:2px solid rgba(184,137,57,.5)}
+.passage-right .passage-beat{padding-right:clamp(18px,2.4vw,34px);border-right:2px solid rgba(184,137,57,.5)}
+
+/* A gentle arrival, because a sequence of quotes should feel like turning pages. */
+@media (prefers-reduced-motion:no-preference){
+  .passage[data-reveal]{opacity:0;transform:translateY(18px);
+    transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}
+  .passage[data-reveal="in"]{opacity:1;transform:none}
+}
+
 /* ── Quote ─────────────────────────────────────────────────────────────── */
 /* Dark at the left, opening into lit silk at the right. */
 .campaign-quote{position:relative;z-index:5;overflow:hidden;padding:clamp(22px,3vw,44px) 0 clamp(14px,1.9vw,30px);color:#fdf7e9;background:
@@ -159,7 +191,7 @@ img{max-width:100%}
   url(../assets/img/book-silk-field.webp) center/cover,#4a2f13}
 .campaign-quote:after{content:"";position:absolute;right:-8%;bottom:-46%;width:78%;height:150%;border-radius:50%;pointer-events:none;background:radial-gradient(ellipse at 40% 40%,rgba(255,236,193,.42),rgba(216,166,90,.16) 58%,transparent 76%)}
 .quote-inner{position:relative;z-index:1;width:var(--shell);margin:0 auto;padding:0 var(--gutter)}
-.campaign-quote blockquote{margin:0 0 0 clamp(0px,13.7vw,196px);font-family:var(--serif);font-size:clamp(26px,3.9vw,54px);font-style:italic;line-height:1.05;letter-spacing:-.028em;text-indent:-.42em}
+.campaign-quote blockquote{margin:0 0 0 clamp(0px,13.7vw,196px);font-family:var(--serif);font-size:clamp(23px,3.3vw,46px);font-style:italic;line-height:1.16;letter-spacing:-.028em;text-indent:-.42em}
 .quote-sign{display:flex;align-items:center;gap:14px;margin:clamp(10px,1.4vw,20px) 0 0 clamp(0px,13.7vw,196px)}
 .quote-sign span{width:46px;height:1px;background:#c9a15c}
 .quote-sign p{margin:0;font-size:clamp(9px,.9vw,11px);font-weight:500;letter-spacing:.34em;text-transform:uppercase;color:#fbf2dd}
@@ -170,6 +202,7 @@ img{max-width:100%}
 .purchase-band:before{content:"";position:absolute;z-index:-1;left:50%;bottom:0;width:120vw;height:calc(100% + clamp(8px,1.6vw,32px));border-radius:50% 50% 0 0;background:linear-gradient(180deg,#fbf5e8 0%,#faf3e5 44%,#f8f1e2 100%);transform:translateX(-50%)}
 .purchase-band h2{margin:0;font-family:var(--serif);font-size:clamp(30px,4.1vw,56px);font-weight:400;letter-spacing:-.04em;line-height:1.05}
 .purchase-kicker{margin:4px 0 clamp(14px,2.1vw,28px);font-size:clamp(9.5px,1.08vw,13px);font-weight:600;letter-spacing:.32em;text-transform:uppercase}
+.purchase-line{max-width:26ch;margin:clamp(12px,1.6vw,20px) auto 0;font-family:var(--serif);font-style:italic;font-size:clamp(17px,1.9vw,25px);line-height:1.35;color:#3d3225}
 .edition-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(14px,1.8vw,26px);width:min(100%,780px);margin:clamp(18px,2.4vw,32px) auto 0;text-align:left}
 .edition{display:flex;flex-direction:column;padding:clamp(20px,2.4vw,32px) clamp(18px,2.2vw,30px) clamp(18px,2.2vw,28px);border:1px solid rgba(111,77,31,.2);border-radius:18px;background:rgba(255,252,246,.72);box-shadow:0 14px 34px rgba(92,56,14,.08);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
 .edition h3{margin:0;font-family:var(--serif);font-size:clamp(24px,2.5vw,32px);font-weight:400;letter-spacing:-.03em}
@@ -262,6 +295,10 @@ img{max-width:100%}
   .campaign-quote{padding:clamp(38px,7vw,58px) 0 clamp(46px,9vw,72px)}
   .quote-inner{padding:0 20px}
   .campaign-quote blockquote,.quote-sign{margin-left:0}
+  .journey{padding-left:20px;padding-right:20px}
+  .passage{--passage:100%}
+  .passage-right{text-align:left}
+  .passage-right .passage-beat{padding:0 0 0 clamp(18px,2.4vw,34px);border-right:0;border-left:2px solid rgba(184,137,57,.5)}
 
   .edition-grid{width:100%}
   .footer-top{grid-template-columns:auto auto;row-gap:16px}
@@ -283,7 +320,7 @@ img{max-width:100%}
   .hero-copy h1>span{font-size:clamp(46px,15.5vw,72px)}
   .hero-rule{width:58px}
   .hero-promise{font-size:10.5px;letter-spacing:.26em}
-  .hero-note{font-size:9px;letter-spacing:.24em}
+  .hero-hook{font-size:17px}
   .hero-buy{min-width:206px;font-size:16px}
 
   .intro-copy h2{font-size:clamp(34px,10vw,46px)}
