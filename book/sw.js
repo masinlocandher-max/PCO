@@ -8,7 +8,7 @@
   protected chapter returned by the book API. Protected book text stays network
   only and is delivered chapter by chapter after access is verified.
 */
-var VERSION='trwtl-v5';
+var VERSION='trwtl-v6';
 var SHELL=VERSION+'-shell';
 var RUNTIME=VERSION+'-runtime';
 
@@ -17,7 +17,7 @@ var SHELL_URLS=[
   './index.html',
   './reader.html',
   './landing.css',
-  './mobile-polish.css',
+  '../book-mobile-polish.css',
   './scroll-fix.css',
   './reader.css',
   './book.js',
