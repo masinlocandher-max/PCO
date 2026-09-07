@@ -1,0 +1,212 @@
+@import url('https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,400;7..72,500;7..72,600&family=Playfair+Display:ital,wght@0,400..600;1,400..600&display=swap');
+
+/*
+  The reader.
+
+  Built mobile first and for one job: comfortable reading over long stretches.
+  Body text is Literata, a face designed for screen reading, rather than the
+  Playfair used across the campaign — Playfair is a display face and punishing
+  at paragraph length. Playfair stays for chapter openings and the wordmark.
+
+  Measure is held near 66 characters, the chrome retreats while reading, and
+  every reading preference is stored per device. Those preferences are the only
+  thing stored: access is never granted from local state.
+*/
+
+:root{
+  --measure:34rem;
+  --reader-font:'Literata',Georgia,'Times New Roman',serif;
+  --display:'Playfair Display',Georgia,serif;
+  --sans:'DM Sans',-apple-system,'Segoe UI',Arial,sans-serif;
+  --step:1;
+  --bar:56px;
+
+  --paper:#fbf6ec;
+  --ink:#231d16;
+  --ink-soft:#6b5f52;
+  --rule:rgba(112,84,44,.2);
+  --accent:#8b5f22;
+  --raise:rgba(255,255,255,.8);
+}
+[data-theme="sepia"]{--paper:#f4e8d2;--ink:#3a2c1b;--ink-soft:#7a674c;--rule:rgba(112,84,44,.26);--accent:#8a5c1d;--raise:rgba(255,252,244,.8)}
+[data-theme="night"]{--paper:#14110e;--ink:#e8e0d3;--ink-soft:#9a8f80;--rule:rgba(232,224,211,.18);--accent:#d8ad63;--raise:rgba(255,255,255,.06)}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="day"]):not([data-theme="sepia"]){--paper:#14110e;--ink:#e8e0d3;--ink-soft:#9a8f80;--rule:rgba(232,224,211,.18);--accent:#d8ad63;--raise:rgba(255,255,255,.06)}
+}
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body.reader-page{
+  margin:0;background:var(--paper);color:var(--ink);
+  font-family:var(--reader-font);
+  /* iOS: keep content clear of the notch and the home indicator. */
+  padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+  transition:background-color .3s ease,color .3s ease;
+}
+a{color:inherit}
+button{font:inherit;color:inherit}
+
+/* ── Top bar ─────────────────────────────────────────────────────────── */
+.reader-bar{
+  position:fixed;z-index:40;top:env(safe-area-inset-top);left:0;right:0;height:var(--bar);
+  display:flex;align-items:center;gap:6px;padding:0 8px;
+  background:color-mix(in srgb,var(--paper) 88%,transparent);
+  -webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--rule);
+  transition:transform .28s ease,opacity .28s ease;
+}
+body.is-immersive .reader-bar{transform:translateY(-100%);opacity:0}
+.bar-title{flex:1;min-width:0;text-align:center;font-family:var(--display);font-size:15px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--ink-soft)}
+.bar-btn{
+  display:inline-flex;align-items:center;justify-content:center;flex:none;
+  width:44px;height:44px;padding:0;border:0;border-radius:12px;background:transparent;cursor:pointer;
+}
+.bar-btn:hover,.bar-btn[aria-expanded="true"]{background:var(--raise)}
+.bar-btn svg{width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+
+.reader-progress{position:fixed;z-index:41;top:calc(env(safe-area-inset-top) + var(--bar) - 2px);left:0;right:0;height:2px;background:transparent}
+.reader-progress i{display:block;height:100%;width:0;background:var(--accent);transition:width .12s linear}
+
+/* ── Reading column ──────────────────────────────────────────────────── */
+.reader-main{padding:calc(var(--bar) + 26px) 18px 96px}
+.reader-doc{width:100%;max-width:var(--measure);margin:0 auto}
+
+.chapter-meta{display:block;margin-bottom:14px;font-family:var(--sans);font-size:11px;
+  font-weight:600;letter-spacing:.28em;text-transform:uppercase;color:var(--accent)}
+.reader-doc h1{margin:0;font-family:var(--display);font-weight:400;
+  font-size:calc(2rem * var(--step));line-height:1.12;letter-spacing:-.025em}
+.reader-dedication{margin:14px 0 0;font-style:italic;color:var(--ink-soft);
+  font-size:calc(.95rem * var(--step))}
+.chapter-rule{display:block;width:56px;height:2px;margin:28px 0 30px;background:var(--accent);opacity:.55}
+
+.reader-prose p{
+  margin:0;
+  font-size:calc(1.0625rem * var(--step));
+  line-height:1.78;
+  /* Hyphenation stops long Filipino and English words tearing ragged holes
+     in a narrow column. */
+  hyphens:auto;-webkit-hyphens:auto;
+}
+.reader-prose p+p{margin-top:1.35em}
+.reader-prose p:first-of-type::first-letter{float:left;margin:.06em .1em 0 0;font-family:var(--display);
+  font-size:3.1em;line-height:.82;color:var(--accent)}
+
+@media (min-width:600px){
+  .reader-prose p{font-size:calc(1.125rem * var(--step))}
+}
+
+.sr-only{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;
+  clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap;border:0}
+
+/* ── Preview boundary ────────────────────────────────────────────────── */
+.preview-end{position:relative;margin-top:40px;padding-top:78px}
+.preview-end:before{content:"";position:absolute;left:0;right:0;top:-70px;height:130px;pointer-events:none;
+  background:linear-gradient(180deg,transparent,var(--paper) 76%)}
+.unlock-card{padding:26px 22px 24px;border:1px solid var(--rule);border-radius:18px;background:var(--raise)}
+.unlock-card small{display:block;font-family:var(--sans);font-size:10.5px;font-weight:600;
+  letter-spacing:.26em;text-transform:uppercase;color:var(--ink-soft)}
+.unlock-card h2{margin:12px 0 0;font-family:var(--display);font-weight:400;
+  font-size:calc(1.6rem * var(--step));line-height:1.16;letter-spacing:-.02em}
+.unlock-card p{margin:12px 0 0;font-size:calc(.98rem * var(--step));line-height:1.68;color:var(--ink-soft)}
+.unlock-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px}
+.unlock-primary,.unlock-secondary{display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  min-height:48px;padding:0 22px;border-radius:999px;text-decoration:none;font-family:var(--display);font-size:16px}
+.unlock-primary{background:linear-gradient(176deg,#9c7231,#7d551c);color:#fdf6e6;border:0}
+.unlock-secondary{border:1px solid var(--rule);color:var(--ink)}
+.unlock-note{margin-top:16px;font-family:var(--sans);font-size:12.5px;line-height:1.6;color:var(--ink-soft)}
+
+/* ── Slide-over panels ───────────────────────────────────────────────── */
+.panel{
+  position:fixed;z-index:60;inset:0;display:flex;flex-direction:column;
+  background:var(--paper);
+  padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom);
+  transform:translateY(100%);visibility:hidden;
+  transition:transform .3s cubic-bezier(.22,1,.36,1),visibility 0s linear .3s;
+}
+.panel[data-open]{transform:none;visibility:visible;transition:transform .3s cubic-bezier(.22,1,.36,1)}
+.panel-head{display:flex;align-items:center;gap:8px;height:var(--bar);padding:0 8px;border-bottom:1px solid var(--rule)}
+.panel-head h2{flex:1;margin:0;font-family:var(--display);font-size:18px;font-weight:400;text-align:center}
+.panel-body{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:14px 16px 30px}
+
+/* Contents */
+.toc-part{margin:22px 0 8px;font-family:var(--sans);font-size:10.5px;font-weight:600;
+  letter-spacing:.22em;text-transform:uppercase;color:var(--accent)}
+.toc-part:first-child{margin-top:4px}
+.toc-item{display:flex;align-items:center;gap:14px;width:100%;min-height:52px;padding:8px 12px;
+  border:0;border-radius:12px;background:transparent;text-align:left;cursor:pointer}
+.toc-item b{flex:none;width:26px;font-family:var(--display);font-weight:400;font-size:15px;color:var(--ink-soft)}
+.toc-item span{flex:1;font-size:15.5px;line-height:1.4}
+.toc-item svg{flex:none;width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.7;
+  stroke-linecap:round;stroke-linejoin:round;color:var(--ink-soft);opacity:.55}
+.toc-item[data-locked]{color:var(--ink-soft)}
+.toc-item.is-active{background:var(--raise);color:var(--ink)}
+.toc-item.is-active b{color:var(--accent)}
+
+/* Reading preferences */
+.pref{padding:18px 4px;border-bottom:1px solid var(--rule)}
+.pref:last-child{border-bottom:0}
+.pref h3{margin:0 0 12px;font-family:var(--sans);font-size:11px;font-weight:600;
+  letter-spacing:.24em;text-transform:uppercase;color:var(--ink-soft)}
+.pref-row{display:flex;gap:8px}
+.chip{flex:1;min-height:52px;padding:8px;border:1px solid var(--rule);border-radius:14px;
+  background:transparent;cursor:pointer;font-family:var(--display);font-size:16px}
+.chip[aria-pressed="true"]{border-color:var(--accent);background:var(--raise);box-shadow:inset 0 0 0 1px var(--accent)}
+.chip small{display:block;margin-top:2px;font-family:var(--sans);font-size:10.5px;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--ink-soft)}
+.swatch{display:block;width:100%;height:22px;margin-bottom:6px;border-radius:6px;border:1px solid var(--rule)}
+.sw-day{background:#fbf6ec}.sw-sepia{background:#f4e8d2}.sw-night{background:#14110e}
+
+.pref-note{margin:16px 4px 0;font-family:var(--sans);font-size:12.5px;line-height:1.6;color:var(--ink-soft)}
+.pref-note strong{color:var(--ink);font-weight:600}
+
+/* ── Install invitation ──────────────────────────────────────────────── */
+.install-invite{position:fixed;z-index:55;left:12px;right:12px;bottom:calc(env(safe-area-inset-bottom) + 12px);
+  display:none;gap:14px;align-items:center;padding:14px 16px;border:1px solid var(--rule);border-radius:18px;
+  background:color-mix(in srgb,var(--paper) 94%,transparent);
+  -webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);box-shadow:0 18px 40px rgba(58,36,12,.18)}
+.install-invite[data-show]{display:flex}
+.install-invite p{flex:1;margin:0;font-family:var(--sans);font-size:13px;line-height:1.5;color:var(--ink-soft)}
+.install-invite strong{display:block;font-family:var(--display);font-size:16px;color:var(--ink)}
+.install-invite button{min-height:44px;padding:0 18px;border:0;border-radius:999px;
+  background:linear-gradient(176deg,#9c7231,#7d551c);color:#fdf6e6;font-family:var(--display);font-size:15px;cursor:pointer}
+.install-dismiss{flex:none;width:36px;height:36px;padding:0;border:0;border-radius:50%;background:transparent;
+  color:var(--ink-soft);font-size:20px;line-height:1;cursor:pointer}
+
+.offline-flag{position:fixed;z-index:45;left:50%;bottom:calc(env(safe-area-inset-bottom) + 14px);
+  transform:translateX(-50%) translateY(12px);opacity:0;pointer-events:none;
+  padding:9px 16px;border-radius:999px;background:var(--ink);color:var(--paper);
+  font-family:var(--sans);font-size:12px;letter-spacing:.04em;transition:opacity .25s,transform .25s}
+.offline-flag[data-show]{opacity:.94;transform:translateX(-50%)}
+
+.reader-toast{position:fixed;z-index:70;left:50%;bottom:calc(env(safe-area-inset-bottom) + 22px);
+  max-width:min(420px,calc(100vw - 32px));transform:translateX(-50%) translateY(14px);opacity:0;pointer-events:none;
+  padding:13px 18px;border-radius:14px;background:var(--ink);color:var(--paper);
+  font-family:var(--sans);font-size:13px;line-height:1.5;text-align:center;
+  transition:opacity .25s ease,transform .25s ease}
+.reader-toast.is-visible{opacity:1;transform:translateX(-50%)}
+
+/* ── Reading protections (unchanged in intent, kept out of the way) ──── */
+.reader-watermark{position:fixed;inset:0;z-index:5;pointer-events:none;overflow:hidden;opacity:.05;
+  display:flex;flex-wrap:wrap;gap:60px;transform:rotate(-24deg) scale(1.5)}
+.reader-watermark span{font-family:var(--sans);font-size:13px;letter-spacing:.3em;white-space:nowrap}
+.privacy-shield{position:fixed;inset:0;z-index:99;display:flex;align-items:center;justify-content:center;
+  text-align:center;background:var(--paper);color:var(--ink);opacity:0;visibility:hidden;transition:opacity .16s}
+.privacy-shield.is-visible{opacity:1;visibility:visible}
+.privacy-shield strong{display:block;font-family:var(--display);font-size:22px;font-weight:400}
+.privacy-shield span{display:block;margin-top:8px;font-family:var(--sans);font-size:13px;color:var(--ink-soft)}
+
+/* ── Wider screens: the column stays a column, the chrome gets room ──── */
+@media (min-width:900px){
+  :root{--bar:64px}
+  .reader-main{padding:calc(var(--bar) + 54px) 32px 140px}
+  .reader-doc h1{font-size:calc(2.9rem * var(--step))}
+  .bar-title{font-size:16px}
+  .panel{left:auto;width:min(430px,100%);border-left:1px solid var(--rule);transform:translateX(100%)}
+  .panel[data-open]{transform:none}
+  .install-invite{left:auto;right:20px;width:400px}
+}
+
+@media (prefers-reduced-motion:reduce){
+  *{transition:none!important;animation:none!important;scroll-behavior:auto!important}
+}

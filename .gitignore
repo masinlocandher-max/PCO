@@ -1,0 +1,20 @@
+# The manuscript must never enter this repository.
+#
+# GitHub Pages serves every file on the deployed branch with no authentication,
+# so a manuscript committed here is a manuscript published here. Git history is
+# retrievable too, which means a later deletion does not undo the exposure.
+# Keep the text in Drive and behind the entitlement endpoint.
+*.docx
+*.doc
+*.odt
+*.rtf
+*.epub
+*.mobi
+*.pages
+*.indd
+book/*.txt
+book/*.md
+**/*manuscript*
+**/*Manuscript*
+**/*chapter-draft*
+**/*full-text*

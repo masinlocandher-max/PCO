@@ -33,6 +33,53 @@ The current Drive HD masters above remain the canonical source for the next cont
 
 The Drive file previously documented as `IMG_0455.JPG` was not present in the current HD master folders during this audit, so it is no longer listed as the current close-portrait source. `73351DE4-ED4C-4A06-A2AB-E3600B9D735A.png` is a studio portrait rather than a lectern photograph; it is therefore treated as a future portrait candidate, not blindly substituted for the current Talent-stage image.
 
+## Book landing photography — resolved 2026-09-07
+
+`book-hero-portrait.jpg` and `book-cover-art.jpg` shipped as corrupt binaries: neither carried a
+JPEG start-of-image marker, so both rendered as broken images on the book landing hero and on the
+book card of the root chooser. Both `.jpg` files have been deleted and replaced with WebP
+derivatives built from the current Drive masters.
+
+`scripts/validate-site-assets.py` now checks every shipped raster in `assets/img` by magic bytes
+rather than by extension. The previous guard only inspected `.webp`, which is why two corrupt
+JPEGs reached production unnoticed.
+
+| Drive original | Repository asset | Use |
+|---|---|---|
+| `EFBADEEE-CB64-495C-980B-7C7845F69AFF.png` | `img/book-hero-portrait.webp` | Book landing hero portrait |
+| `A5414859-4370-42DA-B97B-80F6C6324D55.png` | `img/book-cover-art.webp` | Book cover artwork, `og:image` |
+| `A5414859-4370-42DA-B97B-80F6C6324D55.png` (rows 710–1270) | `img/book-silk-field.webp` | Page fabric field, coded cover backing, quote band, chooser card 03 |
+
+`book-silk-field.webp` is not a separate photograph. It is the band of the cover artwork that
+carries no type — the cover was scanned for dark ink and the only text-free rows are 710 to 1270 —
+so the page background and the cover are the same piece of fabric. Re-crop from the same rows if
+the cover is ever re-issued.
+
+The chooser card for option 03 uses the fabric plate rather than the cover artwork on purpose. The
+cover carries its own title lockup, which collided with the card's overlaid heading and rendered
+the words twice.
+
+## Reading app icons
+
+`book/app-icon-*.png` are generated, not photographed: an italic Playfair "R" on
+the fabric plate. Regenerate at 512 and downscale; keep the maskable variant's
+artwork inside the safe circle so Android does not crop the letter.
+
+## Share cards
+
+Both share cards are generated, not photographed, and both are 1200x630 because
+social crops to roughly 1.91:1 — the 4:5 cover artwork lost its title and byline
+in shared links.
+
+| Source | Repository asset | Use |
+|---|---|---|
+| `img/book-silk-field.webp` + the title lockup | `img/book-share-card.jpg` | `og:image` for `/book/` |
+| `img/wordmark.webp` on the root palette | `img/fmb-share-card.jpg` | `og:image` for `/` |
+
+Regenerate them by re-rendering at 1200x630 with the same lockup and exporting
+JPEG. Keep the content inside roughly the central 80% so no platform crop cuts
+the title, the byline, or the wordmark.
+
 ## Processing
 
 Photography is converted to WebP without cropping or upscaling. CSS controls framing. Web delivery derivatives may be resized below the source resolution to reduce page weight while preserving the original aspect ratio. The Drive originals remain the source of truth.
