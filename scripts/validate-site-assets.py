@@ -66,7 +66,7 @@ MANUSCRIPT_WORDS = ('manuscript', 'chapter-draft', 'full-text', 'fulltext')
 # Everything the book directory is allowed to publish. Anything else is either
 # a mistake or the manuscript, and both should stop the deploy.
 BOOK_ALLOWED = {
-    'index.html', 'reader.html', 'offline.html',
+    'index.html', 'reader.html', 'offline.html', 'auth-callback.html',
     'landing.css', 'reader.css', 'scroll-fix.css',
     'book.js', 'reader.js', 'sw.js',
     'manifest.webmanifest',
