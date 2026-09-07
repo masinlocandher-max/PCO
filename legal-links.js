@@ -27,6 +27,40 @@
     document.head.appendChild(style);
   }
 
+  function ensureResponsiveRepair(){
+    if(!document.body||!document.body.classList.contains('book-campaign'))return;
+    if(document.getElementById('astraResponsiveRecovery'))return;
+    var style=document.createElement('style');
+    style.id='astraResponsiveRecovery';
+    style.textContent='\
+.book-nav>*,.footer-top>*,.footer-meta>*,.edition,.addon-copy{min-width:0}\
+.book-logo,.footer-logo{max-width:100%}\
+.book-order-card input,.book-order-card select{min-height:44px}\
+.book-order-actions button,.book-order-actions a{min-height:44px;display:inline-flex;align-items:center;justify-content:center}\
+@media(max-width:860px){\
+.book-nav{grid-template-columns:minmax(0,1fr) auto auto}\
+.nav-toggle{width:44px;height:44px;min-width:44px;min-height:44px}\
+.nav-buy{min-height:44px}\
+}\
+@media(max-width:560px){\
+.edition{padding-left:0;padding-right:0}\
+.footer-top{grid-template-columns:minmax(0,1fr);row-gap:14px}\
+.social-links{justify-self:start;flex-wrap:wrap}\
+.footer-logo strong{font-size:10px;letter-spacing:.22em}\
+.footer-meta{align-items:flex-start}\
+.nav-toggle{width:44px;height:44px}\
+.nav-buy{min-height:44px}\
+}\
+@media(max-width:380px){\
+.book-nav{padding-inline:16px}\
+.book-nav nav{left:16px;right:16px}\
+.footer-legal-nav{grid-template-columns:repeat(2,max-content)}\
+.footer-logo strong{font-size:9.5px;letter-spacing:.18em}\
+}\
+';
+    document.head.appendChild(style);
+  }
+
   function injectCheckoutDisclosure(){
     document.querySelectorAll('#bookSecureOrder').forEach(function(form){
       if(form.querySelector('.book-order-legal'))return;
@@ -55,7 +89,7 @@
     if(meta)meta.insertAdjacentElement('afterend',nav);else footer.appendChild(nav);
   }
 
-  function inject(){ensurePaymongo();ensureStyles();injectCheckoutDisclosure();injectFooterNav();}
+  function inject(){ensurePaymongo();ensureStyles();ensureResponsiveRepair();injectCheckoutDisclosure();injectFooterNav();}
   inject();
 
   /*
