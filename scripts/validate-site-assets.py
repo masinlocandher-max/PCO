@@ -8,9 +8,6 @@ import sys
 ROOT = Path(__file__).resolve().parents[1]
 ERRORS = []
 
-# Every shipped raster is checked by magic bytes, not by extension. A file that
-# is named .jpg but is not a JPEG renders as a broken image in production, which
-# is how two book-landing photographs reached the live site unnoticed.
 RASTER_SIGNATURES = {
     '.webp': lambda d: len(d) >= 12 and d[:4] == b'RIFF' and d[8:12] == b'WEBP',
     '.jpg': lambda d: len(d) >= 3 and d[:3] == b'\xff\xd8\xff',
@@ -26,57 +23,29 @@ for path in sorted((ROOT / 'assets' / 'img').iterdir()):
         continue
     raster_count += 1
     if not is_valid(path.read_bytes()):
-        ERRORS.append(
-            f'not a valid {path.suffix.lstrip(".").upper()} binary: '
-            f'{path.relative_to(ROOT)}'
-        )
+        ERRORS.append(f'not a valid {path.suffix.lstrip(".").upper()} binary: {path.relative_to(ROOT)}')
 
-for rel in (
-    'assets/img/portrait-hero.webp',
-    'assets/img/portrait-close.webp',
-    'assets/img/talent-stage.webp',
-):
+for rel in ('assets/img/portrait-hero.webp','assets/img/portrait-close.webp','assets/img/talent-stage.webp'):
     path = ROOT / rel
     if not path.is_file():
         ERRORS.append(f'missing primary CV portrait: {rel}')
     elif path.stat().st_size < 45_000:
-        ERRORS.append(
-            f'primary CV portrait is unexpectedly small: {rel} '
-            f'({path.stat().st_size} bytes)'
-        )
+        ERRORS.append(f'primary CV portrait is unexpectedly small: {rel} ({path.stat().st_size} bytes)')
 
-
-# ---------------------------------------------------------------------------
-# Manuscript containment.
-#
-# GitHub Pages serves every file on the deployed branch with no authentication.
-# There is no login in front of it and no way to add one, so any manuscript
-# committed here is a manuscript published here — and git history keeps a
-# retrievable copy even after a later deletion. This gate is the last thing
-# standing between a stray file and a published book, so it fails the build
-# rather than warning.
-# ---------------------------------------------------------------------------
-
-MANUSCRIPT_FORMATS = {'.docx', '.doc', '.odt', '.rtf', '.epub', '.mobi',
-                      '.pages', '.indd', '.txt'}
-# Plain text files the site genuinely needs to publish.
+MANUSCRIPT_FORMATS = {'.docx', '.doc', '.odt', '.rtf', '.epub', '.mobi', '.pages', '.indd', '.txt'}
 TEXT_ALLOWED = {'robots.txt'}
 MANUSCRIPT_WORDS = ('manuscript', 'chapter-draft', 'full-text', 'fulltext')
 
-# Everything the book directory is allowed to publish. Anything else is either
-# a mistake or the manuscript, and both should stop the deploy.
 BOOK_ALLOWED = {
-    'index.html', 'reader.html', 'offline.html',
-    'landing.css', 'reader.css', 'scroll-fix.css',
-    'book.js', 'reader.js', 'sw.js',
+    'index.html', 'reader.html', 'offline.html', 'auth-callback.html',
+    'free-access.html', 'payment-success.html',
+    'landing.css', 'reader.css', 'scroll-fix.css', 'mobile-polish.css',
+    'book.js', 'paymongo.js', 'reader.js', 'sw.js',
     'manifest.webmanifest',
     'app-icon-192.png', 'app-icon-512.png',
     'app-icon-maskable.png', 'app-icon-apple.png',
 }
 
-# The reader publishes a free preview, not the book. 156 words ship today; the
-# ceiling leaves room to extend the preview on purpose while a pasted-in
-# chapter, let alone a pasted-in book, trips it immediately.
 PREVIEW_WORD_CEILING = 900
 
 for path in sorted(ROOT.rglob('*')):
@@ -84,29 +53,16 @@ for path in sorted(ROOT.rglob('*')):
         continue
     rel = path.relative_to(ROOT)
     name = path.name.lower()
-
-    if (path.suffix.lower() in MANUSCRIPT_FORMATS
-            and rel.parts[0] != 'scripts'
-            and path.name not in TEXT_ALLOWED):
-        ERRORS.append(
-            f'manuscript-format file would be published: {rel} — '
-            'Pages serves this to anyone with the URL'
-        )
+    if (path.suffix.lower() in MANUSCRIPT_FORMATS and rel.parts[0] != 'scripts' and path.name not in TEXT_ALLOWED):
+        ERRORS.append(f'manuscript-format file would be published: {rel} — Pages serves this to anyone with the URL')
     if any(word in name for word in MANUSCRIPT_WORDS):
-        ERRORS.append(
-            f'file name suggests manuscript content: {rel} — '
-            'keep the text in Drive and behind the entitlement endpoint'
-        )
+        ERRORS.append(f'file name suggests manuscript content: {rel} — keep the text in Drive and behind the entitlement endpoint')
 
 book_dir = ROOT / 'book'
 if book_dir.is_dir():
     for path in sorted(book_dir.iterdir()):
         if path.is_file() and path.name not in BOOK_ALLOWED:
-            ERRORS.append(
-                f'unexpected file in the published book directory: '
-                f'book/{path.name} — add it to BOOK_ALLOWED only if it is '
-                'meant to be public'
-            )
+            ERRORS.append(f'unexpected file in the published book directory: book/{path.name} — add it to BOOK_ALLOWED only if it is meant to be public')
 
 reader = ROOT / 'book' / 'reader.html'
 if reader.is_file():
@@ -114,43 +70,19 @@ if reader.is_file():
     match = re.search(r'class="reader-prose"[^>]*>(.*?)</div>', html, re.S)
     words = len(re.sub(r'<[^>]+>', ' ', match.group(1)).split()) if match else 0
     if words > PREVIEW_WORD_CEILING:
-        ERRORS.append(
-            f'reader preview carries {words} words, over the '
-            f'{PREVIEW_WORD_CEILING}-word ceiling — the reader publishes a '
-            'preview, not the book'
-        )
-
-
-# ---------------------------------------------------------------------------
-# Secret containment.
-#
-# Supabase ships two keys. The anon key is meant to be public and is safe in
-# this bundle, but only because row level security decides what it can read.
-# The service_role key bypasses row level security entirely, so a copy of it in
-# this repository is a copy of the manuscript for anyone who views source.
-#
-# JWTs are therefore decoded rather than pattern-matched: an anon key passes, a
-# service_role key fails the build.
-# ---------------------------------------------------------------------------
+        ERRORS.append(f'reader preview carries {words} words, over the {PREVIEW_WORD_CEILING}-word ceiling — the reader publishes a preview, not the book')
 
 JWT_PATTERN = re.compile(rb'eyJ[A-Za-z0-9_-]{10,}\.eyJ[A-Za-z0-9_-]{10,}')
-# Detect keys, not mentions. Documentation and source comments have to be able
-# to say "service_role" in order to warn about it, so the bare word is not a
-# marker; a decoded JWT role and Supabase's secret-key prefix are.
 SECRET_MARKERS = (
     (rb'sb_secret_[A-Za-z0-9_-]{10,}', 'a Supabase secret key'),
     (rb'-----BEGIN [A-Z ]*PRIVATE KEY-----', 'a private key'),
     (rb'sk_live_[A-Za-z0-9]{10,}', 'a live secret API key'),
     (rb'\bsk-[A-Za-z0-9]{24,}', 'a secret API key'),
-    (rb'SUPABASE_SERVICE_ROLE_KEY\s*[:=]\s*["\']?[A-Za-z0-9._-]{20,}',
-     'an assigned service_role key'),
+    (rb'SUPABASE_SERVICE_ROLE_KEY\s*[:=]\s*["\']?[A-Za-z0-9._-]{20,}', 'an assigned service_role key'),
 )
-SCANNED_SUFFIXES = {'.html', '.js', '.css', '.json', '.webmanifest', '.md',
-                    '.yml', '.yaml', '.txt', '.py', '.svg'}
-
+SCANNED_SUFFIXES = {'.html', '.js', '.css', '.json', '.webmanifest', '.md', '.yml', '.yaml', '.txt', '.py', '.svg'}
 
 def jwt_role(token):
-    """Return the role claim of a JWT payload, or None if it cannot be read."""
     import base64
     import json as _json
     try:
@@ -160,12 +92,10 @@ def jwt_role(token):
     except Exception:
         return None
 
-
 for path in sorted(ROOT.rglob('*')):
     rel_text = str(path.relative_to(ROOT)) if path != ROOT else ''
     if not path.is_file() or rel_text.startswith('.git/'):
         continue
-    # This file names the patterns it looks for, so it cannot scan itself.
     if path.resolve() == Path(__file__).resolve():
         continue
     if path.name.startswith('.env'):
@@ -173,7 +103,6 @@ for path in sorted(ROOT.rglob('*')):
         continue
     if path.suffix.lower() not in SCANNED_SUFFIXES:
         continue
-
     blob = path.read_bytes()
     for marker, described in SECRET_MARKERS:
         if re.search(marker, blob):
@@ -181,17 +110,12 @@ for path in sorted(ROOT.rglob('*')):
     for token in JWT_PATTERN.findall(blob):
         role = jwt_role(token)
         if role and role != 'anon':
-            ERRORS.append(
-                f'{rel_text} contains a JWT with role "{role}" — only the anon '
-                'key may ship to the browser'
-            )
-
+            ERRORS.append(f'{rel_text} contains a JWT with role "{role}" — only the anon key may ship to the browser')
 
 class RefParser(HTMLParser):
     def __init__(self):
         super().__init__()
         self.refs = []
-
     def handle_starttag(self, tag, attrs):
         attrs = dict(attrs)
         for key in ('src', 'href', 'data-full'):
@@ -199,17 +123,12 @@ class RefParser(HTMLParser):
             if val:
                 self.refs.append(val)
 
-
 for html in sorted(ROOT.rglob('*.html')):
     parser = RefParser()
     parser.feed(html.read_text(encoding='utf-8'))
     for raw in parser.refs:
         parsed = urlsplit(raw)
-        if (
-            parsed.scheme
-            or parsed.netloc
-            or raw.startswith(('#', 'mailto:', 'tel:', 'javascript:', 'data:'))
-        ):
+        if parsed.scheme or parsed.netloc or raw.startswith(('#', 'mailto:', 'tel:', 'javascript:', 'data:')):
             continue
         path = parsed.path
         if path.startswith('/') or not path or path.endswith('/'):
@@ -220,9 +139,7 @@ for html in sorted(ROOT.rglob('*.html')):
         except ValueError:
             continue
         if not target.exists():
-            ERRORS.append(
-                f'{html.relative_to(ROOT)} references missing local file: {raw}'
-            )
+            ERRORS.append(f'{html.relative_to(ROOT)} references missing local file: {raw}')
 
 if ERRORS:
     print('Asset validation failed:', file=sys.stderr)
@@ -230,7 +147,4 @@ if ERRORS:
         print(f' - {err}', file=sys.stderr)
     raise SystemExit(1)
 
-print(
-    f'Asset validation passed: {raster_count} image files valid; '
-    'HTML local references resolve; no manuscript or secret content published.'
-)
+print(f'Asset validation passed: {raster_count} image files valid; HTML local references resolve; no manuscript or secret content published.')

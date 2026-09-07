@@ -1,149 +1,119 @@
-# Supabase contract for the reader
+# Supabase contract for The Right Way to Live
 
-This file lives in `.github/` on purpose: the deploy excludes that directory, so
-it is never published with the site.
+This file lives in `.github/` so it is excluded from the deployed site. It documents the production contract. Do not replace this architecture with a public chapters table.
 
-## The one rule
+## Security boundary
 
-Supabase ships two keys.
+The public PCO repository contains only the campaign, reader shell, the intentional preview, static assets, the Supabase project URL, and a browser-safe publishable key.
 
-- **anon key** — designed to be public. It is safe in the browser bundle *only
-  because row level security decides what it can read*. With RLS off, or a
-  policy that says `using (true)`, the anon key reads the whole table. Anyone
-  can open the console and page through the manuscript.
-- **service_role key** — bypasses row level security completely. It must never
-  appear in this repository, in the client bundle, or in any file the site
-  serves. Keep it in Edge Function secrets or your activation script's
-  environment.
+The following must never be committed or served by GitHub Pages:
 
-`scripts/validate-site-assets.py` decodes every JWT it finds and fails the
-build on any role other than `anon`, so a service_role key cannot be deployed
-by accident. Do not treat that as permission to be casual with it.
+- full manuscript text
+- chapter JSON bundles
+- manuscript `.txt`, `.epub`, `.docx`, or equivalent files
+- Supabase `service_role` keys
+- payment secrets
+- private database credentials
 
-## Schema
+The build validator rejects manuscript-like files and server-only credentials. That is defense in depth, not a substitute for keeping protected data server-side.
 
-```sql
--- Who has paid for what. Users may read their own row and nothing else.
--- There is deliberately no insert or update policy: only your server-side
--- activation (service_role) grants access, after payment is confirmed.
-create table public.entitlements (
-  user_id    uuid not null references auth.users on delete cascade,
-  product    text not null check (product in ('ebook','pocketbook','listening')),
-  status     text not null default 'pending'
-             check (status in ('pending','active','revoked')),
-  granted_at timestamptz,
-  primary key (user_id, product)
-);
+## Production data model
 
-alter table public.entitlements enable row level security;
+The manuscript is stored in the private schema:
 
-create policy "read own entitlements"
-  on public.entitlements for select
-  using (auth.uid() = user_id);
+- `book_private.book_chapters` — 58 verified sections for `the-right-way-to-live`
+- `book_private.book_release` — release readiness and expected section count
+- `book_private.book_orders` / `book_private.book_order_events` — server-managed orders
+- `book_private.reader_access_log` — private access audit data
 
--- The book.
-create table public.chapters (
-  id         bigint generated always as identity primary key,
-  number     int  not null unique,
-  part       text,
-  title      text not null,
-  body       text not null,
-  is_preview boolean not null default false
-);
+Reader-facing account state lives in:
 
-alter table public.chapters enable row level security;
-```
+- `public.book_entitlements` — purchaser access grants, with RLS enabled
+- `public.book_reader_progress` — per-user reading progress, with RLS enabled
 
-`alter table ... enable row level security` is the line that matters. A table
-created through the SQL editor has RLS **off** by default, and with RLS off
-every policy below is decorative.
+There is deliberately **no `public.chapters` table** and no public REST endpoint that can page through the manuscript.
 
-## Policies
+The private manuscript tables have no `anon` or `authenticated` table privileges. They are used only through server-side code running with the required privilege.
 
-```sql
-create or replace function public.has_active_ebook()
-returns boolean
-language sql
-security definer
-set search_path = public
-stable
-as $$
-  select exists (
-    select 1 from public.entitlements e
-    where e.user_id = auth.uid()
-      and e.product = 'ebook'
-      and e.status  = 'active'
-  );
-$$;
+## Production API
 
-create policy "anyone may read the preview"
-  on public.chapters for select
-  using (is_preview);
+The browser talks to one Edge Function:
 
-create policy "buyers may read the book"
-  on public.chapters for select
-  using (public.has_active_ebook());
-```
+`POST /functions/v1/book-api`
 
-Mark exactly one row `is_preview = true` — chapter 07 today.
+Allowed production origins are:
 
-### The mistake to avoid
+- `https://francinemariebautista.com`
+- `https://www.francinemariebautista.com`
+
+The Edge Function uses the runtime-provided service credential only on the server. It verifies the user bearer token with Supabase Auth, requires a confirmed non-anonymous user and a live session, then calls the server-side `book_backend` RPC.
+
+Supported actions:
+
+- `catalog` — public prices and release readiness only
+- `create_order` — authenticated pending-order creation
+- `orders` — authenticated user's own order summaries
+- `access` — checks the user's ebook entitlement and returns chapter metadata only
+- `chapter` — checks entitlement again and returns one requested chapter only
+
+Protected responses use `Cache-Control: private, no-store`.
+
+## Entitlement rule
+
+Signing in is not purchasing.
+
+A reader receives protected chapter text only when `public.book_entitlements` contains a currently active entitlement for that authenticated user and `access_level` is `ebook` or `admin`.
+
+Do not weaken this into a rule such as:
 
 ```sql
--- WRONG. This gives the whole book to anyone who signs up,
--- because signing up is not paying.
 using (auth.uid() is not null)
 ```
 
-Signing in and having paid are different questions. The policy must reach the
-`entitlements` table, which is what `has_active_ebook()` does.
+That would give the book to anyone who creates an account.
 
-## What the reader asks for
+## Reader behavior
 
-One request, the same for everyone:
+`book/reader.js` uses Supabase passwordless email authentication. The browser-safe publishable key may be present in the frontend. A service-role key may not.
 
-```
-GET {url}/rest/v1/chapters?select=number,part,title,body&order=number.asc
-apikey:        <anon key>
-Authorization: Bearer <user session token, or the anon key when signed out>
-```
+After sign-in:
 
-Row level security answers it differently depending on who asks: one chapter
-for a visitor, all of them for a buyer. The client never decides — it renders
-whatever comes back. That is the point: there is no check in the browser to
-forge.
+1. The reader calls `access`.
+2. If entitlement is active, the API returns a manifest with titles, kinds, sequences, and word counts, not bodies.
+3. Selecting a section calls `chapter` for one sequence.
+4. The API returns only that section plus purchaser watermark information.
 
-Configure it by defining this before `reader.js` loads:
+The reader must never request or construct a full-book response.
 
-```js
-window.FMB_SUPABASE = {
-  url: 'https://<project-ref>.supabase.co',
-  anonKey: '<anon key>',
-  getAccessToken: function () { /* return the signed-in session token */ }
-};
-```
+## Caching and offline behavior
 
-With nothing configured the reader stays on the built-in preview, which is the
-honest state while the backend is being built.
+The service worker may cache the public app shell, styles, scripts, icons, imagery, and the intentional preview embedded in `reader.html`.
 
-## If the manuscript lives in Storage rather than a table
+It must never cache:
 
-Make the bucket **private**. A public bucket is a public URL, and a public URL
-is a published book — no auth, no expiry, permanently linkable. Serve it with
-short-lived signed URLs minted in an Edge Function that checks entitlement
-first.
+- Supabase Auth responses
+- access or entitlement responses
+- order responses
+- protected chapter responses
 
-## Offline reading, honestly
+Cross-origin Supabase requests and non-static response shapes are network-only. Rotate the service-worker cache version whenever the reader security contract materially changes.
 
-Reading offline and preventing copying pull against each other, and no amount
-of client code resolves that. Text that survives a flight is text on the
-device.
+## Import lifecycle
 
-The line worth holding: a paying reader having a local copy is what an ebook
-*is* — Kindle does the same. What matters is that a non-buyer can never obtain
-one, which is what the policies above enforce, and that each copy carries the
-buyer's watermark so a leaked file has a name on it.
+The one-time manuscript import has completed and the staging payload has been destroyed. The database import RPCs and staging tables were removed after verification. The import and diagnostic Edge Functions are inert and require JWT verification.
 
-The service worker never caches chapter responses. If offline reading of
-purchased chapters is wanted, store them deliberately (IndexedDB), show the
-reader that a copy is held on the device, and give them a way to remove it.
+If the manuscript must be replaced later, create a new short-lived import mechanism, verify count/order/hashes before publishing it, and retire that mechanism again immediately after the release is validated.
+
+## Current release invariant
+
+A release is considered ready only when `book_private.content_ready()` is true. It verifies that the published release's expected section count matches the private chapter table and that every stored section has valid content/hash state.
+
+Do not manually mark an incomplete import as published.
+
+## Payment status
+
+The book backend supports secure order records, but payment mode is currently manual verification. Do not describe checkout or entitlement activation as automatic until a real payment provider and verified activation flow are connected.
+
+## DRM reality
+
+The system prevents unauthenticated access, static manuscript leakage, public full-book endpoints, and accidental caching of protected chapters. It cannot make text displayed to an authorized reader impossible to capture with screenshots, cameras, accessibility tooling, or determined browser automation. Watermarking and one-chapter delivery are deterrence and traceability measures, not absolute DRM.

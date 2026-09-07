@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#fbf6ec">
+  <meta name="robots" content="noindex,nofollow,noarchive,nosnippet">
+  <meta name="referrer" content="no-referrer">
+  <title>The Right Way to Live | Ebook</title>
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/book/app-icon-apple.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Right Way">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <style>
+    :root{--bg:#fbf6ec;--paper:#fffdf8;--ink:#2d251f;--muted:#76695e;--line:#c9a76e;--plum:#220d50;--step:1;--measure:700px}
+    html[data-theme="sepia"]{--bg:#f1e2c9;--paper:#f7ecd8;--ink:#36291f;--muted:#75614f}
+    html[data-theme="night"]{--bg:#15110e;--paper:#1d1814;--ink:#f4eadf;--muted:#baaa9b;--line:#97723a}
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth;background:var(--bg)}
+    body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);font-family:Georgia,"Times New Roman",serif;-webkit-font-smoothing:antialiased;user-select:none;-webkit-user-select:none;overflow-x:hidden}
+    .bar{position:sticky;top:0;z-index:40;display:grid;grid-template-columns:48px minmax(0,1fr) 48px 48px;align-items:center;min-height:62px;padding-top:env(safe-area-inset-top);padding-left:8px;padding-right:8px;background:rgba(251,246,236,.93);-webkit-backdrop-filter:blur(20px) saturate(1.25);backdrop-filter:blur(20px) saturate(1.25);border-bottom:1px solid rgba(143,105,50,.22)}
+    html[data-theme="night"] .bar{background:rgba(21,17,14,.93)}
+    .bar button{appearance:none;border:0;background:transparent;color:var(--ink);width:46px;height:46px;display:grid;place-items:center;border-radius:14px;font:700 18px/1 system-ui,-apple-system,sans-serif;-webkit-tap-highlight-color:transparent}
+    .bar button:active{background:rgba(128,96,54,.1)}
+    .bar-title{margin:0;padding:10px 8px;text-align:center;font-size:17px;line-height:1.2;font-weight:400;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;border-radius:12px;-webkit-tap-highlight-color:transparent;cursor:pointer}
+    .bar-title:active{background:rgba(128,96,54,.08)}
+    .bar-aa{font-family:Georgia,"Times New Roman",serif!important;font-size:17px!important;letter-spacing:-.05em}
+    .bar-list{font-size:21px!important}
+    .progress{position:fixed;left:0;top:calc(62px + env(safe-area-inset-top));z-index:41;width:100%;height:2px;pointer-events:none}
+    .progress i{display:block;width:0;height:100%;background:var(--line);transition:width .16s linear}
+    main{width:min(var(--measure),100%);margin:0 auto;padding:0 30px calc(80px + env(safe-area-inset-bottom))}
+    .loading{min-height:76vh;display:grid;place-items:center;text-align:center}
+    .loading strong{display:block;margin-bottom:10px;font-size:34px;line-height:1.05;font-weight:400}
+    .loading span{display:block;font:14px/1.6 system-ui,-apple-system,sans-serif;color:var(--muted)}
+    .flow{padding-top:26px}
+    .chapter{position:relative;padding:22px 0 66px;scroll-margin-top:calc(78px + env(safe-area-inset-top))}
+    .chapter+.chapter{padding-top:58px;border-top:1px solid rgba(143,105,50,.2)}
+    .chapter-meta{display:block;margin-bottom:15px;font:750 10px/1.45 system-ui,-apple-system,sans-serif;letter-spacing:.17em;text-transform:uppercase;color:var(--muted)}
+    .chapter h1{margin:0 0 22px;font-size:clamp(38px,8.4vw,62px);line-height:1.01;font-weight:400;letter-spacing:-.035em;text-wrap:balance}
+    .rule{display:block;width:66px;height:2px;margin:0 0 34px;background:var(--line)}
+    .prose{font-size:calc(21px * var(--step));line-height:1.72;letter-spacing:-.005em}
+    .prose p{margin:0 0 1.38em}
+    .auto-loader{min-height:72px;display:grid;place-items:center;text-align:center;color:var(--muted);font:12px/1.5 system-ui,-apple-system,sans-serif}
+    .auto-loader:before{content:"";width:18px;height:18px;margin-bottom:7px;border:2px solid rgba(143,105,50,.18);border-top-color:var(--line);border-radius:50%;animation:spin .8s linear infinite}
+    .auto-loader[hidden]{display:none}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    .end-book{padding:56px 0 86px;text-align:center;border-top:1px solid rgba(143,105,50,.2)}
+    .end-book small{display:block;margin-bottom:12px;font:750 10px/1.4 system-ui,-apple-system,sans-serif;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+    .end-book strong{font-size:34px;line-height:1.08;font-weight:400}
+    .error-card{max-width:520px;margin:12vh auto 0;padding:30px;border:1px solid rgba(143,105,50,.28);border-radius:24px;background:var(--paper);text-align:center}
+    .error-card h1{margin:0 0 14px;font-size:38px;font-weight:400}.error-card p{font:15px/1.65 system-ui,-apple-system,sans-serif;color:var(--muted)}.error-card a{display:inline-block;margin-top:12px;padding:13px 18px;border-radius:999px;background:var(--plum);color:#fff;text-decoration:none;font:700 12px/1 system-ui,-apple-system,sans-serif}
+    .panel{position:fixed;inset:0;z-index:70;display:none;overflow:auto;background:var(--bg);padding-bottom:env(safe-area-inset-bottom);overscroll-behavior:contain}
+    .panel[data-open]{display:block}
+    .panel-head{position:sticky;top:0;z-index:2;display:grid;grid-template-columns:44px 1fr 44px;align-items:center;padding:calc(9px + env(safe-area-inset-top)) 12px 9px;background:rgba(251,246,236,.97);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);border-bottom:1px solid rgba(143,105,50,.22)}
+    html[data-theme="night"] .panel-head{background:rgba(21,17,14,.97)}
+    .panel-head h2{margin:0;text-align:center;font-size:21px;font-weight:400}.panel-head button{border:0;background:transparent;color:var(--ink);font-size:25px;height:44px;border-radius:14px}
+    .panel-body{width:min(680px,100%);margin:auto;padding:24px 22px 70px}
+    .toc-part{margin:30px 0 9px;font:750 10px/1.4 system-ui,-apple-system,sans-serif;letter-spacing:.13em;text-transform:uppercase;color:var(--muted)}
+    .toc-item{width:100%;display:grid;grid-template-columns:38px 1fr;gap:8px;text-align:left;border:0;border-bottom:1px solid rgba(143,105,50,.17);background:transparent;color:var(--ink);padding:16px 0;font:16px/1.4 system-ui,-apple-system,sans-serif;-webkit-tap-highlight-color:transparent}
+    .toc-item b{font-size:10px;color:var(--muted)}.toc-item.is-active span{font-weight:750;color:var(--plum)}
+    .toc-item.is-active:after{content:"Reading";grid-column:2;color:var(--muted);font:700 9px/1.2 system-ui,-apple-system,sans-serif;letter-spacing:.1em;text-transform:uppercase}
+    html[data-theme="night"] .toc-item.is-active span{color:#d9c1ff}
+    .prefs{display:grid;gap:30px}.pref h3{margin:0 0 12px;font:750 11px/1 system-ui,-apple-system,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+    .pref p{margin:0;font:14px/1.65 system-ui,-apple-system,sans-serif;color:var(--muted)}
+    .chips{display:flex;flex-wrap:wrap;gap:8px}.chip{border:1px solid rgba(143,105,50,.34);background:var(--paper);color:var(--ink);border-radius:999px;padding:12px 16px;font:650 13px/1 system-ui,-apple-system,sans-serif}.chip[aria-pressed="true"]{border-color:var(--plum);background:var(--plum);color:#fff}
+    .watermark{position:fixed;inset:0;z-index:20;pointer-events:none;overflow:hidden;display:grid;grid-template-columns:repeat(4,1fr);gap:80px;transform:rotate(-24deg) scale(1.25);opacity:.032}.watermark span{font:700 10px/1 system-ui,-apple-system,sans-serif;white-space:nowrap;color:var(--ink)}
+    .toast{position:fixed;left:50%;bottom:calc(22px + env(safe-area-inset-bottom));z-index:90;max-width:calc(100% - 30px);transform:translate(-50%,18px);opacity:0;pointer-events:none;background:#21180f;color:#fff;border-radius:999px;padding:11px 16px;text-align:center;font:650 12px/1.3 system-ui,-apple-system,sans-serif;transition:.2s}.toast.show{transform:translate(-50%,0);opacity:1}
+    .shield{position:fixed;inset:0;z-index:100;display:none;place-items:center;background:var(--bg);text-align:center}.shield.show{display:grid}.shield strong{font-size:30px;font-weight:400}.shield span{display:block;margin-top:8px;font:14px/1.5 system-ui,-apple-system,sans-serif;color:var(--muted)}
+    @media(max-width:560px){main{padding-left:23px;padding-right:23px}.flow{padding-top:16px}.chapter{padding-top:20px;padding-bottom:54px}.chapter+.chapter{padding-top:48px}.prose{font-size:calc(20px * var(--step));line-height:1.7}.bar-title{font-size:16px}.auto-loader{min-height:54px}}
+    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.progress i,.toast{transition:none}.auto-loader:before{animation:none}}
+  </style>
+</head>
+<body>
+  <header class="bar">
+    <button id="backBtn" type="button" aria-label="Back">‹</button>
+    <p class="bar-title" id="barTitle" role="button" tabindex="0" aria-label="Open contents">The Right Way to Live</p>
+    <button class="bar-aa" id="prefsBtn" type="button" aria-label="Reading preferences">Aa</button>
+    <button class="bar-list" id="tocBtn" type="button" aria-label="Contents">☰</button>
+  </header>
+  <div class="progress" aria-hidden="true"><i id="progress"></i></div>
+
+  <main id="main">
+    <div class="loading" id="loading"><div><strong>Opening your copy</strong><span>Your private ebook is opening on this device.</span></div></div>
+    <div class="flow" id="flow" hidden></div>
+    <div class="auto-loader" id="autoLoader" hidden>Preparing more of your book</div>
+    <div id="sentinel" aria-hidden="true"></div>
+  </main>
+
+  <section class="panel" id="tocPanel" aria-label="Contents" aria-hidden="true">
+    <div class="panel-head"><span></span><h2>Contents</h2><button type="button" data-close="toc" aria-label="Close contents">×</button></div>
+    <div class="panel-body" id="tocBody"></div>
+  </section>
+
+  <section class="panel" id="prefsPanel" aria-label="Reading preferences" aria-hidden="true">
+    <div class="panel-head"><span></span><h2>Reading</h2><button type="button" data-close="prefs" aria-label="Close reading preferences">×</button></div>
+    <div class="panel-body prefs">
+      <div class="pref"><h3>Text size</h3><div class="chips"><button class="chip" data-step="0.9">Small</button><button class="chip" data-step="1">Default</button><button class="chip" data-step="1.15">Large</button><button class="chip" data-step="1.3">Larger</button></div></div>
+      <div class="pref"><h3>Page colour</h3><div class="chips"><button class="chip" data-theme="day">Day</button><button class="chip" data-theme="sepia">Sepia</button><button class="chip" data-theme="night">Night</button></div></div>
+      <div class="pref"><h3>Reading style</h3><p>Read it like one long page. Just scroll. The app quietly prepares the next sections before you reach them, and you can scroll back to sections you already passed.</p></div>
+      <div class="pref"><h3>Navigation</h3><p>Tap the chapter title at the top, or the menu icon, to jump anywhere in the book.</p></div>
+      <div class="pref"><h3>Progress</h3><p>Your reading position is kept on this device and securely synced when you are online.</p></div>
+      <div class="pref"><h3>Access</h3><p>This device keeps your ebook access. No registration or account setup is required.</p></div>
+    </div>
+  </section>
+
+  <div class="watermark" id="watermark" aria-hidden="true"></div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <div class="shield" id="shield"><div><strong>Your page is held</strong><span>Return to this window to continue reading.</span></div></div>
+
+  <script>
+  (function(){'use strict';
+    var API='https://wjnavdpppnhxbuydkrkd.supabase.co/functions/v1/book-gift-api',SESSION='trwtl.gift.session',EMAIL='trwtl.gift.email',PROGRESS='trwtl.gift.progress',PREF='trwtl.gift.prefs';
+    var manifest=[],session='',email='',current=null,timer=null,syncTimer=null,prefetching=false,loadingPrev=false,ended=false,loaded={};
+    var main=document.getElementById('main'),loading=document.getElementById('loading'),flow=document.getElementById('flow'),autoLoader=document.getElementById('autoLoader'),sentinel=document.getElementById('sentinel'),tocPanel=document.getElementById('tocPanel'),tocBody=document.getElementById('tocBody'),prefsPanel=document.getElementById('prefsPanel'),progress=document.getElementById('progress'),barTitle=document.getElementById('barTitle'),watermark=document.getElementById('watermark'),toast=document.getElementById('toast'),shield=document.getElementById('shield');
+
+    function read(k){try{return localStorage.getItem(k)||''}catch(e){return''}}
+    function write(k,v){try{localStorage.setItem(k,v)}catch(e){}}
+    function remove(k){try{localStorage.removeItem(k)}catch(e){}}
+    function readJ(k){try{return JSON.parse(read(k))||null}catch(e){return null}}
+    function writeJ(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+    function esc(v){return String(v||'').replace(/[&<>"']/g,function(c){return({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]})}
+    function toastMsg(m){toast.textContent=m;toast.classList.add('show');clearTimeout(timer);timer=setTimeout(function(){toast.classList.remove('show')},2200)}
+    async function api(action,payload){var r=await fetch(API,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(Object.assign({action:action},payload||{})),cache:'no-store',credentials:'omit',referrerPolicy:'no-referrer'}),d={};try{d=await r.json()}catch(e){}if(!r.ok)throw new Error(d.error||'service_unavailable');return d}
+    function token(){var p=new URLSearchParams(location.hash.charAt(0)==='#'?location.hash.slice(1):'');var t=p.get('gift')||'';return/^[0-9a-f]{64}$/.test(t)?t:''}
+    function strip(){if(location.hash)history.replaceState(null,'',location.pathname+location.search)}
+    function fail(title,copy){strip();loading.hidden=true;flow.hidden=true;autoLoader.hidden=true;main.innerHTML='<section class="error-card"><h1>'+esc(title)+'</h1><p>'+esc(copy)+'</p><a href="mailto:withlovefmb@gmail.com?subject=Ebook%20access">Request a new access email</a></section>'}
+    function clean(t){return String(t||'').replace(/^PART\s+[IVX]+:\s*/i,'').replace(/^Interlude:\s*/i,'').replace(/^\d{2}\.\s*/,'')}
+    function rows(){return manifest.filter(function(r){return r.kind!=='part'})}
+    function rowIndex(sequence){return rows().findIndex(function(r){return Number(r.sequence)===Number(sequence)})}
+    function rowBySequence(sequence){return rows().find(function(r){return Number(r.sequence)===Number(sequence)})||null}
+    function nextRow(sequence){var a=rows(),i=rowIndex(sequence);return i>=0&&i<a.length-1?a[i+1]:null}
+    function prevRow(sequence){var a=rows(),i=rowIndex(sequence);return i>0?a[i-1]:null}
+
+    function scheduleProgress(sequence,percent){
+      if(!session||!sequence)return;clearTimeout(syncTimer);syncTimer=setTimeout(function(){api('progress_save',{session:session,sequence:Number(sequence),percent:Number(percent)||0}).catch(function(){})},2500)
+    }
+    function flushProgress(){
+      if(!session||!current)return;var p=readJ(PROGRESS)||{};try{fetch(API,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({action:'progress_save',session:session,sequence:Number(current),percent:Number(p.percent)||0}),cache:'no-store',credentials:'omit',referrerPolicy:'no-referrer',keepalive:true}).catch(function(){})}catch(e){}
+    }
+    async function bestProgress(){
+      var local=readJ(PROGRESS)||{};
+      try{var remote=await api('progress_get',{session:session});if(remote&&remote.updated&&rowBySequence(Number(remote.sequence)))return{sequence:Number(remote.sequence),percent:Number(remote.percent)||0}}catch(e){}
+      return local
+    }
+
+    function toc(){tocBody.innerHTML='';manifest.forEach(function(r){if(r.kind==='part'){var p=document.createElement('p');p.className='toc-part';p.textContent=String(r.title||'').replace(/^PART\s+[IVX]+:\s*/i,'');tocBody.appendChild(p);return}var b=document.createElement('button');b.type='button';b.className='toc-item';b.dataset.sequence=String(r.sequence);var n=document.createElement('b'),m=/^(\d{2})\.\s*/.exec(r.title||'');n.textContent=m?m[1]:'·';var s=document.createElement('span');s.textContent=clean(r.title);b.appendChild(n);b.appendChild(s);tocBody.appendChild(b)})}
+    function active(sequence){tocBody.querySelectorAll('[data-sequence]').forEach(function(b){b.classList.toggle('is-active',Number(b.dataset.sequence)===Number(sequence))})}
+    function wm(){watermark.innerHTML='';if(!email)return;for(var i=0;i<48;i++){var x=document.createElement('span');x.textContent=('PERSONAL COPY · '+email).toUpperCase();watermark.appendChild(x)}}
+    function prefs(){var p=readJ(PREF)||{},step=Number(p.step)||1,theme=p.theme||'day';document.documentElement.style.setProperty('--step',String(step));if(theme==='day')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',theme);document.querySelectorAll('[data-step]').forEach(function(b){b.setAttribute('aria-pressed',String(Number(b.dataset.step)===step))});document.querySelectorAll('[data-theme]').forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.theme===theme))})}
+
+    function chapterElement(ch){
+      var section=document.createElement('section');section.className='chapter';section.dataset.sequence=String(ch.sequence);section.id='section-'+String(ch.sequence);
+      var meta=document.createElement('span');meta.className='chapter-meta';meta.textContent=ch.kind==='chapter'?'Chapter':'The Right Way to Live';
+      var h=document.createElement('h1');h.textContent=clean(ch.title);
+      var rule=document.createElement('span');rule.className='rule';
+      var prose=document.createElement('div');prose.className='prose';
+      String(ch.body||'').split(/\n{2,}/).forEach(function(t){if(!t.trim())return;var p=document.createElement('p');p.textContent=t.trim();prose.appendChild(p)});
+      section.appendChild(meta);section.appendChild(h);section.appendChild(rule);section.appendChild(prose);
+      return section;
+    }
+
+    async function fetchChapter(sequence){var d=await api('chapter',{session:session,sequence:Number(sequence)});return d.chapter}
+    async function appendChapter(sequence){if(loaded[sequence])return loaded[sequence];var ch=await fetchChapter(sequence),section=chapterElement(ch);flow.appendChild(section);loaded[sequence]=section;return section}
+    async function prependChapter(sequence){
+      if(loaded[sequence])return loaded[sequence];
+      var first=flow.querySelector('.chapter'),before=first?first.getBoundingClientRect().top:0,ch=await fetchChapter(sequence),section=chapterElement(ch);
+      if(first)flow.insertBefore(section,first);else flow.appendChild(section);loaded[sequence]=section;
+      if(first){var after=first.getBoundingClientRect().top;scrollBy(0,after-before)}
+      return section;
+    }
+
+    function endMarker(){if(ended)return;ended=true;autoLoader.hidden=true;var box=document.createElement('div');box.className='end-book';box.innerHTML='<small>The end</small><strong>Thank you for reading.</strong>';flow.appendChild(box)}
+
+    async function fillAhead(target){
+      if(prefetching||ended||!current)return;prefetching=true;target=target||3;autoLoader.hidden=false;
+      try{
+        while(true){
+          var sections=flow.querySelectorAll('.chapter');if(!sections.length)break;
+          var last=sections[sections.length-1],lastSeq=Number(last.dataset.sequence),currentIndex=rowIndex(current),lastIndex=rowIndex(lastSeq);
+          if(currentIndex<0||lastIndex<0||lastIndex-currentIndex>=target)break;
+          var next=nextRow(lastSeq);if(!next){endMarker();break}
+          await appendChapter(next.sequence);
+        }
+      }catch(e){if(e.message==='access_required'){remove(SESSION);remove(EMAIL);fail('Your access needs a fresh link','For security, this device no longer has an active ebook session.')}else toastMsg('More of the book will load as you keep reading.')}
+      finally{prefetching=false;autoLoader.hidden=true}
+    }
+
+    async function fillBehind(){
+      if(loadingPrev||!current)return;var first=flow.querySelector('.chapter');if(!first)return;var prev=prevRow(Number(first.dataset.sequence));if(!prev)return;
+      loadingPrev=true;
+      try{await prependChapter(prev.sequence)}catch(e){if(e.message==='access_required'){remove(SESSION);remove(EMAIL);fail('Your access needs a fresh link','For security, this device no longer has an active ebook session.')}}
+      finally{loadingPrev=false}
+    }
+
+    function sectionProgress(section){var rect=section.getBoundingClientRect(),h=Math.max(1,section.offsetHeight-innerHeight*.25),passed=Math.max(0,-rect.top+innerHeight*.28);return Math.max(0,Math.min(100,passed/h*100))}
+    function updateReadingState(){
+      var sections=Array.prototype.slice.call(flow.querySelectorAll('.chapter'));if(!sections.length)return;
+      var y=innerHeight*.32,chosen=sections[0];
+      sections.forEach(function(s){var r=s.getBoundingClientRect();if(r.top<=y&&r.bottom>y)chosen=s;else if(r.top<=y)chosen=s});
+      var seq=Number(chosen.dataset.sequence),pct=sectionProgress(chosen),index=rowIndex(seq),total=rows().length||1,bookPct=Math.max(0,Math.min(100,((Math.max(0,index)+pct/100)/total)*100));
+      current=seq;progress.style.width=bookPct.toFixed(2)+'%';barTitle.textContent=clean((rowBySequence(seq)||{}).title)||'The Right Way to Live';active(seq);writeJ(PROGRESS,{sequence:seq,percent:Number(pct.toFixed(2))});scheduleProgress(seq,Number(pct.toFixed(2)));
+      fillAhead(3);
+      var first=sections[0].getBoundingClientRect();if(first.top>-innerHeight*1.1)fillBehind();
+    }
+
+    async function jump(sequence,pct){
+      close(tocPanel);ended=false;loaded={};flow.innerHTML='';flow.hidden=false;loading.hidden=true;autoLoader.hidden=true;
+      try{
+        var section=await appendChapter(sequence);current=Number(sequence);active(current);barTitle.textContent=clean((rowBySequence(current)||{}).title)||'The Right Way to Live';wm();
+        requestAnimationFrame(function(){var max=Math.max(0,section.offsetHeight-innerHeight*.25),top=section.offsetTop+max*Math.max(0,Math.min(100,Number(pct)||0))/100;scrollTo(0,Math.max(0,top-70));updateReadingState()});
+      }catch(e){if(e.message==='access_required'){remove(SESSION);remove(EMAIL);fail('Your access needs a fresh link','For security, this device no longer has an active ebook session.')}else fail('This section could not be opened','Please try your access email again.')}
+    }
+
+    function panel(p){p.setAttribute('data-open','');p.setAttribute('aria-hidden','false')}
+    function close(p){p.removeAttribute('data-open');p.setAttribute('aria-hidden','true')}
+    function openToc(){panel(tocPanel);requestAnimationFrame(function(){var a=tocBody.querySelector('.is-active');if(a)a.scrollIntoView({block:'center'})})}
+    function wire(){
+      document.getElementById('backBtn').onclick=function(){flushProgress();if(history.length>1)history.back();else location.href='/book/'};
+      document.getElementById('tocBtn').onclick=openToc;
+      barTitle.onclick=openToc;
+      barTitle.onkeydown=function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();openToc()}};
+      document.getElementById('prefsBtn').onclick=function(){panel(prefsPanel)};
+      document.querySelector('[data-close="toc"]').onclick=function(){close(tocPanel)};
+      document.querySelector('[data-close="prefs"]').onclick=function(){close(prefsPanel)};
+      tocBody.onclick=function(e){var b=e.target.closest('[data-sequence]');if(b)jump(Number(b.dataset.sequence),0)};
+      document.querySelectorAll('[data-step]').forEach(function(b){b.onclick=function(){var p=readJ(PREF)||{};p.step=Number(b.dataset.step);writeJ(PREF,p);prefs();updateReadingState()}});
+      document.querySelectorAll('[data-theme]').forEach(function(b){b.onclick=function(){var p=readJ(PREF)||{};p.theme=b.dataset.theme;writeJ(PREF,p);prefs()}});
+      var tick=false;addEventListener('scroll',function(){if(tick)return;tick=true;requestAnimationFrame(function(){updateReadingState();tick=false})},{passive:true});
+      var observer=new IntersectionObserver(function(entries){entries.forEach(function(entry){if(entry.isIntersecting)fillAhead(4)})},{rootMargin:'1600px 0px 1600px 0px'});observer.observe(sentinel);
+      ['copy','cut','contextmenu','dragstart'].forEach(function(t){document.addEventListener(t,function(e){e.preventDefault();if(t==='copy')toastMsg('This personal copy cannot be copied out.')})});
+      document.addEventListener('visibilitychange',function(){if(document.visibilityState==='hidden'){flushProgress();shield.classList.add('show')}else setTimeout(function(){shield.classList.remove('show')},120)});
+      addEventListener('pagehide',flushProgress);addEventListener('beforeprint',function(){shield.classList.add('show')});addEventListener('afterprint',function(){shield.classList.remove('show')});
+    }
+
+    async function stored(){var s=read(SESSION);if(!/^[0-9a-f]{64}$/.test(s))return null;try{var d=await api('access',{session:s});if(d.has_access!==true||d.content_ready!==true)return null;session=s;email=d.email||read(EMAIL);manifest=Array.isArray(d.chapters)?d.chapters:[];return d}catch(e){return null}}
+    async function exchange(t){var d=await api('exchange',{token:t});if(!d.session||!Array.isArray(d.chapters))throw new Error('invalid_access_link');session=d.session;email=d.email||'';manifest=d.chapters;write(SESSION,session);write(EMAIL,email);strip();return d}
+    async function start(){
+      wire();prefs();var t=token(),a=await stored();
+      if(!a&&t){try{a=await exchange(t)}catch(e){if(e.message==='access_link_expired')fail('This access link has expired','Ask FMB for a fresh access email.');else fail('This private link is no longer active','The link may already have been opened on another device. Ask FMB for a fresh access email.');return}}
+      if(!a){fail('Open the ebook from your access email','This app does not use registration. Open the private button in your complimentary or paid access email.');return}
+      toc();wm();var p=await bestProgress(),r=rows(),first=r.find(function(x){return Number(x.sequence)===Number(p.sequence)})||r[0];
+      if(!first){fail('The ebook is not available yet','Please try again shortly.');return}
+      await jump(first.sequence,Number(p.percent)||0);
+    }
+    start().catch(function(){fail('The ebook could not open','Please use the access email again. If the problem continues, ask FMB to resend it.')});
+  })();
+  </script>
+</body>
+</html>
