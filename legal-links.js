@@ -9,6 +9,16 @@
     ['/shipping/','Shipping']
   ];
 
+  function ensureMobilePolish(){
+    if(!document.body||!document.body.classList.contains('book-campaign'))return;
+    if(document.getElementById('bookMobilePolish'))return;
+    var link=document.createElement('link');
+    link.id='bookMobilePolish';
+    link.rel='stylesheet';
+    link.href='/book/mobile-polish.css?v=20260907-1';
+    document.head.appendChild(link);
+  }
+
   function ensureStyles(){
     if(document.getElementById('bookLegalNavStyles'))return;
     var style=document.createElement('style');
@@ -45,7 +55,7 @@
     if(meta)meta.insertAdjacentElement('afterend',nav);else footer.appendChild(nav);
   }
 
-  function inject(){ensureStyles();injectCheckoutDisclosure();injectFooterNav();}
+  function inject(){ensureMobilePolish();ensureStyles();injectCheckoutDisclosure();injectFooterNav();}
   inject();
   new MutationObserver(inject).observe(document.documentElement,{childList:true,subtree:true});
 })();
