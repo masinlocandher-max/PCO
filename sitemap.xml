@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://francinemariebautista.com/</loc>
-    <lastmod>2026-09-06</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
@@ -14,8 +14,13 @@
   </url>
   <url>
     <loc>https://francinemariebautista.com/book/</loc>
-    <lastmod>2026-09-06</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
+  <url><loc>https://francinemariebautista.com/terms/</loc><lastmod>2026-09-07</lastmod><changefreq>yearly</changefreq><priority>0.4</priority></url>
+  <url><loc>https://francinemariebautista.com/privacy/</loc><lastmod>2026-09-07</lastmod><changefreq>yearly</changefreq><priority>0.4</priority></url>
+  <url><loc>https://francinemariebautista.com/refunds/</loc><lastmod>2026-09-07</lastmod><changefreq>yearly</changefreq><priority>0.4</priority></url>
+  <url><loc>https://francinemariebautista.com/ebook-access/</loc><lastmod>2026-09-07</lastmod><changefreq>yearly</changefreq><priority>0.4</priority></url>
+  <url><loc>https://francinemariebautista.com/shipping/</loc><lastmod>2026-09-07</lastmod><changefreq>yearly</changefreq><priority>0.4</priority></url>
 </urlset>
