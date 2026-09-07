@@ -62,11 +62,11 @@
 
   <main>
     <section class="campaign-hero" id="home">
-      <figure class="hero-portrait" data-role="hero-portrait">
+      <figure class="hero-portrait" data-role="hero-portrait" data-parallax="0.16">
         <img src="../assets/img/book-hero-portrait.webp" alt="Francine Marie Bautista in profile, wearing a yellow gown" width="1122" height="1402" fetchpriority="high">
       </figure>
 
-      <div class="hero-copy">
+      <div class="hero-copy" data-parallax="-0.07">
         <h1><em>The</em><span>Right Way</span><span class="last-line"><i>to</i> Live</span></h1>
         <span class="hero-rule" aria-hidden="true"></span>
         <p class="hero-hook">For anyone who has ever<br>felt late to their own life.</p>
@@ -76,7 +76,7 @@
     </section>
 
     <section class="book-intro" id="about">
-      <div class="intro-copy">
+      <div class="intro-copy" data-motion="rise">
         <h2>More Clarity<br>for <em>Real Life.</em></h2>
         <p>Practical principles to help you live with more clarity, peace, purpose, and direction.</p>
         <span class="small-rule" aria-hidden="true"></span>
@@ -84,7 +84,7 @@
       </div>
 
       <div class="product-stage" id="book" aria-label="The Right Way to Live shown on tablet, on phone, and as an open book">
-        <div class="device tablet" aria-hidden="true">
+        <div class="device tablet" aria-hidden="true" data-parallax="0.13">
           <div class="screen">
             <div class="cover">
               <span class="cover-the">The</span>
@@ -97,7 +97,7 @@
           </div>
         </div>
 
-        <div class="device phone" aria-hidden="true">
+        <div class="device phone" aria-hidden="true" data-parallax="0.24">
           <span class="phone-island"></span>
           <div class="screen">
             <div class="cover">
@@ -111,7 +111,7 @@
           </div>
         </div>
 
-        <div class="openbook">
+        <div class="openbook" data-parallax="0.06">
           <span class="book-spine" aria-hidden="true"></span>
           <div class="book-page">
             <h3>A More<br>Intentional You</h3>
@@ -125,20 +125,20 @@
 
     <section class="principle-strip" id="principles" aria-label="Four guiding principles">
       <div class="strip-inner">
-        <article>
-          <svg class="principle-icon" viewBox="0 0 48 48" aria-hidden="true"><path d="M13 35C11 22 20 11 37 11c0 17-11 26-24 24Z"/><path d="M7.5 40.5 13 35m0 0L37 11"/><path d="M21.4 26.6h-4.5M26.2 21.8h-4.5M31 17h-4.5M23.8 24.2v4.5M28.6 19.4v4.5"/></svg>
+        <article data-motion="rise" style="--stagger:0">
+          <svg class="principle-icon" viewBox="0 0 48 48" aria-hidden="true"><path pathLength="1" d="M13 35C11 22 20 11 37 11c0 17-11 26-24 24Z"/><path pathLength="1" d="M7.5 40.5 13 35m0 0L37 11"/><path pathLength="1" d="M21.4 26.6h-4.5M26.2 21.8h-4.5M31 17h-4.5M23.8 24.2v4.5M28.6 19.4v4.5"/></svg>
           <h3>Clarity</h3><p>See what truly matters.</p>
         </article>
-        <article>
-          <svg class="principle-icon" viewBox="0 0 48 48" aria-hidden="true"><path d="M24 39S7 29 7 18.5C7 12.7 11.5 9 16 9c3.6 0 6.5 2.2 8 5 1.5-2.8 4.4-5 8-5 4.5 0 9 3.7 9 9.5C41 29 24 39 24 39Z"/></svg>
+        <article data-motion="rise" style="--stagger:1">
+          <svg class="principle-icon" viewBox="0 0 48 48" aria-hidden="true"><path pathLength="1" d="M24 39S7 29 7 18.5C7 12.7 11.5 9 16 9c3.6 0 6.5 2.2 8 5 1.5-2.8 4.4-5 8-5 4.5 0 9 3.7 9 9.5C41 29 24 39 24 39Z"/></svg>
           <h3>Peace</h3><p>Quiet the noise within.</p>
         </article>
-        <article>
-          <svg class="principle-icon" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="8.5"/><path d="M24 3.5v6.5M24 38v6.5M3.5 24H10M38 24h6.5M9.4 9.4l4.6 4.6M34 34l4.6 4.6M38.6 9.4 34 14M14 34l-4.6 4.6"/></svg>
+        <article data-motion="rise" style="--stagger:2">
+          <svg class="principle-icon" viewBox="0 0 48 48" aria-hidden="true"><circle pathLength="1" cx="24" cy="24" r="8.5"/><path pathLength="1" d="M24 3.5v6.5M24 38v6.5M3.5 24H10M38 24h6.5M9.4 9.4l4.6 4.6M34 34l4.6 4.6M38.6 9.4 34 14M14 34l-4.6 4.6"/></svg>
           <h3>Purpose</h3><p>Live with intention.</p>
         </article>
-        <article>
-          <svg class="principle-icon" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="16.5"/><path d="M24 12 31.5 34.5 24 29l-7.5 5.5Z" fill="currentColor" stroke-width="1.5" stroke-linejoin="round" transform="rotate(45 24 24)"/></svg>
+        <article data-motion="rise" style="--stagger:3">
+          <svg class="principle-icon" viewBox="0 0 48 48" aria-hidden="true"><circle pathLength="1" cx="24" cy="24" r="16.5"/><path pathLength="1" d="M24 12 31.5 34.5 24 29l-7.5 5.5Z" fill="currentColor" stroke-width="1.5" stroke-linejoin="round" transform="rotate(45 24 24)"/></svg>
           <h3>Direction</h3><p>Take meaningful steps.</p>
         </article>
       </div>
@@ -151,47 +151,47 @@
       rather than a lecturer.
     -->
     <section class="journey" id="journey" aria-label="From the book">
-      <article class="passage">
+      <article class="passage" data-parallax="0.05" data-motion="rise">
         <p class="passage-label">On beginning again</p>
         <blockquote>At some point, you have to risk being a beginner in public.</blockquote>
       </article>
 
-      <article class="passage passage-right">
+      <article class="passage passage-right" data-parallax="0.05" data-motion="rise">
         <p class="passage-label">On boundaries</p>
         <blockquote>Some people benefited from your lack of boundaries. Of course they may dislike the new ones.</blockquote>
         <p class="passage-beat">Say no earlier.</p>
       </article>
 
-      <article class="passage">
+      <article class="passage" data-parallax="0.05" data-motion="rise">
         <p class="passage-label">On money</p>
         <blockquote>Do not go broke performing wealth for people who will not pay your bills.</blockquote>
       </article>
 
-      <article class="passage passage-right">
+      <article class="passage passage-right" data-parallax="0.05" data-motion="rise">
         <p class="passage-label">On what you buy</p>
         <blockquote>Buy the perfume because you love wearing it, not because the bottle can be recognized from three meters away.</blockquote>
       </article>
 
-      <article class="passage passage-lead">
+      <article class="passage passage-lead" data-parallax="0.05" data-motion="rise">
         <p class="passage-label">On being the capable one</p>
         <blockquote>Sometimes you can. That does not mean you should.</blockquote>
       </article>
 
-      <article class="passage passage-right">
+      <article class="passage passage-right" data-parallax="0.05" data-motion="rise">
         <p class="passage-label">On the mirror</p>
         <blockquote>A mirror should be one place you visit in the morning, not the headquarters of your self-worth.</blockquote>
       </article>
     </section>
 
     <section class="campaign-quote" id="for-you">
-      <div class="quote-inner">
+      <div class="quote-inner" data-parallax="0.1">
         <blockquote>“Once you look the way you want to look,<br>go become the person who can carry<br>the life you want.”</blockquote>
         <div class="quote-sign"><span aria-hidden="true"></span><p>Francine Marie Bautista</p></div>
       </div>
     </section>
 
     <section class="purchase-band" id="purchase">
-      <div class="purchase-main">
+      <div class="purchase-main" data-motion="rise">
         <h2>Begin Your Journey</h2>
         <p class="purchase-kicker">Choose your edition.</p>
         <p class="purchase-line">“I want my yes to mean I chose it.”</p>
@@ -203,7 +203,7 @@
         so no placeholder payment flow is ever shown to a buyer.
       -->
       <div class="edition-grid">
-        <article class="edition">
+        <article class="edition" data-motion="rise" style="--stagger:0">
           <h3>Ebook</h3>
           <p class="edition-price"><span>₱</span>499</p>
           <p class="edition-note">Read on your phone, offline</p>
@@ -215,7 +215,7 @@
           <a class="gold-button" id="buyEbook" data-edition="ebook" href="mailto:withlovefmb@gmail.com?subject=Order%20%E2%80%94%20The%20Right%20Way%20to%20Live%20%28Ebook%2C%20PHP%20499%29&body=Hello%20FMB%2C%0A%0AI%20would%20like%20to%20order%20the%20ebook%20edition%20of%20The%20Right%20Way%20to%20Live%20for%20PHP%20499.%0A%0AName%3A%0AEmail%20for%20reader%20access%3A%0A%0AThank%20you.">Get the Ebook <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg></a>
         </article>
 
-        <article class="edition">
+        <article class="edition" data-motion="rise" style="--stagger:1">
           <h3>Pocketbook</h3>
           <p class="edition-price"><span>₱</span>999</p>
           <p class="edition-note">Printed edition, delivered</p>

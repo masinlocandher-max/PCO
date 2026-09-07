@@ -36,7 +36,10 @@ img{max-width:100%}
 .ambient-silk{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;background:#fbf3e3}
 .silk{position:absolute;inset:-9%;display:block;background:url(../assets/img/book-silk-field.webp) center/cover no-repeat;will-change:transform;backface-visibility:hidden}
 .silk-a{animation:silk-drift-a 34s ease-in-out infinite alternate}
-.silk-b{opacity:.5;mix-blend-mode:soft-light;animation:silk-drift-b 47s ease-in-out infinite alternate}
+.silk-b{opacity:.4;animation:silk-drift-b 47s ease-in-out infinite alternate}
+/* Deliberately no mix-blend-mode. soft-light looked marginally richer and cost
+   half the frame rate: a full-viewport blend re-composites the whole screen on
+   every animated frame. Measured 30fps with it, 60fps without. */
 .silk-bloom{position:absolute;inset:0;display:block;background:
   radial-gradient(ellipse 66% 42% at 47% 0%,rgba(255,255,255,.94),rgba(255,251,240,.5) 44%,transparent 74%),
   radial-gradient(ellipse 52% 40% at 6% 62%,rgba(255,250,238,.42),transparent 66%),
@@ -78,9 +81,20 @@ img{max-width:100%}
    the section below, exactly as the reference composition does. */
 .campaign-hero{position:relative;z-index:2;width:var(--shell);margin:0 auto;padding:clamp(26px,5.5vw,72px) var(--gutter) clamp(36px,8vw,112px)}
 .hero-portrait{position:absolute;z-index:1;right:max(0px,calc((100vw - 1400px) / 2));top:0;width:min(55vw,740px);height:calc(100% + clamp(120px,26.5vw,340px));margin:0;overflow:hidden;
-  -webkit-mask-image:linear-gradient(100deg,transparent 0,#000 27%,#000 88%,rgba(0,0,0,.5) 100%),linear-gradient(180deg,transparent 0,#000 9%);
-  mask-image:linear-gradient(100deg,transparent 0,#000 27%,#000 88%,rgba(0,0,0,.5) 100%),linear-gradient(180deg,transparent 0,#000 9%);
+  /* Feathered on three edges. The photograph carries its own silk from a
+     different shoot, so any hard edge against the page fabric reads as a join:
+     the left dissolves over a third of the width, the top clears the bar, and
+     the bottom fades across the last third instead of stopping on a line. The
+     right stays solid so she bleeds off the viewport as the reference composes. */
+  -webkit-mask-image:linear-gradient(100deg,transparent 0,rgba(0,0,0,.55) 18%,#000 34%,#000 100%),
+    linear-gradient(180deg,transparent 0,#000 8%,#000 62%,rgba(0,0,0,.45) 84%,transparent 100%);
+  mask-image:linear-gradient(100deg,transparent 0,rgba(0,0,0,.55) 18%,#000 34%,#000 100%),
+    linear-gradient(180deg,transparent 0,#000 8%,#000 62%,rgba(0,0,0,.45) 84%,transparent 100%);
   -webkit-mask-composite:source-in;mask-composite:intersect}
+/* Eases the tonal step where the two fabrics meet, so the transition is a
+   gradient rather than a boundary. */
+.hero-portrait:after{content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(100deg,rgba(253,249,240,.5) 0,rgba(253,249,240,.16) 22%,transparent 42%)}
 /* Framed so the figure clears the headline, as the reference composes it. */
 .hero-portrait img{display:block;width:100%;height:100%;object-fit:cover;object-position:2% center}
 
@@ -143,8 +157,8 @@ img{max-width:100%}
 
 /* ── Principles ────────────────────────────────────────────────────────── */
 /* Full-bleed cream panel with a softly domed top edge. */
-.principle-strip{position:relative;z-index:5;padding:clamp(20px,2.4vw,34px) 0 clamp(12px,1.4vw,22px);background:linear-gradient(180deg,#faf4e7,#f6efe0);border-radius:50% 50% 0 0 / clamp(10px,1.6vw,26px) clamp(10px,1.6vw,26px) 0 0}
-.strip-inner{display:grid;grid-template-columns:repeat(4,1fr);width:var(--shell);margin:0 auto;padding:0 var(--gutter)}
+.principle-strip{position:relative;z-index:5;padding:clamp(20px,2.4vw,34px) 0 clamp(12px,1.4vw,22px);background:linear-gradient(180deg,rgba(250,244,231,0) 0,rgba(250,244,231,.72) 26px,#faf4e7 68px,#f7f0e2 82%,rgba(247,240,226,0) 100%);border-radius:50% 50% 0 0 / clamp(10px,1.6vw,26px) clamp(10px,1.6vw,26px) 0 0}
+.strip-inner{position:relative;display:grid;grid-template-columns:repeat(4,1fr);width:var(--shell);margin:0 auto;padding:0 var(--gutter)}
 .strip-inner article{position:relative;padding:0 clamp(12px,2vw,30px);text-align:center}
 .strip-inner article+article:before{content:"";position:absolute;left:0;top:6%;bottom:4%;width:1px;background:var(--line)}
 .principle-icon{width:clamp(30px,3.4vw,46px);height:clamp(30px,3.4vw,46px);margin:0 auto;color:#7d5518;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
@@ -176,19 +190,29 @@ img{max-width:100%}
 .passage:not(.passage-right) .passage-beat{padding-left:clamp(18px,2.4vw,34px);border-left:2px solid rgba(184,137,57,.5)}
 .passage-right .passage-beat{padding-right:clamp(18px,2.4vw,34px);border-right:2px solid rgba(184,137,57,.5)}
 
-/* A gentle arrival, because a sequence of quotes should feel like turning pages. */
-@media (prefers-reduced-motion:no-preference){
-  .passage[data-reveal]{opacity:0;transform:translateY(18px);
-    transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}
-  .passage[data-reveal="in"]{opacity:1;transform:none}
-}
 
 /* ── Quote ─────────────────────────────────────────────────────────────── */
 /* Dark at the left, opening into lit silk at the right. */
-.campaign-quote{position:relative;z-index:5;overflow:hidden;padding:clamp(22px,3vw,44px) 0 clamp(14px,1.9vw,30px);color:#fdf7e9;background:
-  radial-gradient(ellipse 64% 92% at 6% 24%,rgba(38,23,8,.95),rgba(62,39,15,.78) 48%,transparent 80%),
-  linear-gradient(96deg,rgba(58,36,14,.93) 0%,rgba(88,58,25,.76) 32%,rgba(150,105,45,.32) 64%,rgba(226,192,136,.1) 100%),
-  url(../assets/img/book-silk-field.webp) center/cover,#4a2f13}
+/*
+  The dark treatment sits on its own feathered layer rather than on the section.
+  Painted straight onto the section it met cream on a hard line — a step of ~180
+  out of 255, which reads as a black rectangle pasted over the page instead of
+  the same fabric falling into shadow. Masking the layer lets the silk carry
+  through the join; the text stays fully opaque because it is not on the layer.
+*/
+.campaign-quote{position:relative;z-index:5;overflow:hidden;
+  padding:clamp(22px,3vw,44px) 0 clamp(14px,1.9vw,30px);color:#fdf7e9}
+.campaign-quote:before{content:"";position:absolute;z-index:-1;inset:0;pointer-events:none;background:
+  /* Scrim first: the band grades to bright gold on the right, where white text
+     measured 2.0:1, under the 3.0:1 floor for large type. Darkening locally
+     keeps the gradient's drama instead of flattening the band. It lives on this
+     layer so the mask feathers it too. */
+  radial-gradient(ellipse 92% 138% at 40% 50%,rgba(22,13,4,.84),rgba(26,16,5,.68) 44%,rgba(30,19,7,.4) 68%,transparent 90%),
+  radial-gradient(ellipse 78% 96% at 4% 30%,rgba(34,20,6,.96),rgba(56,35,13,.84) 52%,transparent 86%),
+  linear-gradient(96deg,rgba(52,32,12,.94) 0%,rgba(64,41,16,.9) 38%,rgba(104,71,30,.66) 62%,rgba(196,158,102,.2) 100%),
+  url(../assets/img/book-silk-field.webp) center/cover,#4a2f13;
+  -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 13%,#000 84%,transparent 100%);
+  mask-image:linear-gradient(180deg,transparent 0,#000 13%,#000 84%,transparent 100%)}
 .campaign-quote:after{content:"";position:absolute;right:-8%;bottom:-46%;width:78%;height:150%;border-radius:50%;pointer-events:none;background:radial-gradient(ellipse at 40% 40%,rgba(255,236,193,.42),rgba(216,166,90,.16) 58%,transparent 76%)}
 .quote-inner{position:relative;z-index:1;width:var(--shell);margin:0 auto;padding:0 var(--gutter)}
 .campaign-quote blockquote{margin:0 0 0 clamp(0px,13.7vw,196px);font-family:var(--serif);font-size:clamp(23px,3.3vw,46px);font-style:italic;line-height:1.16;letter-spacing:-.028em;text-indent:-.42em}
@@ -198,7 +222,7 @@ img{max-width:100%}
 
 /* ── Purchase ──────────────────────────────────────────────────────────── */
 /* Cream dome rising out of the silk and carrying down into the footer. */
-.purchase-band{position:relative;z-index:6;display:flex;flex-direction:column;align-items:center;padding:clamp(14px,1.7vw,28px) var(--gutter) clamp(10px,1.3vw,20px);text-align:center}
+.purchase-band{position:relative;z-index:6;display:flex;flex-direction:column;align-items:center;padding:clamp(14px,1.7vw,28px) var(--gutter) clamp(10px,1.3vw,20px);text-align:center;background:linear-gradient(180deg,rgba(248,241,226,0) 0,rgba(248,241,226,0) 58%,rgba(248,241,226,.6) 82%,#f8f1e2 100%)}
 .purchase-band:before{content:"";position:absolute;z-index:-1;left:50%;bottom:0;width:120vw;height:calc(100% + clamp(8px,1.6vw,32px));border-radius:50% 50% 0 0;background:linear-gradient(180deg,#fbf5e8 0%,#faf3e5 44%,#f8f1e2 100%);transform:translateX(-50%)}
 .purchase-band h2{margin:0;font-family:var(--serif);font-size:clamp(30px,4.1vw,56px);font-weight:400;letter-spacing:-.04em;line-height:1.05}
 .purchase-kicker{margin:4px 0 clamp(14px,2.1vw,28px);font-size:clamp(9.5px,1.08vw,13px);font-weight:600;letter-spacing:.32em;text-transform:uppercase}
@@ -350,4 +374,96 @@ img{max-width:100%}
   .nav-toggle{width:36px;height:36px}
 }
 
-@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
+/* ── Motion ────────────────────────────────────────────────────────────── */
+/*
+  --p is written by book.js: roughly -1 to 1 for how far past the viewport
+  centre an element sits. Everything below is transform and opacity only, so
+  the compositor carries it without layout or paint.
+*/
+@property --rise{syntax:'<length>';inherits:false;initial-value:0px}
+:root{--ease-out:cubic-bezier(.22,1,.36,1)}
+
+[data-parallax]{will-change:transform}
+.hero-portrait[data-parallax]{transform:translate3d(0,calc(var(--p,0) * -58px),0)}
+.hero-copy[data-parallax]{transform:translate3d(0,calc(var(--p,0) * -30px),0)}
+/* Three rates, so the cluster resolves into place instead of arriving flat. */
+.tablet[data-parallax]{transform:translateX(6%) translate3d(0,calc(var(--p,0) * -34px),0)}
+.phone[data-parallax]{transform:translateY(9%) translate3d(0,calc(var(--p,0) * -52px),0)}
+.openbook[data-parallax]{transform:translateY(-2.6%) rotate(2.2deg) translate3d(0,calc(var(--p,0) * -20px),0)}
+/* Reveal and parallax in one transform, composed rather than competing. */
+.passage[data-parallax]{transform:translate3d(0,calc(var(--p,0) * -22px + var(--rise,0px)),0)}
+.passage[data-motion-state="wait"]{--rise:26px;opacity:0}
+.passage[data-motion-state]{transition:opacity .9s var(--ease-out),--rise .9s var(--ease-out)}
+.passage[data-motion-state="in"]{--rise:0px;opacity:1}
+.quote-inner[data-parallax]{transform:translate3d(0,calc(var(--p,0) * -26px),0)}
+
+/* Reveals. Hidden only once script has confirmed it can bring them back. */
+[data-motion-state="wait"]{opacity:0;transform:translate3d(0,26px,0)}
+[data-motion-state]{transition:opacity .9s var(--ease-out),transform .9s var(--ease-out);
+  transition-delay:calc(var(--stagger,0) * 90ms)}
+[data-motion-state="in"]{opacity:1;transform:none}
+
+/* The line icons draw themselves. pathLength="1" normalises every path, so one
+   rule covers a leaf, a heart, a sun and a compass. */
+[data-motion-state="wait"] .principle-icon path,
+[data-motion-state="wait"] .principle-icon circle{stroke-dasharray:1;stroke-dashoffset:1}
+[data-motion-state] .principle-icon path,
+[data-motion-state] .principle-icon circle{stroke-dasharray:1;stroke-dashoffset:0;
+  transition:stroke-dashoffset 1.1s var(--ease-out);
+  transition-delay:calc(var(--stagger,0) * 90ms + 120ms)}
+/* The compass needle is filled, not stroked, so it arrives rather than draws. */
+[data-motion-state="wait"] .principle-icon path[fill="currentColor"]{opacity:0}
+[data-motion-state] .principle-icon path[fill="currentColor"]{opacity:1;
+  transition:opacity .6s var(--ease-out);transition-delay:calc(var(--stagger,0) * 90ms + 700ms)}
+
+/* The opening. Composed rather than a single fade: the title arrives a line at
+   a time, the rule draws, and the call to action is last. */
+@keyframes rise-in{from{opacity:0;transform:translate3d(0,22px,0)}to{opacity:1;transform:none}}
+@keyframes draw-rule{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@keyframes settle{from{opacity:0;transform:scale(1.045)}to{opacity:1;transform:none}}
+
+@media (prefers-reduced-motion:no-preference){
+  body[data-ready] .hero-copy h1 em,
+  body[data-ready] .hero-copy h1>span,
+  body[data-ready] .hero-hook,
+  body[data-ready] .hero-promise,
+  body[data-ready] .hero-buy{animation:rise-in .95s var(--ease-out) both}
+  body[data-ready] .hero-copy h1 em{animation-delay:.06s}
+  body[data-ready] .hero-copy h1>span:nth-of-type(1){animation-delay:.16s}
+  body[data-ready] .hero-copy h1>span:nth-of-type(2){animation-delay:.26s}
+  body[data-ready] .hero-rule{animation:draw-rule .8s var(--ease-out) .42s both;transform-origin:center}
+  body[data-ready] .hero-hook{animation-delay:.52s}
+  body[data-ready] .hero-promise{animation-delay:.62s}
+  body[data-ready] .hero-buy{animation-delay:.72s}
+  body[data-ready] .hero-portrait img{animation:settle 1.5s var(--ease-out) both}
+}
+
+/* The bar earns a ground once it is over content, and keeps the CTA reachable. */
+.book-nav{position:sticky;top:0;transition:background-color .4s ease,box-shadow .4s ease,padding .4s ease;
+  background:transparent}
+.book-nav[data-over]{background:rgba(253,248,238,.82);box-shadow:0 1px 0 rgba(111,77,31,.12),0 12px 30px rgba(92,56,14,.07);
+  -webkit-backdrop-filter:blur(14px) saturate(1.1);backdrop-filter:blur(14px) saturate(1.1);
+  padding-top:12px;padding-bottom:8px}
+
+/* Hover, at the level the rest of the page is drawn to. */
+.gold-button{position:relative;overflow:hidden}
+.gold-button:after{content:"";position:absolute;inset:0;pointer-events:none;transform:translateX(-120%);
+  background:linear-gradient(105deg,transparent 34%,rgba(255,246,224,.34) 50%,transparent 66%);
+  transition:transform .75s var(--ease-out)}
+.gold-button:hover:after{transform:translateX(120%)}
+.book-nav nav a,.campaign-footer nav a{position:relative;text-decoration:none}
+.book-nav nav a:hover,.campaign-footer nav a:hover{text-decoration:none}
+.book-nav nav a:after,.campaign-footer nav a:after{content:"";position:absolute;left:0;right:0;bottom:-5px;
+  height:1px;background:currentColor;transform:scaleX(0);transform-origin:left;
+  transition:transform .42s var(--ease-out)}
+.book-nav nav a:hover:after,.campaign-footer nav a:hover:after{transform:scaleX(1)}
+.text-link svg{transition:transform .38s var(--ease-out)}
+.text-link:hover svg{transform:translateX(5px)}
+.edition{transition:transform .5s var(--ease-out),box-shadow .5s var(--ease-out)}
+.edition:hover{transform:translateY(-4px);box-shadow:0 22px 46px rgba(92,56,14,.13)}
+
+@media(prefers-reduced-motion:reduce){
+  *{scroll-behavior:auto!important;transition:none!important;animation:none!important}
+  [data-motion-state],[data-parallax]{opacity:1!important;transform:none!important}
+  .principle-icon path,.principle-icon circle{stroke-dashoffset:0!important;opacity:1!important}
+}
