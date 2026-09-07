@@ -1,15 +1,70 @@
 (function(){
   'use strict';
 
-  /* Orders remain email-based until a hosted checkout is deliberately connected. */
+  var SUPABASE_URL='https://wjnavdpppnhxbuydkrkd.supabase.co';
+  var SUPABASE_KEY='sb_publishable_bpdFntTHbHmxsG4L0PtcCw_5dJ8gpr8';
+  var BOOK_API=SUPABASE_URL+'/functions/v1/book-api';
+  var AUTH_STORE='trwtl.auth';
+  var ORDER_DRAFT='trwtl.order-draft';
+  var SUPPORT_EMAIL='withlovefmb@gmail.com';
+  var secureEditions={};
+  var orderModal=null;
+  var currentEdition=null;
+
+  function readJson(key){try{return JSON.parse(localStorage.getItem(key))||null;}catch(e){return null;}}
+  function writeJson(key,value){try{localStorage.setItem(key,JSON.stringify(value));}catch(e){}}
+  function removeKey(key){try{localStorage.removeItem(key);}catch(e){}}
+  function uid(){return (window.crypto&&typeof window.crypto.randomUUID==='function')?window.crypto.randomUUID():'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,function(c){var r=Math.random()*16|0,v=c==='x'?r:(r&3|8);return v.toString(16);});}
+  function parseJwt(token){
+    try{var raw=token.split('.')[1].replace(/-/g,'+').replace(/_/g,'/');raw=raw.padEnd(Math.ceil(raw.length/4)*4,'=');return JSON.parse(decodeURIComponent(Array.prototype.map.call(atob(raw),function(c){return '%'+('00'+c.charCodeAt(0).toString(16)).slice(-2);}).join('')));}catch(e){return {};}
+  }
+  function sessionFromHash(){
+    if(!location.hash||location.hash.indexOf('access_token=')<0)return null;
+    var p=new URLSearchParams(location.hash.slice(1));
+    var access=p.get('access_token'),refresh=p.get('refresh_token');
+    if(!access||!refresh)return null;
+    var claims=parseJwt(access);
+    var session={access_token:access,refresh_token:refresh,expires_at:Number(p.get('expires_at'))||Number(claims.exp)||Math.floor(Date.now()/1000)+Number(p.get('expires_in')||3600)};
+    writeJson(AUTH_STORE,session);
+    history.replaceState(null,'',location.pathname+location.search);
+    return session;
+  }
+  function currentSession(){return sessionFromHash()||readJson(AUTH_STORE);}
+  async function refreshSession(session){
+    if(!session||!session.refresh_token)return null;
+    try{
+      var r=await fetch(SUPABASE_URL+'/auth/v1/token?grant_type=refresh_token',{method:'POST',headers:{apikey:SUPABASE_KEY,'content-type':'application/json'},body:JSON.stringify({refresh_token:session.refresh_token}),cache:'no-store'});
+      if(!r.ok)throw new Error('refresh_failed');
+      var data=await r.json();
+      var next={access_token:data.access_token,refresh_token:data.refresh_token||session.refresh_token,expires_at:Math.floor(Date.now()/1000)+Number(data.expires_in||3600)};
+      writeJson(AUTH_STORE,next);return next;
+    }catch(e){removeKey(AUTH_STORE);return null;}
+  }
+  async function usableSession(){
+    var s=currentSession();if(!s)return null;
+    if(!s.expires_at||Number(s.expires_at)<Math.floor(Date.now()/1000)+90)s=await refreshSession(s);
+    return s;
+  }
+  async function api(action,input){
+    var s=await usableSession();if(!s)throw new Error('sign_in_required');
+    var r=await fetch(BOOK_API,{method:'POST',headers:{apikey:SUPABASE_KEY,Authorization:'Bearer '+s.access_token,'content-type':'application/json',Accept:'application/json'},body:JSON.stringify(Object.assign({action:action},input||{})),cache:'no-store'});
+    var data={};try{data=await r.json();}catch(e){}
+    if(r.status===401){removeKey(AUTH_STORE);throw new Error('sign_in_required');}
+    if(!r.ok)throw new Error(data.error||'order_unavailable');
+    return data;
+  }
+
+  /* Hosted checkout may override an edition. Everything else uses the secure
+     manual-verification order backend instead of a mailto-only transaction. */
   function initCheckout(){
     var config=window.FMB_BOOK_CHECKOUT;
     if(!config&&window.FMB_BOOK_CHECKOUT_URL)config={ebook:window.FMB_BOOK_CHECKOUT_URL};
-    if(!config)return;
     document.querySelectorAll('[data-edition]').forEach(function(link){
-      var url=config[link.getAttribute('data-edition')];
-      if(!url)return;
-      link.href=url;link.target='_blank';link.rel='noopener';
+      var edition=link.getAttribute('data-edition');
+      var url=config&&config[edition];
+      if(url){link.href=url;link.target='_blank';link.rel='noopener';return;}
+      secureEditions[edition]=true;
+      link.addEventListener('click',function(e){e.preventDefault();openOrder(edition);});
     });
   }
 
@@ -26,11 +81,7 @@
     function sync(){if(desktop.matches)setOpen(false);} if(desktop.addEventListener)desktop.addEventListener('change',sync);else if(desktop.addListener)desktop.addListener(sync);sync();
   }
 
-  function initOffline(){
-    if(!('serviceWorker' in navigator))return;
-    window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js')['catch'](function(){});});
-  }
-
+  function initOffline(){if('serviceWorker' in navigator)window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js')['catch'](function(){});});}
   function initReveal(){
     var passages=document.querySelectorAll('.passage');
     if(!passages.length||!('IntersectionObserver' in window)||window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
@@ -38,34 +89,91 @@
     var watcher=new IntersectionObserver(function(entries){entries.forEach(function(entry){if(!entry.isIntersecting)return;entry.target.setAttribute('data-reveal','in');watcher.unobserve(entry.target);});},{rootMargin:'0px 0px -12% 0px',threshold:.15});
     passages.forEach(function(el){watcher.observe(el);});
   }
-
-  /* The shell may be installable, but manuscript text is not shipped with it.
-     Protected text is delivered chapter by chapter only after Supabase verifies access. */
+  function replaceListCopy(li,text){var svg=li.querySelector('svg');while(li.firstChild)li.removeChild(li.firstChild);if(svg)li.appendChild(svg);li.appendChild(document.createTextNode(text));}
   function alignReaderCopy(){
-    var buy=document.querySelector('[data-edition="ebook"]');
-    var card=buy&&buy.closest('.edition');
-    if(!card)return;
-    var note=card.querySelector('.edition-note');
-    if(note)note.textContent='Protected reader access';
-    card.querySelectorAll('li').forEach(function(li){
-      var t=li.textContent.trim().toLowerCase();
-      if(t.indexOf('without a signal')>=0)replaceListCopy(li,'Chapter-by-chapter secure reading');
-      if(t.indexOf('yours, and yours alone')>=0)replaceListCopy(li,'Access checked before every protected chapter');
-    });
-    if(!card.querySelector('.reader-existing-access')){
-      var link=document.createElement('a');
-      link.className='text-link reader-existing-access';
-      link.href='reader.html';
-      link.textContent='Already have access? Open reader';
-      card.appendChild(link);
-    }
+    var buy=document.querySelector('[data-edition="ebook"]'),card=buy&&buy.closest('.edition');if(!card)return;
+    var note=card.querySelector('.edition-note');if(note)note.textContent='Protected reader access';
+    card.querySelectorAll('li').forEach(function(li){var t=li.textContent.trim().toLowerCase();if(t.indexOf('without a signal')>=0)replaceListCopy(li,'Chapter-by-chapter secure reading');if(t.indexOf('yours, and yours alone')>=0)replaceListCopy(li,'Access checked before every protected chapter');});
+    if(!card.querySelector('.reader-existing-access')){var link=document.createElement('a');link.className='text-link reader-existing-access';link.href='reader.html';link.textContent='Already have access? Open reader';card.appendChild(link);}
   }
 
-  function replaceListCopy(li,text){
-    var svg=li.querySelector('svg');
-    while(li.firstChild)li.removeChild(li.firstChild);
-    if(svg)li.appendChild(svg);
-    li.appendChild(document.createTextNode(text));
+  function addOrderUI(){
+    var style=document.createElement('style');
+    style.textContent='.book-order-modal{position:fixed;inset:0;z-index:100;display:none;place-items:center;padding:18px;background:rgba(27,18,10,.62);backdrop-filter:blur(12px)}.book-order-modal[data-open]{display:grid}.book-order-card{width:min(520px,100%);max-height:min(86vh,760px);overflow:auto;box-sizing:border-box;border-radius:22px;padding:24px;background:#fbf5e8;color:#2d2118;box-shadow:0 26px 90px rgba(0,0,0,.32)}.book-order-card h2{margin:0 0 8px;font:400 34px/1.05 Georgia,serif}.book-order-card p{font:14px/1.55 system-ui,sans-serif;color:#655546}.book-order-card label{display:block;margin:14px 0 6px;font:700 10px/1 system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase}.book-order-card input,.book-order-card select{width:100%;box-sizing:border-box;border:1px solid #cdbda8;border-radius:11px;padding:12px 13px;background:#fff;color:#2d2118;font:15px/1.2 system-ui,sans-serif}.book-order-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.book-order-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:17px}.book-order-actions button,.book-order-actions a{border:0;border-radius:999px;padding:11px 15px;text-decoration:none;cursor:pointer;font:700 12px/1 system-ui,sans-serif}.book-order-primary{background:#2d2118;color:#fff}.book-order-secondary{background:#eee2d2;color:#2d2118}.book-order-status{min-height:22px;margin-top:10px}.book-order-number{overflow-wrap:anywhere;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}.book-order-summary{margin:15px 0;padding:14px;border:1px solid rgba(92,64,34,.2);border-radius:14px;background:rgba(255,255,255,.45)}@media(max-width:560px){.book-order-grid{grid-template-columns:1fr}.book-order-card{padding:20px}}';
+    document.head.appendChild(style);
+    orderModal=document.createElement('div');orderModal.className='book-order-modal';orderModal.id='bookOrderModal';orderModal.setAttribute('aria-hidden','true');document.body.appendChild(orderModal);
+    orderModal.addEventListener('click',function(e){if(e.target===orderModal)closeOrder();});
+    document.addEventListener('keydown',function(e){if(e.key==='Escape'&&orderModal&&orderModal.hasAttribute('data-open'))closeOrder();});
+  }
+  function openModal(){orderModal.setAttribute('data-open','');orderModal.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';}
+  function closeOrder(){if(!orderModal)return;orderModal.removeAttribute('data-open');orderModal.setAttribute('aria-hidden','true');document.body.style.overflow='';}
+  function modalShell(title,copy,body){orderModal.innerHTML='<div class="book-order-card" role="dialog" aria-modal="true" aria-labelledby="bookOrderTitle"><h2 id="bookOrderTitle">'+title+'</h2><p>'+copy+'</p>'+body+'</div>';openModal();}
+  function editionLabel(edition){return edition==='pocketbook'?'Pocketbook':'Ebook';}
+  function peso(centavos){return '₱'+(Number(centavos||0)/100).toLocaleString('en-PH',{minimumFractionDigits:0,maximumFractionDigits:2});}
+  function draftFor(edition){
+    var d=readJson(ORDER_DRAFT);
+    if(!d||d.edition!==edition||!d.idempotency_key)d={edition:edition,idempotency_key:uid(),started_at:Date.now()};
+    writeJson(ORDER_DRAFT,d);return d;
+  }
+  function claimsEmail(){var s=currentSession();return s&&s.access_token?(parseJwt(s.access_token).email||''):'';}
+  async function sendMagicLink(email,edition){
+    var redirect=location.origin+'/book/?order='+encodeURIComponent(edition);
+    var r=await fetch(SUPABASE_URL+'/auth/v1/otp',{method:'POST',headers:{apikey:SUPABASE_KEY,'content-type':'application/json'},body:JSON.stringify({email:email,create_user:true,email_redirect_to:redirect}),cache:'no-store'});
+    if(!r.ok)throw new Error('send_failed');
+  }
+  function renderSignIn(edition){
+    modalShell('Secure '+editionLabel(edition)+' order','Use your email so the order and ebook access can be tied to the correct account.','<form id="bookOrderAuth"><label for="bookOrderEmail">Email</label><input id="bookOrderEmail" type="email" autocomplete="email" required placeholder="you@example.com"><div class="book-order-actions"><button class="book-order-primary" type="submit">Send secure sign-in link</button><button class="book-order-secondary" type="button" data-order-close>Close</button></div><p class="book-order-status" id="bookOrderStatus" role="status" aria-live="polite"></p></form>');
+    orderModal.querySelector('[data-order-close]').addEventListener('click',closeOrder);
+    orderModal.querySelector('#bookOrderAuth').addEventListener('submit',async function(e){
+      e.preventDefault();var status=orderModal.querySelector('#bookOrderStatus');var email=orderModal.querySelector('#bookOrderEmail').value.trim();status.textContent='Sending your secure link…';
+      try{draftFor(edition);await sendMagicLink(email,edition);status.textContent='Check your email. Open the secure link to continue this order.';}catch(err){status.textContent='The sign-in link could not be sent right now. Please try again.';}
+    });
+  }
+  function paymentMail(order){
+    var subject='Payment verification — The Right Way to Live — '+order.id;
+    var body='Hello FMB,\n\nI created an order for The Right Way to Live.\n\nOrder number: '+order.id+'\nEdition: '+editionLabel(order.edition)+'\nTotal: '+peso(order.total_centavos)+'\n\nPlease send or confirm the payment instructions for this order.\n\nThank you.';
+    return 'mailto:'+SUPPORT_EMAIL+'?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(body);
+  }
+  function showOrderSummary(order,existing){
+    var copy=existing?'You already have an order waiting for payment verification.':'Your order is recorded securely.';
+    var extra=order.edition==='ebook'?'<p>Your ebook access activates only after payment is verified.</p>':'<p>Your pocketbook will move to fulfillment after payment is verified.</p>';
+    modalShell(existing?'Order already open':'Order created',copy,'<div class="book-order-summary"><strong>'+editionLabel(order.edition)+'</strong><p>'+peso(order.total_centavos)+' · '+String(order.status||'pending_payment').replace(/_/g,' ')+'</p><p class="book-order-number">Order '+order.id+'</p></div>'+extra+'<div class="book-order-actions"><a class="book-order-primary" href="'+paymentMail(order)+'">Continue payment verification</a>'+(order.edition==='ebook'?'<a class="book-order-secondary" href="reader.html">Open reader</a>':'')+'<button class="book-order-secondary" type="button" data-order-close>Close</button></div>');
+    orderModal.querySelector('[data-order-close]').addEventListener('click',closeOrder);
+    removeKey(ORDER_DRAFT);
+  }
+  function renderOrderForm(edition,email){
+    var pocket=edition==='pocketbook';
+    var fields='<form id="bookSecureOrder"><label for="bookCustomerName">Full name</label><input id="bookCustomerName" name="customer_name" autocomplete="name" required minlength="2" maxlength="120"><div class="book-order-grid">'+(pocket?'<div><label for="bookQuantity">Quantity</label><select id="bookQuantity" name="quantity">'+Array.from({length:10},function(_,i){return '<option value="'+(i+1)+'">'+(i+1)+'</option>';}).join('')+'</select></div><div><label for="bookPhone">Mobile number</label><input id="bookPhone" name="phone" autocomplete="tel" required placeholder="09xx xxx xxxx"></div>':'<input type="hidden" name="quantity" value="1">')+'</div>';
+    if(pocket)fields+='<label for="bookLine1">Street and barangay</label><input id="bookLine1" autocomplete="street-address" required maxlength="250"><div class="book-order-grid"><div><label for="bookCity">City or municipality</label><input id="bookCity" autocomplete="address-level2" required maxlength="100"></div><div><label for="bookProvince">Province</label><input id="bookProvince" autocomplete="address-level1" required maxlength="100"></div></div><label for="bookPostal">Postal code</label><input id="bookPostal" inputmode="numeric" autocomplete="postal-code" pattern="[0-9]{4}" required maxlength="4">';
+    fields+='<p>Signed in as <strong>'+String(email||'your verified email')+'</strong>.</p><div class="book-order-actions"><button class="book-order-primary" type="submit">Create '+editionLabel(edition)+' order</button><button class="book-order-secondary" type="button" data-order-close>Close</button></div><p class="book-order-status" id="bookOrderStatus" role="status" aria-live="polite"></p></form>';
+    modalShell('Order the '+editionLabel(edition),pocket?'Shipping within the Philippines is included in the listed price.':'The ebook is delivered through the protected reader after payment verification.',fields);
+    orderModal.querySelector('[data-order-close]').addEventListener('click',closeOrder);
+    orderModal.querySelector('#bookSecureOrder').addEventListener('submit',async function(e){
+      e.preventDefault();var f=e.currentTarget,status=orderModal.querySelector('#bookOrderStatus'),draft=draftFor(edition);var payload={edition:edition,quantity:Number(f.elements.quantity.value),idempotency_key:draft.idempotency_key,customer_name:f.elements.customer_name.value.trim()};
+      if(pocket){payload.phone=f.elements.phone.value.trim();payload.shipping_address={line1:document.getElementById('bookLine1').value.trim(),city:document.getElementById('bookCity').value.trim(),province:document.getElementById('bookProvince').value.trim(),postal_code:document.getElementById('bookPostal').value.trim(),country:'PH'};}
+      status.textContent='Creating your order…';
+      try{var data=await api('create_order',payload);showOrderSummary(data.order,false);}catch(err){var map={already_owned:'This email already has ebook access. Open the reader instead.',pending_order_exists:'You already have an unpaid order for this edition.',rate_limited:'Too many order attempts were made recently. Please use your existing order.',content_not_ready:'The ebook is not available for ordering yet.',invalid_order:'Please check the order details and try again.',idempotency_conflict:'This order draft changed. Close this window and start again.'};status.textContent=map[err.message]||'The order could not be created right now. Please try again.';if(err.message==='idempotency_conflict')removeKey(ORDER_DRAFT);}
+    });
+  }
+  async function openOrder(edition){
+    if(!secureEditions[edition])return;
+    currentEdition=edition;draftFor(edition);
+    var s=await usableSession();
+    if(!s){renderSignIn(edition);return;}
+    modalShell('Checking your account','We are checking for an existing order or ebook access.','<p class="book-order-status">One moment…</p>');
+    try{
+      if(edition==='ebook'){
+        var access=await api('access');
+        if(access.has_access===true){modalShell('Your ebook is active','This account already owns the ebook.','<div class="book-order-actions"><a class="book-order-primary" href="reader.html">Open reader</a><button class="book-order-secondary" type="button" data-order-close>Close</button></div>');orderModal.querySelector('[data-order-close]').addEventListener('click',closeOrder);removeKey(ORDER_DRAFT);return;}
+      }
+      var data=await api('orders');var orders=Array.isArray(data.orders)?data.orders:[];var pending=orders.find(function(o){return o.edition===edition&&o.status==='pending_payment';});
+      if(pending){showOrderSummary(pending,true);return;}
+      renderOrderForm(edition,claimsEmail());
+    }catch(err){if(err.message==='sign_in_required')renderSignIn(edition);else{modalShell('Order unavailable','Your account could not be checked right now.','<div class="book-order-actions"><button class="book-order-secondary" type="button" data-order-close>Close</button></div>');orderModal.querySelector('[data-order-close]').addEventListener('click',closeOrder);}}
+  }
+  function resumeOrder(){
+    var p=new URLSearchParams(location.search),edition=p.get('order');var draft=readJson(ORDER_DRAFT);edition=edition||(draft&&draft.edition);
+    if(edition&&secureEditions[edition])openOrder(edition);
   }
 
   initCheckout();
@@ -73,4 +181,6 @@
   initOffline();
   initReveal();
   alignReaderCopy();
+  addOrderUI();
+  resumeOrder();
 })();
