@@ -4,7 +4,7 @@
   deliberately never cached here. The service worker only handles same-origin
   public shell assets and the intentionally public preview.
 */
-var VERSION='trwtl-v12';
+var VERSION='trwtl-v13';
 var SHELL=VERSION+'-shell';
 var RUNTIME=VERSION+'-runtime';
 
@@ -14,7 +14,6 @@ var SHELL_URLS=[
   './reader.html',
   './payment-success.html',
   './landing.css',
-  './scroll-fix.css',
   './reader.css',
   './book.js',
   './paymongo.js',

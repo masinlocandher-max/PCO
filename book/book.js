@@ -72,11 +72,14 @@
   }
 
   function initOffline(){if('serviceWorker' in navigator)window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js')['catch'](function(){});});}
-  function initLaunchMotion(){
-    if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){document.body.setAttribute('data-motion','ready');return;}
-    document.body.setAttribute('data-motion','boot');
-    requestAnimationFrame(function(){requestAnimationFrame(function(){document.body.setAttribute('data-motion','ready');});});
-  }
+  /*
+    initLaunchMotion() used to live here. It set data-motion on <body> for a
+    second opening sequence in a stylesheet that no longer exists — and because
+    the reveal system selects [data-motion], <body> itself was being picked up as
+    a reveal target: opacity 0 and a transform on the root element, which also
+    makes it the containing block for every position:fixed layer on the page.
+    The opening sequence is now the [data-ready] one in landing.css alone.
+  */
   /*
     Motion.
 
@@ -253,7 +256,6 @@
   initCheckout();
   initNav();
   initOffline();
-  initLaunchMotion();
   initMotion();
   alignReaderCopy();
   addOrderUI();
