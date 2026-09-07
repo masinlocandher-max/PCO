@@ -4,7 +4,7 @@
   deliberately never cached here. The service worker only handles same-origin
   public shell assets and the intentionally public preview.
 */
-var VERSION='trwtl-v16';
+var VERSION='trwtl-v17';
 var SHELL=VERSION+'-shell';
 var RUNTIME=VERSION+'-runtime';
 

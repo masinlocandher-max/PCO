@@ -19,7 +19,11 @@
   --serif:'Playfair Display','Libre Caslon Display','Times New Roman',serif;
   --sans:'DM Sans',Arial,sans-serif;
   --shell:min(100%,1400px);
-  --gutter:clamp(22px,5vw,74px);
+  /* viewport-fit=cover means the page paints under the sensor housing and the
+     home indicator. In portrait these insets are 0 and nothing moves; in
+     landscape the gutter grows so no type or control sits under the notch. */
+  --inset-x:max(env(safe-area-inset-left,0px),env(safe-area-inset-right,0px));
+  --gutter:calc(clamp(22px,5vw,74px) + var(--inset-x));
   /* The bar floats over the photograph, so its height is a layout constant
      the hero and the skip-target both have to know about. */
   --nav-h:clamp(66px,6.4vw,104px);
@@ -89,10 +93,16 @@ img{max-width:100%}
    book. Both are small — the photograph is the loud element, not the mark. */
 .book-logo{display:inline-flex;flex-direction:column;gap:6px;width:max-content;text-decoration:none;line-height:1}
 .book-logo strong{font-family:var(--sans);font-size:clamp(10.5px,1vw,12.5px);font-weight:500;letter-spacing:.34em;text-transform:uppercase}
-.book-logo small{font-family:var(--serif);font-style:italic;font-size:clamp(12px,1.15vw,15px);letter-spacing:.005em;color:var(--gold)}
+/* line-height is explicit because .book-logo sets 1 for the name, and at that
+   value the descenders in the line below ("g", "y", "p") were being sliced off
+   by the overflow:hidden that lets the line collapse on scroll. Measured 12px
+   box against a 14px scroll height between 561px and 860px. */
+.book-logo small{font-family:var(--serif);font-style:italic;font-size:clamp(12px,1.15vw,15px);line-height:1.3;letter-spacing:.005em;color:var(--gold)}
+/* A name is not a phrase; it should never break across lines. */
+.book-logo strong,.footer-logo strong{white-space:nowrap}
 .footer-logo{display:inline-flex;flex-direction:column;gap:5px;width:max-content;text-decoration:none;line-height:1}
 .footer-logo strong{font-family:var(--sans);font-size:11px;font-weight:500;letter-spacing:.3em;text-transform:uppercase}
-.footer-logo small{font-family:var(--serif);font-style:italic;font-size:13px;color:var(--gold)}
+.footer-logo small{font-family:var(--serif);font-style:italic;font-size:13px;line-height:1.3;color:var(--gold)}
 
 .book-nav nav{display:flex;justify-content:center;gap:clamp(16px,2.6vw,42px);padding-right:clamp(0px,7vw,120px)}
 .book-nav nav a,.campaign-footer nav a{font-family:var(--sans);font-size:clamp(10px,.95vw,11.5px);font-weight:500;letter-spacing:.2em;text-transform:uppercase;text-decoration:none;white-space:nowrap}
@@ -162,7 +172,11 @@ img{max-width:100%}
   running off three edges of the screen, but her face is never written on.
 */
 @media(min-width:861px){
-  .campaign-hero{align-items:center}
+  /* Bottom-anchored, as it already was on every narrower screen. Centring left
+     18–29% of the hero empty directly under the call to action — measured as the
+     gap between the button and the section edge — which read as a void rather
+     than as air, and made the desktop composition a different one from the
+     phone's instead of the same one at another size. */
   .hero-frame{left:clamp(20%,calc(14% + 9vw),34%)}
   .hero-frame img{object-position:50% 30%;
     -webkit-mask-image:
@@ -198,6 +212,9 @@ img{max-width:100%}
 .intro-copy p{max-width:clamp(230px,24vw,330px);margin:clamp(14px,1.8vw,22px) 0 0;color:var(--muted);font-size:clamp(14px,1.5vw,17px);line-height:1.62}
 .small-rule{display:block;width:clamp(34px,4.2vw,54px);height:2px;margin:clamp(12px,1.6vw,20px) 0 clamp(16px,2.2vw,26px);background:var(--gold-soft)}
 .text-link{display:inline-flex;align-items:center;gap:10px;font-family:var(--sans);font-size:11px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;text-decoration:none}
+/* book.js appends this link under the ebook button at runtime. As a bare line
+   of 11px type it was a 15px-tall tap target; the box grows, the type does not. */
+.reader-existing-access{min-height:44px}
 .intro-byline{margin:clamp(26px,3.4vw,44px) 0 0;padding-top:clamp(16px,2vw,24px);border-top:1px solid var(--line);max-width:clamp(230px,24vw,330px)}
 .intro-byline small{display:block;font-size:9.5px;font-weight:500;letter-spacing:.3em;text-transform:uppercase;color:#7a6853}
 .intro-byline strong{display:block;margin-top:8px;font-family:var(--serif);font-size:clamp(17px,1.7vw,23px);font-weight:400;letter-spacing:-.01em}
@@ -334,7 +351,7 @@ img{max-width:100%}
 .edition .gold-button{width:100%;margin-top:auto}
 /* book.js adds a link under the ebook button at runtime. Reserving the same
    space opposite keeps the two calls to action on one line. */
-.edition:last-child:after{content:"";display:block;min-height:calc(13px + 1.5em)}
+.edition:last-child:after{content:"";display:block;min-height:calc(13px + 44px)}
 .reader-existing-access{margin-top:13px;font-size:10px;letter-spacing:.18em}
 .addon{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:clamp(14px,2vw,26px);
   width:min(100%,780px);margin:clamp(14px,1.8vw,22px) auto 0;padding:clamp(18px,2.2vw,26px) clamp(18px,2.2vw,28px);
@@ -351,7 +368,7 @@ img{max-width:100%}
 .purchase-fineprint{max-width:660px;margin:clamp(16px,2vw,26px) auto 0;color:#6a5a48;font-size:clamp(11px,1vw,12.5px);line-height:1.6}
 
 /* ── Footer ────────────────────────────────────────────────────────────── */
-.campaign-footer{background:#f8f1e2;padding:0 var(--gutter) clamp(16px,2vw,26px)}
+.campaign-footer{background:#f8f1e2;padding:0 var(--gutter) calc(clamp(16px,2vw,26px) + env(safe-area-inset-bottom,0px))}
 .footer-top{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:clamp(18px,4vw,50px);width:var(--shell);margin:0 auto;padding:clamp(12px,1.5vw,22px) 0;border-top:1px solid var(--line)}
 .campaign-footer nav{display:flex;justify-content:center;gap:clamp(14px,2.4vw,38px)}
 .campaign-footer nav a{font-size:13.5px}
@@ -380,7 +397,7 @@ img{max-width:100%}
 
 @media(max-width:860px){
   .book-nav{grid-template-columns:1fr auto auto;gap:12px;
-    padding-inline:20px;
+    padding-inline:calc(20px + var(--inset-x));
     padding-block:max(14px,env(safe-area-inset-top)) 12px}
   .nav-toggle{display:inline-flex;grid-column:2;align-items:center;justify-content:center;width:40px;height:40px;padding:0;border:1px solid rgba(111,77,31,.28);border-radius:999px;background:rgba(255,251,243,.5);color:var(--ink);cursor:pointer;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
   .nav-toggle:hover{background:rgba(255,251,243,.9)}
@@ -402,6 +419,16 @@ img{max-width:100%}
   .book-logo small{max-width:min(62vw,300px);opacity:1;overflow:hidden;
     transition:opacity .3s var(--ease-out),max-height .34s var(--ease-out),font-size .34s var(--ease-out)}
   .book-nav[data-over] .book-logo small{max-height:0;font-size:0;opacity:0}
+  /* The mark is a link to the top of the page and was a 29px target. The box
+     grows around the type rather than the type growing. */
+  .book-logo{min-height:44px;justify-content:center}
+  /* "Explore the Book" was a 17px-tall line of type. */
+  .text-link{min-height:44px}
+  /* 23px icons in a 14px-gap row are a mis-tap waiting to happen. The icons keep
+     their size; the hit area does not. */
+  .social-links{gap:0}
+  .social-links a{width:44px;height:44px;align-items:center;justify-content:center}
+  .social-links a:first-child{margin-left:-11px}
   .nav-buy{grid-column:3;min-height:40px;padding:0 16px;font-size:10.5px;letter-spacing:.14em;
     opacity:0;transform:translateY(-4px) scale(.96);pointer-events:none;
     transition:opacity .34s var(--ease-out),transform .34s var(--ease-out)}
@@ -409,7 +436,7 @@ img{max-width:100%}
   .nav-buy svg{display:none}
 
   /* visibility:hidden keeps the closed panel out of the accessibility tree. */
-  .book-nav nav{position:absolute;z-index:30;grid-column:1/-1;top:100%;left:20px;right:20px;flex-direction:column;gap:0;padding:6px;border:1px solid rgba(111,77,31,.22);border-radius:16px;background:rgba(253,248,238,.97);box-shadow:0 20px 44px rgba(76,46,10,.18);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);opacity:0;visibility:hidden;transform:translateY(-8px);transition:opacity .2s ease,transform .2s ease,visibility 0s linear .2s}
+  .book-nav nav{position:absolute;z-index:30;grid-column:1/-1;top:100%;left:calc(20px + var(--inset-x));right:calc(20px + var(--inset-x));flex-direction:column;gap:0;padding:6px;border:1px solid rgba(111,77,31,.22);border-radius:16px;background:rgba(253,248,238,.97);box-shadow:0 20px 44px rgba(76,46,10,.18);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);opacity:0;visibility:hidden;transform:translateY(-8px);transition:opacity .2s ease,transform .2s ease,visibility 0s linear .2s}
   .book-nav[data-nav-open] nav{opacity:1;visibility:visible;transform:none;transition:opacity .2s ease,transform .2s ease}
   .book-nav nav a{display:flex;align-items:center;min-height:48px;padding:0 14px;border-radius:10px;font-size:12px;letter-spacing:.18em}
   .book-nav nav a+a{border-top:1px solid rgba(111,77,31,.14)}
@@ -424,12 +451,12 @@ img{max-width:100%}
   .hero-veil{background:
     linear-gradient(0deg,transparent 0%,rgba(251,243,227,.55) 8%,rgba(251,243,227,.93) 18%,rgba(251,243,227,.95) 34%,rgba(251,243,227,.9) 50%,rgba(252,246,233,.74) 60%,rgba(252,246,233,.34) 70%,transparent 84%),
     linear-gradient(180deg,rgba(253,248,238,.66) 0%,rgba(253,248,238,.14) 15%,transparent 30%)}
-  .hero-copy{padding-inline:22px}
+  .hero-copy{padding-inline:calc(22px + var(--inset-x))}
   .hero-copy h1>span{font-size:clamp(46px,12.6vw,80px)}
   .hero-copy h1 em{font-size:clamp(26px,6.6vw,40px)}
   .hero-hook{max-width:19ch}
 
-  .book-intro{grid-template-columns:1fr;gap:clamp(20px,4vh,36px);padding:clamp(26px,5vh,44px) 20px clamp(20px,3vh,32px)}
+  .book-intro{grid-template-columns:1fr;gap:clamp(20px,4vh,36px);padding:clamp(26px,5vh,44px) calc(20px + var(--inset-x)) clamp(20px,3vh,32px)}
   .book-intro:before{left:-24vw;top:-4%;width:118vw;height:74%;transform:rotate(-3deg)}
   .intro-copy{text-align:left;padding-left:0}
   .intro-copy p{max-width:460px}
@@ -438,10 +465,16 @@ img{max-width:100%}
   .phone{width:clamp(88px,15.6vw,124px)}
   .openbook{width:clamp(116px,22vw,176px)}
 
-  .campaign-quote{padding:clamp(38px,7vw,58px) 0 clamp(46px,9vw,72px)}
-  .quote-inner{padding:0 20px}
+  /* The band is shorter here, so the same percentage mask made a much shorter
+     ramp in pixels and the top edge started to read as a line. Taller band,
+     longer dissolve — measured 15.3 down to single digits across the join. */
+  .campaign-quote{padding:clamp(52px,9vw,84px) 0 clamp(56px,10vw,86px)}
+  .campaign-quote:before{
+    -webkit-mask-image:linear-gradient(180deg,transparent 0,rgba(0,0,0,.42) 11%,#000 26%,#000 72%,rgba(0,0,0,.38) 89%,transparent 100%);
+    mask-image:linear-gradient(180deg,transparent 0,rgba(0,0,0,.42) 11%,#000 26%,#000 72%,rgba(0,0,0,.38) 89%,transparent 100%)}
+  .quote-inner{padding:0 calc(20px + var(--inset-x))}
   .campaign-quote blockquote,.quote-sign{margin-left:0}
-  .journey{padding-left:20px;padding-right:20px}
+  .journey{padding-left:calc(20px + var(--inset-x));padding-right:calc(20px + var(--inset-x))}
   .passage{--passage:100%}
   .passage-right{text-align:left}
   .passage-right .passage-beat{padding:0 0 0 clamp(18px,2.4vw,34px);border-right:0;border-left:2px solid rgba(184,137,57,.5)}
@@ -456,7 +489,7 @@ img{max-width:100%}
 }
 
 @media(max-width:560px){
-  :root{--gutter:18px}
+  :root{--gutter:calc(18px + var(--inset-x))}
   .book-logo{gap:5px}
   .book-logo strong{font-size:9.5px;letter-spacing:.26em;
     transition:font-size .34s var(--ease-out),letter-spacing .34s var(--ease-out)}
@@ -630,3 +663,34 @@ body.book-campaign .campaign-footer{height:auto;min-height:0;overflow:visible}
 }
 @keyframes fmb-backdrop-in{from{opacity:0}to{opacity:1}}
 @keyframes fmb-sheet-in{from{opacity:0;transform:translate3d(0,26px,0) scale(.985)}to{opacity:1;transform:none}}
+
+
+/* ── Secure order screen ───────────────────────────────────────────────── */
+/*
+  The modal's base stylesheet is a string inside book.js, which owns the
+  commerce flow — Georgia and system-ui, because it was written before this page
+  had a type system. Rather than edit the commerce file, this layer restates the
+  campaign's own typography and gold over it: same serif for the heading, same
+  letterspaced sans for labels and buttons, same gold as every other call to
+  action on the page. Nothing here changes a word, a field, or a behaviour.
+*/
+body.book-campaign .book-order-card{border:1px solid rgba(111,77,31,.2);background:var(--paper-bright);color:var(--ink)}
+body.book-campaign .book-order-card h2{font-family:var(--serif);font-weight:400;font-size:clamp(26px,4.6vw,34px);line-height:1.04;letter-spacing:-.03em;color:var(--ink)}
+body.book-campaign .book-order-card p{font-family:var(--sans);font-size:14px;line-height:1.6;color:var(--muted)}
+body.book-campaign .book-order-card label{font-family:var(--sans);font-size:9.5px;font-weight:500;letter-spacing:.24em;text-transform:uppercase;color:#6a5a48}
+body.book-campaign .book-order-card input,
+body.book-campaign .book-order-card select{border:1px solid rgba(111,77,31,.28);border-radius:12px;background:#fffdf8;color:var(--ink);font-family:var(--sans);font-size:15px}
+body.book-campaign .book-order-card input:focus,
+body.book-campaign .book-order-card select:focus{outline:2px solid rgba(139,95,34,.45);outline-offset:1px;border-color:rgba(111,77,31,.5)}
+body.book-campaign .book-order-actions button,
+body.book-campaign .book-order-actions a{font-family:var(--sans);font-size:11px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;padding:0 20px}
+body.book-campaign .book-order-primary{background:linear-gradient(176deg,#9c7231 0%,#7d551c 55%,#6d4715 100%);color:#fdf6e6;box-shadow:0 10px 24px rgba(92,56,14,.2),inset 0 1px rgba(255,255,255,.22)}
+body.book-campaign .book-order-secondary{background:rgba(111,77,31,.09);color:#4a3a22;box-shadow:inset 0 0 0 1px rgba(111,77,31,.2)}
+body.book-campaign .book-order-summary{border:1px solid rgba(111,77,31,.2);border-radius:14px;background:rgba(255,252,246,.7)}
+body.book-campaign .book-order-summary strong{font-family:var(--serif);font-weight:400;font-size:20px}
+body.book-campaign .book-order-status{font-family:var(--sans);font-size:13px;color:var(--muted)}
+/* The sheet reaches the bottom edge on a phone; the home indicator must not
+   land on the buttons. */
+@media(max-width:560px){
+  body.book-campaign .book-order-card{padding-bottom:calc(20px + env(safe-area-inset-bottom))}
+}
