@@ -56,8 +56,24 @@ self.addEventListener('activate',function(event){
   );
 });
 
-function isEntitlement(url){
-  return url.pathname.indexOf('/entitlement')!==-1||url.pathname.indexOf('/api/')!==-1;
+/*
+  Only these are ever written to a cache. An allowlist rather than a blocklist,
+  because a blocklist has to guess every path a future backend might use, and
+  guessing wrong here means writing purchased chapters to disk in plain text.
+  Anything not on this list — JSON, any API shape, anything unrecognised — goes
+  straight to the network and is never stored.
+*/
+var CACHEABLE=/\.(?:html|css|js|webmanifest|png|jpe?g|webp|svg|gif|ico|woff2?)$/i;
+
+function mayCache(url,response){
+  if(url.origin!==self.location.origin&&url.hostname.indexOf('fonts.g')===-1)return false;
+  if(!CACHEABLE.test(url.pathname))return false;
+  if(response){
+    var control=response.headers.get('Cache-Control')||'';
+    // Honour the server if it says this response must not be stored.
+    if(/no-store|private/i.test(control))return false;
+  }
+  return true;
 }
 
 self.addEventListener('fetch',function(event){
@@ -67,18 +83,14 @@ self.addEventListener('fetch',function(event){
   var url;
   try{url=new URL(request.url);}catch(e){return;}
 
-  // Purchased content and access checks always go to the network, never to a cache.
-  if(isEntitlement(url)){
-    event.respondWith(fetch(request));
-    return;
-  }
-
   // Pages: fresh when possible, cached copy when not, offline card as a last resort.
   if(request.mode==='navigate'){
     event.respondWith(
       fetch(request).then(function(response){
-        var copy=response.clone();
-        caches.open(RUNTIME).then(function(cache){cache.put(request,copy);});
+        if(mayCache(url,response)){
+          var copy=response.clone();
+          caches.open(RUNTIME).then(function(cache){cache.put(request,copy);});
+        }
         return response;
       })['catch'](function(){
         return caches.match(request).then(function(hit){
@@ -89,13 +101,18 @@ self.addEventListener('fetch',function(event){
     return;
   }
 
-  if(url.origin!==self.location.origin&&url.hostname.indexOf('fonts.g')===-1)return;
+  // Purchased chapters, access checks and anything else unrecognised: network
+  // only. Nothing about them is written to disk.
+  if(!mayCache(url)){
+    event.respondWith(fetch(request));
+    return;
+  }
 
-  // Everything else: cached first, then network, refreshing the cache as it goes.
+  // Static shell: cached first, then network, refreshing the cache as it goes.
   event.respondWith(
     caches.match(request).then(function(hit){
       var live=fetch(request).then(function(response){
-        if(response&&(response.ok||response.type==='opaque')){
+        if(response&&(response.ok||response.type==='opaque')&&mayCache(url,response)){
           var copy=response.clone();
           caches.open(RUNTIME).then(function(cache){cache.put(request,copy);});
         }
