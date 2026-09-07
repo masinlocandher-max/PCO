@@ -89,7 +89,7 @@
     var buy=document.querySelector('[data-edition="ebook"]'),card=buy&&buy.closest('.edition');if(!card)return;
     var note=card.querySelector('.edition-note');if(note)note.textContent='Protected reader access';
     card.querySelectorAll('li').forEach(function(li){var t=li.textContent.trim().toLowerCase();if(t.indexOf('without a signal')>=0)replaceListCopy(li,'Chapter-by-chapter secure reading');if(t.indexOf('yours, and yours alone')>=0)replaceListCopy(li,'Access checked before every protected chapter');});
-    if(!card.querySelector('.reader-existing-access')){var link=document.createElement('a');link.className='text-link reader-existing-access';link.href='reader.html';link.textContent='Already have access? Open reader';card.appendChild(link);}
+    if(!card.querySelector('.reader-existing-access')){var link=document.createElement('a');link.className='text-link reader-existing-access';link.href='../ebook/';link.textContent='Already have access? Open ebook app';card.appendChild(link);}
     var fine=document.querySelector('.purchase-fineprint');if(fine)fine.textContent='Orders are recorded securely. Ebook reader access activates only after payment is verified. Pocketbook orders move to fulfillment after payment verification, with nationwide Philippine shipping included.';
   }
 
@@ -128,7 +128,7 @@
   function showOrderSummary(order,existing){
     var copy=existing?'You already have an order waiting for payment verification.':'Your order is recorded securely.';
     var extra=order.edition==='ebook'?'<p>Your ebook access activates only after payment is verified.</p>':'<p>Your pocketbook will move to fulfillment after payment is verified.</p>';
-    modalShell(existing?'Order already open':'Order created',copy,'<div class="book-order-summary"><strong>'+editionLabel(order.edition)+'</strong><p>'+peso(order.total_centavos)+' · '+String(order.status||'pending_payment').replace(/_/g,' ')+'</p><p class="book-order-number">Order '+order.id+'</p></div>'+extra+'<div class="book-order-actions"><a class="book-order-primary" href="'+paymentMail(order)+'">Payment / proof instructions</a>'+(order.edition==='ebook'?'<a class="book-order-secondary" href="reader.html">Open reader</a>':'')+'<button class="book-order-secondary" type="button" data-order-close>Close</button></div>');
+    modalShell(existing?'Order already open':'Order created',copy,'<div class="book-order-summary"><strong>'+editionLabel(order.edition)+'</strong><p>'+peso(order.total_centavos)+' · '+String(order.status||'pending_payment').replace(/_/g,' ')+'</p><p class="book-order-number">Order '+order.id+'</p></div>'+extra+'<div class="book-order-actions"><a class="book-order-primary" href="'+paymentMail(order)+'">Payment / proof instructions</a>'+(order.edition==='ebook'?'<a class="book-order-secondary" href="../ebook/">Open ebook app</a>':'')+'<button class="book-order-secondary" type="button" data-order-close>Close</button></div>');
     orderModal.querySelector('[data-order-close]').addEventListener('click',closeOrder);removeKey(ORDER_DRAFT);cleanOrderQuery();
   }
   function renderOrderForm(edition,email){
@@ -142,7 +142,7 @@
       e.preventDefault();var f=e.currentTarget,status=orderModal.querySelector('#bookOrderStatus'),draft=draftFor(edition);var payload={edition:edition,quantity:Number(f.elements.quantity.value),idempotency_key:draft.idempotency_key,customer_name:f.elements.customer_name.value.trim()};
       if(pocket){payload.phone=f.elements.phone.value.trim();payload.shipping_address={line1:document.getElementById('bookLine1').value.trim(),city:document.getElementById('bookCity').value.trim(),province:document.getElementById('bookProvince').value.trim(),postal_code:document.getElementById('bookPostal').value.trim(),country:'PH'};}
       status.textContent='Creating your order…';
-      try{var data=await api('create_order',payload);showOrderSummary(data.order,false);}catch(err){var map={already_owned:'This email already has ebook access. Open the reader instead.',pending_order_exists:'You already have an unpaid order for this edition.',rate_limited:'Too many order attempts were made recently. Please use your existing order.',content_not_ready:'The ebook is not available for ordering yet.',invalid_order:'Please check the order details and try again.',idempotency_conflict:'This order draft changed. Close this window and start again.'};status.textContent=map[err.message]||'The order could not be created right now. Please try again.';if(err.message==='idempotency_conflict')removeKey(ORDER_DRAFT);}
+      try{var data=await api('create_order',payload);showOrderSummary(data.order,false);}catch(err){var map={already_owned:'This email already has ebook access. Open the ebook app instead.',pending_order_exists:'You already have an unpaid order for this edition.',rate_limited:'Too many order attempts were made recently. Please use your existing order.',content_not_ready:'The ebook is not available for ordering yet.',invalid_order:'Please check the order details and try again.',idempotency_conflict:'This order draft changed. Close this window and start again.'};status.textContent=map[err.message]||'The order could not be created right now. Please try again.';if(err.message==='idempotency_conflict')removeKey(ORDER_DRAFT);}
     });
   }
   async function openOrder(edition){
@@ -152,7 +152,7 @@
     try{
       if(edition==='ebook'){
         var access=await api('access');
-        if(access.has_access===true){modalShell('Your ebook is active','This account already owns the ebook.','<div class="book-order-actions"><a class="book-order-primary" href="reader.html">Open reader</a><button class="book-order-secondary" type="button" data-order-close>Close</button></div>');orderModal.querySelector('[data-order-close]').addEventListener('click',closeOrder);removeKey(ORDER_DRAFT);cleanOrderQuery();return;}
+        if(access.has_access===true){modalShell('Your ebook is active','This account already owns the ebook. Open it in the ebook app.','<div class="book-order-actions"><a class="book-order-primary" href="../ebook/">Open ebook app</a><button class="book-order-secondary" type="button" data-order-close>Close</button></div>');orderModal.querySelector('[data-order-close]').addEventListener('click',closeOrder);removeKey(ORDER_DRAFT);cleanOrderQuery();return;}
       }
       var data=await api('orders'),orders=Array.isArray(data.orders)?data.orders:[],pending=orders.find(function(o){return o.edition===edition&&o.status==='pending_payment';});
       if(pending){showOrderSummary(pending,true);return;}
