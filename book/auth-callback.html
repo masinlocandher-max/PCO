@@ -12,15 +12,23 @@
 </head>
 <body>
   <main class="card">
-    <small>Protected Ebook</small>
+    <small>Protected Book Order</small>
     <h1 id="title">Securing your sign-in…</h1>
     <p id="message">Please keep this page open for a moment.</p>
-    <a id="back" href="./?ebook=checkout" hidden>Return to checkout</a>
+    <a id="back" href="./">Return to the book</a>
   </main>
   <script>
     (function(){
       'use strict';
       var title=document.getElementById('title'),message=document.getElementById('message'),back=document.getElementById('back');
+      function safeReturn(){
+        try{
+          var saved=JSON.parse(localStorage.getItem('trwtl.auth-return')||'null');
+          localStorage.removeItem('trwtl.auth-return');
+          if(saved&&typeof saved.path==='string'&&/^\.\/\?order=(ebook|pocketbook)$/.test(saved.path)&&Date.now()-Number(saved.created_at||0)<30*60*1000)return saved.path;
+        }catch(e){}
+        return './';
+      }
       function fail(text){title.textContent='Sign-in could not be completed';message.textContent=text;back.hidden=false;}
       try{
         var params=new URLSearchParams(location.hash.slice(1));
@@ -30,15 +38,16 @@
           fail(error?'The secure link was not accepted. Please request a new one.':'This secure sign-in link is incomplete. Please request a new one.');
           return;
         }
-        var raw=access.split('.')[1].replace(/-/g,'+').replace(/_/g,'/');
-        raw=raw.padEnd(Math.ceil(raw.length/4)*4,'=');
+        var raw=access.split('.')[1].replace(/-/g,'+').replace(/_/g,'/');raw=raw.padEnd(Math.ceil(raw.length/4)*4,'=');
         var claims=JSON.parse(atob(raw));
         var expiresAt=Number(params.get('expires_at'))||Number(claims.exp)||Math.floor(Date.now()/1000)+Number(params.get('expires_in')||3600);
         localStorage.setItem('trwtl.auth',JSON.stringify({access_token:access,refresh_token:refresh,expires_at:expiresAt}));
         history.replaceState(null,'',location.pathname);
+        var destination=safeReturn();
         title.textContent='Signed in securely';
-        message.textContent='Returning you to your ebook order now.';
-        setTimeout(function(){location.replace('./?ebook=checkout');},180);
+        message.textContent='Returning you to your order now.';
+        back.href=destination;back.textContent='Return to your order';
+        setTimeout(function(){location.replace(destination);},180);
       }catch(e){fail('The sign-in response could not be verified on this device. Please request a new secure link.');}
     })();
   </script>
