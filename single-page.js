@@ -1,4 +1,4 @@
-/* Purpose gate -> optional sound gate -> one-page executive CV. */
+/* Three destinations -> optional sound choice -> one-page executive CV. */
 (function(){
   'use strict';
 
@@ -12,6 +12,7 @@
   var soundBtn=document.getElementById('soundToggle');
   var soundLabel=document.getElementById('soundLabel');
   var KEY='fmb-sound-preference';
+  var CV_HASH='#cv';
 
   function paint(on){
     if(!soundBtn)return;
@@ -19,41 +20,101 @@
     soundBtn.setAttribute('aria-label',on?'Turn sound off':'Turn sound on');
     if(soundLabel)soundLabel.textContent=on?'Sound on':'Sound';
   }
-  function close(el){
+  function clearClose(el){
+    if(!el||!el._fmbCloseTimer)return;
+    window.clearTimeout(el._fmbCloseTimer);
+    el._fmbCloseTimer=null;
+  }
+  function close(el,delay){
     if(!el)return;
+    clearClose(el);
     el.classList.add('is-closing');
-    window.setTimeout(function(){el.hidden=true;},700);
+    el._fmbCloseTimer=window.setTimeout(function(){
+      el.hidden=true;
+      el._fmbCloseTimer=null;
+    },typeof delay==='number'?delay:420);
   }
   function open(el){
     if(!el)return;
+    clearClose(el);
     el.hidden=false;
     el.classList.remove('is-closing');
   }
-  function finish(){
+  function storedSound(){
+    try{return localStorage.getItem(KEY)||'';}catch(e){return '';}
+  }
+  function scrollTopNow(){
+    window.requestAnimationFrame(function(){window.scrollTo(0,0);});
+  }
+  function showChooser(){
+    body.classList.add('route-locked');
+    if(sound){clearClose(sound);sound.hidden=true;sound.classList.remove('is-closing');}
+    open(route);
+    scrollTopNow();
+  }
+  function revealCv(){
+    if(route){clearClose(route);route.hidden=true;route.classList.remove('is-closing');}
+    if(sound){clearClose(sound);sound.hidden=true;sound.classList.remove('is-closing');}
     body.classList.remove('route-locked');
+    scrollTopNow();
+  }
+  function finish(){
+    revealCv();
     window.setTimeout(function(){
       var hero=document.getElementById('heroTitle');
       if(hero)hero.scrollIntoView({block:'start'});
     },80);
   }
+  function playFromCvGesture(){
+    if(!audio)return;
+    audio.volume=1;
+    var p=audio.play();
+    if(p&&typeof p.catch==='function')p.catch(function(){paint(false);});
+    paint(true);
+  }
+  function enterCvFromChoice(){
+    if(window.location.hash!==CV_HASH){
+      history.pushState({fmbView:'cv'},'',CV_HASH);
+    }
+    var pref=storedSound();
+    if(pref==='on'){
+      playFromCvGesture();
+      finish();
+      return;
+    }
+    if(pref==='off'){
+      if(audio)audio.pause();
+      paint(false);
+      finish();
+      return;
+    }
+    close(route,260);
+    window.setTimeout(function(){
+      if(window.location.hash!==CV_HASH)return;
+      open(sound);
+      if(withSound)withSound.focus();
+    },180);
+  }
+  function syncViewFromUrl(){
+    if(window.location.hash===CV_HASH){
+      revealCv();
+    }else{
+      showChooser();
+    }
+  }
 
-  body.classList.add('route-locked');
   if(cv){
-    cv.addEventListener('click',function(){
-      close(route);
-      window.setTimeout(function(){open(sound);if(withSound)withSound.focus();},380);
+    cv.addEventListener('click',function(e){
+      if(e)e.preventDefault();
+      enterCvFromChoice();
     });
   }
   if(withSound){
     withSound.addEventListener('click',function(){
       try{localStorage.setItem(KEY,'on');}catch(e){}
-      if(audio){
-        audio.volume=1;
-        var p=audio.play();
-        if(p&&typeof p.catch==='function')p.catch(function(){paint(false);});
-        paint(true);
-      }
-      close(sound);finish();
+      playFromCvGesture();
+      close(sound,260);
+      finish();
     });
   }
   if(silent){
@@ -61,9 +122,13 @@
       try{localStorage.setItem(KEY,'off');}catch(e){}
       if(audio)audio.pause();
       paint(false);
-      close(sound);finish();
+      close(sound,260);
+      finish();
     });
   }
+  window.addEventListener('popstate',syncViewFromUrl);
+  window.addEventListener('hashchange',syncViewFromUrl);
+  syncViewFromUrl();
 
   /* ------------------------------------------------------- fuller CV copy */
   var role=document.querySelector('.hero-role');
