@@ -15,7 +15,7 @@
     var link=document.createElement('link');
     link.id='bookMobilePolish';
     link.rel='stylesheet';
-    link.href='/book/mobile-polish.css?v=20260907-1';
+    link.href='/book-mobile-polish.css?v=20260907-2';
     document.head.appendChild(link);
   }
 
