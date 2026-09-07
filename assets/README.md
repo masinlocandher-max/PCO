@@ -33,6 +33,26 @@ The current Drive HD masters above remain the canonical source for the next cont
 
 The Drive file previously documented as `IMG_0455.JPG` was not present in the current HD master folders during this audit, so it is no longer listed as the current close-portrait source. `73351DE4-ED4C-4A06-A2AB-E3600B9D735A.png` is a studio portrait rather than a lectern photograph; it is therefore treated as a future portrait candidate, not blindly substituted for the current Talent-stage image.
 
+## Book landing photography — outstanding
+
+`assets/img/book-hero-portrait.jpg` and `assets/img/book-cover-art.jpg` are **not valid JPEG
+binaries**. Neither file carries a JPEG start-of-image marker, so both render as broken images
+wherever they are referenced: the book landing hero portrait, and the book card on the root
+chooser (`route-book.css`). This is the same corruption class as the September 7 CV portrait
+repair above, and it reached production because the release guard only inspected `.webp` files.
+
+`scripts/validate-site-assets.py` now checks every shipped raster in `assets/img` by magic bytes
+rather than by extension, so the deploy workflow fails while these two files remain corrupt.
+
+To clear it, re-export both from the Drive masters and confirm `python3
+scripts/validate-site-assets.py` passes before merging:
+
+- `book-hero-portrait.jpg` — the campaign portrait in the yellow gown. Required by the book
+  landing hero; there is no coded substitute for a photograph.
+- `book-cover-art.jpg` — still referenced by `route-book.css` for the root chooser card. The book
+  landing no longer needs it: the cover artwork inside the tablet, phone, and open book is now
+  rendered from markup in `book/index.html`, so it stays crisp at any density.
+
 ## Processing
 
 Photography is converted to WebP without cropping or upscaling. CSS controls framing. Web delivery derivatives may be resized below the source resolution to reduce page weight while preserving the original aspect ratio. The Drive originals remain the source of truth.

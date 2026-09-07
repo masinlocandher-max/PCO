@@ -7,10 +7,28 @@ import sys
 ROOT = Path(__file__).resolve().parents[1]
 ERRORS = []
 
-for path in sorted((ROOT / 'assets' / 'img').glob('*.webp')):
-    data = path.read_bytes()
-    if len(data) < 12 or data[:4] != b'RIFF' or data[8:12] != b'WEBP':
-        ERRORS.append(f'invalid WebP binary: {path.relative_to(ROOT)}')
+# Every shipped raster is checked by magic bytes, not by extension. A file that
+# is named .jpg but is not a JPEG renders as a broken image in production, which
+# is how two book-landing photographs reached the live site unnoticed.
+RASTER_SIGNATURES = {
+    '.webp': lambda d: len(d) >= 12 and d[:4] == b'RIFF' and d[8:12] == b'WEBP',
+    '.jpg': lambda d: len(d) >= 3 and d[:3] == b'\xff\xd8\xff',
+    '.jpeg': lambda d: len(d) >= 3 and d[:3] == b'\xff\xd8\xff',
+    '.png': lambda d: len(d) >= 8 and d[:8] == b'\x89PNG\r\n\x1a\n',
+    '.gif': lambda d: len(d) >= 6 and d[:6] in (b'GIF87a', b'GIF89a'),
+}
+
+raster_count = 0
+for path in sorted((ROOT / 'assets' / 'img').iterdir()):
+    is_valid = RASTER_SIGNATURES.get(path.suffix.lower())
+    if not path.is_file() or is_valid is None:
+        continue
+    raster_count += 1
+    if not is_valid(path.read_bytes()):
+        ERRORS.append(
+            f'not a valid {path.suffix.lstrip(".").upper()} binary: '
+            f'{path.relative_to(ROOT)}'
+        )
 
 for rel in (
     'assets/img/portrait-hero.webp',
@@ -70,8 +88,7 @@ if ERRORS:
         print(f' - {err}', file=sys.stderr)
     raise SystemExit(1)
 
-webp_count = len(list((ROOT / 'assets' / 'img').glob('*.webp')))
 print(
-    f'Asset validation passed: {webp_count} WebP files valid; '
+    f'Asset validation passed: {raster_count} image files valid; '
     'HTML local references resolve.'
 )
