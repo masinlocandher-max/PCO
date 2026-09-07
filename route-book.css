@@ -1,27 +1,63 @@
 /* Three-destination entry gate: CV, News, Book. */
 
 /*
-  The portfolio body stays intentionally locked while the destination gate is open.
-  Therefore the gate itself MUST own vertical scrolling on short/mobile viewports.
+  iOS-safe route mode.
+  While the destination chooser is open, let the document itself scroll normally
+  instead of trying to scroll a fixed modal inside an overflow-locked body.
+  Underlying CV content is hidden until single-page.js removes route-locked.
 */
-.route-gate{
-  z-index:130;
-  overflow-x:hidden;
-  overflow-y:auto;
+body.route-locked{
+  overflow-x:hidden!important;
+  overflow-y:auto!important;
+  height:auto!important;
+  min-height:100%!important;
+  position:static!important;
+  touch-action:pan-y!important;
   -webkit-overflow-scrolling:touch;
-  overscroll-behavior-y:contain;
-  touch-action:pan-y;
-  align-items:flex-start;
-  justify-content:center;
-  padding-top:max(24px,env(safe-area-inset-top));
+}
+body.route-locked > :not(.gate):not(script){display:none!important}
+
+body.route-locked > .route-gate{
+  position:relative!important;
+  inset:auto!important;
+  z-index:130;
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr);
+  align-items:center;
+  width:100%;
+  min-height:100svh;
+  height:auto!important;
+  overflow:visible!important;
+  touch-action:pan-y!important;
+  padding-top:max(28px,env(safe-area-inset-top));
   padding-right:max(24px,env(safe-area-inset-right));
-  padding-bottom:max(24px,env(safe-area-inset-bottom));
+  padding-bottom:max(34px,env(safe-area-inset-bottom));
   padding-left:max(24px,env(safe-area-inset-left));
 }
-.route-gate .gate-sheet{
-  width:min(1120px,100%);
-  margin-block:auto;
+body.route-locked > .route-gate .gate-veil{
+  position:absolute;
+  inset:0;
+  min-height:100%;
+  pointer-events:none;
 }
+.route-gate .gate-sheet{
+  position:relative;
+  z-index:1;
+  width:min(1120px,100%);
+  margin:0 auto;
+  padding:18px 0;
+}
+
+/* Keep the short sound-choice gate modal-like after CV is chosen. */
+body.route-locked > #soundGate:not([hidden]){
+  position:fixed!important;
+  inset:0!important;
+  z-index:140;
+  overflow-y:auto;
+  -webkit-overflow-scrolling:touch;
+  touch-action:pan-y;
+}
+
 .route-options{grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
 .route-choice{position:relative;isolation:isolate;overflow:hidden;min-height:250px;background:#0b0710}
 .route-choice::before,.route-choice::after{content:"";position:absolute;inset:0;pointer-events:none}
@@ -52,13 +88,14 @@
 }
 
 @media(max-width:760px){
-  .route-gate{
+  body.route-locked > .route-gate{
+    align-items:start;
     padding-top:max(18px,env(safe-area-inset-top));
     padding-right:max(16px,env(safe-area-inset-right));
-    padding-bottom:max(26px,env(safe-area-inset-bottom));
+    padding-bottom:max(30px,env(safe-area-inset-bottom));
     padding-left:max(16px,env(safe-area-inset-left));
   }
-  .route-gate .gate-sheet{margin-block:0;padding-bottom:12px}
+  .route-gate .gate-sheet{padding:0 0 18px}
   .route-gate .gate-mark{margin-bottom:20px}
   .route-gate .gate-copy{margin-bottom:24px}
   .route-options{grid-template-columns:1fr;margin-top:22px}
@@ -68,5 +105,6 @@
 }
 
 @media(max-height:760px){
-  .route-gate .gate-sheet{margin-block:0}
+  body.route-locked > .route-gate{align-items:start}
+  .route-gate .gate-sheet{padding-top:0}
 }
