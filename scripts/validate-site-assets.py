@@ -38,9 +38,9 @@ MANUSCRIPT_WORDS = ('manuscript', 'chapter-draft', 'full-text', 'fulltext')
 
 BOOK_ALLOWED = {
     'index.html', 'reader.html', 'offline.html', 'auth-callback.html',
-    'free-access.html',
+    'free-access.html', 'payment-success.html',
     'landing.css', 'reader.css', 'scroll-fix.css', 'mobile-polish.css',
-    'book.js', 'reader.js', 'sw.js',
+    'book.js', 'paymongo.js', 'reader.js', 'sw.js',
     'manifest.webmanifest',
     'app-icon-192.png', 'app-icon-512.png',
     'app-icon-maskable.png', 'app-icon-apple.png',
