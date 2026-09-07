@@ -124,6 +124,14 @@
   }
   initInstall();
 
+  function normalizePreviewCopy(){
+    var card=document.querySelector('.unlock-card');if(!card)return;
+    var heading=card.querySelector('h2');if(heading)heading.textContent='The rest of the book is waiting for you.';
+    var paragraphs=card.querySelectorAll('p');if(paragraphs[0])paragraphs[0].textContent='Your full reader opens once your copy is activated. Paid and complimentary copies use the same protected reader, tied to the verified email for that copy.';
+    var note=card.querySelector('.unlock-note');if(note)note.innerHTML='Already have access? Open <b>Reader access</b> and use the email attached to your copy.';
+  }
+  normalizePreviewCopy();
+
   function scrollPercent(){var max=document.documentElement.scrollHeight-innerHeight;return max>0?Math.max(0,Math.min(100,(scrollY/max)*100)):0;}
   var lastY=scrollY;
   function onScroll(){
@@ -182,9 +190,36 @@
   function cleanTitle(title){return String(title||'').replace(/^PART\s+[IVX]+:\s*/i,'').replace(/^Interlude:\s*/i,'');}
   function buildToc(rows){var panel=document.querySelector('#tocPanel .panel-body');if(!panel)return;panel.innerHTML='';rows.forEach(function(row){if(row.kind==='part'){var p=document.createElement('p');p.className='toc-part';p.textContent=cleanTitle(row.title);panel.appendChild(p);return;}var b=document.createElement('button');b.type='button';b.className='toc-item';b.dataset.readerSequence=String(row.sequence);var m=/^(\d{2})\.\s*/.exec(row.title||''),n=document.createElement('b');n.textContent=m?m[1]:'·';var s=document.createElement('span');s.textContent=cleanTitle(String(row.title||'').replace(/^\d{2}\.\s*/,''));b.appendChild(n);b.appendChild(s);panel.appendChild(b);});}
   function markActive(sequence){document.querySelectorAll('.toc-item').forEach(function(x){x.classList.toggle('is-active',Number(x.dataset.readerSequence)===Number(sequence));});}
+  function readableRows(){return manifest.filter(function(row){return row&&row.kind!=='part';});}
+  function appendReaderEndNote(sequence){
+    var rows=readableRows();if(!rows.length||Number(rows[rows.length-1].sequence)!==Number(sequence))return;
+    var note=document.createElement('section');note.className='reader-end-note';note.setAttribute('aria-label','A note from FMB');
+    note.innerHTML='<span class="reader-end-kicker">A note from FMB</span><h2>Thank you for staying until the last page.</h2><p>I wrote this book from the life I have lived so far, including the decisions I am proud of and the ones that taught me the hard way. Keep what helps you. Question what does not. Change your mind when life gives you a better answer.</p><p>Whatever you build from here, I hope it feels true to you even when nobody is watching.</p><p class="reader-end-signoff">With love,<br><strong>FMB</strong></p>';
+    readerDoc.appendChild(note);
+  }
+  function appendChapterNavigation(sequence){
+    var rows=readableRows(),index=rows.findIndex(function(row){return Number(row.sequence)===Number(sequence);});if(index<0)return;
+    var nav=document.createElement('nav');nav.className='reader-chapter-nav';nav.setAttribute('aria-label','Chapter navigation');
+    if(index>0){var prev=document.createElement('button');prev.type='button';prev.className='reader-nav-button reader-nav-secondary';prev.innerHTML='<span>Previous</span><strong>'+cleanTitle(String(rows[index-1].title||'').replace(/^\d{2}\.\s*/,''))+'</strong>';prev.addEventListener('click',function(){openChapter(rows[index-1].sequence,0);});nav.appendChild(prev);}
+    if(index<rows.length-1){var next=document.createElement('button');next.type='button';next.className='reader-nav-button reader-nav-primary';next.innerHTML='<span>Next</span><strong>'+cleanTitle(String(rows[index+1].title||'').replace(/^\d{2}\.\s*/,''))+'</strong>';next.addEventListener('click',function(){openChapter(rows[index+1].sequence,0);});nav.appendChild(next);}else{var contents=document.createElement('button');contents.type='button';contents.className='reader-nav-button reader-nav-primary';contents.innerHTML='<span>Finished</span><strong>Return to contents</strong>';contents.addEventListener('click',function(){var button=document.getElementById('tocBtn');if(button)button.click();});nav.appendChild(contents);}
+    readerDoc.appendChild(nav);
+  }
   function restoreScroll(percent){restoringProgress=true;requestAnimationFrame(function(){requestAnimationFrame(function(){var max=document.documentElement.scrollHeight-innerHeight;scrollTo(0,max>0?max*(Math.max(0,Math.min(100,Number(percent)||0))/100):0);restoringProgress=false;onScroll();});});}
   function renderChapter(chapter,wm,restorePercent){
-    if(!readerDoc||!chapter)return;readerDoc.innerHTML='';var meta=document.createElement('span');meta.className='chapter-meta';meta.textContent=chapter.kind==='chapter'?'Chapter':'The Right Way to Live';var h=document.createElement('h1');h.id='chapterTitle';h.textContent=cleanTitle(String(chapter.title||'').replace(/^\d{2}\.\s*/,''));var rule=document.createElement('span');rule.className='chapter-rule';rule.setAttribute('aria-hidden','true');var prose=document.createElement('div');prose.className='reader-prose';String(chapter.body||'').split(/\n{2,}/).forEach(function(para){if(!para.trim())return;var p=document.createElement('p');p.textContent=para.trim();prose.appendChild(p);});readerDoc.appendChild(meta);readerDoc.appendChild(h);readerDoc.appendChild(rule);readerDoc.appendChild(prose);activeSequence=Number(chapter.sequence);prefs.sequence=activeSequence;prefs.percent=Number(restorePercent)||0;writeJson(PREF_STORE,prefs);markActive(activeSequence);var barTitle=document.getElementById('barTitle');if(barTitle)barTitle.textContent=h.textContent;if(wm&&wm.email)buildWatermark(('PERSONAL COPY · '+wm.email).toUpperCase());restoreScroll(restorePercent||0);scheduleProgressSave();
+    if(!readerDoc||!chapter)return;
+    readerDoc.classList.remove('reader-enter');readerDoc.innerHTML='';
+    var meta=document.createElement('span');meta.className='chapter-meta';meta.textContent=chapter.kind==='chapter'?'Chapter':'The Right Way to Live';
+    var h=document.createElement('h1');h.id='chapterTitle';h.textContent=cleanTitle(String(chapter.title||'').replace(/^\d{2}\.\s*/,''));
+    var rule=document.createElement('span');rule.className='chapter-rule';rule.setAttribute('aria-hidden','true');
+    var prose=document.createElement('div');prose.className='reader-prose';
+    String(chapter.body||'').split(/\n{2,}/).forEach(function(para){if(!para.trim())return;var p=document.createElement('p');p.textContent=para.trim();prose.appendChild(p);});
+    readerDoc.appendChild(meta);readerDoc.appendChild(h);readerDoc.appendChild(rule);readerDoc.appendChild(prose);
+    activeSequence=Number(chapter.sequence);prefs.sequence=activeSequence;prefs.percent=Number(restorePercent)||0;writeJson(PREF_STORE,prefs);markActive(activeSequence);
+    var barTitle=document.getElementById('barTitle');if(barTitle)barTitle.textContent=h.textContent;
+    if(wm&&wm.email)buildWatermark(('PERSONAL COPY · '+wm.email).toUpperCase());
+    appendReaderEndNote(activeSequence);appendChapterNavigation(activeSequence);
+    requestAnimationFrame(function(){readerDoc.classList.add('reader-enter');});
+    restoreScroll(restorePercent||0);scheduleProgressSave();
   }
   async function openChapter(sequence,restorePercent){
     if(!entitled){showToast('This chapter opens once your copy is activated.');return;}showToast('Opening chapter…');

@@ -72,12 +72,17 @@
   }
 
   function initOffline(){if('serviceWorker' in navigator)window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js')['catch'](function(){});});}
+  function initLaunchMotion(){
+    if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){document.body.setAttribute('data-motion','ready');return;}
+    document.body.setAttribute('data-motion','boot');
+    requestAnimationFrame(function(){requestAnimationFrame(function(){document.body.setAttribute('data-motion','ready');});});
+  }
   function initReveal(){
-    var passages=document.querySelectorAll('.passage');
-    if(!passages.length||!('IntersectionObserver' in window)||window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
-    passages.forEach(function(el){el.setAttribute('data-reveal','');});
-    var watcher=new IntersectionObserver(function(entries){entries.forEach(function(entry){if(!entry.isIntersecting)return;entry.target.setAttribute('data-reveal','in');watcher.unobserve(entry.target);});},{rootMargin:'0px 0px -12% 0px',threshold:.15});
-    passages.forEach(function(el){watcher.observe(el);});
+    var items=document.querySelectorAll('.book-intro .intro-copy,.product-stage,.strip-inner,.passage,.quote-inner,.purchase-main,.edition,.campaign-footer');
+    if(!items.length||!('IntersectionObserver' in window)||window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+    items.forEach(function(el,index){el.setAttribute('data-reveal','');el.style.setProperty('--reveal-delay',String((index%3)*55)+'ms');});
+    var watcher=new IntersectionObserver(function(entries){entries.forEach(function(entry){if(!entry.isIntersecting)return;entry.target.setAttribute('data-reveal','in');watcher.unobserve(entry.target);});},{rootMargin:'0px 0px -10% 0px',threshold:.12});
+    items.forEach(function(el){watcher.observe(el);});
   }
   function replaceListCopy(li,text){var svg=li.querySelector('svg');while(li.firstChild)li.removeChild(li.firstChild);if(svg)li.appendChild(svg);li.appendChild(document.createTextNode(text));}
   function alignReaderCopy(){
@@ -159,6 +164,7 @@
   initCheckout();
   initNav();
   initOffline();
+  initLaunchMotion();
   initReveal();
   alignReaderCopy();
   addOrderUI();

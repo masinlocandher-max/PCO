@@ -7,11 +7,12 @@
   <meta name="theme-color" content="#fbf5e8">
   <title>Secure sign-in | The Right Way to Live</title>
   <style>
-    *{box-sizing:border-box}html,body{min-height:100%;margin:0}body{display:grid;place-items:center;padding:24px;background:#fbf5e8;color:#2a211a;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.card{width:min(430px,100%);padding:28px;border:1px solid #d7c6ae;border-radius:24px;background:#fffaf1;box-shadow:0 24px 70px rgba(36,23,12,.12)}small{display:block;margin-bottom:10px;color:#8a6339;font-weight:700;letter-spacing:.13em;text-transform:uppercase}h1{margin:0 0 12px;font:600 34px/1.05 Georgia,serif}p{margin:0;color:#695747;font-size:15px;line-height:1.6}a{display:inline-block;margin-top:18px;padding:12px 16px;border-radius:999px;background:#2a211a;color:#fff;text-decoration:none;font-size:13px;font-weight:700}
-  </style>
+  *{box-sizing:border-box}html,body{min-height:100%;margin:0}body{display:grid;place-items:end center;padding:0;background:linear-gradient(180deg,#f7efdf,#fbf6ec);color:#241c16;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",sans-serif;overflow:hidden}.card{position:relative;width:min(460px,100%);padding:34px 22px calc(28px + env(safe-area-inset-bottom));border:1px solid rgba(68,49,31,.12);border-bottom:0;border-radius:30px 30px 0 0;background:rgba(255,252,246,.92);-webkit-backdrop-filter:blur(26px) saturate(1.25);backdrop-filter:blur(26px) saturate(1.25);box-shadow:0 -16px 70px rgba(45,29,16,.12);text-align:center}.card:before{content:"";position:absolute;top:9px;left:50%;width:38px;height:5px;border-radius:999px;background:#43372d;opacity:.18;transform:translateX(-50%)}.auth-icon{display:grid;place-items:center;width:54px;height:54px;margin:0 auto 18px;border-radius:18px;background:#211a15;color:#fffaf1;box-shadow:0 12px 28px rgba(33,26,21,.18)}.auth-icon:before{content:"";width:20px;height:20px;border:2px solid currentColor;border-right-color:transparent;border-radius:50%;animation:spin .8s linear infinite}body.is-success .auth-icon:before{width:17px;height:9px;border:0;border-left:2px solid currentColor;border-bottom:2px solid currentColor;border-radius:0;transform:rotate(-45deg);animation:none}body.is-error .auth-icon{background:#6f312b}.card small{display:block;margin-bottom:9px;color:#776352;font-size:10px;font-weight:700;letter-spacing:.15em;text-transform:uppercase}.card h1{margin:0 0 10px;font:500 30px/1.08 Georgia,serif;letter-spacing:-.02em}.card p{margin:0;color:#6b5a4a;font-size:14px;line-height:1.55}.card a{display:inline-flex;align-items:center;justify-content:center;min-height:46px;margin-top:20px;padding:0 18px;border-radius:999px;background:#211a15;color:#fffaf1;text-decoration:none;font-size:13px;font-weight:700}.card a[hidden]{display:none}@keyframes spin{to{transform:rotate(360deg)}}@media(min-width:680px){body{place-items:center}.card{border-bottom:1px solid rgba(68,49,31,.12);border-radius:30px;padding-bottom:30px}}@media(prefers-reduced-motion:reduce){.auth-icon:before{animation:none}}
+</style>
 </head>
 <body>
   <main class="card">
+    <span class="auth-icon" aria-hidden="true"></span>
     <small>Protected Book Order</small>
     <h1 id="title">Securing your sign-in…</h1>
     <p id="message">Please keep this page open for a moment.</p>
@@ -29,7 +30,7 @@
         }catch(e){}
         return './';
       }
-      function fail(text){title.textContent='Sign-in could not be completed';message.textContent=text;back.hidden=false;}
+      function fail(text){document.body.classList.add('is-error');title.textContent='Sign-in could not be completed';message.textContent=text;back.hidden=false;}
       try{
         var params=new URLSearchParams(location.hash.slice(1));
         var access=params.get('access_token'),refresh=params.get('refresh_token');
@@ -44,10 +45,10 @@
         localStorage.setItem('trwtl.auth',JSON.stringify({access_token:access,refresh_token:refresh,expires_at:expiresAt}));
         history.replaceState(null,'',location.pathname);
         var destination=safeReturn();
-        title.textContent='Signed in securely';
+        document.body.classList.add('is-success');title.textContent='Signed in securely';
         message.textContent='Returning you to your order now.';
         back.href=destination;back.textContent='Return to your order';
-        setTimeout(function(){location.replace(destination);},180);
+        setTimeout(function(){location.replace(destination);},window.matchMedia('(prefers-reduced-motion: reduce)').matches?120:650);
       }catch(e){fail('The sign-in response could not be verified on this device. Please request a new secure link.');}
     })();
   </script>

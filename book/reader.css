@@ -210,3 +210,44 @@ body.is-immersive .reader-bar{transform:translateY(-100%);opacity:0}
 @media (prefers-reduced-motion:reduce){
   *{transition:none!important;animation:none!important;scroll-behavior:auto!important}
 }
+
+/* FMB reader iOS polish v1 */
+.unlock-primary,.install-invite button{background:#211a15;color:#fffaf1}
+.reader-access-btn{-webkit-tap-highlight-color:transparent}
+.reader-access-btn:active,.reader-nav-button:active{transform:scale(.975)}
+
+.reader-end-note{margin:clamp(56px,11vh,92px) 0 12px;padding:32px 24px 30px;border:1px solid var(--rule);border-radius:26px;background:var(--raise);box-shadow:0 20px 54px rgba(48,31,16,.08)}
+.reader-end-kicker{display:block;margin-bottom:12px;font-family:var(--sans);font-size:10.5px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--accent)}
+.reader-end-note h2{margin:0;font-family:var(--display);font-size:calc(1.75rem * var(--step));font-weight:400;line-height:1.15;letter-spacing:-.025em}
+.reader-end-note p{margin:16px 0 0;font-size:calc(1rem * var(--step));line-height:1.72;color:var(--ink-soft)}
+.reader-end-signoff{margin-top:24px!important;font-family:var(--display);font-style:italic;color:var(--ink)!important}
+.reader-end-signoff strong{font-size:1.25em;font-weight:500}
+
+.reader-chapter-nav{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:30px 0 10px;padding-top:24px;border-top:1px solid var(--rule)}
+.reader-nav-button{min-height:62px;padding:11px 14px;border-radius:18px;border:1px solid var(--rule);text-align:left;cursor:pointer;font-family:var(--sans);transition:transform .18s ease,background-color .18s ease}
+.reader-nav-button span{display:block;margin-bottom:4px;font-size:9.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;opacity:.68}
+.reader-nav-button strong{display:block;font-family:var(--display);font-size:14px;font-weight:500;line-height:1.25}
+.reader-nav-primary{background:#211a15;color:#fffaf1;border-color:#211a15}
+.reader-nav-secondary{background:var(--raise);color:var(--ink)}
+
+.install-invite[data-platform="ios"]{left:8px;right:8px;bottom:calc(env(safe-area-inset-bottom) + 8px);z-index:80;flex-direction:column;align-items:flex-start;gap:10px;padding:24px 48px calc(22px + env(safe-area-inset-bottom)) 20px;border-radius:28px;background:color-mix(in srgb,var(--paper) 92%,transparent);-webkit-backdrop-filter:blur(28px) saturate(1.3);backdrop-filter:blur(28px) saturate(1.3);box-shadow:0 24px 70px rgba(24,16,10,.24)}
+.install-invite[data-platform="ios"]:before{content:"";position:absolute;top:8px;left:50%;width:36px;height:5px;border-radius:999px;background:var(--ink-soft);opacity:.25;transform:translateX(-50%)}
+.install-invite[data-platform="ios"] p{font-size:14px;line-height:1.5}
+.install-invite[data-platform="ios"] strong{font-size:20px;line-height:1.15;margin-bottom:6px}
+.install-invite[data-platform="ios"] .install-dismiss{position:absolute;right:12px;top:12px;background:var(--raise);color:var(--ink)}
+
+@media(max-width:600px){
+  .reader-auth{place-items:end stretch!important;align-items:end!important;padding:0!important}
+  .reader-auth-card{width:100%!important;max-height:88dvh;overflow:auto;border-radius:28px 28px 0 0!important;padding:26px 20px calc(22px + env(safe-area-inset-bottom))!important}
+}
+
+@media(prefers-reduced-motion:no-preference){
+  .reader-doc.reader-enter{animation:fmb-reader-enter .52s cubic-bezier(.16,1,.3,1) both}
+  .install-invite[data-show][data-platform="ios"]{animation:fmb-ios-sheet .52s cubic-bezier(.16,1,.3,1) both}
+  .reader-auth[data-open]{animation:fmb-reader-backdrop .26s ease both}
+  .reader-auth[data-open] .reader-auth-card{animation:fmb-reader-sheet .5s cubic-bezier(.16,1,.3,1) both}
+  @keyframes fmb-reader-enter{from{opacity:0;transform:translate3d(0,12px,0);filter:blur(2px)}to{opacity:1;transform:none;filter:none}}
+  @keyframes fmb-ios-sheet{from{opacity:0;transform:translate3d(0,34px,0) scale(.985)}to{opacity:1;transform:none}}
+  @keyframes fmb-reader-backdrop{from{opacity:0}to{opacity:1}}
+  @keyframes fmb-reader-sheet{from{opacity:0;transform:translate3d(0,28px,0) scale(.985)}to{opacity:1;transform:none}}
+}
