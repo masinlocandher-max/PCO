@@ -94,7 +94,30 @@
     });
   }
 
+  /*
+    The quote journey arrives a passage at a time. Nothing is hidden without
+    JavaScript — the reveal class is added by script, so with JS off every
+    passage is simply visible, and prefers-reduced-motion skips it entirely.
+  */
+  function initReveal(){
+    var passages=document.querySelectorAll('.passage');
+    if(!passages.length)return;
+    if(!('IntersectionObserver' in window))return;
+    if(window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+
+    Array.prototype.forEach.call(passages,function(el){el.setAttribute('data-reveal','');});
+    var watcher=new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if(!entry.isIntersecting)return;
+        entry.target.setAttribute('data-reveal','in');
+        watcher.unobserve(entry.target);
+      });
+    },{rootMargin:'0px 0px -12% 0px',threshold:.15});
+    Array.prototype.forEach.call(passages,function(el){watcher.observe(el);});
+  }
+
   initCheckout();
   initNav();
   initOffline();
+  initReveal();
 })();
