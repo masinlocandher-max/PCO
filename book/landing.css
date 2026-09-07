@@ -141,7 +141,9 @@ img{max-width:100%}
 .hero-copy{position:relative;z-index:2;width:100%;
   padding-inline:max(var(--gutter),calc((100vw - 1400px) / 2 + var(--gutter)));
   text-align:left}
-.hero-eyebrow{margin:0 0 clamp(16px,2.2vw,28px);font-size:clamp(9.5px,.92vw,11.5px);font-weight:500;letter-spacing:.3em;text-transform:uppercase;color:#54401f}
+/* No byline over the picture. The header already carries her name a hundred
+   pixels above it, and the section below sets the attribution properly. Saying
+   it three times in one screen is not emphasis, it is noise. */
 .hero-copy h1{margin:0;font-family:var(--serif);font-weight:400;letter-spacing:-.05em;line-height:.83}
 .hero-copy h1 em{display:block;margin-bottom:.02em;font-size:clamp(30px,4.3vw,64px);font-weight:400}
 .hero-copy h1>span{display:block;font-size:clamp(52px,8.4vw,132px)}
@@ -387,7 +389,23 @@ img{max-width:100%}
   .book-nav[data-nav-open] .nav-toggle i:nth-child(1){transform:translateY(5.5px) rotate(45deg)}
   .book-nav[data-nav-open] .nav-toggle i:nth-child(2){opacity:0}
   .book-nav[data-nav-open] .nav-toggle i:nth-child(3){transform:translateY(-5.5px) rotate(-45deg)}
-  .nav-buy{grid-column:3;min-height:40px;padding:0 16px;font-size:10.5px;letter-spacing:.14em}
+  /*
+    The tagline is a sentence, not a two-word slogan, and on a phone it cannot
+    share a row with both a menu and a call to action. So the header trades:
+    over the hero it is the mark and the line, because the hero's own button is
+    right there in view; the moment you scroll past it the line condenses away
+    and the button takes its place. One row, nothing cramped, nothing dropped.
+  */
+  /* The line collapses its width as well as its height. Hiding it with opacity
+     alone leaves it setting the mark's intrinsic width, which then squeezes the
+     button that is arriving into the same row. */
+  .book-logo small{max-width:min(62vw,300px);opacity:1;overflow:hidden;
+    transition:opacity .3s var(--ease-out),max-height .34s var(--ease-out),font-size .34s var(--ease-out)}
+  .book-nav[data-over] .book-logo small{max-height:0;font-size:0;opacity:0}
+  .nav-buy{grid-column:3;min-height:40px;padding:0 16px;font-size:10.5px;letter-spacing:.14em;
+    opacity:0;transform:translateY(-4px) scale(.96);pointer-events:none;
+    transition:opacity .34s var(--ease-out),transform .34s var(--ease-out)}
+  .book-nav[data-over] .nav-buy{opacity:1;transform:none;pointer-events:auto}
   .nav-buy svg{display:none}
 
   /* visibility:hidden keeps the closed panel out of the accessibility tree. */
@@ -440,12 +458,17 @@ img{max-width:100%}
 @media(max-width:560px){
   :root{--gutter:18px}
   .book-logo{gap:5px}
-  .book-logo strong{font-size:9.5px;letter-spacing:.26em}
-  .book-logo small{font-size:12px}
+  .book-logo strong{font-size:9.5px;letter-spacing:.26em;
+    transition:font-size .34s var(--ease-out),letter-spacing .34s var(--ease-out)}
+  /* Condensed once the button joins the row, so the name is never truncated
+     and the button is never clipped. */
+  .book-nav[data-over] .book-logo strong{font-size:8.6px;letter-spacing:.19em}
+  .book-nav{gap:9px}
+  .nav-buy{padding:0 13px;font-size:10px}
+  .book-logo small{font-size:11.5px;line-height:1.25}
   .nav-buy{font-size:10px;padding:0 13px;min-height:36px}
   .nav-toggle{width:37px;height:37px}
 
-  .hero-eyebrow{margin-bottom:14px;font-size:9px;letter-spacing:.26em}
   .hero-copy h1{line-height:.86;letter-spacing:-.052em}
   .hero-copy h1>span{font-size:clamp(44px,13.4vw,62px)}
   .hero-rule{width:52px;margin-top:17px}
@@ -470,6 +493,13 @@ img{max-width:100%}
   .addon{grid-template-columns:auto 1fr;row-gap:16px}
   .addon-cta{grid-column:1/-1;width:100%}
   .footer-meta{font-size:11px}
+}
+
+/* Below this the name, the menu and a button cannot share one row without one
+   of them being cut. The hero and the purchase section both carry the call to
+   action, so the header keeps the name and the menu. */
+@media(max-width:360px){
+  .book-nav[data-over] .nav-buy{display:none}
 }
 
 @media(max-width:380px){
@@ -530,13 +560,11 @@ img{max-width:100%}
 @keyframes settle{from{opacity:0;transform:scale(1.045)}to{opacity:1;transform:none}}
 
 @media (prefers-reduced-motion:no-preference){
-  body[data-ready] .hero-eyebrow,
   body[data-ready] .hero-copy h1 em,
   body[data-ready] .hero-copy h1>span,
   body[data-ready] .hero-hook,
   body[data-ready] .hero-promise,
   body[data-ready] .hero-buy{animation:rise-in .95s var(--ease-out) both}
-  body[data-ready] .hero-eyebrow{animation-delay:.10s}
   body[data-ready] .hero-copy h1 em{animation-delay:.20s}
   body[data-ready] .hero-copy h1>span:nth-of-type(1){animation-delay:.30s}
   body[data-ready] .hero-copy h1>span:nth-of-type(2){animation-delay:.40s}
