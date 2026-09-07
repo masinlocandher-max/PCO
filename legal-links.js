@@ -9,13 +9,13 @@
     ['/shipping/','Shipping']
   ];
 
-  function ensureMobilePolish(){
+  function ensureBookVisuals(){
     if(!document.body||!document.body.classList.contains('book-campaign'))return;
-    if(document.getElementById('bookMobilePolish'))return;
+    if(document.getElementById('bookVisualSystem'))return;
     var link=document.createElement('link');
-    link.id='bookMobilePolish';
+    link.id='bookVisualSystem';
     link.rel='stylesheet';
-    link.href='/book-mobile-polish.css?v=20260907-2';
+    link.href='/book-visual.css?v=20260907-1';
     document.head.appendChild(link);
   }
 
@@ -55,7 +55,7 @@
     if(meta)meta.insertAdjacentElement('afterend',nav);else footer.appendChild(nav);
   }
 
-  function inject(){ensureMobilePolish();ensureStyles();injectCheckoutDisclosure();injectFooterNav();}
+  function inject(){ensureBookVisuals();ensureStyles();injectCheckoutDisclosure();injectFooterNav();}
   inject();
   new MutationObserver(inject).observe(document.documentElement,{childList:true,subtree:true});
 })();
