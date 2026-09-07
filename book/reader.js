@@ -22,6 +22,7 @@
   var lastProgressWrite=0;
   var progressTimer=null;
   var restoringProgress=false;
+  var showInstallForReader=function(){};
 
   function readJson(key){try{return JSON.parse(localStorage.getItem(key))||null;}catch(e){return null;}}
   function writeJson(key,value){try{localStorage.setItem(key,JSON.stringify(value));}catch(e){}}
@@ -77,7 +78,7 @@
     if(note)note.textContent='The reader shell can open without a signal. Protected chapters require a connection and are fetched only after your access is verified.';
     var remove=document.getElementById('removeCopy');if(remove)remove.hidden=true;
     document.querySelectorAll('.pref-note').forEach(function(p){if(p.textContent.indexOf('place in the book stay on this device only')>=0)p.innerHTML='Your text size and page colour stay on this device. <strong>Your reading place syncs securely to your account</strong> when you are signed in.';});
-    var invite=document.getElementById('installInvite');if(invite){var copy=invite.querySelector('p');if(copy)copy.innerHTML='<strong>Keep it on your home screen</strong>Open the reader in one tap. Protected chapters still require a connection.';}
+    var invite=document.getElementById('installInvite');if(invite){var copy=invite.querySelector('p');if(copy)copy.innerHTML='<strong>Keep your ebook on your Home Screen</strong>Open your copy in one tap, like an app. Protected chapters still require your verified access.';}
   }
   addEventListener('online',reflectConnection);addEventListener('offline',reflectConnection);reflectConnection();
   if('serviceWorker' in navigator)addEventListener('load',function(){navigator.serviceWorker.register('sw.js')['catch'](function(){});});
@@ -85,11 +86,45 @@
   function initInstall(){
     var invite=document.getElementById('installInvite'),installBtn=document.getElementById('installBtn'),dismiss=document.getElementById('installDismiss');if(!invite)return;
     var deferred=null,standalone=matchMedia('(display-mode: standalone)').matches||navigator.standalone===true;
-    addEventListener('beforeinstallprompt',function(e){e.preventDefault();deferred=e;if(!standalone&&!prefs.installDismissed)invite.setAttribute('data-show','');});
-    if(installBtn)installBtn.addEventListener('click',function(){if(!deferred)return;deferred.prompt();deferred.userChoice.then(function(){deferred=null;invite.removeAttribute('data-show');});});
-    if(dismiss)dismiss.addEventListener('click',function(){prefs.installDismissed=true;writeJson(PREF_STORE,prefs);invite.removeAttribute('data-show');});
-    var isIOS=/iphone|ipad|ipod/i.test(navigator.userAgent);
-    if(isIOS&&!standalone&&!prefs.installDismissed){if(installBtn)installBtn.hidden=true;invite.setAttribute('data-show','');}
+    var isIOS=/iphone|ipad|ipod/i.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+    var instructionsShown=false;
+
+    function hide(){invite.removeAttribute('data-show');}
+    function savePrompted(){prefs.installPrompted=true;writeJson(PREF_STORE,prefs);}
+    function baseCopy(){var copy=invite.querySelector('p');if(copy)copy.innerHTML='<strong>Keep your ebook on your Home Screen</strong>Open your copy in one tap, like an app. Protected chapters still require your verified access.';}
+
+    showInstallForReader=function(){
+      if(standalone||!entitled||prefs.installPrompted||prefs.installDismissed)return;
+      baseCopy();
+      invite.setAttribute('role','dialog');
+      invite.setAttribute('aria-label','Add The Right Way to Live to your Home Screen');
+      if(installBtn){installBtn.hidden=false;installBtn.textContent=isIOS?'How to add':'Add';}
+      invite.setAttribute('data-show','');
+      savePrompted();
+    };
+
+    addEventListener('beforeinstallprompt',function(e){
+      e.preventDefault();deferred=e;
+      if(entitled)setTimeout(showInstallForReader,700);
+    });
+    addEventListener('appinstalled',function(){prefs.installInstalled=true;writeJson(PREF_STORE,prefs);deferred=null;hide();showToast('The ebook is now on your Home Screen.');});
+
+    if(installBtn)installBtn.addEventListener('click',function(){
+      if(deferred){
+        deferred.prompt();
+        deferred.userChoice.then(function(choice){prefs.installInstalled=choice&&choice.outcome==='accepted';writeJson(PREF_STORE,prefs);deferred=null;hide();});
+        return;
+      }
+      var copy=invite.querySelector('p');
+      if(!instructionsShown){
+        instructionsShown=true;
+        if(copy)copy.innerHTML=isIOS?'<strong>Add it on iPhone or iPad</strong>In Safari, tap the Share button, choose <b>Add to Home Screen</b>, then tap <b>Add</b>.':'<strong>Add it from your browser menu</strong>Choose <b>Install app</b> or <b>Add to Home Screen</b> in your browser menu.';
+        installBtn.textContent='Got it';
+        return;
+      }
+      hide();
+    });
+    if(dismiss)dismiss.addEventListener('click',function(){prefs.installDismissed=true;writeJson(PREF_STORE,prefs);hide();});
   }
   initInstall();
 
@@ -164,7 +199,7 @@
   async function activateReader(){
     var btn=document.getElementById('readerAccessBtn'),session=await usableSession();if(!session){if(btn)btn.textContent='Reader access';return;}
     var claims=parseJwt(session.access_token);activeUserId=claims.sub||null;
-    try{var access=await api('access');entitled=access.has_access===true&&access.content_ready===true;manifest=Array.isArray(access.chapters)?access.chapters:[];if(btn)btn.textContent=entitled?'My ebook':'Account';refreshAccessModal();if(!entitled){showToast(access.content_ready===false?'Your ebook is being prepared.':'Signed in. This copy has not been activated yet.');return;}buildToc(manifest);var remote=await loadRemoteProgress(session),wanted=remote?Number(remote.chapter_sequence):Number(prefs.sequence)||1,percent=remote?Number(remote.scroll_percent)||0:Number(prefs.percent)||0,row=manifest.find(function(x){return Number(x.sequence)===wanted&&x.kind!=='part';})||manifest.find(function(x){return x.kind!=='part';});if(row)await openChapter(row.sequence,percent);}catch(e){if(e.message==='sign_in_required'){removeKey(AUTH_STORE);activeUserId=null;if(btn)btn.textContent='Reader access';}else showToast('Reader access could not be checked right now.');}
+    try{var access=await api('access');entitled=access.has_access===true&&access.content_ready===true;manifest=Array.isArray(access.chapters)?access.chapters:[];if(btn)btn.textContent=entitled?'My ebook':'Account';refreshAccessModal();if(!entitled){showToast(access.content_ready===false?'Your ebook is being prepared.':'Signed in. This copy has not been activated yet.');return;}buildToc(manifest);var remote=await loadRemoteProgress(session),wanted=remote?Number(remote.chapter_sequence):Number(prefs.sequence)||1,percent=remote?Number(remote.scroll_percent)||0:Number(prefs.percent)||0,row=manifest.find(function(x){return Number(x.sequence)===wanted&&x.kind!=='part';})||manifest.find(function(x){return x.kind!=='part';});if(row)await openChapter(row.sequence,percent);setTimeout(showInstallForReader,900);}catch(e){if(e.message==='sign_in_required'){removeKey(AUTH_STORE);activeUserId=null;if(btn)btn.textContent='Reader access';}else showToast('Reader access could not be checked right now.');}
   }
 
   addAccessUI();
