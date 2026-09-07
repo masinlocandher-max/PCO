@@ -20,6 +20,14 @@
   --sans:'DM Sans',Arial,sans-serif;
   --shell:min(100%,1400px);
   --gutter:clamp(22px,5vw,74px);
+  /* The bar floats over the photograph, so its height is a layout constant
+     the hero and the skip-target both have to know about. */
+  --nav-h:clamp(66px,6.4vw,104px);
+  /* How far the hero photograph runs past its own section. Every join on the
+     page was measured; this one was the loudest, because a picture that stops
+     at a section edge draws that edge. */
+  --hero-bleed:clamp(120px,16vw,300px);
+  --ease-out:cubic-bezier(.22,1,.36,1);
 }
 
 *{box-sizing:border-box}
@@ -30,96 +38,167 @@ svg{display:block}
 img{max-width:100%}
 
 /* ── Golden silk field ─────────────────────────────────────────────────── */
-/* book-silk-field.webp is the text-free band of the cover artwork, so the page
-   and the cover are literally the same piece of fabric. Two layers drift against
-   each other on transform only, which the compositor handles without repainting. */
+/*
+  book-silk-field.webp is the text-free band of the cover artwork, so the page
+  and the cover are literally the same piece of fabric.
+
+  The two layers used to drift slowly against each other. They no longer do, and
+  the reason is measured, not aesthetic: a fixed, full-viewport background scaled
+  to cover has to be re-composited on every animated frame, and at 1920×1080 that
+  alone took the page from 60fps to a p95 of 33–50ms — 113 of 150 scrolled frames
+  missing their deadline. With the animation removed the same scroll holds 16.8ms
+  p95. Nobody has ever noticed a 34-second drift behind a page they are scrolling;
+  everybody notices a page that stutters. The motion budget is spent where it can
+  actually be seen — the opening sequence, the reveals, and the parallax.
+
+  The two layers stay: one mirrored and offset against the other still builds a
+  richer, less repetitive fabric than a single plate.
+*/
 .ambient-silk{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;background:#fbf3e3}
-.silk{position:absolute;inset:-9%;display:block;background:url(../assets/img/book-silk-field.webp) center/cover no-repeat;will-change:transform;backface-visibility:hidden}
-.silk-a{animation:silk-drift-a 34s ease-in-out infinite alternate}
-.silk-b{opacity:.4;animation:silk-drift-b 47s ease-in-out infinite alternate}
-/* Deliberately no mix-blend-mode. soft-light looked marginally richer and cost
-   half the frame rate: a full-viewport blend re-composites the whole screen on
-   every animated frame. Measured 30fps with it, 60fps without. */
+.silk{position:absolute;inset:-9%;display:block;background:url(../assets/img/book-silk-field.webp) center/cover no-repeat;backface-visibility:hidden}
+.silk-a{transform:scale(1.05) translate3d(-.8%,-.5%,0)}
+.silk-b{opacity:.4;transform:scaleX(-1) scale(1.04) translate3d(-1%,.8%,0)}
 .silk-bloom{position:absolute;inset:0;display:block;background:
   radial-gradient(ellipse 66% 42% at 47% 0%,rgba(255,255,255,.94),rgba(255,251,240,.5) 44%,transparent 74%),
   radial-gradient(ellipse 52% 40% at 6% 62%,rgba(255,250,238,.42),transparent 66%),
   linear-gradient(180deg,rgba(255,252,244,.34) 0%,rgba(255,247,228,.06) 38%,rgba(255,250,238,.4) 100%)}
-
-@keyframes silk-drift-a{
-  from{transform:scale(1.02) translate3d(0,0,0)}
-  to{transform:scale(1.085) translate3d(-1.7%,-1.1%,0)}
-}
-@keyframes silk-drift-b{
-  from{transform:scaleX(-1) scale(1.07) translate3d(0,0,0)}
-  to{transform:scaleX(-1) scale(1.015) translate3d(-2.1%,1.5%,0)}
-}
 
 .book-nav,main,.campaign-footer{position:relative}
 .book-nav{z-index:20}
 .campaign-footer{z-index:12}
 
 /* ── Navigation ────────────────────────────────────────────────────────── */
-.book-nav{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:clamp(14px,2.6vw,40px);width:var(--shell);margin:0 auto;padding:24px var(--gutter) 10px}
+/*
+  The bar is fixed and transparent so the photograph runs the full height of
+  the screen behind it. Padding is computed from the viewport rather than a
+  centred wrapper, which keeps the three columns aligned to the same shell as
+  every section below without a second element in the markup.
+*/
+.book-nav{position:fixed;top:0;left:0;right:0;z-index:40;
+  display:grid;grid-template-columns:auto 1fr auto;align-items:center;
+  gap:clamp(14px,2.6vw,40px);
+  padding-inline:max(var(--gutter),calc((100vw - 1400px) / 2 + var(--gutter)));
+  padding-block:clamp(16px,2.1vw,30px) clamp(13px,1.7vw,22px);
+  transition:background-color .5s var(--ease-out),box-shadow .5s var(--ease-out),padding-block .5s var(--ease-out)}
 .book-logo{grid-column:1}
 .book-nav nav{grid-column:2}
 .nav-buy{grid-column:3}
 .nav-toggle{display:none}
-.book-logo,.footer-logo{display:inline-flex;flex-direction:column;width:max-content;text-decoration:none;font-family:var(--serif);line-height:.82}
-.book-logo small,.footer-logo small{font-size:17px;font-style:italic;line-height:1;padding-left:2px}
-.book-logo strong,.footer-logo strong{font-size:28px;font-weight:400;letter-spacing:-.045em}
-.book-nav nav{display:flex;justify-content:center;gap:clamp(16px,2.6vw,42px);padding-right:clamp(0px,7vw,120px)}
-.book-nav nav a,.campaign-footer nav a{font-family:var(--serif);font-size:14.5px;text-decoration:none;white-space:nowrap;transition:opacity .2s ease}
-.book-nav nav a:hover,.campaign-footer nav a:hover{text-decoration:underline;text-underline-offset:5px}
 
-.gold-button{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:44px;padding:0 24px;border:0;border-radius:999px;white-space:nowrap;background:linear-gradient(176deg,#9c7231 0%,#7d551c 55%,#6d4715 100%);color:#fdf6e6;text-decoration:none;font-family:var(--serif);font-size:17px;letter-spacing:.01em;box-shadow:0 10px 24px rgba(92,56,14,.2),inset 0 1px rgba(255,255,255,.22);transition:transform .22s ease,box-shadow .22s ease}
+/* Author-fronted wordmark: the name carries the site, the line carries the
+   book. Both are small — the photograph is the loud element, not the mark. */
+.book-logo{display:inline-flex;flex-direction:column;gap:6px;width:max-content;text-decoration:none;line-height:1}
+.book-logo strong{font-family:var(--sans);font-size:clamp(10.5px,1vw,12.5px);font-weight:500;letter-spacing:.34em;text-transform:uppercase}
+.book-logo small{font-family:var(--serif);font-style:italic;font-size:clamp(12px,1.15vw,15px);letter-spacing:.005em;color:var(--gold)}
+.footer-logo{display:inline-flex;flex-direction:column;gap:5px;width:max-content;text-decoration:none;line-height:1}
+.footer-logo strong{font-family:var(--sans);font-size:11px;font-weight:500;letter-spacing:.3em;text-transform:uppercase}
+.footer-logo small{font-family:var(--serif);font-style:italic;font-size:13px;color:var(--gold)}
+
+.book-nav nav{display:flex;justify-content:center;gap:clamp(16px,2.6vw,42px);padding-right:clamp(0px,7vw,120px)}
+.book-nav nav a,.campaign-footer nav a{font-family:var(--sans);font-size:clamp(10px,.95vw,11.5px);font-weight:500;letter-spacing:.2em;text-transform:uppercase;text-decoration:none;white-space:nowrap}
+
+.gold-button{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:46px;padding:0 26px;border:0;border-radius:999px;white-space:nowrap;background:linear-gradient(176deg,#9c7231 0%,#7d551c 55%,#6d4715 100%);color:#fdf6e6;text-decoration:none;font-family:var(--sans);font-size:12px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;box-shadow:0 10px 24px rgba(92,56,14,.2),inset 0 1px rgba(255,255,255,.22);transition:transform .22s ease,box-shadow .22s ease}
 .gold-button:hover{transform:translateY(-2px);box-shadow:0 15px 30px rgba(92,56,14,.26),inset 0 1px rgba(255,255,255,.26)}
-.nav-buy{min-height:38px;padding:0 19px;font-size:15px}
-.gold-button svg,.text-link svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.nav-buy{min-height:40px;padding:0 20px;font-size:11px}
+.gold-button svg,.text-link svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
 
 /* ── Hero ──────────────────────────────────────────────────────────────── */
-/* The portrait deliberately overruns the section so the figure carries into
-   the section below, exactly as the reference composition does. */
-.campaign-hero{position:relative;z-index:2;width:var(--shell);margin:0 auto;padding:clamp(26px,5.5vw,72px) var(--gutter) clamp(36px,8vw,112px)}
-.hero-portrait{position:absolute;z-index:1;right:max(0px,calc((100vw - 1400px) / 2));top:0;width:min(55vw,740px);height:calc(100% + clamp(120px,26.5vw,340px));margin:0;overflow:hidden;
-  /* Feathered on three edges. The photograph carries its own silk from a
-     different shoot, so any hard edge against the page fabric reads as a join:
-     the left dissolves over a third of the width, the top clears the bar, and
-     the bottom fades across the last third instead of stopping on a line. The
-     right stays solid so she bleeds off the viewport as the reference composes. */
-  -webkit-mask-image:linear-gradient(100deg,transparent 0,rgba(0,0,0,.55) 18%,#000 34%,#000 100%),
-    linear-gradient(180deg,transparent 0,#000 8%,#000 62%,rgba(0,0,0,.45) 84%,transparent 100%);
-  mask-image:linear-gradient(100deg,transparent 0,rgba(0,0,0,.55) 18%,#000 34%,#000 100%),
-    linear-gradient(180deg,transparent 0,#000 8%,#000 62%,rgba(0,0,0,.45) 84%,transparent 100%);
-  -webkit-mask-composite:source-in;mask-composite:intersect}
-/* Eases the tonal step where the two fabrics meet, so the transition is a
-   gradient rather than a boundary. */
-.hero-portrait:after{content:"";position:absolute;inset:0;pointer-events:none;
-  background:linear-gradient(100deg,rgba(253,249,240,.5) 0,rgba(253,249,240,.16) 22%,transparent 42%)}
-/* Framed so the figure clears the headline, as the reference composes it. */
-.hero-portrait img{display:block;width:100%;height:100%;object-fit:cover;object-position:2% center}
+/*
+  One photograph, edge to edge, with the type set on it. The picture is not an
+  illustration beside the words — it is the ground the words stand on, which is
+  the whole difference between a template and a campaign.
 
-.hero-copy{position:relative;z-index:3;width:min(680px,70%);margin-left:8%;text-align:center}
-.hero-copy h1{margin:0;font-family:var(--serif);font-weight:400;letter-spacing:-.045em;line-height:.8}
-.hero-copy h1 em{display:block;margin-bottom:2px;font-size:clamp(32px,6.05vw,78px);font-weight:400}
-.hero-copy h1>span{display:block;font-size:clamp(52px,10.2vw,132px)}
+  The copy sits bottom-left rather than centred. Centre-everything is the single
+  most recognisable tell of a generated page, and it also fights this particular
+  photograph: she stands right of centre and faces left, so the composition
+  already has a place for words. Asymmetry here is not a style preference, it is
+  reading the picture.
+*/
+.campaign-hero{position:relative;z-index:2;display:flex;align-items:flex-end;
+  min-height:min(94svh,1010px);
+  padding:calc(var(--nav-h) + clamp(20px,4vw,60px)) 0 clamp(52px,7vw,104px)}
+
+/* The photograph is taller than the hero on purpose: it keeps falling past the
+   section edge and finishes dissolving inside the section below, so there is no
+   line for the eye to find. Measured across the join, this is the difference
+   between a 36-point colour step and a single-digit one. */
+.hero-frame{position:absolute;left:0;right:0;top:0;bottom:calc(-1 * var(--hero-bleed));z-index:0;margin:0;overflow:hidden}
+.hero-frame img{display:block;width:100%;height:100%;object-fit:cover;object-position:76% 34%;
+  /* The photograph dissolves rather than ending. Below the mask the fixed silk
+     field shows through, so the picture becomes the page instead of sitting in
+     a rectangle on top of it. */
+  -webkit-mask-image:linear-gradient(180deg,#000 0,#000 54%,rgba(0,0,0,.62) 78%,rgba(0,0,0,.18) 92%,transparent 100%);
+  mask-image:linear-gradient(180deg,#000 0,#000 54%,rgba(0,0,0,.62) 78%,rgba(0,0,0,.18) 92%,transparent 100%)}
+
+/* The veil is what makes type on photography legible without a black box over
+   the picture. Warm, directional, and weighted to the side the words are on. */
+.hero-veil{position:absolute;left:0;right:0;top:0;bottom:calc(-1 * var(--hero-bleed));z-index:1;pointer-events:none;background:
+  linear-gradient(97deg,rgba(252,246,233,.93) 0%,rgba(252,246,233,.74) 20%,rgba(252,246,233,.34) 42%,rgba(252,246,233,.06) 60%,transparent 74%),
+  /* Reaches nothing at its own bottom edge, so the veil never draws a line either. */
+  linear-gradient(0deg,transparent 0%,rgba(251,243,227,.4) 8%,rgba(251,243,227,.8) 18%,rgba(251,243,227,.52) 32%,rgba(251,243,227,.12) 48%,transparent 62%),
+  linear-gradient(180deg,rgba(253,248,238,.72) 0%,rgba(253,248,238,.18) 12%,transparent 26%)}
+
+.hero-copy{position:relative;z-index:2;width:100%;
+  padding-inline:max(var(--gutter),calc((100vw - 1400px) / 2 + var(--gutter)));
+  text-align:left}
+.hero-eyebrow{margin:0 0 clamp(16px,2.2vw,28px);font-size:clamp(9.5px,.92vw,11.5px);font-weight:500;letter-spacing:.3em;text-transform:uppercase;color:#54401f}
+.hero-copy h1{margin:0;font-family:var(--serif);font-weight:400;letter-spacing:-.05em;line-height:.83}
+.hero-copy h1 em{display:block;margin-bottom:.02em;font-size:clamp(30px,4.3vw,64px);font-weight:400}
+.hero-copy h1>span{display:block;font-size:clamp(52px,8.4vw,132px)}
 .hero-copy h1 .last-line i{font-weight:400;margin-right:.08em}
-.hero-rule{display:block;width:clamp(52px,7vw,90px);height:2px;margin:clamp(14px,2.2vw,28px) auto 0;background:var(--gold-soft)}
-.hero-promise{margin:clamp(12px,1.8vw,22px) 0 0;font-size:clamp(10.5px,1.35vw,16px);font-weight:600;letter-spacing:.29em;line-height:1.6;text-transform:uppercase}
-.hero-buy{margin-top:clamp(16px,2.2vw,30px);min-width:clamp(186px,18vw,238px)}
-.hero-hook{margin:clamp(14px,2vw,26px) 0 0;font-family:var(--serif);font-style:italic;font-size:clamp(17px,2vw,27px);line-height:1.42;letter-spacing:-.015em;color:#2c2318}
+.hero-rule{display:block;width:clamp(52px,6vw,86px);height:2px;margin:clamp(20px,2.6vw,34px) 0 0;background:var(--gold-soft);transform-origin:left}
+.hero-hook{margin:clamp(18px,2.2vw,30px) 0 0;max-width:22ch;font-family:var(--serif);font-style:italic;font-size:clamp(18px,1.95vw,31px);line-height:1.34;letter-spacing:-.018em;color:#241c12}
+.hero-promise{margin:clamp(14px,1.7vw,22px) 0 0;font-size:clamp(9.5px,.95vw,12px);font-weight:500;letter-spacing:.28em;line-height:1.9;text-transform:uppercase;color:#3b3020}
+.hero-buy{margin-top:clamp(22px,2.7vw,38px)}
+
+/*
+  Above tablet the frame is a landscape box and the photograph is a portrait, so
+  cover leaves her dead centre — directly under the headline. Rather than shrink
+  the type until it fits beside her, the picture itself moves: the frame becomes
+  the right-hand column and its left edge is feathered into the silk, which is
+  the same fabric she is standing in. The result still reads as one photograph
+  running off three edges of the screen, but her face is never written on.
+*/
+@media(min-width:861px){
+  .campaign-hero{align-items:center}
+  .hero-frame{left:clamp(20%,calc(14% + 9vw),34%)}
+  .hero-frame img{object-position:50% 30%;
+    -webkit-mask-image:
+      linear-gradient(99deg,transparent 0,rgba(0,0,0,.18) 10%,rgba(0,0,0,.55) 24%,rgba(0,0,0,.88) 38%,#000 50%,#000 100%),
+      linear-gradient(180deg,#000 0,#000 54%,rgba(0,0,0,.62) 78%,rgba(0,0,0,.18) 92%,transparent 100%);
+    mask-image:
+      linear-gradient(99deg,transparent 0,rgba(0,0,0,.18) 10%,rgba(0,0,0,.55) 24%,rgba(0,0,0,.88) 38%,#000 50%,#000 100%),
+      linear-gradient(180deg,#000 0,#000 54%,rgba(0,0,0,.62) 78%,rgba(0,0,0,.18) 92%,transparent 100%);
+    -webkit-mask-composite:source-in;mask-composite:intersect}
+  .hero-copy>*{max-width:min(46vw,700px)}
+  .hero-copy h1>span{font-size:clamp(56px,6.4vw,112px)}
+  .hero-copy h1 em{font-size:clamp(28px,3.2vw,54px)}
+  .hero-veil{background:
+    linear-gradient(97deg,rgba(252,246,233,.72) 0%,rgba(252,246,233,.5) 26%,rgba(252,246,233,.2) 46%,transparent 62%),
+    linear-gradient(0deg,transparent 0%,rgba(251,243,227,.4) 8%,rgba(251,243,227,.72) 18%,rgba(251,243,227,.44) 32%,rgba(251,243,227,.1) 48%,transparent 62%),
+    linear-gradient(180deg,rgba(253,248,238,.6) 0%,rgba(253,248,238,.14) 12%,transparent 24%)}
+}
 
 /* ── The book, in three forms ──────────────────────────────────────────── */
-.book-intro{position:relative;z-index:4;display:grid;grid-template-columns:minmax(0,.76fr) minmax(0,1.24fr);align-items:center;gap:clamp(16px,3vw,48px);width:var(--shell);margin:0 auto;padding:clamp(18px,3vw,44px) var(--gutter) 0}
-/* Cream shape rising under the copy, cut as a soft ellipse like the reference. */
-.book-intro:before{content:"";position:absolute;z-index:-1;left:calc(-1 * max(0px,(100vw - 1400px) / 2) - 10vw);bottom:-1%;width:min(64vw,760px);height:107%;border-radius:0 74% 0 0 / 0 100% 0 0;background:linear-gradient(150deg,#fdf9ef 0%,#faf4e7 56%,#f7f0e1 100%);box-shadow:0 0 34px 12px rgba(251,246,235,.55)}
+.book-intro{position:relative;z-index:4;display:grid;grid-template-columns:minmax(0,.78fr) minmax(0,1.22fr);align-items:center;gap:clamp(16px,3vw,48px);width:var(--shell);margin:0 auto;padding:clamp(10px,2.4vw,36px) var(--gutter) 0}
+/* No cream shape. A shape would draw an edge exactly where the photograph is
+   still dissolving; a wash with no boundary lets the two carry into each other,
+   which is the whole point of the composition being continuous. */
+.book-intro:before{content:"";position:absolute;z-index:-1;left:50%;top:0;width:100vw;
+  height:calc(100% + clamp(230px,29vw,470px));transform:translateX(-50%);pointer-events:none;
+  background:linear-gradient(180deg,
+    rgba(251,245,233,0) 0%,rgba(251,245,233,.44) 13%,rgba(250,244,231,.82) 32%,
+    rgba(250,244,231,.9) 56%,rgba(249,242,228,.7) 76%,rgba(249,242,228,.28) 90%,rgba(249,242,228,0) 100%)}
 
 .intro-copy{position:relative;z-index:2;padding-left:clamp(0px,7vw,100px)}
 .intro-copy h2{margin:0;font-family:var(--serif);font-size:clamp(40px,4.7vw,68px);font-weight:400;letter-spacing:-.045em;line-height:.88}
 .intro-copy h2 em{font-weight:400}
 .intro-copy p{max-width:clamp(230px,24vw,330px);margin:clamp(14px,1.8vw,22px) 0 0;color:var(--muted);font-size:clamp(14px,1.5vw,17px);line-height:1.62}
 .small-rule{display:block;width:clamp(34px,4.2vw,54px);height:2px;margin:clamp(12px,1.6vw,20px) 0 clamp(16px,2.2vw,26px);background:var(--gold-soft)}
-.text-link{display:inline-flex;align-items:center;gap:9px;font-family:var(--serif);font-size:19px;text-decoration:none}
-.text-link:hover{text-decoration:underline;text-underline-offset:5px}
+.text-link{display:inline-flex;align-items:center;gap:10px;font-family:var(--sans);font-size:11px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;text-decoration:none}
+.intro-byline{margin:clamp(26px,3.4vw,44px) 0 0;padding-top:clamp(16px,2vw,24px);border-top:1px solid var(--line);max-width:clamp(230px,24vw,330px)}
+.intro-byline small{display:block;font-size:9.5px;font-weight:500;letter-spacing:.3em;text-transform:uppercase;color:#7a6853}
+.intro-byline strong{display:block;margin-top:8px;font-family:var(--serif);font-size:clamp(17px,1.7vw,23px);font-weight:400;letter-spacing:-.01em}
 
 .product-stage{position:relative;z-index:2;display:flex;align-items:flex-end;justify-content:flex-start;min-height:clamp(240px,32vw,410px)}
 
@@ -157,7 +236,11 @@ img{max-width:100%}
 
 /* ── Principles ────────────────────────────────────────────────────────── */
 /* Full-bleed cream panel with a softly domed top edge. */
-.principle-strip{position:relative;z-index:5;padding:clamp(20px,2.4vw,34px) 0 clamp(12px,1.4vw,22px);background:linear-gradient(180deg,rgba(250,244,231,0) 0,rgba(250,244,231,.72) 26px,#faf4e7 68px,#f7f0e2 82%,rgba(247,240,226,0) 100%);border-radius:50% 50% 0 0 / clamp(10px,1.6vw,26px) clamp(10px,1.6vw,26px) 0 0}
+/* No ground of its own. The wash that starts under the photograph runs all the
+   way through here and fades out inside the quotes below, so the four principles
+   sit on the same continuous surface as everything above them. A background here
+   would draw the line the whole page is built to avoid. */
+.principle-strip{position:relative;z-index:5;padding:clamp(20px,2.4vw,34px) 0 clamp(12px,1.4vw,22px)}
 .strip-inner{position:relative;display:grid;grid-template-columns:repeat(4,1fr);width:var(--shell);margin:0 auto;padding:0 var(--gutter)}
 .strip-inner article{position:relative;padding:0 clamp(12px,2vw,30px);text-align:center}
 .strip-inner article+article:before{content:"";position:absolute;left:0;top:6%;bottom:4%;width:1px;background:var(--line)}
@@ -201,7 +284,7 @@ img{max-width:100%}
   through the join; the text stays fully opaque because it is not on the layer.
 */
 .campaign-quote{position:relative;z-index:5;overflow:hidden;
-  padding:clamp(22px,3vw,44px) 0 clamp(14px,1.9vw,30px);color:#fdf7e9}
+  padding:clamp(42px,5.4vw,86px) 0 clamp(40px,5vw,78px);color:#fdf7e9}
 .campaign-quote:before{content:"";position:absolute;z-index:-1;inset:0;pointer-events:none;background:
   /* Scrim first: the band grades to bright gold on the right, where white text
      measured 2.0:1, under the 3.0:1 floor for large type. Darkening locally
@@ -211,8 +294,8 @@ img{max-width:100%}
   radial-gradient(ellipse 78% 96% at 4% 30%,rgba(34,20,6,.96),rgba(56,35,13,.84) 52%,transparent 86%),
   linear-gradient(96deg,rgba(52,32,12,.94) 0%,rgba(64,41,16,.9) 38%,rgba(104,71,30,.66) 62%,rgba(196,158,102,.2) 100%),
   url(../assets/img/book-silk-field.webp) center/cover,#4a2f13;
-  -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 13%,#000 84%,transparent 100%);
-  mask-image:linear-gradient(180deg,transparent 0,#000 13%,#000 84%,transparent 100%)}
+  -webkit-mask-image:linear-gradient(180deg,transparent 0,rgba(0,0,0,.5) 9%,#000 20%,#000 74%,rgba(0,0,0,.42) 90%,transparent 100%);
+  mask-image:linear-gradient(180deg,transparent 0,rgba(0,0,0,.5) 9%,#000 20%,#000 74%,rgba(0,0,0,.42) 90%,transparent 100%)}
 .campaign-quote:after{content:"";position:absolute;right:-8%;bottom:-46%;width:78%;height:150%;border-radius:50%;pointer-events:none;background:radial-gradient(ellipse at 40% 40%,rgba(255,236,193,.42),rgba(216,166,90,.16) 58%,transparent 76%)}
 .quote-inner{position:relative;z-index:1;width:var(--shell);margin:0 auto;padding:0 var(--gutter)}
 .campaign-quote blockquote{margin:0 0 0 clamp(0px,13.7vw,196px);font-family:var(--serif);font-size:clamp(23px,3.3vw,46px);font-style:italic;line-height:1.16;letter-spacing:-.028em;text-indent:-.42em}
@@ -222,13 +305,22 @@ img{max-width:100%}
 
 /* ── Purchase ──────────────────────────────────────────────────────────── */
 /* Cream dome rising out of the silk and carrying down into the footer. */
-.purchase-band{position:relative;z-index:6;display:flex;flex-direction:column;align-items:center;padding:clamp(14px,1.7vw,28px) var(--gutter) clamp(10px,1.3vw,20px);text-align:center;background:linear-gradient(180deg,rgba(248,241,226,0) 0,rgba(248,241,226,0) 58%,rgba(248,241,226,.6) 82%,#f8f1e2 100%)}
-.purchase-band:before{content:"";position:absolute;z-index:-1;left:50%;bottom:0;width:120vw;height:calc(100% + clamp(8px,1.6vw,32px));border-radius:50% 50% 0 0;background:linear-gradient(180deg,#fbf5e8 0%,#faf3e5 44%,#f8f1e2 100%);transform:translateX(-50%)}
+/* The cream dome that used to sit here cut a hard elliptical lid across the dark
+   band — a sticker on the page. The ground now rises instead of arriving. */
+.purchase-band{position:relative;z-index:6;display:flex;flex-direction:column;align-items:center;padding:clamp(40px,5.2vw,84px) var(--gutter) clamp(10px,1.3vw,20px);text-align:center}
+.purchase-band:before{content:"";position:absolute;z-index:-1;left:50%;top:0;width:100vw;height:100%;transform:translateX(-50%);pointer-events:none;
+  background:linear-gradient(180deg,rgba(250,244,231,0) 0%,rgba(250,244,231,.42) 15%,rgba(249,242,228,.8) 34%,#f8f1e2 62%,#f8f1e2 100%)}
 .purchase-band h2{margin:0;font-family:var(--serif);font-size:clamp(30px,4.1vw,56px);font-weight:400;letter-spacing:-.04em;line-height:1.05}
 .purchase-kicker{margin:4px 0 clamp(14px,2.1vw,28px);font-size:clamp(9.5px,1.08vw,13px);font-weight:600;letter-spacing:.32em;text-transform:uppercase}
 .purchase-line{max-width:26ch;margin:clamp(12px,1.6vw,20px) auto 0;font-family:var(--serif);font-style:italic;font-size:clamp(17px,1.9vw,25px);line-height:1.35;color:#3d3225}
-.edition-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(14px,1.8vw,26px);width:min(100%,780px);margin:clamp(18px,2.4vw,32px) auto 0;text-align:left}
-.edition{display:flex;flex-direction:column;padding:clamp(20px,2.4vw,32px) clamp(18px,2.2vw,30px) clamp(18px,2.2vw,28px);border:1px solid rgba(111,77,31,.2);border-radius:18px;background:rgba(255,252,246,.72);box-shadow:0 14px 34px rgba(92,56,14,.08);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+/* Two editions, one rule between them. Cards would put a box around a decision
+   that is really a comparison, and boxed price tiles are the most template-like
+   element a page like this can carry. */
+.edition-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0;width:min(100%,880px);margin:clamp(22px,3vw,40px) auto 0;text-align:left}
+.edition{display:flex;flex-direction:column;padding:0 clamp(20px,3vw,48px)}
+.edition:first-child{padding-left:0}
+.edition:last-child{padding-right:0}
+.edition+.edition{border-left:1px solid var(--line)}
 .edition h3{margin:0;font-family:var(--serif);font-size:clamp(24px,2.5vw,32px);font-weight:400;letter-spacing:-.03em}
 .edition-price{margin:2px 0 0;font-family:var(--serif);font-size:clamp(34px,3.6vw,48px);line-height:1.1;letter-spacing:-.04em}
 .edition-price span{margin-right:.08em;font-size:.52em;vertical-align:.28em}
@@ -237,7 +329,11 @@ img{max-width:100%}
 .edition-list li{display:flex;align-items:center;gap:11px;color:#2f2820;font-family:var(--serif);font-size:clamp(13px,1.15vw,16px)}
 .edition-list li+li{margin-top:clamp(9px,1.1vw,14px)}
 .edition-list svg{flex:none;width:23px;height:23px;fill:none;stroke:#15100b;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
-.edition .gold-button{width:100%}
+.edition .gold-button{width:100%;margin-top:auto}
+/* book.js adds a link under the ebook button at runtime. Reserving the same
+   space opposite keeps the two calls to action on one line. */
+.edition:last-child:after{content:"";display:block;min-height:calc(13px + 1.5em)}
+.reader-existing-access{margin-top:13px;font-size:10px;letter-spacing:.18em}
 .addon{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:clamp(14px,2vw,26px);
   width:min(100%,780px);margin:clamp(14px,1.8vw,22px) auto 0;padding:clamp(18px,2.2vw,26px) clamp(18px,2.2vw,28px);
   text-align:left;border:1px solid rgba(111,77,31,.2);border-radius:18px;background:rgba(255,252,246,.6);
@@ -255,8 +351,6 @@ img{max-width:100%}
 /* ── Footer ────────────────────────────────────────────────────────────── */
 .campaign-footer{background:#f8f1e2;padding:0 var(--gutter) clamp(16px,2vw,26px)}
 .footer-top{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:clamp(18px,4vw,50px);width:var(--shell);margin:0 auto;padding:clamp(12px,1.5vw,22px) 0;border-top:1px solid var(--line)}
-.footer-logo small{font-size:13px}
-.footer-logo strong{font-size:21px}
 .campaign-footer nav{display:flex;justify-content:center;gap:clamp(14px,2.4vw,38px)}
 .campaign-footer nav a{font-size:13.5px}
 .social-links{display:flex;align-items:center;gap:14px}
@@ -272,44 +366,54 @@ img{max-width:100%}
 .footer-motto{margin-left:auto}
 
 /* ── Responsive ────────────────────────────────────────────────────────── */
+@media(max-width:1180px){
+  .book-nav nav{gap:clamp(12px,1.9vw,22px);padding-right:0}
+}
+
 @media(max-width:980px){
-  .book-nav nav{gap:16px;padding-right:0}
-  .book-nav nav a{font-size:13px}
-  .hero-copy{width:min(560px,76%);margin-left:4%}
-  .hero-portrait{width:min(58vw,620px)}
-  .book-intro{grid-template-columns:.82fr 1.18fr;gap:12px}
+  .book-intro{grid-template-columns:.86fr 1.14fr;gap:12px}
   .intro-copy{padding-left:clamp(0px,3vw,30px)}
   .strip-inner article{padding:0 12px}
 }
 
 @media(max-width:860px){
-  .book-nav{grid-template-columns:1fr auto auto;gap:12px;padding:16px 20px 8px}
-  .nav-toggle{display:inline-flex;grid-column:2;align-items:center;justify-content:center;width:40px;height:40px;padding:0;border:1px solid rgba(111,77,31,.3);border-radius:999px;background:rgba(255,251,243,.62);color:var(--ink);cursor:pointer;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+  .book-nav{grid-template-columns:1fr auto auto;gap:12px;
+    padding-inline:20px;
+    padding-block:max(14px,env(safe-area-inset-top)) 12px}
+  .nav-toggle{display:inline-flex;grid-column:2;align-items:center;justify-content:center;width:40px;height:40px;padding:0;border:1px solid rgba(111,77,31,.28);border-radius:999px;background:rgba(255,251,243,.5);color:var(--ink);cursor:pointer;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
   .nav-toggle:hover{background:rgba(255,251,243,.9)}
   .nav-toggle span{display:flex;flex-direction:column;gap:4px;width:17px}
   .nav-toggle i{display:block;height:1.5px;border-radius:2px;background:currentColor;transition:transform .2s ease,opacity .2s ease}
   .book-nav[data-nav-open] .nav-toggle i:nth-child(1){transform:translateY(5.5px) rotate(45deg)}
   .book-nav[data-nav-open] .nav-toggle i:nth-child(2){opacity:0}
   .book-nav[data-nav-open] .nav-toggle i:nth-child(3){transform:translateY(-5.5px) rotate(-45deg)}
-  .nav-buy{grid-column:3;min-height:44px;padding:0 18px;font-size:15px}
+  .nav-buy{grid-column:3;min-height:40px;padding:0 16px;font-size:10.5px;letter-spacing:.14em}
+  .nav-buy svg{display:none}
 
   /* visibility:hidden keeps the closed panel out of the accessibility tree. */
   .book-nav nav{position:absolute;z-index:30;grid-column:1/-1;top:100%;left:20px;right:20px;flex-direction:column;gap:0;padding:6px;border:1px solid rgba(111,77,31,.22);border-radius:16px;background:rgba(253,248,238,.97);box-shadow:0 20px 44px rgba(76,46,10,.18);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);opacity:0;visibility:hidden;transform:translateY(-8px);transition:opacity .2s ease,transform .2s ease,visibility 0s linear .2s}
   .book-nav[data-nav-open] nav{opacity:1;visibility:visible;transform:none;transition:opacity .2s ease,transform .2s ease}
-  .book-nav nav a{display:flex;align-items:center;min-height:46px;padding:0 14px;border-radius:10px;font-size:17px}
+  .book-nav nav a{display:flex;align-items:center;min-height:48px;padding:0 14px;border-radius:10px;font-size:12px;letter-spacing:.18em}
   .book-nav nav a+a{border-top:1px solid rgba(111,77,31,.14)}
-  .book-nav nav a:hover{background:rgba(200,160,90,.14);text-decoration:none}
+  .book-nav nav a:hover{background:rgba(200,160,90,.14)}
 
-  /* Stacked: headline first, then the portrait as a full-width plate. */
-  .campaign-hero{display:flex;flex-direction:column;min-height:0;padding:clamp(16px,3vw,28px) 20px 0}
-  .hero-portrait{order:2;position:relative;right:auto;width:min(560px,100%);height:clamp(300px,66vw,440px);margin:clamp(18px,4vw,34px) auto 0;
-    -webkit-mask-image:linear-gradient(180deg,#000 0,#000 68%,transparent 100%);
-    mask-image:linear-gradient(180deg,#000 0,#000 68%,transparent 100%)}
-  .hero-copy{order:1;width:100%;margin:0}
+  /* The photograph still runs the full screen; the veil turns bottom-up so the
+     type sits in light rather than over her. */
+  .campaign-hero{min-height:min(92svh,860px);padding-bottom:clamp(38px,8vw,64px)}
+  .hero-frame img{object-position:64% 22%}
+  /* The words sit in a pool of light rather than on her hair. Opacity peaks over
+     the copy and falls away at both ends, so nothing about it reads as a panel. */
+  .hero-veil{background:
+    linear-gradient(0deg,transparent 0%,rgba(251,243,227,.55) 8%,rgba(251,243,227,.93) 18%,rgba(251,243,227,.95) 34%,rgba(251,243,227,.9) 50%,rgba(252,246,233,.74) 60%,rgba(252,246,233,.34) 70%,transparent 84%),
+    linear-gradient(180deg,rgba(253,248,238,.66) 0%,rgba(253,248,238,.14) 15%,transparent 30%)}
+  .hero-copy{padding-inline:22px}
+  .hero-copy h1>span{font-size:clamp(46px,12.6vw,80px)}
+  .hero-copy h1 em{font-size:clamp(26px,6.6vw,40px)}
+  .hero-hook{max-width:19ch}
 
   .book-intro{grid-template-columns:1fr;gap:clamp(20px,4vh,36px);padding:clamp(26px,5vh,44px) 20px clamp(20px,3vh,32px)}
   .book-intro:before{left:-24vw;top:-4%;width:118vw;height:74%;transform:rotate(-3deg)}
-  .intro-copy{text-align:left}
+  .intro-copy{text-align:left;padding-left:0}
   .intro-copy p{max-width:460px}
   .product-stage{min-height:0;padding-top:6px}
   .tablet{width:clamp(178px,30vw,240px)}
@@ -335,17 +439,19 @@ img{max-width:100%}
 
 @media(max-width:560px){
   :root{--gutter:18px}
-  .book-logo strong{font-size:22px}
-  .book-logo small{font-size:14px}
-  .nav-buy{font-size:13px;padding:0 15px;min-height:38px}
-  .nav-buy svg{width:14px;height:14px}
+  .book-logo{gap:5px}
+  .book-logo strong{font-size:9.5px;letter-spacing:.26em}
+  .book-logo small{font-size:12px}
+  .nav-buy{font-size:10px;padding:0 13px;min-height:36px}
+  .nav-toggle{width:37px;height:37px}
 
-  .hero-copy h1 em{font-size:clamp(30px,10vw,42px)}
-  .hero-copy h1>span{font-size:clamp(46px,15.5vw,72px)}
-  .hero-rule{width:58px}
-  .hero-promise{font-size:10.5px;letter-spacing:.26em}
-  .hero-hook{font-size:17px}
-  .hero-buy{min-width:206px;font-size:16px}
+  .hero-eyebrow{margin-bottom:14px;font-size:9px;letter-spacing:.26em}
+  .hero-copy h1{line-height:.86;letter-spacing:-.052em}
+  .hero-copy h1>span{font-size:clamp(44px,13.4vw,62px)}
+  .hero-rule{width:52px;margin-top:17px}
+  .hero-hook{margin-top:16px;font-size:18px;line-height:1.34}
+  .hero-promise{margin-top:13px;font-size:9.5px;letter-spacing:.24em;line-height:1.75}
+  .hero-buy{margin-top:22px;width:min(300px,100%);min-height:50px;font-size:11.5px}
 
   .intro-copy h2{font-size:clamp(34px,10vw,46px)}
   .product-stage{gap:0}
@@ -360,18 +466,19 @@ img{max-width:100%}
   .strip-inner article:nth-child(n+3):after{content:"";position:absolute;left:14%;right:14%;top:0;height:1px;background:var(--line)}
 
   .edition-grid{grid-template-columns:1fr}
+  .edition+.edition{border-left:0;border-top:1px solid var(--line);margin-top:clamp(24px,5vw,34px);padding-top:clamp(24px,5vw,34px)}
   .addon{grid-template-columns:auto 1fr;row-gap:16px}
   .addon-cta{grid-column:1/-1;width:100%}
   .footer-meta{font-size:11px}
 }
 
 @media(max-width:380px){
-  .book-logo strong{font-size:19px}
-  .book-logo small{font-size:12px}
-  .nav-buy{font-size:12px;padding:0 12px;gap:6px}
-  .nav-buy svg{width:13px;height:13px}
+  .book-logo strong{font-size:9px;letter-spacing:.22em}
+  .book-logo small{font-size:11px}
+  .nav-buy{font-size:9.5px;padding:0 11px}
   .book-nav{gap:9px}
-  .nav-toggle{width:36px;height:36px}
+  .nav-toggle{width:35px;height:35px}
+  .hero-copy h1>span{font-size:42px}
 }
 
 /* ── Motion ────────────────────────────────────────────────────────────── */
@@ -384,8 +491,8 @@ img{max-width:100%}
 :root{--ease-out:cubic-bezier(.22,1,.36,1)}
 
 [data-parallax]{will-change:transform}
-.hero-portrait[data-parallax]{transform:translate3d(0,calc(var(--p,0) * -58px),0)}
-.hero-copy[data-parallax]{transform:translate3d(0,calc(var(--p,0) * -30px),0)}
+.hero-frame[data-parallax]{transform:translate3d(0,calc(var(--p,0) * -46px),0) scale(1.06)}
+.hero-copy[data-parallax]{transform:translate3d(0,calc(var(--p,0) * -24px),0)}
 /* Three rates, so the cluster resolves into place instead of arriving flat. */
 .tablet[data-parallax]{transform:translateX(6%) translate3d(0,calc(var(--p,0) * -34px),0)}
 .phone[data-parallax]{transform:translateY(9%) translate3d(0,calc(var(--p,0) * -52px),0)}
@@ -423,27 +530,30 @@ img{max-width:100%}
 @keyframes settle{from{opacity:0;transform:scale(1.045)}to{opacity:1;transform:none}}
 
 @media (prefers-reduced-motion:no-preference){
+  body[data-ready] .hero-eyebrow,
   body[data-ready] .hero-copy h1 em,
   body[data-ready] .hero-copy h1>span,
   body[data-ready] .hero-hook,
   body[data-ready] .hero-promise,
   body[data-ready] .hero-buy{animation:rise-in .95s var(--ease-out) both}
-  body[data-ready] .hero-copy h1 em{animation-delay:.06s}
-  body[data-ready] .hero-copy h1>span:nth-of-type(1){animation-delay:.16s}
-  body[data-ready] .hero-copy h1>span:nth-of-type(2){animation-delay:.26s}
-  body[data-ready] .hero-rule{animation:draw-rule .8s var(--ease-out) .42s both;transform-origin:center}
-  body[data-ready] .hero-hook{animation-delay:.52s}
-  body[data-ready] .hero-promise{animation-delay:.62s}
-  body[data-ready] .hero-buy{animation-delay:.72s}
-  body[data-ready] .hero-portrait img{animation:settle 1.5s var(--ease-out) both}
+  body[data-ready] .hero-eyebrow{animation-delay:.10s}
+  body[data-ready] .hero-copy h1 em{animation-delay:.20s}
+  body[data-ready] .hero-copy h1>span:nth-of-type(1){animation-delay:.30s}
+  body[data-ready] .hero-copy h1>span:nth-of-type(2){animation-delay:.40s}
+  body[data-ready] .hero-rule{animation:draw-rule .8s var(--ease-out) .56s both}
+  body[data-ready] .hero-hook{animation-delay:.66s}
+  body[data-ready] .hero-promise{animation-delay:.76s}
+  body[data-ready] .hero-buy{animation-delay:.86s}
+  /* The picture settles out of a slow push-in. It is the first thing on screen,
+     so it moves for longer and less than anything set on top of it. */
+  body[data-ready] .hero-frame img{animation:settle 1.8s var(--ease-out) both}
 }
 
-/* The bar earns a ground once it is over content, and keeps the CTA reachable. */
-.book-nav{position:sticky;top:0;transition:background-color .4s ease,box-shadow .4s ease,padding .4s ease;
-  background:transparent}
-.book-nav[data-over]{background:rgba(253,248,238,.82);box-shadow:0 1px 0 rgba(111,77,31,.12),0 12px 30px rgba(92,56,14,.07);
-  -webkit-backdrop-filter:blur(14px) saturate(1.1);backdrop-filter:blur(14px) saturate(1.1);
-  padding-top:12px;padding-bottom:8px}
+/* The bar earns a ground only once it has left the photograph. */
+.book-nav{background:transparent}
+.book-nav[data-over]{background:rgba(253,248,238,.84);box-shadow:0 1px 0 rgba(111,77,31,.1),0 14px 34px rgba(92,56,14,.06);
+  -webkit-backdrop-filter:blur(16px) saturate(1.12);backdrop-filter:blur(16px) saturate(1.12);
+  padding-block:clamp(11px,1.4vw,17px) clamp(9px,1.2vw,14px)}
 
 /* Hover, at the level the rest of the page is drawn to. */
 .gold-button{position:relative;overflow:hidden}
@@ -459,11 +569,36 @@ img{max-width:100%}
 .book-nav nav a:hover:after,.campaign-footer nav a:hover:after{transform:scaleX(1)}
 .text-link svg{transition:transform .38s var(--ease-out)}
 .text-link:hover svg{transform:translateX(5px)}
-.edition{transition:transform .5s var(--ease-out),box-shadow .5s var(--ease-out)}
-.edition:hover{transform:translateY(-4px);box-shadow:0 22px 46px rgba(92,56,14,.13)}
+/* Nothing lifts. The rule between the two editions is the structure, and a card
+   that rises would put the box back. */
 
 @media(prefers-reduced-motion:reduce){
   *{scroll-behavior:auto!important;transition:none!important;animation:none!important}
   [data-motion-state],[data-parallax]{opacity:1!important;transform:none!important}
   .principle-icon path,.principle-icon circle{stroke-dashoffset:0!important;opacity:1!important}
 }
+
+
+/* ── Scroll and touch safety ───────────────────────────────────────────── */
+/*
+  Folded in from a separate stylesheet. Two files setting hero, nav and reveal
+  state on the same elements is how a page stops reading as one composition;
+  everything the landing page needs now lives in this file, in cascade order.
+*/
+html,body{width:100%;min-height:100%;height:auto;-webkit-overflow-scrolling:touch}
+html{overflow-x:hidden}
+body.book-campaign{position:relative;overflow-x:hidden;touch-action:pan-y;overscroll-behavior-y:auto}
+body.book-campaign main,
+body.book-campaign .book-nav,
+body.book-campaign .campaign-footer{height:auto;min-height:0;overflow:visible}
+/* Decorative layers must never capture a swipe. */
+.ambient-silk,.silk,.silk-bloom,.hero-veil{pointer-events:none}
+.gold-button,.nav-toggle,.book-order-actions button,.book-order-actions a{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+.gold-button:active,.nav-toggle:active,.book-order-actions button:active,.book-order-actions a:active{transform:scale(.972)}
+
+@media(prefers-reduced-motion:no-preference){
+  .book-order-modal[data-open]{animation:fmb-backdrop-in .28s ease both}
+  .book-order-modal[data-open] .book-order-card{animation:fmb-sheet-in .52s var(--ease-out) both}
+}
+@keyframes fmb-backdrop-in{from{opacity:0}to{opacity:1}}
+@keyframes fmb-sheet-in{from{opacity:0;transform:translate3d(0,26px,0) scale(.985)}to{opacity:1;transform:none}}
