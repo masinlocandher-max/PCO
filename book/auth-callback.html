@@ -26,7 +26,10 @@
         try{
           var saved=JSON.parse(localStorage.getItem('trwtl.auth-return')||'null');
           localStorage.removeItem('trwtl.auth-return');
-          if(saved&&typeof saved.path==='string'&&/^\.\/\?order=(ebook|pocketbook)$/.test(saved.path)&&Date.now()-Number(saved.created_at||0)<30*60*1000)return saved.path;
+          if(saved&&typeof saved.path==='string'&&Date.now()-Number(saved.created_at||0)<30*60*1000){
+            if(/^\.\/\?order=(ebook|pocketbook)$/.test(saved.path))return saved.path;
+            if(saved.path==='/book-admin/')return '/book-admin/';
+          }
         }catch(e){}
         return './';
       }
@@ -46,8 +49,8 @@
         history.replaceState(null,'',location.pathname);
         var destination=safeReturn();
         document.body.classList.add('is-success');title.textContent='Signed in securely';
-        message.textContent='Returning you to your order now.';
-        back.href=destination;back.textContent='Return to your order';
+        message.textContent=destination==='/book-admin/'?'Opening the book order desk now.':'Returning you to your order now.';
+        back.href=destination;back.textContent=destination==='/book-admin/'?'Open Book Orders':'Return to your order';
         setTimeout(function(){location.replace(destination);},window.matchMedia('(prefers-reduced-motion: reduce)').matches?120:650);
       }catch(e){fail('The sign-in response could not be verified on this device. Please request a new secure link.');}
     })();
