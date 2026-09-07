@@ -71,8 +71,45 @@ a{color:inherit}
   .legal-footer nav a{font-size:11px}
 }
 
+/* Book landing mobile correction. This is deliberately in a stylesheet the
+   live book page already loads, so Safari receives it without depending on a
+   second optional CSS file. */
+@media(max-width:560px){
+  body.book-campaign{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+  body.book-campaign .book-nav{padding:12px 16px 6px;gap:9px}
+  body.book-campaign .book-logo small{font-size:11px}
+  body.book-campaign .book-logo strong{font-size:18px;letter-spacing:-.04em}
+  body.book-campaign .nav-toggle{width:36px;height:36px}
+  body.book-campaign .nav-buy{min-height:36px;padding:0 12px;font-size:12px}
+
+  body.book-campaign .campaign-hero{display:flex;flex-direction:column;width:100%;padding:14px 0 0;overflow:visible}
+  body.book-campaign .hero-copy{order:1;width:100%;margin:0;padding:0 20px;text-align:center}
+  body.book-campaign .hero-copy h1{margin:0;line-height:.88;letter-spacing:-.055em;text-wrap:balance}
+  body.book-campaign .hero-copy h1 em{font-size:27px;margin-bottom:4px}
+  body.book-campaign .hero-copy h1>span{font-size:clamp(43px,12.4vw,53px)}
+  body.book-campaign .hero-rule{width:48px;height:2px;margin-top:15px}
+  body.book-campaign .hero-hook{max-width:305px;margin:16px auto 0;font-size:17px;line-height:1.36}
+  body.book-campaign .hero-promise{max-width:310px;margin:15px auto 0;font-size:9.5px;line-height:1.55;letter-spacing:.21em}
+  body.book-campaign .hero-buy{width:min(304px,calc(100% - 40px));min-width:0;min-height:52px;margin-top:20px;font-size:16px}
+
+  body.book-campaign .hero-portrait{order:2;position:relative;right:auto;top:auto;width:100vw;height:clamp(410px,118vw,505px);margin:24px calc(50% - 50vw) 0;overflow:hidden;border-radius:0;-webkit-mask-image:linear-gradient(180deg,#000 0,#000 84%,rgba(0,0,0,.78) 91%,transparent 100%);mask-image:linear-gradient(180deg,#000 0,#000 84%,rgba(0,0,0,.78) 91%,transparent 100%)}
+  body.book-campaign .hero-portrait img{width:100%;height:100%;object-fit:cover;object-position:50% 42%}
+
+  body.book-campaign .book-intro{grid-template-columns:1fr;gap:24px;width:100%;margin-top:-38px;padding:66px 20px 36px;background:linear-gradient(180deg,#fdf9ef 0%,#fbf5e8 24%,#fbf5e8 100%);border-radius:30px 30px 0 0;overflow:hidden}
+  body.book-campaign .book-intro:before{display:none}
+  body.book-campaign .intro-copy{padding-left:0;text-align:left}
+  body.book-campaign .intro-copy h2{max-width:330px;font-size:clamp(38px,10.9vw,45px);line-height:.92;letter-spacing:-.05em}
+  body.book-campaign .intro-copy p{max-width:340px;margin-top:16px;font-size:15px;line-height:1.6}
+  body.book-campaign .small-rule{margin-top:18px}
+  body.book-campaign .product-stage{margin-top:4px;padding-top:0}
+}
+
 @media(max-width:380px){
   .legal-main{width:calc(100% - 26px)}
   .legal-main h1{font-size:33px}
   .legal-header nav a{padding:6px 9px}
+  body.book-campaign .hero-copy{padding:0 16px}
+  body.book-campaign .hero-copy h1>span{font-size:42px}
+  body.book-campaign .hero-hook{font-size:16.5px}
+  body.book-campaign .book-intro{padding-left:17px;padding-right:17px}
 }
