@@ -1,0 +1,22 @@
+{
+  "name": "The Right Way to Live",
+  "short_name": "Right Way",
+  "description": "A gentler, stronger, more meaningful life. By Francine Marie Bautista.",
+  "lang": "en-PH",
+  "start_url": "./reader.html?src=app",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#fbf3e3",
+  "theme_color": "#fbf3e3",
+  "categories": ["books", "education", "lifestyle"],
+  "icons": [
+    { "src": "app-icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "app-icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "app-icon-maskable.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "Keep reading", "url": "./reader.html?src=shortcut" },
+    { "name": "About the book", "url": "./?src=shortcut" }
+  ]
+}

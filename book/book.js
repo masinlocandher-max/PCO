@@ -85,6 +85,16 @@
     syncDesktop();
   }
 
+  /* Cache the shell so the book opens with no signal, and so "add to home
+     screen" is offered from the page people actually land on. */
+  function initOffline(){
+    if(!('serviceWorker' in navigator))return;
+    window.addEventListener('load',function(){
+      navigator.serviceWorker.register('sw.js')['catch'](function(){});
+    });
+  }
+
   initCheckout();
   initNav();
+  initOffline();
 })();

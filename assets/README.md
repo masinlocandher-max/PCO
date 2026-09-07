@@ -59,6 +59,12 @@ The chooser card for option 03 uses the fabric plate rather than the cover artwo
 cover carries its own title lockup, which collided with the card's overlaid heading and rendered
 the words twice.
 
+## Reading app icons
+
+`book/app-icon-*.png` are generated, not photographed: an italic Playfair "R" on
+the fabric plate. Regenerate at 512 and downscale; keep the maskable variant's
+artwork inside the safe circle so Android does not crop the letter.
+
 ## Share cards
 
 Both share cards are generated, not photographed, and both are 1200x630 because
