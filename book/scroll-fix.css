@@ -1,0 +1,37 @@
+/* Scroll safety for the book landing page, especially iOS Safari. */
+html,
+body{
+  width:100%;
+  min-height:100%;
+  height:auto !important;
+  overflow-y:auto !important;
+  -webkit-overflow-scrolling:touch;
+}
+
+html{
+  overflow-x:hidden;
+}
+
+body.book-campaign{
+  position:relative;
+  overflow-x:hidden !important;
+  overflow-y:auto !important;
+  touch-action:pan-y;
+  overscroll-behavior-y:auto;
+}
+
+body.book-campaign main,
+body.book-campaign .book-nav,
+body.book-campaign .campaign-footer{
+  height:auto;
+  min-height:0;
+  overflow:visible;
+}
+
+/* Decorative layers must never capture swipe gestures. */
+body.book-campaign .ambient-silk,
+body.book-campaign .ribbon,
+body.book-campaign .hero-silk{
+  pointer-events:none !important;
+  touch-action:none;
+}
