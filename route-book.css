@@ -1,5 +1,27 @@
 /* Three-destination entry gate: CV, News, Book. */
-.route-gate .gate-sheet{width:min(1120px,100%)}
+
+/*
+  The portfolio body stays intentionally locked while the destination gate is open.
+  Therefore the gate itself MUST own vertical scrolling on short/mobile viewports.
+*/
+.route-gate{
+  z-index:130;
+  overflow-x:hidden;
+  overflow-y:auto;
+  -webkit-overflow-scrolling:touch;
+  overscroll-behavior-y:contain;
+  touch-action:pan-y;
+  align-items:flex-start;
+  justify-content:center;
+  padding-top:max(24px,env(safe-area-inset-top));
+  padding-right:max(24px,env(safe-area-inset-right));
+  padding-bottom:max(24px,env(safe-area-inset-bottom));
+  padding-left:max(24px,env(safe-area-inset-left));
+}
+.route-gate .gate-sheet{
+  width:min(1120px,100%);
+  margin-block:auto;
+}
 .route-options{grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
 .route-choice{position:relative;isolation:isolate;overflow:hidden;min-height:250px;background:#0b0710}
 .route-choice::before,.route-choice::after{content:"";position:absolute;inset:0;pointer-events:none}
@@ -8,20 +30,43 @@
 .route-choice:hover::before{opacity:.46;transform:scale(1.06)}
 .route-choice:nth-child(1)::before{background-image:url('assets/img/portrait-hero.webp');background-position:center 24%}
 .route-choice:nth-child(2)::before{background-image:url('assets/img/work-media.webp');background-position:center}
-.route-choice-book::before{background-image:url('assets/img/book-author-portrait.webp');background-position:center 24%;opacity:.45}
+
+/* DESIGN LOCK: option 03 uses the canonical book COVER artwork, never the hero portrait. */
+.route-choice-book::before{
+  background-image:url('assets/img/book-cover-art.jpg');
+  background-position:center 36%;
+  background-size:cover;
+  opacity:.62;
+}
 .route-choice-book{border-color:rgba(239,208,129,.38);background:#160d13}
-.route-choice-book::after{background:linear-gradient(180deg,rgba(47,26,9,.08) 0%,rgba(23,11,20,.48) 42%,rgba(8,6,11,.96) 100%)}
+.route-choice-book::after{background:linear-gradient(180deg,rgba(47,26,9,.05) 0%,rgba(23,11,20,.34) 40%,rgba(8,6,11,.94) 100%)}
 .route-choice-book strong{color:#fff7e8}
 .route-choice-book .route-no,.route-choice-book .route-arrow{color:#efd081}
 .route-choice small{max-width:28ch;color:rgba(247,242,248,.76);text-shadow:0 1px 12px rgba(0,0,0,.7)}
 .route-choice strong{text-shadow:0 2px 24px rgba(0,0,0,.65)}
+
 @media(max-width:980px){
   .route-options{grid-template-columns:repeat(2,minmax(0,1fr))}
   .route-choice-book{grid-column:1/-1;min-height:190px}
-  .route-choice-book::before{background-position:center 31%}
+  .route-choice-book::before{background-position:center 41%}
 }
+
 @media(max-width:760px){
-  .route-options{grid-template-columns:1fr}
+  .route-gate{
+    padding-top:max(18px,env(safe-area-inset-top));
+    padding-right:max(16px,env(safe-area-inset-right));
+    padding-bottom:max(26px,env(safe-area-inset-bottom));
+    padding-left:max(16px,env(safe-area-inset-left));
+  }
+  .route-gate .gate-sheet{margin-block:0;padding-bottom:12px}
+  .route-gate .gate-mark{margin-bottom:20px}
+  .route-gate .gate-copy{margin-bottom:24px}
+  .route-options{grid-template-columns:1fr;margin-top:22px}
   .route-choice,.route-choice-book{grid-column:auto;min-height:190px}
   .route-choice::before{background-position:center 27%}
+  .route-choice-book::before{background-position:center 34%;background-size:cover}
+}
+
+@media(max-height:760px){
+  .route-gate .gate-sheet{margin-block:0}
 }
