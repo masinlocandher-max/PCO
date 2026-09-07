@@ -33,25 +33,31 @@ The current Drive HD masters above remain the canonical source for the next cont
 
 The Drive file previously documented as `IMG_0455.JPG` was not present in the current HD master folders during this audit, so it is no longer listed as the current close-portrait source. `73351DE4-ED4C-4A06-A2AB-E3600B9D735A.png` is a studio portrait rather than a lectern photograph; it is therefore treated as a future portrait candidate, not blindly substituted for the current Talent-stage image.
 
-## Book landing photography — outstanding
+## Book landing photography — resolved 2026-09-07
 
-`assets/img/book-hero-portrait.jpg` and `assets/img/book-cover-art.jpg` are **not valid JPEG
-binaries**. Neither file carries a JPEG start-of-image marker, so both render as broken images
-wherever they are referenced: the book landing hero portrait, and the book card on the root
-chooser (`route-book.css`). This is the same corruption class as the September 7 CV portrait
-repair above, and it reached production because the release guard only inspected `.webp` files.
+`book-hero-portrait.jpg` and `book-cover-art.jpg` shipped as corrupt binaries: neither carried a
+JPEG start-of-image marker, so both rendered as broken images on the book landing hero and on the
+book card of the root chooser. Both `.jpg` files have been deleted and replaced with WebP
+derivatives built from the current Drive masters.
 
 `scripts/validate-site-assets.py` now checks every shipped raster in `assets/img` by magic bytes
-rather than by extension, so the deploy workflow fails while these two files remain corrupt.
+rather than by extension. The previous guard only inspected `.webp`, which is why two corrupt
+JPEGs reached production unnoticed.
 
-To clear it, re-export both from the Drive masters and confirm `python3
-scripts/validate-site-assets.py` passes before merging:
+| Drive original | Repository asset | Use |
+|---|---|---|
+| `EFBADEEE-CB64-495C-980B-7C7845F69AFF.png` | `img/book-hero-portrait.webp` | Book landing hero portrait |
+| `A5414859-4370-42DA-B97B-80F6C6324D55.png` | `img/book-cover-art.webp` | Book cover artwork, `og:image` |
+| `A5414859-4370-42DA-B97B-80F6C6324D55.png` (rows 710–1270) | `img/book-silk-field.webp` | Page fabric field, coded cover backing, quote band, chooser card 03 |
 
-- `book-hero-portrait.jpg` — the campaign portrait in the yellow gown. Required by the book
-  landing hero; there is no coded substitute for a photograph.
-- `book-cover-art.jpg` — still referenced by `route-book.css` for the root chooser card. The book
-  landing no longer needs it: the cover artwork inside the tablet, phone, and open book is now
-  rendered from markup in `book/index.html`, so it stays crisp at any density.
+`book-silk-field.webp` is not a separate photograph. It is the band of the cover artwork that
+carries no type — the cover was scanned for dark ink and the only text-free rows are 710 to 1270 —
+so the page background and the cover are the same piece of fabric. Re-crop from the same rows if
+the cover is ever re-issued.
+
+The chooser card for option 03 uses the fabric plate rather than the cover artwork on purpose. The
+cover carries its own title lockup, which collided with the card's overlaid heading and rendered
+the words twice.
 
 ## Processing
 

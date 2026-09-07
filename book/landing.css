@@ -30,23 +30,26 @@ svg{display:block}
 img{max-width:100%}
 
 /* ── Golden silk field ─────────────────────────────────────────────────── */
-.ambient-silk{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;background:
-  radial-gradient(ellipse 70% 45% at 46% 2%,rgba(255,255,255,.96),rgba(255,250,236,.55) 42%,transparent 72%),
-  radial-gradient(ellipse 55% 40% at 92% 38%,rgba(238,197,120,.22),transparent 62%),
-  radial-gradient(ellipse 60% 35% at 6% 66%,rgba(240,203,132,.24),transparent 64%),
-  linear-gradient(178deg,#fffaf0 0%,#f7e4bf 44%,#fdf1d8 72%,#fff9ed 100%)}
-.ribbon{position:absolute;display:block;width:150vw;height:15vw;min-height:120px;border-radius:50%;opacity:.68;transform-origin:center;filter:blur(.3px) drop-shadow(0 14px 24px rgba(133,83,19,.07));background:
-  linear-gradient(178deg,rgba(255,255,255,.9),rgba(255,241,203,.5) 22%,rgba(226,175,79,.32) 50%,rgba(255,248,224,.7) 72%,rgba(184,120,32,.12));
-  box-shadow:inset 0 10px 20px rgba(255,255,255,.6),inset 0 -12px 24px rgba(158,97,23,.08)}
-.ribbon:after{content:"";position:absolute;inset:6% 0;border-radius:inherit;background:repeating-linear-gradient(2.4deg,rgba(255,255,255,.22) 0 3px,rgba(164,104,29,.03) 4px 8px,transparent 9px 20px);filter:blur(1.4px);mix-blend-mode:soft-light}
-.r1{left:-56vw;top:-4vh;transform:rotate(-20deg)}
-.r2{right:-58vw;top:11vh;transform:rotate(15deg)}
-.r3{left:-54vw;top:27vh;transform:rotate(-13deg)}
-.r4{right:-54vw;top:41vh;transform:rotate(16deg)}
-.r5{left:-56vw;top:55vh;transform:rotate(-10deg)}
-.r6{right:-56vw;top:68vh;transform:rotate(14deg)}
-.r7{left:-55vw;top:82vh;transform:rotate(-12deg)}
-.r8{right:-57vw;top:94vh;transform:rotate(11deg)}
+/* book-silk-field.webp is the text-free band of the cover artwork, so the page
+   and the cover are literally the same piece of fabric. Two layers drift against
+   each other on transform only, which the compositor handles without repainting. */
+.ambient-silk{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;background:#fbf3e3}
+.silk{position:absolute;inset:-9%;display:block;background:url(../assets/img/book-silk-field.webp) center/cover no-repeat;will-change:transform;backface-visibility:hidden}
+.silk-a{animation:silk-drift-a 34s ease-in-out infinite alternate}
+.silk-b{opacity:.5;mix-blend-mode:soft-light;animation:silk-drift-b 47s ease-in-out infinite alternate}
+.silk-bloom{position:absolute;inset:0;display:block;background:
+  radial-gradient(ellipse 66% 42% at 47% 0%,rgba(255,255,255,.94),rgba(255,251,240,.5) 44%,transparent 74%),
+  radial-gradient(ellipse 52% 40% at 6% 62%,rgba(255,250,238,.42),transparent 66%),
+  linear-gradient(180deg,rgba(255,252,244,.34) 0%,rgba(255,247,228,.06) 38%,rgba(255,250,238,.4) 100%)}
+
+@keyframes silk-drift-a{
+  from{transform:scale(1.02) translate3d(0,0,0)}
+  to{transform:scale(1.085) translate3d(-1.7%,-1.1%,0)}
+}
+@keyframes silk-drift-b{
+  from{transform:scaleX(-1) scale(1.07) translate3d(0,0,0)}
+  to{transform:scaleX(-1) scale(1.015) translate3d(-2.1%,1.5%,0)}
+}
 
 .book-nav,main,.campaign-footer{position:relative}
 .book-nav{z-index:20}
@@ -70,10 +73,12 @@ img{max-width:100%}
 /* The portrait deliberately overruns the section so the figure carries into
    the section below, exactly as the reference composition does. */
 .campaign-hero{position:relative;z-index:2;width:var(--shell);margin:0 auto;padding:clamp(26px,5.5vw,72px) var(--gutter) clamp(36px,8vw,112px)}
-.hero-portrait{position:absolute;z-index:1;right:max(0px,calc((100vw - 1400px) / 2));top:0;width:min(56vw,760px);height:calc(100% + clamp(140px,35vw,420px));margin:0;overflow:hidden;
-  -webkit-mask-image:linear-gradient(100deg,transparent 0,#000 26%,#000 88%,rgba(0,0,0,.55) 100%);
-  mask-image:linear-gradient(100deg,transparent 0,#000 26%,#000 88%,rgba(0,0,0,.55) 100%)}
-.hero-portrait img{display:block;width:100%;height:100%;object-fit:cover;object-position:58% 22%}
+.hero-portrait{position:absolute;z-index:1;right:max(0px,calc((100vw - 1400px) / 2));top:0;width:min(55vw,740px);height:calc(100% + clamp(120px,26.5vw,340px));margin:0;overflow:hidden;
+  -webkit-mask-image:linear-gradient(100deg,transparent 0,#000 27%,#000 88%,rgba(0,0,0,.5) 100%),linear-gradient(180deg,transparent 0,#000 9%);
+  mask-image:linear-gradient(100deg,transparent 0,#000 27%,#000 88%,rgba(0,0,0,.5) 100%),linear-gradient(180deg,transparent 0,#000 9%);
+  -webkit-mask-composite:source-in;mask-composite:intersect}
+/* Framed so the figure clears the headline, as the reference composes it. */
+.hero-portrait img{display:block;width:100%;height:100%;object-fit:cover;object-position:2% center}
 
 .hero-copy{position:relative;z-index:3;width:min(680px,70%);margin-left:8%;text-align:center}
 .hero-copy h1{margin:0;font-family:var(--serif);font-weight:400;letter-spacing:-.045em;line-height:.8}
@@ -110,10 +115,8 @@ img{max-width:100%}
 
 /* Coded cover artwork: silk wash + the title lockup, identical on every device. */
 .cover{position:relative;display:flex;flex-direction:column;align-items:center;width:100%;height:100%;padding:11% 9% 8%;text-align:center;background:
-  radial-gradient(ellipse 80% 40% at 50% 6%,rgba(255,255,255,.95),transparent 62%),
-  radial-gradient(ellipse 90% 50% at 50% 96%,rgba(233,196,128,.5),transparent 70%),
-  linear-gradient(172deg,#fdfaf3 0%,#fbf3e2 42%,#f0dcb4 78%,#f7ead0 100%)}
-.cover:after{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(-24deg,rgba(255,255,255,.42) 0 3px,rgba(198,151,71,.06) 5px 10px,transparent 11px 24px);filter:blur(.8px);opacity:.55;mix-blend-mode:soft-light}
+  linear-gradient(178deg,rgba(255,253,247,.9) 0%,rgba(255,250,238,.5) 26%,rgba(255,249,235,.12) 52%,rgba(255,248,232,.3) 100%),
+  url(../assets/img/book-silk-field.webp) center 62%/175% no-repeat,#fdfaf2}
 .cover>*{position:relative;z-index:1}
 .cover-the{font-family:var(--serif);font-style:italic;font-size:13cqw;line-height:1}
 .cover-title{font-family:var(--serif);font-size:19cqw;line-height:.96;letter-spacing:-.04em}
@@ -147,9 +150,9 @@ img{max-width:100%}
 /* ── Quote ─────────────────────────────────────────────────────────────── */
 /* Dark at the left, opening into lit silk at the right. */
 .campaign-quote{position:relative;z-index:5;overflow:hidden;padding:clamp(22px,3vw,44px) 0 clamp(14px,1.9vw,30px);color:#fdf7e9;background:
-  radial-gradient(ellipse 62% 88% at 8% 22%,rgba(43,26,10,.94),rgba(66,42,17,.72) 46%,transparent 78%),
-  linear-gradient(96deg,#4a2f13 0%,#6b4720 34%,#b98d4a 66%,#e2c088 100%)}
-.campaign-quote:before{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(-14deg,rgba(255,240,206,.1) 0 4px,rgba(93,58,20,.06) 6px 13px,transparent 14px 32px);filter:blur(1.6px);mix-blend-mode:soft-light}
+  radial-gradient(ellipse 64% 92% at 6% 24%,rgba(38,23,8,.95),rgba(62,39,15,.78) 48%,transparent 80%),
+  linear-gradient(96deg,rgba(58,36,14,.93) 0%,rgba(88,58,25,.76) 32%,rgba(150,105,45,.32) 64%,rgba(226,192,136,.1) 100%),
+  url(../assets/img/book-silk-field.webp) center/cover,#4a2f13}
 .campaign-quote:after{content:"";position:absolute;right:-8%;bottom:-46%;width:78%;height:150%;border-radius:50%;pointer-events:none;background:radial-gradient(ellipse at 40% 40%,rgba(255,236,193,.42),rgba(216,166,90,.16) 58%,transparent 76%)}
 .quote-inner{position:relative;z-index:1;width:var(--shell);margin:0 auto;padding:0 var(--gutter)}
 .campaign-quote blockquote{margin:0 0 0 clamp(0px,13.7vw,196px);font-family:var(--serif);font-size:clamp(26px,3.9vw,54px);font-style:italic;line-height:1.05;letter-spacing:-.028em;text-indent:-.42em}

@@ -30,7 +30,8 @@ body.book-campaign .campaign-footer{
 
 /* Decorative layers must never capture swipe gestures. */
 body.book-campaign .ambient-silk,
-body.book-campaign .ribbon,
+body.book-campaign .silk,
+body.book-campaign .silk-bloom,
 body.book-campaign .hero-silk{
   pointer-events:none !important;
   touch-action:none;

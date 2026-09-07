@@ -164,10 +164,12 @@ body.route-locked > .route-gate .gate-veil::after{
 .route-choice:nth-child(1)::before{background-image:url('assets/img/portrait-hero.webp');background-position:center 24%}
 .route-choice:nth-child(2)::before{background-image:url('assets/img/work-media.webp');background-position:center}
 .route-choice-book::before{
-  background-image:url('assets/img/book-cover-art.jpg');
-  background-position:center 32%;
+  /* The fabric plate, not the cover artwork: the cover carries its own title
+     lockup, which collided with the card's overlaid heading. Same silk, no type. */
+  background-image:url('assets/img/book-silk-field.webp');
+  background-position:center 58%;
   background-size:cover;
-  opacity:.70;
+  opacity:.62;
 }
 .route-choice-book{
   border-color:rgba(239,208,129,.34);
