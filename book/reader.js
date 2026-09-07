@@ -225,32 +225,170 @@
   /*
     Access.
 
-    Deliberately unchanged: access is never granted from localStorage, a query
-    parameter or a static code. All three can be forged on a public GitHub Pages
-    site, so any of them would hand the book away. The reader asks the server
-    every time, and the server is the only thing that can say yes.
+    Deliberately unchanged in principle: the browser never decides whether the
+    book is unlocked. It asks Supabase for chapters and renders whatever comes
+    back. Row level security answers one chapter for a visitor and all of them
+    for a buyer, so there is no check here to forge — the old warning about
+    localStorage, query parameters and static codes still holds, and this is
+    how it is honoured.
 
-    Set window.FMB_ENTITLEMENT_ENDPOINT before this file loads once a backend
-    exists. Until then the book stays in preview, which is the honest state.
+    Configure before this file loads:
+
+      window.FMB_SUPABASE = {
+        url: 'https://<ref>.supabase.co',
+        anonKey: '<anon key>',
+        getAccessToken: function(){ return session token or ''; }
+      };
+
+    The anon key belongs in the bundle. The service_role key never does — it
+    bypasses row level security, and the build gate rejects it.
+    See .github/supabase-contract.md for the schema and policies.
   */
-  var entitlementEndpoint=window.FMB_ENTITLEMENT_ENDPOINT||'';
+  var supa=window.FMB_SUPABASE||null;
+  var CHAPTER_STORE='trwtl.chapters';
 
-  function checkEntitlement(){
-    if(!entitlementEndpoint)return;
-    fetch(entitlementEndpoint,{credentials:'include',headers:{'Accept':'application/json'}})
+  function accessToken(){
+    if(!supa)return '';
+    if(typeof supa.getAccessToken==='function'){
+      try{return supa.getAccessToken()||'';}catch(e){return '';}
+    }
+    return supa.accessToken||'';
+  }
+
+  function renderChapters(rows){
+    if(!rows||!rows.length)return false;
+    // A visitor gets the single preview row, which the page already shows.
+    if(rows.length<2)return false;
+
+    var doc=document.getElementById('readerDoc');
+    if(!doc)return false;
+    var preview=document.querySelector('.preview-end');
+    if(preview)preview.remove();
+
+    var frag=document.createDocumentFragment();
+    rows.forEach(function(row,index){
+      var meta=document.createElement('span');
+      meta.className='chapter-meta';
+      meta.textContent=(row.part?row.part+' \u00b7 ':'')+'Chapter '+String(row.number).padStart(2,'0');
+
+      var head=document.createElement('h1');
+      head.textContent=row.title;
+
+      var rule=document.createElement('span');
+      rule.className='chapter-rule';
+      rule.setAttribute('aria-hidden','true');
+
+      var prose=document.createElement('div');
+      prose.className='reader-prose';
+      String(row.body).split(/\n{2,}/).forEach(function(para){
+        if(!para.trim())return;
+        var p=document.createElement('p');
+        p.textContent=para.trim();
+        prose.appendChild(p);
+      });
+
+      if(index)frag.appendChild(document.createElement('hr'));
+      frag.appendChild(meta); frag.appendChild(head);
+      frag.appendChild(rule); frag.appendChild(prose);
+    });
+    doc.innerHTML='';
+    doc.appendChild(frag);
+    doc.dataset.chapters=String(rows.length);
+    doc.dataset.entitled='true';
+    return true;
+  }
+
+  function unlockContents(rows){
+    var byNumber={};
+    rows.forEach(function(r){byNumber[Number(r.number)]=true;});
+    Array.prototype.forEach.call(document.querySelectorAll('.toc-item'),function(item){
+      var n=Number((item.querySelector('b')||{}).textContent);
+      if(!byNumber[n])return;
+      item.removeAttribute('data-locked');
+      var svg=item.querySelector('svg'); if(svg)svg.remove();
+      var note=item.querySelector('.sr-only'); if(note)note.remove();
+    });
+  }
+
+  /*
+    A copy held on this device, so a bought book survives a lost signal and an
+    app restart. This is the honest half of "read offline": text that survives
+    a flight is text on the device, and a paying reader holding a local copy is
+    what an ebook is.
+
+    It is kept out of the service worker caches on purpose. A deliberate,
+    visible download the reader can remove is a different thing from text
+    written to disk as a side effect of loading a page.
+  */
+  function keepLocally(rows){
+    try{localStorage.setItem(CHAPTER_STORE,JSON.stringify(rows));return true;}
+    catch(e){return false;}
+  }
+  function heldLocally(){
+    try{return JSON.parse(localStorage.getItem(CHAPTER_STORE));}catch(e){return null;}
+  }
+  function removeLocalCopy(){
+    try{localStorage.removeItem(CHAPTER_STORE);}catch(e){}
+    if('serviceWorker' in navigator&&navigator.serviceWorker.controller){
+      navigator.serviceWorker.controller.postMessage({type:'clear-cache'});
+    }
+  }
+
+  /* Tell the reader plainly what is on their device, and let them undo it. */
+  function describeLocalCopy(){
+    var note=document.getElementById('offlineNote');
+    var action=document.getElementById('removeCopy');
+    if(!note||!action)return;
+    var held=heldLocally();
+    if(held&&held.length){
+      note.textContent='Your book is saved on this device, so you can read it '
+        +'with no signal. It stays only here.';
+      action.hidden=false;
+    }else{
+      note.textContent='The app is saved to this device so it opens without a '
+        +'signal. Your chapters are saved here once your copy is activated.';
+      action.hidden=true;
+    }
+  }
+
+  function loadChapters(){
+    if(!supa||!supa.url||!supa.anonKey){
+      var held=heldLocally();
+      if(held&&renderChapters(held))unlockContents(held);
+      describeLocalCopy();
+      return;
+    }
+    var token=accessToken()||supa.anonKey;
+    fetch(supa.url.replace(/\/$/,'')+'/rest/v1/chapters?select=number,part,title,body&order=number.asc',{
+      headers:{apikey:supa.anonKey,Authorization:'Bearer '+token,Accept:'application/json'}
+    })
       .then(function(response){
-        if(!response.ok)throw new Error('Not entitled');
+        if(!response.ok)throw new Error('chapters unavailable');
         return response.json();
       })
-      .then(function(data){
-        if(!data||data.authorized!==true)return;
-        var label=data.watermarkLabel||data.displayName||'FMB READER';
-        buildWatermark(String(label).toUpperCase()+' · PERSONAL COPY');
-        doc.dataset.entitled='true';
-        /* Chapter text stays server-owned. When the entitlement response carries
-           a short-lived content endpoint, fetch and render it here. It must not
-           be written into Cache Storage: see the note at the top of sw.js. */
-      })['catch'](function(){});
+      .then(function(rows){
+        if(!renderChapters(rows))return;
+        unlockContents(rows);
+        keepLocally(rows);
+        describeLocalCopy();
+        buildWatermark((supa.readerLabel||'PERSONAL COPY').toUpperCase());
+      })['catch'](function(){
+        // Offline, or the request failed: fall back to the copy on this device.
+        var held=heldLocally();
+        if(held&&renderChapters(held))unlockContents(held);
+        describeLocalCopy();
+      });
   }
-  checkEntitlement();
+
+  var removeBtn=document.getElementById('removeCopy');
+  if(removeBtn){
+    removeBtn.addEventListener('click',function(){
+      removeLocalCopy();
+      describeLocalCopy();
+      showToast('The copy on this device has been removed. Your access is unchanged.');
+    });
+  }
+
+  loadChapters();
+  describeLocalCopy();
 })();

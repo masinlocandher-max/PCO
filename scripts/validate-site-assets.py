@@ -121,6 +121,72 @@ if reader.is_file():
         )
 
 
+# ---------------------------------------------------------------------------
+# Secret containment.
+#
+# Supabase ships two keys. The anon key is meant to be public and is safe in
+# this bundle, but only because row level security decides what it can read.
+# The service_role key bypasses row level security entirely, so a copy of it in
+# this repository is a copy of the manuscript for anyone who views source.
+#
+# JWTs are therefore decoded rather than pattern-matched: an anon key passes, a
+# service_role key fails the build.
+# ---------------------------------------------------------------------------
+
+JWT_PATTERN = re.compile(rb'eyJ[A-Za-z0-9_-]{10,}\.eyJ[A-Za-z0-9_-]{10,}')
+# Detect keys, not mentions. Documentation and source comments have to be able
+# to say "service_role" in order to warn about it, so the bare word is not a
+# marker; a decoded JWT role and Supabase's secret-key prefix are.
+SECRET_MARKERS = (
+    (rb'sb_secret_[A-Za-z0-9_-]{10,}', 'a Supabase secret key'),
+    (rb'-----BEGIN [A-Z ]*PRIVATE KEY-----', 'a private key'),
+    (rb'sk_live_[A-Za-z0-9]{10,}', 'a live secret API key'),
+    (rb'\bsk-[A-Za-z0-9]{24,}', 'a secret API key'),
+    (rb'SUPABASE_SERVICE_ROLE_KEY\s*[:=]\s*["\']?[A-Za-z0-9._-]{20,}',
+     'an assigned service_role key'),
+)
+SCANNED_SUFFIXES = {'.html', '.js', '.css', '.json', '.webmanifest', '.md',
+                    '.yml', '.yaml', '.txt', '.py', '.svg'}
+
+
+def jwt_role(token):
+    """Return the role claim of a JWT payload, or None if it cannot be read."""
+    import base64
+    import json as _json
+    try:
+        payload = token.split(b'.')[1]
+        payload += b'=' * (-len(payload) % 4)
+        return _json.loads(base64.urlsafe_b64decode(payload)).get('role')
+    except Exception:
+        return None
+
+
+for path in sorted(ROOT.rglob('*')):
+    rel_text = str(path.relative_to(ROOT)) if path != ROOT else ''
+    if not path.is_file() or rel_text.startswith('.git/'):
+        continue
+    # This file names the patterns it looks for, so it cannot scan itself.
+    if path.resolve() == Path(__file__).resolve():
+        continue
+    if path.name.startswith('.env'):
+        ERRORS.append(f'environment file would be published: {rel_text}')
+        continue
+    if path.suffix.lower() not in SCANNED_SUFFIXES:
+        continue
+
+    blob = path.read_bytes()
+    for marker, described in SECRET_MARKERS:
+        if re.search(marker, blob):
+            ERRORS.append(f'{rel_text} contains {described}')
+    for token in JWT_PATTERN.findall(blob):
+        role = jwt_role(token)
+        if role and role != 'anon':
+            ERRORS.append(
+                f'{rel_text} contains a JWT with role "{role}" — only the anon '
+                'key may ship to the browser'
+            )
+
+
 class RefParser(HTMLParser):
     def __init__(self):
         super().__init__()
@@ -166,5 +232,5 @@ if ERRORS:
 
 print(
     f'Asset validation passed: {raster_count} image files valid; '
-    'HTML local references resolve; no manuscript content published.'
+    'HTML local references resolve; no manuscript or secret content published.'
 )
