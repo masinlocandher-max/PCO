@@ -3,18 +3,32 @@
 
   /*
     Commerce hook.
-    When a hosted checkout is ready, define window.FMB_BOOK_CHECKOUT_URL before
-    this file loads. Until then the final purchase CTA uses the explicit email
-    purchase request and access is issued only after payment verification.
+    Orders are placed by email until a hosted checkout exists. To switch an
+    edition over, define window.FMB_BOOK_CHECKOUT before this file loads:
+
+      window.FMB_BOOK_CHECKOUT = {
+        ebook:      'https://checkout.example/ebook',
+        pocketbook: 'https://checkout.example/pocketbook'
+      };
+
+    Editions are upgraded independently, so print can stay on email order while
+    the ebook goes live, or the reverse. Anything not configured keeps its
+    mailto link — a buyer is never shown a checkout that cannot take payment.
   */
   function initCheckout(){
-    var checkoutUrl=window.FMB_BOOK_CHECKOUT_URL||'';
-    if(!checkoutUrl)return;
+    var config=window.FMB_BOOK_CHECKOUT;
 
-    ['buyHero','purchaseButton'].forEach(function(id){
-      var link=document.getElementById(id);
-      if(!link)return;
-      link.href=checkoutUrl;
+    // Back-compatible with the earlier single-product hook.
+    if(!config&&window.FMB_BOOK_CHECKOUT_URL){
+      config={ebook:window.FMB_BOOK_CHECKOUT_URL};
+    }
+    if(!config)return;
+
+    var buttons=document.querySelectorAll('[data-edition]');
+    Array.prototype.forEach.call(buttons,function(link){
+      var url=config[link.getAttribute('data-edition')];
+      if(!url)return;
+      link.href=url;
       link.target='_blank';
       link.rel='noopener';
     });

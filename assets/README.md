@@ -59,6 +59,21 @@ The chooser card for option 03 uses the fabric plate rather than the cover artwo
 cover carries its own title lockup, which collided with the card's overlaid heading and rendered
 the words twice.
 
+## Share cards
+
+Both share cards are generated, not photographed, and both are 1200x630 because
+social crops to roughly 1.91:1 — the 4:5 cover artwork lost its title and byline
+in shared links.
+
+| Source | Repository asset | Use |
+|---|---|---|
+| `img/book-silk-field.webp` + the title lockup | `img/book-share-card.jpg` | `og:image` for `/book/` |
+| `img/wordmark.webp` on the root palette | `img/fmb-share-card.jpg` | `og:image` for `/` |
+
+Regenerate them by re-rendering at 1200x630 with the same lockup and exporting
+JPEG. Keep the content inside roughly the central 80% so no platform crop cuts
+the title, the byline, or the wordmark.
+
 ## Processing
 
 Photography is converted to WebP without cropping or upscaling. CSS controls framing. Web delivery derivatives may be resized below the source resolution to reduce page weight while preserving the original aspect ratio. The Drive originals remain the source of truth.

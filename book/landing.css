@@ -167,13 +167,21 @@ img{max-width:100%}
 /* ── Purchase ──────────────────────────────────────────────────────────── */
 /* Cream dome rising out of the silk and carrying down into the footer. */
 .purchase-band{position:relative;z-index:6;display:flex;flex-direction:column;align-items:center;padding:clamp(14px,1.7vw,28px) var(--gutter) clamp(10px,1.3vw,20px);text-align:center}
-.purchase-band:before{content:"";position:absolute;z-index:-1;left:50%;bottom:0;width:120vw;height:calc(100% + clamp(8px,2vw,40px));border-radius:50% 50% 0 0;background:linear-gradient(180deg,#fbf5e8 0%,#faf3e5 44%,#f8f1e2 100%);transform:translateX(-50%)}
+.purchase-band:before{content:"";position:absolute;z-index:-1;left:50%;bottom:0;width:120vw;height:calc(100% + clamp(8px,1.6vw,32px));border-radius:50% 50% 0 0;background:linear-gradient(180deg,#fbf5e8 0%,#faf3e5 44%,#f8f1e2 100%);transform:translateX(-50%)}
 .purchase-band h2{margin:0;font-family:var(--serif);font-size:clamp(30px,4.1vw,56px);font-weight:400;letter-spacing:-.04em;line-height:1.05}
 .purchase-kicker{margin:4px 0 clamp(14px,2.1vw,28px);font-size:clamp(9.5px,1.08vw,13px);font-weight:600;letter-spacing:.32em;text-transform:uppercase}
-.final-buy{min-width:clamp(196px,18.5vw,246px)}
-.purchase-facts{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:clamp(20px,5.4vw,80px);margin-top:clamp(14px,1.9vw,28px);color:#241d16;font-family:var(--serif);font-size:clamp(12.5px,1.42vw,17px)}
-.purchase-facts span{display:inline-flex;align-items:center;gap:12px}
-.purchase-facts svg{flex:none;width:clamp(22px,2.5vw,30px);height:clamp(22px,2.5vw,30px);fill:none;stroke:#15100b;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.edition-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(14px,1.8vw,26px);width:min(100%,780px);margin:clamp(18px,2.4vw,32px) auto 0;text-align:left}
+.edition{display:flex;flex-direction:column;padding:clamp(20px,2.4vw,32px) clamp(18px,2.2vw,30px) clamp(18px,2.2vw,28px);border:1px solid rgba(111,77,31,.2);border-radius:18px;background:rgba(255,252,246,.72);box-shadow:0 14px 34px rgba(92,56,14,.08);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.edition h3{margin:0;font-family:var(--serif);font-size:clamp(24px,2.5vw,32px);font-weight:400;letter-spacing:-.03em}
+.edition-price{margin:2px 0 0;font-family:var(--serif);font-size:clamp(34px,3.6vw,48px);line-height:1.1;letter-spacing:-.04em}
+.edition-price span{margin-right:.08em;font-size:.52em;vertical-align:.28em}
+.edition-note{margin:4px 0 0;font-size:clamp(9.5px,1vw,11.5px);font-weight:600;letter-spacing:.24em;text-transform:uppercase;color:#6a5a48}
+.edition-list{list-style:none;flex:1;margin:clamp(14px,1.8vw,22px) 0 clamp(16px,2vw,24px);padding:clamp(14px,1.8vw,20px) 0 0;border-top:1px solid rgba(111,77,31,.18)}
+.edition-list li{display:flex;align-items:center;gap:11px;color:#2f2820;font-family:var(--serif);font-size:clamp(13px,1.15vw,16px)}
+.edition-list li+li{margin-top:clamp(9px,1.1vw,14px)}
+.edition-list svg{flex:none;width:23px;height:23px;fill:none;stroke:#15100b;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.edition .gold-button{width:100%}
+.purchase-fineprint{max-width:620px;margin:clamp(16px,2vw,26px) auto 0;color:#6a5a48;font-size:clamp(11px,1vw,12.5px);line-height:1.6}
 
 /* ── Footer ────────────────────────────────────────────────────────────── */
 .campaign-footer{background:#f8f1e2;padding:0 var(--gutter) clamp(16px,2vw,26px)}
@@ -243,7 +251,7 @@ img{max-width:100%}
   .quote-inner{padding:0 20px}
   .campaign-quote blockquote,.quote-sign{margin-left:0}
 
-  .purchase-facts{gap:16px 34px}
+  .edition-grid{width:100%}
   .footer-top{grid-template-columns:auto auto;row-gap:16px}
   .campaign-footer nav{display:none}
   .social-links{justify-self:end}
@@ -278,7 +286,7 @@ img{max-width:100%}
   .strip-inner article:nth-child(n+3){padding-top:26px}
   .strip-inner article:nth-child(n+3):after{content:"";position:absolute;left:14%;right:14%;top:0;height:1px;background:var(--line)}
 
-  .purchase-facts{flex-direction:column;align-items:flex-start;gap:14px;width:max-content;margin-inline:auto}
+  .edition-grid{grid-template-columns:1fr}
   .footer-meta{font-size:11px}
 }
 

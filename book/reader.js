@@ -88,7 +88,7 @@
   var lockedButtons=Array.prototype.slice.call(document.querySelectorAll('.toc-button[aria-disabled="true"]'));
   lockedButtons.forEach(function(button){
     button.addEventListener('click',function(){
-      showToast('This chapter is available after verified purchase. Reader access is ₱999.');
+      showToast('This chapter is available after verified purchase. Reader access is ₱499.');
       if(window.innerWidth<=760&&sidebar)sidebar.classList.remove('is-open');
     });
   });
