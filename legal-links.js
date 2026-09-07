@@ -19,6 +19,16 @@
     document.head.appendChild(link);
   }
 
+  function ensurePaymongo(){
+    if(!document.body||!document.body.classList.contains('book-campaign'))return;
+    if(document.getElementById('bookPaymongoCheckout'))return;
+    var script=document.createElement('script');
+    script.id='bookPaymongoCheckout';
+    script.src='/book/paymongo.js?v=20260907-1';
+    script.async=true;
+    document.body.appendChild(script);
+  }
+
   function ensureStyles(){
     if(document.getElementById('bookLegalNavStyles'))return;
     var style=document.createElement('style');
@@ -55,7 +65,7 @@
     if(meta)meta.insertAdjacentElement('afterend',nav);else footer.appendChild(nav);
   }
 
-  function inject(){ensureBookVisuals();ensureStyles();injectCheckoutDisclosure();injectFooterNav();}
+  function inject(){ensureBookVisuals();ensurePaymongo();ensureStyles();injectCheckoutDisclosure();injectFooterNav();}
   inject();
   new MutationObserver(inject).observe(document.documentElement,{childList:true,subtree:true});
 })();
