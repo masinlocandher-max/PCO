@@ -4,7 +4,7 @@
   deliberately never cached here. The service worker only handles same-origin
   public shell assets and the intentionally public preview.
 */
-var VERSION='trwtl-v11';
+var VERSION='trwtl-v12';
 var SHELL=VERSION+'-shell';
 var RUNTIME=VERSION+'-runtime';
 
@@ -12,10 +12,12 @@ var SHELL_URLS=[
   './',
   './index.html',
   './reader.html',
+  './payment-success.html',
   './landing.css',
   './scroll-fix.css',
   './reader.css',
   './book.js',
+  './paymongo.js',
   './reader.js',
   './manifest.webmanifest',
   './app-icon-192.png',
@@ -47,9 +49,6 @@ self.addEventListener('activate',function(event){
       if(key!==SHELL&&key!==RUNTIME)return caches.delete(key);
     }));
   }).then(function(){return self.clients.claim();}).then(function(){
-    /* One automatic reload when this new worker takes control removes reader
-       HTML/JS left behind by an older iOS Safari cache. The worker activates
-       only once, so this cannot create a reload loop. */
     return self.clients.matchAll({type:'window',includeUncontrolled:true}).then(function(clients){
       return Promise.all(clients.map(function(client){
         try{var u=new URL(client.url);if(/\/book\/reader\.html$/i.test(u.pathname))return client.navigate(client.url);}catch(e){}
@@ -78,8 +77,6 @@ self.addEventListener('fetch',function(event){
   var request=event.request;if(request.method!=='GET')return;
   var url;try{url=new URL(request.url);}catch(e){return;}
 
-  /* Never intercept cross-origin requests. This keeps Supabase auth, access,
-     chapter delivery and bookmark REST calls network-only. */
   if(url.origin!==self.location.origin)return;
 
   if(/\/book\/reader\.js$/i.test(url.pathname)){
@@ -89,7 +86,6 @@ self.addEventListener('fetch',function(event){
     return;
   }
 
-  /* HTML is network-first so Safari cannot strand an old reader/loading screen. */
   if(request.mode==='navigate'||/\.html$/i.test(url.pathname)){
     event.respondWith(networkFirst(request,'./offline.html'));return;
   }
