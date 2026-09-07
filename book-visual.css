@@ -1,0 +1,282 @@
+/*
+  The Right Way to Live — blended editorial art direction.
+  Uses the existing photographed silk and portrait only. No manuscript content,
+  no new identity imagery. Fabric layers overlap the composition intentionally
+  to make the hero read as one continuous image rather than stacked rectangles.
+*/
+
+body.book-campaign{
+  --fabric:url('/assets/img/book-silk-field.webp');
+  --paper-glass:rgba(253,248,238,.72);
+}
+
+body.book-campaign .book-nav{
+  background:linear-gradient(180deg,rgba(253,249,240,.72),rgba(253,249,240,.26));
+  border-bottom:1px solid rgba(126,87,34,.09);
+  -webkit-backdrop-filter:blur(16px) saturate(1.04);
+  backdrop-filter:blur(16px) saturate(1.04);
+}
+
+body.book-campaign .campaign-hero{
+  isolation:isolate;
+  overflow:hidden;
+}
+
+/* Background silk drifting into the title area. */
+body.book-campaign .campaign-hero::before,
+body.book-campaign .campaign-hero::after{
+  content:"";
+  position:absolute;
+  pointer-events:none;
+  background-image:var(--fabric);
+  background-repeat:no-repeat;
+  background-size:cover;
+  filter:saturate(.88) brightness(1.08) contrast(.96);
+  transform-origin:center;
+}
+
+body.book-campaign .campaign-hero::before{
+  z-index:0;
+  left:-13%;
+  top:-28%;
+  width:64%;
+  height:78%;
+  opacity:.32;
+  background-position:24% 46%;
+  transform:rotate(-10deg) scale(1.08);
+  -webkit-mask-image:radial-gradient(ellipse 78% 64% at 48% 56%,#000 0 48%,rgba(0,0,0,.86) 62%,transparent 78%);
+  mask-image:radial-gradient(ellipse 78% 64% at 48% 56%,#000 0 48%,rgba(0,0,0,.86) 62%,transparent 78%);
+}
+
+body.book-campaign .campaign-hero::after{
+  z-index:1;
+  right:-18%;
+  top:9%;
+  width:58%;
+  height:74%;
+  opacity:.2;
+  background-position:72% 45%;
+  transform:rotate(11deg) scale(1.13);
+  mix-blend-mode:soft-light;
+  -webkit-mask-image:radial-gradient(ellipse 72% 66% at 52% 50%,#000 0 50%,rgba(0,0,0,.72) 64%,transparent 80%);
+  mask-image:radial-gradient(ellipse 72% 66% at 52% 50%,#000 0 50%,rgba(0,0,0,.72) 64%,transparent 80%);
+}
+
+body.book-campaign .hero-copy{
+  position:relative;
+  z-index:6;
+  text-shadow:0 1px 0 rgba(255,255,255,.18);
+}
+
+body.book-campaign .hero-copy h1{
+  text-wrap:balance;
+}
+
+body.book-campaign .hero-portrait{
+  isolation:isolate;
+}
+
+body.book-campaign .hero-portrait img{
+  position:relative;
+  z-index:1;
+}
+
+/* Two foreground folds turn the portrait into part of the silk field. */
+body.book-campaign .hero-portrait::before,
+body.book-campaign .hero-portrait::after{
+  content:"";
+  position:absolute;
+  pointer-events:none;
+  z-index:3;
+  background-image:var(--fabric);
+  background-repeat:no-repeat;
+  background-size:cover;
+}
+
+body.book-campaign .hero-portrait::before{
+  top:4%;
+  right:-14%;
+  width:67%;
+  height:39%;
+  opacity:.18;
+  background-position:66% 32%;
+  transform:rotate(13deg) scale(1.08);
+  mix-blend-mode:screen;
+  filter:brightness(1.16) saturate(.86);
+  -webkit-mask-image:linear-gradient(135deg,transparent 0,rgba(0,0,0,.7) 26%,#000 50%,rgba(0,0,0,.72) 73%,transparent 100%);
+  mask-image:linear-gradient(135deg,transparent 0,rgba(0,0,0,.7) 26%,#000 50%,rgba(0,0,0,.72) 73%,transparent 100%);
+}
+
+body.book-campaign .hero-portrait::after{
+  left:-15%;
+  bottom:-10%;
+  width:132%;
+  height:46%;
+  opacity:.46;
+  background-position:44% 78%;
+  transform:rotate(-8deg) scale(1.08);
+  filter:brightness(1.08) saturate(.9) contrast(.98);
+  -webkit-mask-image:linear-gradient(168deg,transparent 0,rgba(0,0,0,.55) 20%,#000 45%,rgba(0,0,0,.9) 68%,transparent 100%);
+  mask-image:linear-gradient(168deg,transparent 0,rgba(0,0,0,.55) 20%,#000 45%,rgba(0,0,0,.9) 68%,transparent 100%);
+}
+
+/* A silk bridge crosses the section boundary so the next panel feels revealed,
+   not pasted below the portrait. */
+body.book-campaign .book-intro{
+  isolation:isolate;
+}
+
+body.book-campaign .book-intro::after{
+  content:"";
+  position:absolute;
+  z-index:0;
+  left:-11vw;
+  top:-94px;
+  width:122vw;
+  height:210px;
+  pointer-events:none;
+  opacity:.34;
+  background-image:var(--fabric);
+  background-position:48% 76%;
+  background-size:cover;
+  transform:rotate(-4.5deg) scale(1.03);
+  filter:brightness(1.09) saturate(.88);
+  -webkit-mask-image:linear-gradient(174deg,transparent 0,rgba(0,0,0,.35) 20%,#000 47%,rgba(0,0,0,.74) 68%,transparent 100%);
+  mask-image:linear-gradient(174deg,transparent 0,rgba(0,0,0,.35) 20%,#000 47%,rgba(0,0,0,.74) 68%,transparent 100%);
+}
+
+body.book-campaign .intro-copy,
+body.book-campaign .product-stage{
+  position:relative;
+  z-index:2;
+}
+
+body.book-campaign .intro-copy h2{
+  text-wrap:balance;
+}
+
+body.book-campaign .gold-button{
+  box-shadow:0 12px 30px rgba(83,53,17,.16),inset 0 1px rgba(255,255,255,.2);
+}
+
+@media (prefers-reduced-motion:no-preference){
+  body.book-campaign .campaign-hero::before{animation:book-fabric-a 21s ease-in-out infinite alternate}
+  body.book-campaign .campaign-hero::after{animation:book-fabric-b 27s ease-in-out infinite alternate}
+  body.book-campaign .hero-portrait::after{animation:book-fabric-c 24s ease-in-out infinite alternate}
+}
+
+@keyframes book-fabric-a{
+  from{transform:rotate(-10deg) scale(1.08) translate3d(0,0,0)}
+  to{transform:rotate(-8deg) scale(1.12) translate3d(2.5%,-1.5%,0)}
+}
+@keyframes book-fabric-b{
+  from{transform:rotate(11deg) scale(1.13) translate3d(0,0,0)}
+  to{transform:rotate(8deg) scale(1.17) translate3d(-2%,2%,0)}
+}
+@keyframes book-fabric-c{
+  from{transform:rotate(-8deg) scale(1.08) translate3d(0,0,0)}
+  to{transform:rotate(-5deg) scale(1.12) translate3d(2%,-1%,0)}
+}
+
+/* Mobile art direction: fewer, larger folds. The portrait stays dominant and
+   the fabric crosses its edges instead of framing it as a card. */
+@media(max-width:560px){
+  body.book-campaign .book-nav{
+    position:relative;
+    z-index:30;
+    background:linear-gradient(180deg,rgba(253,249,240,.9),rgba(253,249,240,.52));
+    box-shadow:0 8px 24px rgba(88,59,24,.045);
+  }
+
+  body.book-campaign .campaign-hero{
+    overflow:hidden;
+    padding-top:18px;
+  }
+
+  body.book-campaign .campaign-hero::before{
+    left:-36vw;
+    top:-16vw;
+    width:124vw;
+    height:66vw;
+    opacity:.38;
+    background-position:27% 46%;
+    transform:rotate(-14deg) scale(1.08);
+    -webkit-mask-image:radial-gradient(ellipse 76% 66% at 44% 52%,#000 0 48%,rgba(0,0,0,.8) 62%,transparent 80%);
+    mask-image:radial-gradient(ellipse 76% 66% at 44% 52%,#000 0 48%,rgba(0,0,0,.8) 62%,transparent 80%);
+  }
+
+  body.book-campaign .campaign-hero::after{
+    right:-55vw;
+    top:23%;
+    width:122vw;
+    height:72vw;
+    opacity:.22;
+    transform:rotate(18deg) scale(1.04);
+  }
+
+  body.book-campaign .hero-copy{
+    z-index:7;
+    padding-inline:22px;
+  }
+
+  body.book-campaign .hero-copy h1{
+    line-height:.88;
+  }
+
+  body.book-campaign .hero-portrait{
+    overflow:hidden;
+    isolation:isolate;
+  }
+
+  body.book-campaign .hero-portrait::before{
+    top:4%;
+    right:-25%;
+    width:76%;
+    height:38%;
+    opacity:.16;
+  }
+
+  body.book-campaign .hero-portrait::after{
+    left:-24%;
+    bottom:-7%;
+    width:148%;
+    height:43%;
+    opacity:.56;
+    background-position:43% 78%;
+    transform:rotate(-10deg) scale(1.1);
+    -webkit-mask-image:linear-gradient(166deg,transparent 0,rgba(0,0,0,.5) 18%,#000 43%,rgba(0,0,0,.9) 70%,transparent 100%);
+    mask-image:linear-gradient(166deg,transparent 0,rgba(0,0,0,.5) 18%,#000 43%,rgba(0,0,0,.9) 70%,transparent 100%);
+  }
+
+  body.book-campaign .book-intro{
+    margin-top:-54px;
+    padding-top:82px;
+    border-radius:38px 38px 0 0;
+    box-shadow:0 -18px 42px rgba(112,78,35,.035);
+  }
+
+  body.book-campaign .book-intro::after{
+    left:-28vw;
+    top:-86px;
+    width:156vw;
+    height:178px;
+    opacity:.44;
+    transform:rotate(-7deg) scale(1.04);
+    background-position:46% 76%;
+  }
+
+  body.book-campaign .intro-copy h2{
+    max-width:325px;
+  }
+
+  body.book-campaign .intro-copy p{
+    max-width:330px;
+  }
+}
+
+@media(max-width:390px){
+  body.book-campaign .campaign-hero::before{top:-12vw;height:70vw}
+  body.book-campaign .hero-copy{padding-inline:18px}
+  body.book-campaign .hero-portrait::after{height:40%;opacity:.5}
+  body.book-campaign .book-intro{border-radius:32px 32px 0 0;padding-top:76px}
+}
