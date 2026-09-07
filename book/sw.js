@@ -46,7 +46,16 @@ self.addEventListener('activate',function(event){
     return Promise.all(keys.map(function(key){
       if(key!==SHELL&&key!==RUNTIME)return caches.delete(key);
     }));
-  }).then(function(){return self.clients.claim();}));
+  }).then(function(){return self.clients.claim();}).then(function(){
+    /* One automatic reload when this new worker takes control removes reader
+       HTML/JS left behind by an older iOS Safari cache. The worker activates
+       only once, so this cannot create a reload loop. */
+    return self.clients.matchAll({type:'window',includeUncontrolled:true}).then(function(clients){
+      return Promise.all(clients.map(function(client){
+        try{var u=new URL(client.url);if(/\/book\/reader\.html$/i.test(u.pathname))return client.navigate(client.url);}catch(e){}
+      }));
+    });
+  }));
 });
 
 function withEnhancement(response){
