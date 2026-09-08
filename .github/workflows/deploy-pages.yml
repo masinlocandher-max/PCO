@@ -54,10 +54,17 @@ jobs:
           rsync -a ./ _site/ \
             --exclude '.git' \
             --exclude '.github' \
-            --exclude '_site'
+            --exclude '_site' \
+            --exclude 'linkedin-ai-assistant'
           test "$(tr -d '\r\n' < _site/CNAME)" = "francinemariebautista.com"
           test -f _site/index.html
           test ! -d _site/news
+          # The private assistant holds FMB's positioning, contacts, opportunity
+          # notes and drafts. Pages serves whatever is staged, to anyone, with no
+          # authentication. If the exclusion above is ever dropped, this fails the
+          # deploy instead of publishing her CRM.
+          test ! -d _site/linkedin-ai-assistant
+          test -z "$(find _site -name 'FMB_*_MEMORY.md' -o -name 'FMB_*.md' -print -quit)"
 
       - name: Configure Pages
         uses: actions/configure-pages@v5

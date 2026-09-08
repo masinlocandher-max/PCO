@@ -48,7 +48,34 @@ BOOK_ALLOWED = {
 
 PREVIEW_WORD_CEILING = 900
 
+# ── Private assistant containment ────────────────────────────────────────────
+# linkedin-ai-assistant/ holds FMB's positioning, contacts, opportunity notes and
+# unpublished drafts. GitHub Pages serves whatever the workflow stages, to anyone,
+# with no authentication — so the module is private only for as long as the deploy
+# keeps excluding it. This fails the build the moment that stops being true, which
+# is earlier and louder than discovering it live.
+PRIVATE_MODULE = 'linkedin-ai-assistant'
+_workflow = ROOT / '.github' / 'workflows' / 'deploy-pages.yml'
+if _workflow.is_file():
+    _wf = _workflow.read_text(encoding='utf-8')
+    if f"--exclude '{PRIVATE_MODULE}'" not in _wf:
+        ERRORS.append(
+            f'the deploy no longer excludes {PRIVATE_MODULE}/ from the published site — '
+            'restore the rsync exclusion before merging, or FMB\'s private strategy and '
+            'contacts go live at francinemariebautista.com'
+        )
+    if f'test ! -d _site/{PRIVATE_MODULE}' not in _wf:
+        ERRORS.append(
+            f'the deploy no longer asserts that {PRIVATE_MODULE}/ stayed out of _site — '
+            'restore the staging assertion so a dropped exclusion fails the build'
+        )
+
+
 for path in sorted(ROOT.rglob('*')):
+    if PRIVATE_MODULE in path.parts and path.suffix.lower() in {'.html', '.css', '.js'}:
+        # Files inside the module are never published, so they are not checked
+        # against the published-site rules below.
+        continue
     if not path.is_file() or '.git/' in str(path.relative_to(ROOT)):
         continue
     rel = path.relative_to(ROOT)
@@ -99,7 +126,14 @@ for path in sorted(ROOT.rglob('*')):
     if path.resolve() == Path(__file__).resolve():
         continue
     if path.name.startswith('.env'):
-        ERRORS.append(f'environment file would be published: {rel_text}')
+        # This rule is about publication. The private assistant module is never
+        # published (see the deploy exclusion above), so its documented
+        # .env.example — names with empty values — is allowed there and nowhere
+        # else. A real .env is still an error anywhere, including inside it,
+        # because git history is retrievable long after a deletion.
+        module_example = (PRIVATE_MODULE in path.parts and path.name == '.env.example')
+        if not module_example:
+            ERRORS.append(f'environment file would be published: {rel_text}')
         continue
     if path.suffix.lower() not in SCANNED_SUFFIXES:
         continue
