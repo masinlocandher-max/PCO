@@ -44,4 +44,5 @@ resist — a wrong conclusion, confidently drawn, costs more than no conclusion.
 ## Cadence
 
 [TO CONFIRM: how often FMB wants a report, and whether she wants it as a written
-note or a dashboard she opens herself.]
+note or a dashboard she opens herself. Low priority — the reporting workflow
+already defines daily, weekly and monthly shapes; this only sets which she reads.]

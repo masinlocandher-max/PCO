@@ -15,34 +15,48 @@
 
 The standing brief for anything that touches LinkedIn.
 
-## What LinkedIn is for, in her case
+## What LinkedIn is for — APPROVED
 
-[TO CONFIRM: what FMB actually wants from LinkedIn — clients for SENZ, speaking
-invitations, institutional partnerships, book readers, or credibility for a
-future role. The answer changes every recommendation below, so it is asked
-before the assistant proposes a strategy, not after.]
+Build professional authority, trust, strategic relationships, business
+opportunities, partnerships, and credible thought leadership.
+
+Not reach for its own sake. Not follower count. A post that performs well but
+positions her as a content creator has failed, however the numbers read.
 
 ## Audiences, in priority order
 
-1. [TO CONFIRM: primary audience — who must recognise her?]
-2. [TO CONFIRM: secondary audience]
-3. [TO CONFIRM: audience she is deliberately NOT writing for]
+[TO CONFIRM: HIGH PRIORITY. The approved direction names the outcomes —
+authority, relationships, opportunities, partnerships — but not who has to be
+persuaded. Without a ranked audience the assistant will write for "professionals
+in general", which is the fastest route to the generic positioning she has ruled
+out. Three lines is enough: who must recognise her, who is secondary, and who she
+is deliberately not writing for.]
 
-## What she is willing to be known for
+## Themes she is known for — APPROVED (source material)
 
-[TO CONFIRM: three to five themes she wants to own. Without these the assistant
-will drift toward whatever performs, which is how a distinctive voice becomes a
-generic one.]
+Drawn from her professional areas and how she should be perceived:
+
+- Strategic communications, PR, and public perception
+- Branding, identity and creative direction
+- Storytelling and cultural preservation
+- Training, workforce development and capability building
+- Digital strategy and AI-enabled transformation
+- Community development and digital inclusion
+
+[TO CONFIRM: HIGH PRIORITY — which three of these lead. All six is a portfolio,
+not a position, and a feed that covers six themes equally reads as unfocused.]
 
 ## What she will not post about
 
-[TO CONFIRM: topics, people, or situations that are off-limits — political
-positions, client names, family, anything under NDA.]
+[TO CONFIRM: HIGH PRIORITY. Topics, people or situations that are off-limits —
+political positions, client names, anything under NDA, anything about the
+manuscript beyond what is already public. The reputation agent cannot flag what
+it has not been told.]
 
 ## Cadence
 
-[TO CONFIRM: realistic posting rhythm. An honest two a month beats an aspirational
-three a week that stops after a fortnight.]
+[TO CONFIRM: realistic posting rhythm. An honest two a month beats an
+aspirational three a week that stops after a fortnight.]
 
 ## Format rules
 

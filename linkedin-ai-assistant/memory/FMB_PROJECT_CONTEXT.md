@@ -16,45 +16,77 @@
 What the assistant is allowed to say about each venture. Anything not recorded
 here is not known, and "not known" is the answer it gives.
 
-## The Right Way to Live — VERIFIED
+## SENZ Strategic Communications and Digital Solutions — APPROVED
 
-- A book by Francine Marie Bautista, sold at francinemariebautista.com/book/
-- Ebook ₱499. Printed pocketbook ₱999, nationwide Philippine shipping included.
-- Ebook access activates only after payment is verified.
-- Private reader app at /ebook/, opened from a personal access link.
-- Positioning line on the site: "For the things nobody teaches you properly."
-- Cover subtitle: "A gentler, stronger, more meaningful life."
-- Themes covered in the book: choices, ambition, boundaries, money, beauty,
-  work, service, relationships.
-- **Manuscript rule:** the text lives in Drive and behind the entitlement
-  endpoint. It is never quoted at length publicly, and never enters this repo.
+- **Full name:** SENZ Strategic Communications and Digital Solutions
+- **Positioning:** *We make them clearer, sharper, and harder to ignore.*
+- **Capabilities:** strategic communications · branding · PR · content strategy ·
+  digital solutions · reputation and perception work.
 
-## FMB News — PARTIALLY VERIFIED
+**Hard rule:** do not invent clients, case studies, revenue, partnerships or
+achievements. If a draft would be stronger with a named client, the answer is to
+ask FMB whether one can be named — never to imply one.
 
-- Occupies francinemariebautista.com/news/, served from a separate repository
-  (`masinlocandher-max/FMBNews`) at the Cloudflare edge. — VERIFIED
-- Describes itself as a "Filipino Media Bulletin". — VERIFIED
-- [TO CONFIRM: what FMB News is editorially — its remit, who writes it, its
-  publishing standards, and how she wants it described in one sentence.]
+- [TO CONFIRM: FMB's stated role and title at SENZ, for accuracy in a byline.]
+- [TO CONFIRM: whether SENZ is open for new business right now, and to whom.]
 
-## SENZ Strategic Communications
+## Masinloc Connect — APPROVED
 
-- [TO CONFIRM: what SENZ does, who it serves, what it sells, its stage, and
-  FMB's role in it. Nothing about SENZ is known to this system.]
+- **Canonical positioning:** *Masinloqueños to the world.*
+- **Supporting line:** *Connecting Masinloqueños to the world.*
+- **Community-facing philosophy:** *For Masinloqueños, With Masinloqueños.*
+- **What it is:** a community technology ecosystem.
+- **What it is NOT:** an LGU portal. Never describe it as an official government
+  system unless that status is actually established. This is a hard rule — the
+  claim is both untrue today and the kind of error that damages trust locally.
 
-## Masinloc Connect
+**Core areas:** Discover · Sambal Tina · Marketplace · Verified History ·
+Leadership · Help Desk · Jobs and Opportunities · Seller tools · Community and
+emergency-related services.
 
-- [TO CONFIRM: what it is, who it serves, and its relationship to Masinloc as a
-  place and a community. Nothing is known to this system.]
+**Architecture principle:** the website is the source-of-truth layer; the app is
+the action layer.
 
-## Cognita Institute
+**Purpose:** preserve and promote Sambal Tina · make verified Masinloc history
+accessible · create access to jobs and opportunities · support local sellers and
+commerce · improve practical community access to information and services.
 
-- [TO CONFIRM: what it teaches or researches, who it is for, accreditation or
-  standing if any, and FMB's role. Nothing is known to this system.]
+- [TO CONFIRM: public URL, and current stage — live, in build, or in pilot.]
 
-## Why these are blank
+## Cognita Institute — APPROVED
 
-The assistant was built without access to any of it. Writing a plausible mission
-statement here would mean the assistant later repeats an invention as FMB's own
-positioning, in public, in her voice — which is a worse failure than an empty
-field. Fill these in and the content engine gets sharper immediately.
+- A **private, non-degree education initiative**.
+- **Focus:** AI education · AI literacy · future-ready skills · practical AI
+  capability · workforce development.
+- **Program directions:** self-paced AI Foundations; a guided learning program.
+
+**Hard rule:** never describe Cognita as an accredited college, university, or
+degree-granting institution. Non-degree is part of what it is, not a caveat to
+be softened.
+
+- [TO CONFIRM: who the programs are for, and whether enrolment is open.]
+
+## FMB News — APPROVED
+
+- **Brand:** FMB News — *Filipino Media Bulletin*
+- **Tagline:** *Information with Purpose.*
+- **Editorial principles:** verified facts · visible sources · meaningful context
+  · clear explanations.
+- **Never** optimise FMB News for sensationalism or unsupported speed.
+- Occupies francinemariebautista.com/news/, served from `masinlocandher-max/FMBNews`
+  at the Cloudflare edge. — VERIFIED
+
+## The Right Way to Live — APPROVED / VERIFIED
+
+- Title: *The Right Way To Live*. Author: Francine Marie Bautista.
+- Formats: eBook and pocketbook.
+- Ebook ₱499; printed pocketbook ₱999 with nationwide Philippine shipping. — VERIFIED
+- Ebook access activates only after payment is verified. — VERIFIED
+- Site line: "For the things nobody teaches you properly." Cover subtitle:
+  "A gentler, stronger, more meaningful life." — VERIFIED
+- Themes: choices, ambition, boundaries, money, beauty, work, service,
+  relationships. — VERIFIED
+
+**Hard rule:** manuscript contents and the protected reader and access systems
+are private unless explicitly cleared for public use. The text is never quoted at
+length, and never enters this repository.

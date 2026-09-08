@@ -18,14 +18,24 @@
 Retrieval, drafting, scoring, tracking, reminding, reporting. Everything that
 happens on FMB's own machine and produces something for her to read.
 
-## What is not, and will not be
+## What is gated, not forbidden
 
-Publishing. Replying. Messaging. Connecting. Following. Reacting. Accepting.
-Declining. Anything with a public consequence.
+Publishing and commenting can happen through LinkedIn's **official** API, once an
+approved developer application, OAuth and the granted permission exist, FMB has
+explicitly enabled it, and each individual action carries her approval. That is
+MODE 2, and it is a supported destination rather than a door that stays shut.
 
-This is not a phase before fuller automation. For a personal brand where
-reputation is the whole asset, a human pressing publish is the correct design.
-The value here is in the thinking and the preparation, not in the sending.
+The default remains MODE 1 — prepare and paste — even after MODE 2 is available.
+Switching modes is a deliberate act, not a drift.
+
+## What is never automated, in either mode
+
+Anything driving a logged-in session: cookies, `li_at`, session tokens, headless
+browsers, unofficial endpoints. Not "not yet" — never. Those risk the account
+this system exists to protect, and no volume of convenience justifies it.
+
+Also never automated in either mode: messaging, connecting, following, reacting,
+accepting or declining. Those stay with FMB.
 
 ## The standing loops
 

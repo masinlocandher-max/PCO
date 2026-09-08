@@ -21,6 +21,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
+import unittest.mock
 from pathlib import Path
 
 MODULE = Path(__file__).resolve().parents[1]
@@ -83,19 +84,21 @@ class PrivacyIsStructural(unittest.TestCase):
 
 class NothingGoesOutWithoutApproval(unittest.TestCase):
 
-    def test_publish_refused_without_external_permission(self):
+    def test_default_mode_hands_off_and_sends_nothing(self):
+        """MODE 1 is the default and is not an error state: it hands text back."""
         with fresh_db() as conn:
             aid = approval_manager.draft(conn, action_type="publish_post",
                                          subject="s", payload="hello")
             approval_manager.submit(conn, aid)
             approval_manager.approve(conn, aid, by="FMB")
             permit = approval_manager.claim(conn, aid)
-            with self.assertRaises(linkedin_client.LinkedInError) as ctx:
-                linkedin_client.publish(conn, permit)
-            self.assertIn("FMB_ALLOW_EXTERNAL", str(ctx.exception))
-            # and the refusal is on the record
-            log = approval_manager.audit(conn)
-            self.assertTrue(any(r["outcome"] == "refused" for r in log))
+            out = linkedin_client.publish(conn, permit)
+            self.assertFalse(out["sent"])
+            self.assertEqual(out["mode"], "prepare_and_paste")
+            self.assertEqual(out["text"], "hello")
+            actions = [r["action"] for r in approval_manager.audit(conn)]
+            self.assertIn("prepare:handoff", actions)
+            self.assertNotIn("external:published", actions)
 
     def test_cannot_claim_without_approval(self):
         with fresh_db() as conn:
@@ -203,8 +206,9 @@ class NoCredentialIsEverWrittenDown(unittest.TestCase):
         os.environ["LINKEDIN_ACCESS_TOKEN"] = "a-real-looking-token-value"
         try:
             report = json.dumps(linkedin_client.capability())
-            self.assertIn("api_credential_present", report)
-            self.assertNotIn("a-real-looking-token-value", report)
+            self.assertIn("mode_2_official_api_available", report)
+            self.assertNotIn("a-real-looking-token-value", report,
+                             "capability must report state, never a credential")
         finally:
             del os.environ["LINKEDIN_ACCESS_TOKEN"]
 
@@ -227,6 +231,23 @@ class MemoryTellsTheTruth(unittest.TestCase):
     def test_verified_facts_are_retrievable_and_confirmed(self):
         results = knowledge_search.search("book pocketbook price shipping", limit=5)
         self.assertTrue(any(r["confidence"] == "confirmed" for r in results))
+
+    def test_the_legend_is_not_counted_as_an_unfilled_field(self):
+        """Each file's header explains the marker using the marker itself.
+
+        Counting that made a fully-answered file still read as needing FMB, which
+        would have trained her to ignore the one signal that matters.
+        """
+        from server.knowledge_search import PLACEHOLDER, _prose
+        raw = (MODULE / "memory/FMB_CORE_MEMORY.md").read_text()
+        self.assertGreater(len(PLACEHOLDER.findall(raw)),
+                           len(PLACEHOLDER.findall(_prose(raw))),
+                           "the header legend should be excluded from the count")
+        health = knowledge_search.memory_health()
+        legend_only = [f for f in health["files"]
+                       if f["file"] == "content_agent.md" and f["unfilled_fields"] > 0]
+        self.assertFalse(legend_only,
+                         "an agent brief with no real gaps must not report unfilled fields")
 
     def test_brief_states_what_is_missing(self):
         out = knowledge_search.brief("Cognita Institute")
@@ -307,6 +328,120 @@ class ContentKeepsItsShape(unittest.TestCase):
     def test_safe_defaults(self):
         self.assertFalse(settings.allow_external, "external actions must be off by default")
         self.assertTrue(settings.dry_run, "execution must be a dry run by default")
+        self.assertEqual(settings.publish_mode, "prepare_and_paste",
+                         "prepare-and-paste must be the default mode")
+
+
+class TwoModesAndOnlyTwo(unittest.TestCase):
+    """The official API path is supported and gated. Nothing unofficial exists."""
+
+    def _official_mode(self, **extra):
+        """Environment with official-API mode selected. Values are fake."""
+        env = {"FMB_PUBLISH_MODE": "official_linkedin_api",
+               "FMB_ALLOW_EXTERNAL": "1", "FMB_EXECUTE_FOR_REAL": "1",
+               "LINKEDIN_CLIENT_ID": "test-app", "LINKEDIN_ACCESS_TOKEN": "test-token",
+               "LINKEDIN_SCOPES": "w_member_social", "LINKEDIN_AUTHOR_URN": "urn:li:person:TEST"}
+        env.update(extra)
+        return env
+
+    def test_official_mode_lists_what_is_outstanding(self):
+        from server import config
+        with unittest.mock.patch.dict(os.environ,
+                                      {"FMB_PUBLISH_MODE": "official_linkedin_api"}, clear=False):
+            with unittest.mock.patch.object(config, "settings", config.Settings.from_env()), \
+                 unittest.mock.patch.object(linkedin_client, "settings", config.Settings.from_env()):
+                ready = linkedin_client.readiness()
+        self.assertFalse(ready["can_publish_via_api"])
+        joined = " ".join(ready["outstanding"])
+        self.assertIn("LINKEDIN_CLIENT_ID", joined)
+        self.assertIn("w_member_social", joined)
+
+    def test_official_mode_refuses_when_permission_is_not_declared(self):
+        from server import config
+        env = self._official_mode(LINKEDIN_SCOPES="r_liteprofile")
+        with unittest.mock.patch.dict(os.environ, env, clear=False):
+            fresh = config.Settings.from_env()
+            with unittest.mock.patch.object(linkedin_client, "settings", fresh), \
+                 fresh_db() as conn:
+                aid = approval_manager.draft(conn, action_type="publish_post",
+                                             subject="s", payload="p")
+                approval_manager.submit(conn, aid)
+                approval_manager.approve(conn, aid, by="FMB")
+                permit = approval_manager.claim(conn, aid)
+                with self.assertRaises(linkedin_client.LinkedInError) as ctx:
+                    linkedin_client.publish(conn, permit)
+                self.assertIn("w_member_social", str(ctx.exception))
+
+    def test_official_mode_still_needs_an_approval(self):
+        """Every gate open is not enough; the per-action permit is separate."""
+        from server import config
+        with unittest.mock.patch.dict(os.environ, self._official_mode(), clear=False):
+            fresh = config.Settings.from_env()
+            with unittest.mock.patch.object(linkedin_client, "settings", fresh):
+                self.assertTrue(linkedin_client.readiness()["can_publish_via_api"])
+                with fresh_db() as conn:
+                    aid = approval_manager.draft(conn, action_type="publish_post",
+                                                 subject="s", payload="p")
+                    approval_manager.submit(conn, aid)
+                    # never approved, so no permit can be claimed
+                    with self.assertRaises(ApprovalError):
+                        approval_manager.claim(conn, aid)
+
+    def test_official_mode_publishes_only_through_the_official_endpoint(self):
+        from server import config
+        seen = {}
+
+        def fake_call(token, permit):
+            seen["token_used"] = bool(token)
+            seen["payload"] = permit.payload
+            return {"status": 201, "id": "urn:li:share:TEST"}
+
+        with unittest.mock.patch.dict(os.environ, self._official_mode(), clear=False):
+            fresh = config.Settings.from_env()
+            with unittest.mock.patch.object(linkedin_client, "settings", fresh), \
+                 unittest.mock.patch.object(linkedin_client, "_call_linkedin", fake_call), \
+                 fresh_db() as conn:
+                aid = approval_manager.draft(conn, action_type="publish_post",
+                                             subject="s", payload="the approved text")
+                approval_manager.submit(conn, aid)
+                approval_manager.approve(conn, aid, by="FMB")
+                permit = approval_manager.claim(conn, aid)
+                out = linkedin_client.publish(conn, permit)
+                self.assertTrue(out["sent"])
+                self.assertEqual(out["mode"], "official_linkedin_api")
+                self.assertEqual(seen["payload"], "the approved text")
+                actions = [r["action"] for r in approval_manager.audit(conn)]
+                self.assertIn("external:published", actions)
+
+    def test_unofficial_credentials_are_refused_loudly(self):
+        for marker in ("LI_AT", "LINKEDIN_COOKIE", "LINKEDIN_SESSION_COOKIE"):
+            with unittest.mock.patch.dict(os.environ, {marker: "fake-session-value"}, clear=False):
+                with self.assertRaises(linkedin_client.UnofficialAutomationRefused,
+                                       msg=f"{marker} did not trigger a refusal"):
+                    linkedin_client._refuse_unofficial()
+
+    def test_no_unofficial_automation_exists_in_the_source(self):
+        """A source scan, so a future edit cannot quietly add a cookie path."""
+        banned = ("li_at=", "JSESSIONID", "voyager", "selenium", "playwright",
+                  "puppeteer", "webdriver", "Cookie:")
+        for path in (MODULE / "server").glob("*.py"):
+            text = path.read_text()
+            for token in banned:
+                # UNOFFICIAL_MARKERS names the variables it refuses; that is the
+                # one legitimate place these words may appear.
+                for line in text.splitlines():
+                    if token.lower() in line.lower() and "UNOFFICIAL_MARKERS" not in text[
+                            max(0, text.find(line) - 400):text.find(line) + 200]:
+                        self.fail(f"{path.name} mentions {token!r}: {line.strip()[:90]}")
+
+    def test_readiness_reports_presence_not_values(self):
+        from server import config
+        with unittest.mock.patch.dict(os.environ, self._official_mode(), clear=False):
+            fresh = config.Settings.from_env()
+            with unittest.mock.patch.object(linkedin_client, "settings", fresh):
+                report = json.dumps(linkedin_client.readiness())
+        self.assertNotIn("test-token", report)
+        self.assertNotIn("test-app", report)
 
 
 if __name__ == "__main__":

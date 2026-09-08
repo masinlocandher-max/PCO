@@ -25,6 +25,17 @@ from .config import AGENTS_DIR, MEMORY_DIR, WORKFLOWS_DIR
 #: The marker an unfilled memory field carries.
 PLACEHOLDER = re.compile(r"\[TO CONFIRM[^\]]*\]", re.IGNORECASE)
 
+#: Every memory file opens with an HTML comment explaining the markers, and that
+#: legend contains the marker itself. Counting it made a fully-answered file
+#: still report as needing FMB, which would have trained her to ignore the very
+#: signal the count exists to give.
+_COMMENT = re.compile(r"<!--.*?-->", re.DOTALL)
+
+
+def _prose(text: str) -> str:
+    """The file with its explanatory comments removed."""
+    return _COMMENT.sub("", text)
+
 _WORD = re.compile(r"[a-z0-9']+")
 _STOP = {
     "a", "an", "and", "are", "as", "at", "be", "but", "by", "for", "from", "how",
@@ -69,7 +80,7 @@ def _split_sections(path: Path) -> Iterable[Passage]:
     """Split a memory file on its markdown headings."""
 
     try:
-        text = path.read_text(encoding="utf-8")
+        text = _prose(path.read_text(encoding="utf-8"))
     except OSError:
         return []
 
@@ -172,7 +183,7 @@ def memory_health() -> dict[str, Any]:
         if not folder.is_dir():
             continue
         for path in sorted(folder.glob("*.md")):
-            text = path.read_text(encoding="utf-8")
+            text = _prose(path.read_text(encoding="utf-8"))
             found = PLACEHOLDER.findall(text)
             sections = len(_split_sections(path))
             total += sections

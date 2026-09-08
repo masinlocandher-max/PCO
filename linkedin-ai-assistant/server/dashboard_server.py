@@ -29,10 +29,10 @@ from urllib.parse import parse_qs, urlparse
 
 if __package__ in (None, ""):
     sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-    from server import approval_manager, db, knowledge_search  # type: ignore
+    from server import approval_manager, db, knowledge_search, linkedin_client  # type: ignore
     from server.config import MODULE_ROOT, redact, settings  # type: ignore
 else:
-    from . import approval_manager, db, knowledge_search
+    from . import approval_manager, db, knowledge_search, linkedin_client
     from .config import MODULE_ROOT, redact, settings
 
 DASHBOARD_DIR = MODULE_ROOT / "dashboard"
@@ -63,8 +63,11 @@ def _payload(path: str, query: dict[str, list[str]]) -> object:
         if path == "/api/activity":
             return approval_manager.audit(conn, 200)
         if path == "/api/health":
+            _li = linkedin_client
             return {"memory": knowledge_search.memory_health(),
                     "operator": settings.operator,
+                    "publish_mode": settings.publish_mode,
+                    "linkedin": _li.readiness(),
                     "external_actions_allowed": settings.allow_external,
                     "dry_run": settings.dry_run}
     raise KeyError(path)

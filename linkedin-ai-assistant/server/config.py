@@ -41,6 +41,17 @@ def _flag(name: str, default: bool = False) -> bool:
     return raw.strip().lower() in {"1", "true", "yes", "on"}
 
 
+#: The two publishing modes. There is no third, and in particular there is no
+#: mode that drives a logged-in browser session. See linkedin_client.
+MODE_PREPARE = "prepare_and_paste"
+MODE_OFFICIAL_API = "official_linkedin_api"
+PUBLISH_MODES = (MODE_PREPARE, MODE_OFFICIAL_API)
+
+#: The LinkedIn permission an approved developer application needs before it can
+#: post on a member's behalf. Checked as a declared scope, not assumed.
+REQUIRED_SCOPE = "w_member_social"
+
+
 @dataclass(frozen=True)
 class Settings:
     """Resolved runtime settings.
@@ -49,6 +60,7 @@ class Settings:
         db_path: Where the local SQLite store lives.
         operator: The human accountable for approvals, recorded on every
             decision. Defaults to the OS user so an approval is never anonymous.
+        publish_mode: ``prepare_and_paste`` (default) or ``official_linkedin_api``.
         allow_external: Master switch for anything that leaves the machine.
             Off unless explicitly turned on, so the safe state is the default
             state rather than something you have to remember to choose.
@@ -59,6 +71,7 @@ class Settings:
 
     db_path: Path
     operator: str
+    publish_mode: str
     allow_external: bool
     dry_run: bool
     dashboard_port: int
@@ -70,11 +83,17 @@ class Settings:
             port = int(os.environ.get("FMB_DASHBOARD_PORT", "8765"))
         except ValueError:
             port = 8765
+        mode = os.environ.get("FMB_PUBLISH_MODE", "").strip().lower() or MODE_PREPARE
+        if mode not in PUBLISH_MODES:
+            # An unrecognised mode falls back to the safe one rather than
+            # guessing at what was meant.
+            mode = MODE_PREPARE
         return cls(
             db_path=Path(raw_db).expanduser() if raw_db else DEFAULT_DB_PATH,
             operator=(os.environ.get("FMB_OPERATOR", "").strip()
                       or os.environ.get("USER", "").strip()
                       or "unknown"),
+            publish_mode=mode,
             allow_external=_flag("FMB_ALLOW_EXTERNAL", False),
             dry_run=not _flag("FMB_EXECUTE_FOR_REAL", False),
             dashboard_port=port,

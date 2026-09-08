@@ -273,17 +273,26 @@ def _activity_log(args: dict[str, Any]) -> Any:
 
 
 @tool("capability_report",
-      "What this system can and cannot do right now, including whether anything is "
-      "able to reach LinkedIn.",
+      "What this system can and cannot do right now, which publishing mode is active, "
+      "and whether anything is able to reach LinkedIn.",
       _obj({}))
 def _capability(_: dict[str, Any]) -> Any:
     return {
         "linkedin": linkedin_client.capability(),
+        "publish_mode": settings.publish_mode,
         "operator": settings.operator,
         "database": str(settings.db_path),
         "guarantee": ("No tool on this server can publish, comment, message or connect. "
                       "Those need a human approval claimed through a separate, gated path."),
     }
+
+
+@tool("linkedin_readiness",
+      "The checklist between prepare-and-paste and official API publishing: which "
+      "requirements are met and which are outstanding. Reports presence, never values.",
+      _obj({}))
+def _readiness(_: dict[str, Any]) -> Any:
+    return linkedin_client.readiness()
 
 
 # ── Protocol ────────────────────────────────────────────────────────────────

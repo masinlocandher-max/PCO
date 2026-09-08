@@ -25,10 +25,15 @@ async function banner() {
     bits.push(unfilled
       ? `<b>${unfilled} memory fields still need you.</b> Until they are filled the assistant must not speak with authority about them.`
       : `<b>Memory is complete.</b>`);
+    bits.push(h.publish_mode === 'official_linkedin_api'
+      ? (h.linkedin && h.linkedin.can_publish_via_api
+          ? '<b>Official API mode is live.</b> Approved posts can be published through LinkedIn\'s API.'
+          : 'Official API mode selected but not ready: ' + esc((h.linkedin && h.linkedin.outstanding || []).join('; ')) + '.')
+      : '<b>Prepare-and-paste mode.</b> Approved posts are handed to you to publish — nothing is sent from here.');
     bits.push(h.external_actions_allowed
       ? (h.dry_run ? 'External actions allowed, execution in dry run.'
-                   : '<b>External actions ARMED.</b>')
-      : 'External actions blocked — nothing can leave this machine.');
+                   : '<b>Execution armed.</b>')
+      : 'External actions blocked.');
     bits.push(`Approvals recorded as: ${esc(h.operator)}`);
     $('#banner').innerHTML = bits.join(' ');
   } catch (e) { $('#banner').textContent = 'Could not reach the local service: ' + e.message; }

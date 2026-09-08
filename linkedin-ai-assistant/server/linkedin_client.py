@@ -1,33 +1,40 @@
-"""The only place in this module that can talk to LinkedIn — and by default, does not.
+"""The only place in this module that can talk to LinkedIn.
 
-Read this before changing anything here.
+Two modes. There is no third, and specifically there is no mode that drives a
+logged-in browser session.
 
-**What is honestly possible.** LinkedIn does not hand out posting access to
-individuals. Writing to a personal profile needs the Community Management API,
-which needs an approved LinkedIn Developer application and a partnership review.
-Until FMB has that, there is no supported way for software to post as her, and
-anything that claims otherwise is either scraping her own account with a stolen
-session cookie — which violates LinkedIn's terms and risks the account this
-whole system exists to protect — or it is lying.
+**MODE 1 — ``prepare_and_paste`` (the default).**
+The assistant produces the final text and checks it: length against LinkedIn's
+limit, the feed-truncation point, hashtag count, link safety. FMB publishes it
+herself. This is the safe default and it stays the default; it is not a
+placeholder waiting to be replaced.
 
-So this client is built the other way round. Its normal, expected, everyday mode
-is **prepare**: it produces the exact text, formatted and checked, for FMB to
-paste and post herself. That is not a limitation to work around. For a personal
-brand where reputation is the asset, a human pressing publish is the correct
-design, not a stopgap.
+**MODE 2 — ``official_linkedin_api``.**
+Publishing through an approved LinkedIn developer application, over OAuth, using
+LinkedIn's own APIs. Fully supported here, and disabled until every one of these
+is true — checked at call time, not assumed:
 
-The API path exists, is fully gated, and stays off until three separate things
-are true. If FMB is ever granted API access, nothing above this file changes.
+1. ``FMB_PUBLISH_MODE=official_linkedin_api`` — FMB explicitly enabled it.
+2. ``LINKEDIN_CLIENT_ID`` — an official developer application exists.
+3. ``LINKEDIN_ACCESS_TOKEN`` — OAuth is configured and a token was obtained.
+4. ``LINKEDIN_SCOPES`` declares ``w_member_social`` — the permission LinkedIn
+   must have approved for the app. Declared, then verified against the API's
+   answer; a 403 is treated as "the permission was not actually granted".
+5. ``LINKEDIN_AUTHOR_URN`` — an author to post as.
+6. ``FMB_ALLOW_EXTERNAL=1`` — the master switch for anything outward.
+7. ``FMB_EXECUTE_FOR_REAL=1`` — otherwise every call is a dry run.
+8. A ``Permit`` from ``approval_manager.claim()`` — a named human approved this
+   exact text, recently, and the approval has not been spent.
 
-**The gates**, all of which must pass before a single byte leaves the machine:
+``readiness()`` reports each of those as passed or not, so the path from mode 1
+to mode 2 is a checklist rather than a guess.
 
-1. ``FMB_ALLOW_EXTERNAL`` is on.
-2. ``FMB_EXECUTE_FOR_REAL`` is on (otherwise every call is a dry run).
-3. A ``Permit`` from ``approval_manager.claim()`` — which only exists if a named
-   human approved this exact text, recently, and it has not been used before.
-
-There is no fourth way in. There is no "just this once" argument, no flag that
-skips the permit, and no default that is unsafe.
+**What is refused outright.** Session cookies, ``li_at`` or any other browser
+token, headless-browser automation of a logged-in account, and unofficial
+endpoints. Not "not yet" — never. Those risk the account this entire system
+exists to protect, and there is no version of this file that contains one. A
+test asserts that, and ``_refuse_unofficial()`` raises if such a credential is
+even present in the environment.
 """
 
 from __future__ import annotations
@@ -40,7 +47,8 @@ from typing import Any
 
 from . import db
 from .approval_manager import Permit
-from .config import redact, settings
+from .config import (MODE_OFFICIAL_API, MODE_PREPARE, REQUIRED_SCOPE, redact,
+                     settings)
 
 #: LinkedIn truncates a post in the feed past roughly this; the hard cap is
 #: higher but the reading experience is not.
@@ -48,14 +56,40 @@ FEED_TRUNCATION = 210
 HARD_LIMIT = 3000
 COMMENT_LIMIT = 1250
 
+#: Environment names that would only exist if somebody were attempting
+#: unofficial automation. Their presence is an error, not a fallback.
+UNOFFICIAL_MARKERS = ("LINKEDIN_COOKIE", "LI_AT", "LINKEDIN_LI_AT",
+                      "LINKEDIN_SESSION_COOKIE", "LINKEDIN_JSESSIONID")
+
 
 class LinkedInError(RuntimeError):
     """Raised when an outward action is refused or fails."""
 
 
+class UnofficialAutomationRefused(LinkedInError):
+    """Raised when cookie or session-based automation is attempted."""
+
+
+def _refuse_unofficial() -> None:
+    """Refuse to run at all if an unofficial credential is configured.
+
+    Deliberately fails loudly rather than ignoring the variable. Somebody who
+    has set ``LI_AT`` intends to automate a logged-in session, and the right
+    moment to say no is before anything else happens.
+    """
+
+    found = [name for name in UNOFFICIAL_MARKERS if os.environ.get(name, "").strip()]
+    if found:
+        raise UnofficialAutomationRefused(
+            "cookie or session-based LinkedIn automation is not supported and will not be "
+            f"added: {', '.join(found)} is set. Use MODE 2 with an approved developer "
+            "application and OAuth, or stay in prepare_and_paste."
+        )
+
+
 @dataclass
 class Prepared:
-    """Text ready for FMB to post herself, plus what to check before she does."""
+    """Text ready to publish, plus what to check before it goes."""
 
     action: str
     text: str
@@ -66,14 +100,19 @@ class Prepared:
 
     def as_dict(self) -> dict[str, Any]:
         return {
+            "mode": settings.publish_mode,
             "action": self.action,
             "text": self.text,
             "target": self.target,
             "warnings": self.warnings,
             "character_count": self.character_count,
             "truncated_preview": self.truncated_preview,
-            "how_to_use": "Copy the text above and post it yourself. "
-                          "Nothing here posts on your behalf.",
+            "how_to_use": (
+                "Copy the text above and post it yourself. Nothing here posts on your behalf."
+                if settings.publish_mode == MODE_PREPARE else
+                "Official API mode is selected. This text still needs an approval, "
+                "and publish() re-checks every gate before anything is sent."
+            ),
         }
 
 
@@ -97,7 +136,7 @@ def _check(text: str, *, limit: int, kind: str) -> list[str]:
 
 
 def prepare_post(text: str) -> Prepared:
-    """The normal path. Format and check a post for FMB to publish herself."""
+    """MODE 1. Format and check a post."""
 
     stripped = text.strip()
     return Prepared(
@@ -110,7 +149,7 @@ def prepare_post(text: str) -> Prepared:
 
 
 def prepare_comment(text: str, *, target: str | None = None) -> Prepared:
-    """Format and check a reply for FMB to leave herself."""
+    """MODE 1. Format and check a reply."""
 
     stripped = text.strip()
     return Prepared(
@@ -123,63 +162,102 @@ def prepare_comment(text: str, *, target: str | None = None) -> Prepared:
     )
 
 
-def capability() -> dict[str, Any]:
-    """An honest account of what this client can do right now, and why."""
+# ── Mode 2 readiness ────────────────────────────────────────────────────────
 
-    has_token = bool(os.environ.get("LINKEDIN_ACCESS_TOKEN", "").strip())
+def _declared_scopes() -> set[str]:
+    raw = os.environ.get("LINKEDIN_SCOPES", "")
+    return {s.strip() for s in raw.replace(",", " ").split() if s.strip()}
+
+
+def readiness() -> dict[str, Any]:
+    """Every gate between here and official API publishing, and its state.
+
+    Reports presence, never values. Written so the roadmap in the README can be
+    read off a live system rather than trusted.
+    """
+
+    checks = [
+        ("fmb_enabled_official_mode", settings.publish_mode == MODE_OFFICIAL_API,
+         "FMB_PUBLISH_MODE=official_linkedin_api"),
+        ("developer_application", bool(os.environ.get("LINKEDIN_CLIENT_ID", "").strip()),
+         "an approved LinkedIn developer application (LINKEDIN_CLIENT_ID)"),
+        ("oauth_token", bool(os.environ.get("LINKEDIN_ACCESS_TOKEN", "").strip()),
+         "an OAuth access token obtained through the official flow"),
+        ("permission_declared", REQUIRED_SCOPE in _declared_scopes(),
+         f"LINKEDIN_SCOPES declares {REQUIRED_SCOPE}"),
+        ("author_identified", bool(os.environ.get("LINKEDIN_AUTHOR_URN", "").strip()),
+         "LINKEDIN_AUTHOR_URN"),
+        ("external_actions_allowed", settings.allow_external, "FMB_ALLOW_EXTERNAL=1"),
+        ("execution_armed", not settings.dry_run, "FMB_EXECUTE_FOR_REAL=1"),
+    ]
+    outstanding = [label for _, ok, label in checks if not ok]
     return {
-        "can_prepare": True,
-        "can_publish": bool(settings.allow_external and not settings.dry_run and has_token),
-        "allow_external": settings.allow_external,
-        "dry_run": settings.dry_run,
-        "api_credential_present": has_token,   # whether, never what
-        "why": (
-            "Publishing needs LinkedIn's Community Management API, which needs an approved "
-            "developer application. Without it the supported path is prepare-and-paste, and "
-            "that is the default here. Even with it, every publish needs a claimed approval."
-        ),
+        "mode": settings.publish_mode,
+        "checks": {name: ok for name, ok, _ in checks},
+        "outstanding": outstanding,
+        "can_publish_via_api": not outstanding,
+        "note": ("A ninth requirement is not listed because it is per-action: every publish "
+                 "also needs a claimed approval for that exact text."),
     }
 
 
-def publish(conn: sqlite3.Connection, permit: Permit) -> dict[str, Any]:
-    """Attempt the one action a permit authorises.
+def capability() -> dict[str, Any]:
+    """What this client can do right now, and under which mode."""
 
-    Refuses unless every gate is open, and records the refusal either way. In
-    dry-run — the default — it reports exactly what it would have sent and sends
-    nothing.
+    ready = readiness()
+    return {
+        "mode": settings.publish_mode,
+        "mode_1_prepare_and_paste": True,
+        "mode_2_official_api_available": ready["can_publish_via_api"],
+        "outstanding_for_mode_2": ready["outstanding"],
+        "unofficial_automation": "refused — cookies, session tokens and headless "
+                                 "automation of a logged-in account are never supported",
+        "per_action_requirement": "a claimed approval for the exact text",
+    }
+
+
+# ── Publishing ──────────────────────────────────────────────────────────────
+
+def publish(conn: sqlite3.Connection, permit: Permit) -> dict[str, Any]:
+    """Perform the one action a permit authorises, under the current mode.
+
+    In MODE 1 this does not send: it returns the prepared text and says so.
+    In MODE 2 it re-checks every gate, then calls LinkedIn's official API.
+    Either way a refusal is recorded before the exception is raised.
     """
+
+    _refuse_unofficial()
 
     if permit.action_type not in ("publish_post", "publish_comment"):
         _refuse(conn, permit, f"this client does not perform {permit.action_type}")
 
-    if not settings.allow_external:
-        _refuse(conn, permit, "FMB_ALLOW_EXTERNAL is off, so nothing leaves this machine")
-
-    token = os.environ.get("LINKEDIN_ACCESS_TOKEN", "").strip()
-    if not token:
-        _refuse(conn, permit,
-                "no LinkedIn API credential is configured — use the prepared text and post it yourself")
-
-    if settings.dry_run:
-        # The safe default. Everything above passed; this is what would happen.
+    if settings.publish_mode == MODE_PREPARE:
+        # Not an error — the expected outcome of the default mode.
         with db.transaction(conn):
-            db.log(conn, "external:dry_run", entity="approvals",
-                   entity_id=permit.approval_id, approval_id=permit.approval_id,
-                   detail=f"{permit.action_type} to {permit.target or 'own feed'}")
+            db.log(conn, "prepare:handoff", entity="approvals", entity_id=permit.approval_id,
+                   approval_id=permit.approval_id,
+                   detail=f"{permit.action_type} prepared for manual publishing")
         return {
             "sent": False,
-            "dry_run": True,
-            "would_send": permit.payload,
+            "mode": MODE_PREPARE,
+            "text": permit.payload,
             "target": permit.target,
-            "note": "Set FMB_EXECUTE_FOR_REAL=1 to arm this. Nothing was sent.",
+            "note": "Approved and ready. Copy this and publish it yourself — "
+                    "prepare_and_paste is the active mode.",
         }
 
-    # ── Live path ───────────────────────────────────────────────────────────
-    # Reached only with an approved, unspent permit, external actions allowed,
-    # execution armed, and a credential present. The credential is read here and
-    # never stored, logged or returned.
+    ready = readiness()
+    if not ready["can_publish_via_api"]:
+        _refuse(conn, permit,
+                "official API mode is selected but not ready: "
+                + "; ".join(ready["outstanding"]))
+
+    token = os.environ.get("LINKEDIN_ACCESS_TOKEN", "").strip()
+
     try:
         response = _call_linkedin(token, permit)
+    except LinkedInError:
+        raise
     except Exception as exc:  # noqa: BLE001 - reported, redacted, never swallowed
         with db.transaction(conn):
             db.log(conn, "external:error", entity="approvals", entity_id=permit.approval_id,
@@ -190,7 +268,47 @@ def publish(conn: sqlite3.Connection, permit: Permit) -> dict[str, Any]:
         db.log(conn, "external:published", entity="approvals", entity_id=permit.approval_id,
                approval_id=permit.approval_id,
                detail=f"{permit.action_type} -> {response.get('id', 'unknown id')}")
-    return {"sent": True, "dry_run": False, "response": response}
+    return {"sent": True, "mode": MODE_OFFICIAL_API, "response": response}
+
+
+def sandbox_check(conn: sqlite3.Connection) -> dict[str, Any]:
+    """The rehearsal step in the roadmap: verify the credential without posting.
+
+    Calls LinkedIn's userinfo endpoint, which reads and never writes. It proves
+    the developer application, the OAuth token and the connection all work
+    before a single real post is attempted.
+    """
+
+    _refuse_unofficial()
+    token = os.environ.get("LINKEDIN_ACCESS_TOKEN", "").strip()
+    if not token:
+        return {"ok": False, "reason": "no OAuth token is configured"}
+
+    import urllib.error
+    import urllib.request
+
+    request = urllib.request.Request(
+        "https://api.linkedin.com/v2/userinfo",
+        headers={"Authorization": f"Bearer {token}"},
+    )
+    try:
+        with urllib.request.urlopen(request, timeout=15) as resp:
+            data = json.loads(resp.read().decode("utf-8") or "{}")
+        with db.transaction(conn):
+            db.log(conn, "sandbox:check", detail="userinfo reachable")
+        # Report that identity resolved, not the identity itself.
+        return {"ok": True, "identity_resolved": bool(data.get("sub")),
+                "note": "Read-only check. Nothing was posted."}
+    except urllib.error.HTTPError as exc:
+        with db.transaction(conn):
+            db.log(conn, "sandbox:check", outcome="error", detail=f"HTTP {exc.code}")
+        return {"ok": False, "status": exc.code,
+                "reason": ("the token was rejected — re-run the OAuth flow"
+                           if exc.code == 401 else
+                           "the application does not hold the permission it needs"
+                           if exc.code == 403 else "LinkedIn refused the check")}
+    except Exception as exc:  # noqa: BLE001
+        return {"ok": False, "reason": redact(exc)}
 
 
 def _refuse(conn: sqlite3.Connection, permit: Permit, reason: str) -> None:
@@ -201,21 +319,16 @@ def _refuse(conn: sqlite3.Connection, permit: Permit, reason: str) -> None:
 
 
 def _call_linkedin(token: str, permit: Permit) -> dict[str, Any]:
-    """The single HTTP call.
+    """The single official-API call.
 
-    Isolated in one small function so the live path is easy to read, easy to
-    review and easy to stub in tests. urllib rather than a dependency, because a
-    module that touches FMB's reputation should have as little third-party code
-    in its outward path as possible.
+    urllib rather than a dependency: a module that touches FMB's reputation
+    should have as little third-party code in its outward path as possible.
     """
 
     import urllib.error
     import urllib.request
 
     author = os.environ.get("LINKEDIN_AUTHOR_URN", "").strip()
-    if not author:
-        raise LinkedInError("LINKEDIN_AUTHOR_URN is not set, so there is no author to post as")
-
     body = json.dumps({
         "author": author,
         "commentary": permit.payload,
@@ -242,4 +355,11 @@ def _call_linkedin(token: str, permit: Permit) -> dict[str, Any]:
                     "body": json.loads(raw) if raw.strip().startswith("{") else raw}
     except urllib.error.HTTPError as exc:
         detail = exc.read().decode("utf-8", "replace")[:400]
+        if exc.code == 403:
+            # A declared scope is a claim; this is LinkedIn's answer.
+            raise LinkedInError(
+                "LinkedIn refused with 403: the developer application does not actually hold "
+                f"{REQUIRED_SCOPE} for this member. The permission is not approved yet — "
+                "stay in prepare_and_paste until it is."
+            ) from exc
         raise LinkedInError(redact(f"LinkedIn returned {exc.code}: {detail}")) from exc
