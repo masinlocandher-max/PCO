@@ -42,7 +42,9 @@ a{color:inherit}
 .legal-footer nav{display:flex;gap:8px 14px;flex-wrap:wrap}
 .legal-footer p{margin:0;font-size:11.5px}
 
-.book-order-legal{margin:14px 0 0!important;padding:11px 12px!important;border:1px solid rgba(89,63,35,.12)!important;border-radius:12px!important;background:rgba(247,238,224,.72)!important;color:#735f4d!important;font-size:10.5px!important;line-height:1.55!important}.book-order-legal a{color:#513921!important;text-decoration:underline!important;text-underline-offset:2px!important}
+.book-order-legal{margin:14px 0 0!important;padding:11px 12px!important;border:1px solid rgba(89,63,35,.12)!important;border-radius:12px!important;background:rgba(247,238,224,.72)!important;color:#735f4d!important;font-size:10.5px!important;line-height:1.95!important}/* Inline links inside a sentence cannot be 44px tall without breaking the
+   paragraph. Extra leading and padding give each one a usable band instead. */
+.book-order-legal a{display:inline-block;padding:3px 0!important;color:#513921!important;text-decoration:underline!important;text-underline-offset:2px!important}
 
 @media(max-width:760px){
   .legal-header{display:block;padding:11px 16px 9px}
