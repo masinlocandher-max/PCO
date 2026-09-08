@@ -238,3 +238,54 @@ body.book-campaign.editorial-refinement{touch-action:auto}
 @media(max-width:860px){.passage-track{padding-right:13vw}}
 @media(max-width:560px){.passage-track{padding-right:11vw}}
 .fabric i{mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent);-webkit-mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent)}
+
+/* Pass 2: extend the existing cloth and --p choreography, keeping the base layout. */
+.editorial-refinement .intro-entry{top:-135px;left:-48%;width:140%;height:230px;--angle:-9deg;--fabric-opacity:.58}
+.intro-entry i{background-size:135% 100%;background-position:15% center;transform:rotate(var(--angle)) scaleX(-1)}
+.editorial-refinement .parts-thread{left:50%;width:115%;--fabric-opacity:.36}
+.parts-weave{top:33%;left:-65%;width:130%;height:210px;--angle:17deg;--fabric-opacity:.4!important}
+.parts-weave i{background-size:155% 100%;background-position:right center;transform:rotate(var(--angle)) scaleX(-1)}
+.author-art{isolation:isolate}
+.author-art>img{position:relative;z-index:2}
+.author-back{left:-46%;top:17%;width:178%;height:63%;--angle:-32deg;--fabric-opacity:.42!important}
+.author-back i{background-size:140% 100%;background-position:30% center;transform:rotate(var(--angle)) scaleX(-1)}
+.editorial-refinement .author-thread{height:26%;bottom:-7%;left:-46%;width:147%;--angle:10deg}
+.editorial-refinement .book-front{height:27%;bottom:0%;--fabric-opacity:.76!important}
+.editorial-refinement .purchase-trace{top:-85px;left:-77%;width:105%;height:165px;--angle:12deg;--fabric-opacity:.17!important;--travel-y:-8px;--travel-x:3px}
+.book-faq{position:relative}
+.editorial-refinement .faq-trace{bottom:-10px;left:75%;width:90%;height:100px;--angle:-14deg;--fabric-opacity:.1!important;--travel-y:-5px;--travel-x:2px}
+.editorial-refinement .book-nav[data-over]{backdrop-filter:none;-webkit-backdrop-filter:none}
+.editorial-refinement .book-nav nav a[aria-current="location"]:after{transform:scaleX(1);opacity:.6}
+.editorial-refinement .book-nav nav a:after{bottom:6px}
+.editorial-refinement .gold-button svg{transition:transform .22s ease}
+.editorial-refinement .gold-button:hover svg{transform:translateX(3px)}
+.editorial-refinement .text-link:hover{text-decoration-thickness:2px;text-underline-offset:9px}
+/* Values are supplied by the unchanged book.js scroll coordinator. */
+@media(prefers-reduced-motion:no-preference){
+ .editorial-refinement .intro-narrative,.editorial-refinement .author-copy,.editorial-refinement .journey>header{transform:translate3d(0,clamp(-10px,calc(var(--p,0)*18px),22px),0)}
+ .editorial-refinement .inside-book li{transform:translate3d(clamp(-12px,calc(var(--p,0)*-18px),12px),clamp(-12px,calc(var(--p,0)*23px),28px),0);opacity:clamp(.78,calc(1 - max(0,var(--p,0))*.18),1)}
+ .editorial-refinement .approved-cover{transform:perspective(1200px) rotateY(-7deg) rotateZ(-4deg) translateY(clamp(-20px,calc(var(--p,0)*-38px),26px)) scale(clamp(.975,calc(1 - max(0,var(--p,0))*.025),1))}
+ .editorial-refinement .author-art>img{clip-path:inset(clamp(0%,calc(var(--p,0)*2%),3%) 0 clamp(0%,calc(var(--p,0)*4%),5%) 0);transform:translateY(clamp(-12px,calc(var(--p,0)*-25px),20px))}
+}
+@media(max-width:860px){
+ .editorial-refinement .intro-entry{top:-110px;height:180px;left:-54%;width:165%}
+ .parts-weave{left:-80%;width:160%;height:160px;top:35%}
+ .editorial-refinement .author-back{left:-43%;width:175%;height:55%;top:25%}
+}
+@media(max-width:560px){
+ .editorial-refinement .intro-entry{top:-80px;height:145px;left:-70%;width:210%;--fabric-opacity:.5}
+ .editorial-refinement .parts-thread{left:54%;width:220%}
+ .editorial-refinement .parts-weave{left:-112%;width:220%;height:140px;top:36%;--fabric-opacity:.35!important}
+ .editorial-refinement .author-back{left:-38%;width:170%;height:51%;top:30%}
+ .editorial-refinement .author-thread{height:23%;bottom:-4%;width:165%;left:-37%}
+ .editorial-refinement .purchase-trace{height:130px;top:-60px;left:-135%;width:170%}
+ .editorial-refinement .faq-trace{height:95px;left:85%;width:140%}
+ .editorial-refinement .fabric.background{--travel-y:-13px!important;--travel-x:3px!important}
+ .editorial-refinement .fabric.midground{--travel-y:-28px!important;--travel-x:7px!important}
+ .editorial-refinement .fabric.foreground{--travel-y:-47px!important;--travel-x:10px!important}
+ .editorial-refinement .purchase-trace,.editorial-refinement .faq-trace{--travel-y:-4px!important;--travel-x:1px!important}
+}
+@media(prefers-reduced-motion:reduce){
+ .editorial-refinement .author-art>img{clip-path:none!important}
+ .editorial-refinement .fabric,.editorial-refinement [data-parallax]{transform:none!important;opacity:1!important;will-change:auto}
+}
