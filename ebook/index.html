@@ -245,9 +245,6 @@
       font:500 11.5px/1 var(--ui);letter-spacing:.12em;text-transform:uppercase;cursor:pointer}
     .search-note{margin:10px 0 0;font:13px/1.55 var(--ui);color:var(--muted)}
     .hitmark{background:var(--mark);border-radius:2px}
-    .offline-pill{display:none;align-items:center;gap:6px;padding:0 9px;height:19px;border-radius:999px;
-      background:rgba(143,105,50,.16);color:var(--soft);font:500 10px/1 var(--ui);letter-spacing:.12em;text-transform:uppercase}
-    body[data-offline] .offline-pill{display:inline-flex}
     .empty{padding:44px 0;text-align:center;color:var(--muted)}
     .empty strong{display:block;margin-bottom:8px;font-family:var(--display);font-size:22px;font-weight:400;color:var(--ink)}
     .empty span{font:14px/1.6 var(--ui)}
@@ -330,7 +327,7 @@
       </div>
     </div>
     <div class="track" aria-hidden="true"><i id="progress"></i></div>
-    <div class="bar-meta"><span id="posLabel">&nbsp;</span><span class="offline-pill" id="offlinePill">Offline</span><span id="pctLabel">&nbsp;</span></div>
+    <div class="bar-meta"><span id="posLabel">&nbsp;</span><span id="pctLabel">&nbsp;</span></div>
   </header>
 
   <main id="main">
@@ -389,14 +386,7 @@
           </div></div>
           <div class="pref"><h3>Highlights and notes</h3><p>Select any line to highlight it or keep it in your notes. Your highlights, notes and bookmarks stay on this device.</p></div>
           <div class="pref"><h3>Reading style</h3><p>Read it like one long page. Just scroll. The app quietly prepares the next sections before you reach them, and you can scroll back to sections you already passed.</p></div>
-          <div class="pref">
-            <h3>Read offline</h3>
-            <p id="offlineState">Checking what is saved on this device…</p>
-            <div class="chips" style="margin-top:12px">
-              <button class="chip" type="button" id="downloadBtn">Save the whole book</button>
-              <button class="chip" type="button" id="forgetBtn">Remove the copy on this device</button>
-            </div>
-          </div>
+          <div class="pref"><h3>Your copy</h3><p>The book is streamed as you read and is never stored on this device, so nothing of it is left behind on a shared or borrowed phone. It needs a connection to open.</p></div>
           <div class="pref" id="installPref" hidden>
             <h3>Home screen</h3>
             <p>Keep the book one tap away, opening straight to your page.</p>
@@ -443,8 +433,7 @@
     var API='https://wjnavdpppnhxbuydkrkd.supabase.co/functions/v1/book-gift-api';
     var SESSION='trwtl.gift.session',EMAIL='trwtl.gift.email',PROGRESS='trwtl.gift.progress',
         PREF='trwtl.gift.prefs',MARKS='trwtl.gift.bookmarks',NOTES='trwtl.gift.highlights',
-        INSTALL='trwtl.gift.install',WEBVIEW_OK='trwtl.gift.webview-ok',LIBRARY='trwtl.gift.library',
-        SHELF='trwtl.gift.shelf';
+        INSTALL='trwtl.gift.install',WEBVIEW_OK='trwtl.gift.webview-ok';
     var SUPPORT='withlovefmb@gmail.com';
 
     var manifest=[],session='',email='',current=null,currentPct=0,
@@ -697,63 +686,43 @@
     }
 
     /*
-      The book on this device.
+      Chapter text lives in memory for as long as this window is open, and is
+      never written to storage. That is deliberate: the app makes no offline
+      promise, so it keeps no copy of the manuscript on the device to back one
+      up. Close the tab and nothing of the book is left behind.
 
-      Everything read is kept, so losing signal mid-chapter does not lose the
-      chapter, and an installed app opens to the book rather than to an error.
-      Preferences can pull the rest down in one go, and can delete all of it.
-
-      The one thing this must never do is outlive the entitlement: an
-      access_required answer means the copy is no longer this reader's, so the
-      local library is erased before the error is even shown.
+      `bodies` is that index. It is not cleared on a jump, so a section already
+      read stays searchable for the rest of the session.
     */
-    function library(){return readJ(LIBRARY)||{}}
-    /* Reports whether the write actually landed, so a device that has run out of
-       room is told so rather than being quietly left half-saved. */
-    function librarySave(map){try{localStorage.setItem(LIBRARY,JSON.stringify(map));return true}catch(e){return false}}
-    function libraryPut(ch){
-      if(!ch||!ch.sequence)return;
-      var map=library();
-      map[String(ch.sequence)]={sequence:Number(ch.sequence),title:ch.title,kind:ch.kind,body:ch.body};
-      return librarySave(map);
-    }
-    function libraryGet(sequence){return library()[String(sequence)]||null}
-    function libraryCount(){var n=0,m=library();for(var k in m)if(m.hasOwnProperty(k))n++;return n}
-    function libraryClear(){removeKey(LIBRARY)}
-
     async function fetchChapter(sequence){
-      try{
-        var d=await api('chapter',{session:session,sequence:Number(sequence)});
-        if(d&&d.chapter)libraryPut(d.chapter);
-        return d.chapter;
-      }catch(e){
-        if(e&&e.message==='access_required'){libraryClear();throw e}
-        var hit=libraryGet(sequence);
-        if(hit)return hit;
-        throw e;
-      }
+      var d=await api('chapter',{session:session,sequence:Number(sequence)});
+      return d.chapter;
     }
 
-    var downloading=false;
-    async function downloadBook(onStep){
-      if(downloading)return;
-      downloading=true;
+    /*
+      Reads the rest of the book into memory so search can see all of it. It
+      writes nothing: the moment this window closes the index goes with it.
+    */
+    var indexing=false;
+    async function indexBook(onStep){
+      if(indexing)return 0;
+      indexing=true;
       var list=rows(),done=0,failed=0;
       for(var i=0;i<list.length;i++){
         var seq=list[i].sequence;
-        if(!libraryGet(seq)){
+        if(!bodies[seq]){
           try{
-            await fetchChapter(seq);
-            if(!libraryGet(seq))failed++;   // fetched, but this device had no room
+            var ch=await fetchChapter(seq);
+            bodies[seq]=paragraphs(ch&&ch.body);
           }catch(e){
-            if(e&&e.message==='access_required'){downloading=false;lostAccess();return}
+            if(e&&e.message==='access_required'){indexing=false;lostAccess();return failed}
             failed++;
           }
         }
         done++;
         if(onStep)onStep(done,list.length,failed);
       }
-      downloading=false;
+      indexing=false;
       return failed;
     }
     /*
@@ -875,7 +844,7 @@
 
     async function jump(sequence,pct,focusP){
       closeSheet(sheet);
-      gen++;ended=false;loaded={};bodies={};flow.innerHTML='';
+      gen++;ended=false;loaded={};flow.innerHTML='';
       try{
         var section=await appendChapter(sequence);
         if(!section)return;
@@ -942,16 +911,16 @@
     var query='';
     function escRe(v){return String(v).replace(/[.*+?^${}()|[\]\\]/g,'\\$&')}
     /*
-      Search reads the sections this device holds — everything read so far, plus
-      anything saved for offline. It says so plainly rather than quietly
-      returning half an answer, and offers to fetch the rest.
+      Search reads the sections this window has open. It says how many that is
+      rather than quietly returning half an answer, and offers to read the rest
+      in — into memory, for this session only.
     */
     function searchBook(q){
       var out=[],re=new RegExp(escRe(q),'i'),list=rows();
       for(var i=0;i<list.length&&out.length<60;i++){
         var seq=list[i].sequence;
         var text=bodies[seq];
-        if(!text){var hit=libraryGet(seq);if(!hit)continue;text=String(hit.body||'').split(/\n{2,}/).map(function(t){return t.trim()}).filter(Boolean)}
+        if(!text)continue;
         for(var p=0;p<text.length&&out.length<60;p++){
           var m=re.exec(text[p]);
           if(!m)continue;
@@ -967,7 +936,7 @@
     }
     function searchable(){
       var n=0,list=rows();
-      for(var i=0;i<list.length;i++)if(bodies[list[i].sequence]||libraryGet(list[i].sequence))n++;
+      for(var i=0;i<list.length;i++)if(bodies[list[i].sequence])n++;
       return n;
     }
     function renderSheet(){
@@ -1007,8 +976,8 @@
           'autocomplete="off" spellcheck="false" placeholder="Search the book" aria-label="Search the book" value="'+esc(query)+'">'+
           '<button type="submit">Find</button></form>';
         if(have<total)
-          html+='<p class="search-note">Searching the '+have+' of '+total+' sections saved on this device. '+
-            '<button type="button" class="chip" style="min-height:38px;padding:0 13px;margin-top:8px" data-download>Save the whole book</button></p>';
+          html+='<p class="search-note" id="searchScope">Searching the '+have+' of '+total+' sections open in this reader. '+
+            '<button type="button" class="chip" style="min-height:38px;padding:0 13px;margin-top:8px" data-index>Search the whole book</button></p>';
         if(query){
           var hits=searchBook(query);
           if(!hits.length){
@@ -1276,38 +1245,11 @@
       });
       document.querySelectorAll('.tab').forEach(function(t){t.onclick=function(){setTab(t.dataset.tab)}});
 
-      function offlineState(){
-        var have=libraryCount(),total=rows().length||0,el=$('offlineState');
-        if(!el)return;
-        if(!total)el.textContent='Your sections are saved as you read them.';
-        else if(have>=total)el.textContent='The whole book is on this device. It opens and reads with no connection at all.';
-        else if(have)el.textContent=have+' of '+total+' sections are on this device. Save the rest and the book opens anywhere.';
-        else el.textContent='Nothing saved yet. Sections are kept as you read them, or save the whole book now.';
-        var dl=$('downloadBtn');if(dl)dl.disabled=(total>0&&have>=total)||downloading;
-        var fg=$('forgetBtn');if(fg)fg.disabled=!have;
-      }
-      $('downloadBtn').onclick=async function(){
-        var btn=this,el=$('offlineState');
-        btn.disabled=true;
-        var failed=await downloadBook(function(done,total){el.textContent='Saving section '+done+' of '+total+'…'});
-        offlineState();
-        if(failed)toastMsg(failed+' section'+(failed===1?'':'s')+' could not be saved on this device');
-        else toastMsg('The whole book is on this device');
-        if(sheet.hasAttribute('data-open')&&sheetTab==='search')renderSheet();
-      };
-      $('forgetBtn').onclick=function(){
-        libraryClear();offlineState();toastMsg('Downloaded copy removed from this device');
-      };
       $('installAgain').onclick=function(){installShown=false;writeJ(INSTALL,{state:'later',at:0});closeSheet(prefsSheet);showInstall()};
       $('prefsBtn').addEventListener('click',function(){
-        offlineState();
         var pref=$('installPref');
         if(pref)pref.hidden=standalone()||(!installEvent&&!isIOS());
       });
-
-      addEventListener('online',function(){document.body.removeAttribute('data-offline')});
-      addEventListener('offline',function(){document.body.setAttribute('data-offline','');toastMsg('You are offline — saved sections still open')});
-      if(navigator.onLine===false)document.body.setAttribute('data-offline','');
 
       sheetBody.onclick=function(e){
         var drop=e.target.closest('[data-drop-mark]');
@@ -1321,7 +1263,17 @@
           if(rec){closeSheet(sheet);openComposer(rec)}
           return;
         }
-        if(e.target.closest('[data-download]')){e.stopPropagation();closeSheet(sheet);openSheet(prefsSheet);$('downloadBtn').click();return}
+        var idx=e.target.closest('[data-index]');
+        if(idx){
+          e.stopPropagation();idx.disabled=true;
+          var note=$('searchScope');
+          indexBook(function(done,total){if(note)note.textContent='Reading section '+done+' of '+total+'…'})
+            .then(function(failed){
+              renderSheet();
+              if(failed)toastMsg(failed+' section'+(failed===1?'':'s')+' could not be read just now');
+            });
+          return;
+        }
         var go=e.target.closest('[data-goto]');
         if(go){jump(Number(go.dataset.goto),Number(go.dataset.pct)||0,go.dataset.focus!=null?Number(go.dataset.focus):null);return}
         var item=e.target.closest('[data-sequence]');
@@ -1431,28 +1383,14 @@
         var d=await api('access',{session:s});
         if(d.has_access!==true||d.content_ready!==true)return null;
         session=s;email=d.email||read(EMAIL);manifest=Array.isArray(d.chapters)?d.chapters:[];
-        writeJ(SHELF,manifest);
         return d;
       }catch(e){
         /*
-          Two very different failures wear the same shape here, and telling them
-          apart is the whole of offline reading.
-
-          The service saying this reader no longer holds the book is final: the
-          local copy goes, immediately, before anything is drawn.
-
-          The service being unreachable is not a verdict on anything. A reader on
-          a plane with the book already on their device should get the book, not
-          a lecture about their connection. It reopens from the last manifest and
-          whatever sections are saved, and the next answer the service does give
-          is obeyed — including taking it all away.
+          A reader with a session who simply cannot reach the service is not a
+          reader without a copy, and should not be asked for their email as if
+          they were. The two are told apart so the screen can say the true thing.
         */
-        if(e&&e.message==='access_required'){libraryClear();removeKey(SHELF);return null}
-        var shelf=readJ(SHELF);
-        if(Array.isArray(shelf)&&shelf.length&&libraryCount()){
-          session=s;email=read(EMAIL);manifest=shelf;
-          return {offline:true};
-        }
+        if(e&&e.message!=='access_required')return 'unreachable';
         return null;
       }
     }
@@ -1479,6 +1417,10 @@
           return;
         }
       }
+      if(a==='unreachable'){
+        gate('The book cannot be reached right now','Your copy is on your account, not on this device, so it needs a connection to open. Come back when you have one and it opens straight to your page.',{email:false});
+        return;
+      }
       if(!a){
         gate('Open your copy on this device','Enter the email your copy is under and we will send you one link. Open it here, and the book stays open on this device.',{icon:MAIL_ICON});
         return;
@@ -1488,13 +1430,8 @@
       var p=await bestProgress(),r=rows(),
           first=r.find(function(x){return Number(x.sequence)===Number(p.sequence)})||r[0];
       if(!first){gate('The ebook is not available yet','Please try again shortly.',{email:false});return}
-      if(!p.sequence&&libraryCount()){
-        var saved=r.find(function(x){return !!libraryGet(x.sequence)});
-        if(saved)first=saved;
-      }
       await jump(first.sequence,Number(p.percent)||0);
       bookOpen=true;
-      if(a&&a.offline){document.body.setAttribute('data-offline','');toastMsg('Offline — reading the copy saved on this device')}
       if(fresh)toastMsg('This device is activated — no email needed next time');
       offerInstall(fresh?2200:3200);
     }

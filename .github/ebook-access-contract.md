@@ -64,22 +64,19 @@ If none of these are present the page column is absent and the layout closes up.
 Adding `words` to each entry of the `access` chapter metadata is the smallest
 change that turns page numbers on, and again needs no frontend work.
 
-## The book on the reader's device
+## Nothing of the book is stored on the device
 
-The app keeps chapter text in `localStorage` under `trwtl.gift.library`:
-everything read, plus anything pulled down by "Save the whole book" in
-Preferences. That is what makes the installed app open on a plane instead of
-opening to an error, and what search reads.
+The reader keeps chapter text in memory for the life of the window and writes
+none of it to storage. Closing the tab leaves nothing of the manuscript behind,
+including on a shared or borrowed phone.
 
-Two rules keep that honest, and both are in `ebook/index.html`:
+That means the app needs a connection to open, and it says so plainly when it
+cannot reach this function rather than asking a reader who already has a copy to
+send themselves another link. The two failures are told apart in `stored()`: an
+`access_required` answer is a verdict and sends the reader to the email gate; an
+unreachable service is not, and gets its own screen.
 
-1. **An `access_required` answer erases it.** Not "stops adding to it" —
-   erases it, along with the cached manifest, before anything is drawn. A copy
-   that outlived its entitlement is the one failure mode worth being strict
-   about.
-2. **An unreachable service does not.** A network error is not a verdict, so the
-   reader keeps reading from their device and the app obeys the next real answer
-   it gets. This is the same trade every downloaded ebook makes.
-
-Preferences shows how many sections are held and offers to delete all of them,
-so a reader on a shared or borrowed device can leave nothing behind.
+Only the app shell — the page, its icons and the fabric image — is cached, by
+`ebook/sw.js`. That worker refuses anything that is not a same-origin GET, which
+excludes every chapter, entitlement check and progress write, since those are
+cross-origin POSTs.
