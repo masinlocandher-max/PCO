@@ -22,3 +22,24 @@
   };
   track.addEventListener('scroll', sync, {passive:true}); sync();
 })();
+
+/* Active navigation uses visibility observation, without another scroll listener. */
+(() => {
+  if (!('IntersectionObserver' in window)) return;
+  const links = [...document.querySelectorAll('#bookNavLinks a[href^="#"]')];
+  const sections = links.map(link => document.querySelector(link.getAttribute('href'))).filter(Boolean);
+  const visible = new Map();
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) visible.set(entry.target, entry.intersectionRatio);
+      else visible.delete(entry.target);
+    });
+    const active = [...visible].sort((a,b) => b[1]-a[1])[0];
+    if (!active) return;
+    links.forEach(link => {
+      if (link.getAttribute('href') === '#' + active[0].id) link.setAttribute('aria-current','location');
+      else link.removeAttribute('aria-current');
+    });
+  }, {rootMargin:'-12% 0px -40% 0px',threshold:[0,.15,.35,.65]});
+  sections.forEach(section => observer.observe(section));
+})();
