@@ -63,3 +63,23 @@ section, for any of:
 If none of these are present the page column is absent and the layout closes up.
 Adding `words` to each entry of the `access` chapter metadata is the smallest
 change that turns page numbers on, and again needs no frontend work.
+
+## The book on the reader's device
+
+The app keeps chapter text in `localStorage` under `trwtl.gift.library`:
+everything read, plus anything pulled down by "Save the whole book" in
+Preferences. That is what makes the installed app open on a plane instead of
+opening to an error, and what search reads.
+
+Two rules keep that honest, and both are in `ebook/index.html`:
+
+1. **An `access_required` answer erases it.** Not "stops adding to it" —
+   erases it, along with the cached manifest, before anything is drawn. A copy
+   that outlived its entitlement is the one failure mode worth being strict
+   about.
+2. **An unreachable service does not.** A network error is not a verdict, so the
+   reader keeps reading from their device and the app obeys the next real answer
+   it gets. This is the same trade every downloaded ebook makes.
+
+Preferences shows how many sections are held and offers to delete all of them,
+so a reader on a shared or borrowed device can leave nothing behind.

@@ -200,10 +200,10 @@
     .sheet-head p{margin:5px 0 0;font:15px/1.3 var(--ui);color:var(--muted)}
     .sheet-close{width:44px;height:44px;display:grid;place-items:center;border:0;border-radius:12px;background:transparent;color:var(--ink);cursor:pointer;-webkit-tap-highlight-color:transparent}
     .sheet-close svg{width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round}
-    .tabs{flex:none;display:grid;grid-template-columns:repeat(3,1fr);
+    .tabs{flex:none;display:grid;grid-template-columns:repeat(4,1fr);
       margin:14px calc(22px + var(--safe-r)) 0 calc(22px + var(--safe-l));border-bottom:1px solid var(--rule)}
     .tab{appearance:none;border:0;background:transparent;color:var(--muted);
-      min-height:46px;padding:0 4px 10px;font:500 15px/1 var(--ui);cursor:pointer;-webkit-tap-highlight-color:transparent;
+      min-height:46px;padding:0 2px 10px;font:500 clamp(12.5px,3.6vw,15px)/1 var(--ui);cursor:pointer;-webkit-tap-highlight-color:transparent;
       border-bottom:2px solid transparent;margin-bottom:-1px}
     .tab[aria-selected="true"]{color:var(--ink);font-weight:600;border-bottom-color:var(--gold)}
     .sheet-body{flex:1;min-height:0;overflow:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;
@@ -237,6 +237,17 @@
       background:transparent;color:var(--soft);font:500 11px/1 var(--ui);letter-spacing:.1em;text-transform:uppercase;
       cursor:pointer;-webkit-tap-highlight-color:transparent}
     .entry-tools button:active{background:rgba(143,105,50,.12)}
+    .search-form{display:flex;gap:8px;padding:18px 0 4px}
+    .search-form input{flex:1;min-width:0;min-height:46px;padding:0 14px;border:1px solid var(--rule);border-radius:13px;
+      background:var(--paper);color:var(--ink);font:15px/1 var(--ui);user-select:text;-webkit-user-select:text}
+    .search-form input:focus{outline:2px solid rgba(143,105,50,.4);outline-offset:1px}
+    .search-form button{min-height:46px;padding:0 16px;border:0;border-radius:999px;background:var(--gold);color:#fff8ec;
+      font:500 11.5px/1 var(--ui);letter-spacing:.12em;text-transform:uppercase;cursor:pointer}
+    .search-note{margin:10px 0 0;font:13px/1.55 var(--ui);color:var(--muted)}
+    .hitmark{background:var(--mark);border-radius:2px}
+    .offline-pill{display:none;align-items:center;gap:6px;padding:0 9px;height:19px;border-radius:999px;
+      background:rgba(143,105,50,.16);color:var(--soft);font:500 10px/1 var(--ui);letter-spacing:.12em;text-transform:uppercase}
+    body[data-offline] .offline-pill{display:inline-flex}
     .empty{padding:44px 0;text-align:center;color:var(--muted)}
     .empty strong{display:block;margin-bottom:8px;font-family:var(--display);font-size:22px;font-weight:400;color:var(--ink)}
     .empty span{font:14px/1.6 var(--ui)}
@@ -319,7 +330,7 @@
       </div>
     </div>
     <div class="track" aria-hidden="true"><i id="progress"></i></div>
-    <div class="bar-meta"><span id="posLabel">&nbsp;</span><span id="pctLabel">&nbsp;</span></div>
+    <div class="bar-meta"><span id="posLabel">&nbsp;</span><span class="offline-pill" id="offlinePill">Offline</span><span id="pctLabel">&nbsp;</span></div>
   </header>
 
   <main id="main">
@@ -347,6 +358,7 @@
         <button class="tab" role="tab" id="tabContents" data-tab="contents" aria-selected="true">Contents</button>
         <button class="tab" role="tab" id="tabBookmarks" data-tab="bookmarks" aria-selected="false">Bookmarks</button>
         <button class="tab" role="tab" id="tabNotes" data-tab="notes" aria-selected="false">Notes</button>
+        <button class="tab" role="tab" id="tabSearch" data-tab="search" aria-selected="false">Search</button>
       </div>
       <div class="sheet-body" id="sheetBody"></div>
     </div>
@@ -377,6 +389,19 @@
           </div></div>
           <div class="pref"><h3>Highlights and notes</h3><p>Select any line to highlight it or keep it in your notes. Your highlights, notes and bookmarks stay on this device.</p></div>
           <div class="pref"><h3>Reading style</h3><p>Read it like one long page. Just scroll. The app quietly prepares the next sections before you reach them, and you can scroll back to sections you already passed.</p></div>
+          <div class="pref">
+            <h3>Read offline</h3>
+            <p id="offlineState">Checking what is saved on this device…</p>
+            <div class="chips" style="margin-top:12px">
+              <button class="chip" type="button" id="downloadBtn">Save the whole book</button>
+              <button class="chip" type="button" id="forgetBtn">Remove the copy on this device</button>
+            </div>
+          </div>
+          <div class="pref" id="installPref" hidden>
+            <h3>Home screen</h3>
+            <p>Keep the book one tap away, opening straight to your page.</p>
+            <div class="chips" style="margin-top:12px"><button class="chip" type="button" id="installAgain">Add to home screen</button></div>
+          </div>
           <div class="pref"><h3>Progress</h3><p>Your reading position is kept on this device and securely synced when you are online.</p></div>
           <div class="pref"><h3>Access</h3><p>This device keeps your ebook access. No registration or account setup is required.</p></div>
           <div class="pref"><a class="pref-link" href="/book/" id="backLink">Back to the book</a></div>
@@ -418,7 +443,8 @@
     var API='https://wjnavdpppnhxbuydkrkd.supabase.co/functions/v1/book-gift-api';
     var SESSION='trwtl.gift.session',EMAIL='trwtl.gift.email',PROGRESS='trwtl.gift.progress',
         PREF='trwtl.gift.prefs',MARKS='trwtl.gift.bookmarks',NOTES='trwtl.gift.highlights',
-        INSTALL='trwtl.gift.install',WEBVIEW_OK='trwtl.gift.webview-ok';
+        INSTALL='trwtl.gift.install',WEBVIEW_OK='trwtl.gift.webview-ok',LIBRARY='trwtl.gift.library',
+        SHELF='trwtl.gift.shelf';
     var SUPPORT='withlovefmb@gmail.com';
 
     var manifest=[],session='',email='',current=null,currentPct=0,
@@ -670,7 +696,66 @@
       return section;
     }
 
-    async function fetchChapter(sequence){var d=await api('chapter',{session:session,sequence:Number(sequence)});return d.chapter}
+    /*
+      The book on this device.
+
+      Everything read is kept, so losing signal mid-chapter does not lose the
+      chapter, and an installed app opens to the book rather than to an error.
+      Preferences can pull the rest down in one go, and can delete all of it.
+
+      The one thing this must never do is outlive the entitlement: an
+      access_required answer means the copy is no longer this reader's, so the
+      local library is erased before the error is even shown.
+    */
+    function library(){return readJ(LIBRARY)||{}}
+    /* Reports whether the write actually landed, so a device that has run out of
+       room is told so rather than being quietly left half-saved. */
+    function librarySave(map){try{localStorage.setItem(LIBRARY,JSON.stringify(map));return true}catch(e){return false}}
+    function libraryPut(ch){
+      if(!ch||!ch.sequence)return;
+      var map=library();
+      map[String(ch.sequence)]={sequence:Number(ch.sequence),title:ch.title,kind:ch.kind,body:ch.body};
+      return librarySave(map);
+    }
+    function libraryGet(sequence){return library()[String(sequence)]||null}
+    function libraryCount(){var n=0,m=library();for(var k in m)if(m.hasOwnProperty(k))n++;return n}
+    function libraryClear(){removeKey(LIBRARY)}
+
+    async function fetchChapter(sequence){
+      try{
+        var d=await api('chapter',{session:session,sequence:Number(sequence)});
+        if(d&&d.chapter)libraryPut(d.chapter);
+        return d.chapter;
+      }catch(e){
+        if(e&&e.message==='access_required'){libraryClear();throw e}
+        var hit=libraryGet(sequence);
+        if(hit)return hit;
+        throw e;
+      }
+    }
+
+    var downloading=false;
+    async function downloadBook(onStep){
+      if(downloading)return;
+      downloading=true;
+      var list=rows(),done=0,failed=0;
+      for(var i=0;i<list.length;i++){
+        var seq=list[i].sequence;
+        if(!libraryGet(seq)){
+          try{
+            await fetchChapter(seq);
+            if(!libraryGet(seq))failed++;   // fetched, but this device had no room
+          }catch(e){
+            if(e&&e.message==='access_required'){downloading=false;lostAccess();return}
+            failed++;
+          }
+        }
+        done++;
+        if(onStep)onStep(done,list.length,failed);
+      }
+      downloading=false;
+      return failed;
+    }
     /*
       Jumping to a chapter empties the flow, but a fetch started before the jump
       is still in the air and will happily append its chapter into the cleared
@@ -788,7 +873,7 @@
       if(firstRect.top>-innerHeight*0.35&&Math.abs(velocity)<70)fillBehind();
     }
 
-    async function jump(sequence,pct){
+    async function jump(sequence,pct,focusP){
       closeSheet(sheet);
       gen++;ended=false;loaded={};bodies={};flow.innerHTML='';
       try{
@@ -796,9 +881,17 @@
         if(!section)return;
         current=Number(sequence);
         requestAnimationFrame(function(){
-          var max=Math.max(0,section.offsetHeight-innerHeight*.25),
-              top=section.offsetTop+max*Math.max(0,Math.min(100,Number(pct)||0))/100;
-          window.scrollTo(0,Math.max(0,top-90));
+          var top;
+          var target=focusP!=null?section.querySelector('.prose p[data-p="'+Number(focusP)+'"]'):null;
+          if(target){
+            top=target.getBoundingClientRect().top+window.scrollY;
+            window.scrollTo(0,Math.max(0,top-120));
+            target.animate?target.animate([{backgroundColor:'rgba(226,186,96,.5)'},{backgroundColor:'transparent'}],{duration:1400,easing:'ease-out'}):0;
+          }else{
+            var max=Math.max(0,section.offsetHeight-innerHeight*.25);
+            top=section.offsetTop+max*Math.max(0,Math.min(100,Number(pct)||0))/100;
+            window.scrollTo(0,Math.max(0,top-90));
+          }
           updateReadingState();
           setTimeout(updateReadingState,260);
         });
@@ -809,14 +902,74 @@
     }
 
     /* ── sheet ───────────────────────────────────────────────────────────── */
-    function openSheet(el){el.setAttribute('data-open','');el.setAttribute('aria-hidden','false')}
-    function closeSheet(el){el.removeAttribute('data-open');el.setAttribute('aria-hidden','true')}
+    /*
+      A panel that covers the book has to take the keyboard with it, or a reader
+      tabbing through it walks invisibly into the chapter underneath.
+    */
+    var focusReturn=null;
+    function focusables(el){
+      return Array.prototype.filter.call(
+        el.querySelectorAll('a[href],button:not([disabled]),input:not([disabled]),select,textarea,[tabindex]:not([tabindex="-1"])'),
+        function(n){var r=n.getBoundingClientRect();return r.width>0&&r.height>0});
+    }
+    function openSheet(el){
+      if(el.hasAttribute('data-open'))return;
+      focusReturn=document.activeElement;
+      el.setAttribute('data-open','');el.setAttribute('aria-hidden','false');
+      requestAnimationFrame(function(){var f=focusables(el);if(f.length)f[0].focus()});
+    }
+    function closeSheet(el){
+      var was=el.hasAttribute('data-open');
+      el.removeAttribute('data-open');el.setAttribute('aria-hidden','true');
+      if(was&&focusReturn&&focusReturn.focus){try{focusReturn.focus()}catch(e){}focusReturn=null}
+    }
+    function trapTab(e){
+      if(e.key!=='Tab')return;
+      var open=document.querySelector('.sheet[data-open], .composer[data-open]');
+      if(!open)return;
+      var f=focusables(open);if(!f.length)return;
+      var first=f[0],last=f[f.length-1];
+      if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus()}
+      else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus()}
+    }
     function activeToc(seq){
       sheetBody.querySelectorAll('[data-sequence]').forEach(function(b){
         b.classList.toggle('is-active',Number(b.dataset.sequence)===Number(seq));
       });
     }
     var chevron='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg>';
+
+    var query='';
+    function escRe(v){return String(v).replace(/[.*+?^${}()|[\]\\]/g,'\\$&')}
+    /*
+      Search reads the sections this device holds — everything read so far, plus
+      anything saved for offline. It says so plainly rather than quietly
+      returning half an answer, and offers to fetch the rest.
+    */
+    function searchBook(q){
+      var out=[],re=new RegExp(escRe(q),'i'),list=rows();
+      for(var i=0;i<list.length&&out.length<60;i++){
+        var seq=list[i].sequence;
+        var text=bodies[seq];
+        if(!text){var hit=libraryGet(seq);if(!hit)continue;text=String(hit.body||'').split(/\n{2,}/).map(function(t){return t.trim()}).filter(Boolean)}
+        for(var p=0;p<text.length&&out.length<60;p++){
+          var m=re.exec(text[p]);
+          if(!m)continue;
+          var start=Math.max(0,m.index-58),end=Math.min(text[p].length,m.index+q.length+72);
+          out.push({seq:seq,p:p,title:clean(list[i].title),
+            before:(start>0?'… ':'')+text[p].slice(start,m.index).replace(/^[\s.,;:!?]+/,''),
+            hit:text[p].substr(m.index,q.length),
+            after:text[p].slice(m.index+q.length,end)+(end<text[p].length?'…':'')});
+          re.lastIndex=0;
+        }
+      }
+      return out;
+    }
+    function searchable(){
+      var n=0,list=rows();
+      for(var i=0;i<list.length;i++)if(bodies[list[i].sequence]||libraryGet(list[i].sequence))n++;
+      return n;
+    }
     function renderSheet(){
       var html='';
       if(sheetTab==='contents'){
@@ -848,6 +1001,27 @@
             '</div>';
           });
         }
+      }else if(sheetTab==='search'){
+        var have=searchable(),total=rows().length;
+        html+='<form class="search-form" id="searchForm"><input id="searchInput" type="search" inputmode="search" '+
+          'autocomplete="off" spellcheck="false" placeholder="Search the book" aria-label="Search the book" value="'+esc(query)+'">'+
+          '<button type="submit">Find</button></form>';
+        if(have<total)
+          html+='<p class="search-note">Searching the '+have+' of '+total+' sections saved on this device. '+
+            '<button type="button" class="chip" style="min-height:38px;padding:0 13px;margin-top:8px" data-download>Save the whole book</button></p>';
+        if(query){
+          var hits=searchBook(query);
+          if(!hits.length){
+            html+='<div class="empty"><strong>Nothing found</strong><span>No saved section carries that phrase.</span></div>';
+          }else{
+            html+='<p class="search-note">'+hits.length+(hits.length===60?'+':'')+' '+(hits.length===1?'passage':'passages')+'</p>';
+            hits.forEach(function(h){
+              html+='<div class="entry"><button type="button" class="entry-open" data-goto="'+esc(h.seq)+'" data-pct="0" data-focus="'+esc(h.p)+'">'+
+                '<span class="entry-top"><span>'+esc(h.title)+'</span></span>'+
+                '<q>'+esc(h.before)+'<span class="hitmark">'+esc(h.hit)+'</span>'+esc(h.after)+'</q></button></div>';
+            });
+          }
+        }
       }else{
         var ns=notes().slice().sort(function(a,b){return rowIndex(a.seq)-rowIndex(b.seq)||a.p-b.p||a.s-b.s});
         if(!ns.length){
@@ -870,6 +1044,11 @@
       }
       sheetBody.innerHTML=html;
       sheetBody.scrollTop=0;
+      var sf=$('searchForm');
+      if(sf){
+        sf.onsubmit=function(e){e.preventDefault();query=String($('searchInput').value||'').trim();renderSheet();
+          var f=$('searchInput');if(f){f.focus();f.setSelectionRange(f.value.length,f.value.length)}};
+      }
       if(sheetTab==='contents'){
         activeToc(current);
         var a=sheetBody.querySelector('.is-active');
@@ -944,13 +1123,17 @@
       Object.keys(loaded).forEach(function(k){repaintChapter(Number(k))});
     }
     function openComposer(record){
+      if(!focusReturn)focusReturn=document.activeElement;
       composerTarget=record.id;
       composerQuote.textContent=record.text;
       composerText.value=record.note||'';
       composer.setAttribute('data-open','');composer.setAttribute('aria-hidden','false');
       setTimeout(function(){composerText.focus()},60);
     }
-    function closeComposer(){composer.removeAttribute('data-open');composer.setAttribute('aria-hidden','true');composerTarget=null}
+    function closeComposer(){
+      composer.removeAttribute('data-open');composer.setAttribute('aria-hidden','true');composerTarget=null;
+      if(focusReturn&&focusReturn.focus){try{focusReturn.focus()}catch(e){}focusReturn=null}
+    }
 
     /* ── preferences ─────────────────────────────────────────────────────── */
     function applyPrefs(){
@@ -1093,6 +1276,39 @@
       });
       document.querySelectorAll('.tab').forEach(function(t){t.onclick=function(){setTab(t.dataset.tab)}});
 
+      function offlineState(){
+        var have=libraryCount(),total=rows().length||0,el=$('offlineState');
+        if(!el)return;
+        if(!total)el.textContent='Your sections are saved as you read them.';
+        else if(have>=total)el.textContent='The whole book is on this device. It opens and reads with no connection at all.';
+        else if(have)el.textContent=have+' of '+total+' sections are on this device. Save the rest and the book opens anywhere.';
+        else el.textContent='Nothing saved yet. Sections are kept as you read them, or save the whole book now.';
+        var dl=$('downloadBtn');if(dl)dl.disabled=(total>0&&have>=total)||downloading;
+        var fg=$('forgetBtn');if(fg)fg.disabled=!have;
+      }
+      $('downloadBtn').onclick=async function(){
+        var btn=this,el=$('offlineState');
+        btn.disabled=true;
+        var failed=await downloadBook(function(done,total){el.textContent='Saving section '+done+' of '+total+'…'});
+        offlineState();
+        if(failed)toastMsg(failed+' section'+(failed===1?'':'s')+' could not be saved on this device');
+        else toastMsg('The whole book is on this device');
+        if(sheet.hasAttribute('data-open')&&sheetTab==='search')renderSheet();
+      };
+      $('forgetBtn').onclick=function(){
+        libraryClear();offlineState();toastMsg('Downloaded copy removed from this device');
+      };
+      $('installAgain').onclick=function(){installShown=false;writeJ(INSTALL,{state:'later',at:0});closeSheet(prefsSheet);showInstall()};
+      $('prefsBtn').addEventListener('click',function(){
+        offlineState();
+        var pref=$('installPref');
+        if(pref)pref.hidden=standalone()||(!installEvent&&!isIOS());
+      });
+
+      addEventListener('online',function(){document.body.removeAttribute('data-offline')});
+      addEventListener('offline',function(){document.body.setAttribute('data-offline','');toastMsg('You are offline — saved sections still open')});
+      if(navigator.onLine===false)document.body.setAttribute('data-offline','');
+
       sheetBody.onclick=function(e){
         var drop=e.target.closest('[data-drop-mark]');
         if(drop){e.stopPropagation();saveMarks(marks().filter(function(m){return m.id!==drop.dataset.dropMark}));syncBookmarkBtn();renderSheet();return}
@@ -1105,8 +1321,9 @@
           if(rec){closeSheet(sheet);openComposer(rec)}
           return;
         }
+        if(e.target.closest('[data-download]')){e.stopPropagation();closeSheet(sheet);openSheet(prefsSheet);$('downloadBtn').click();return}
         var go=e.target.closest('[data-goto]');
-        if(go){jump(Number(go.dataset.goto),Number(go.dataset.pct)||0);return}
+        if(go){jump(Number(go.dataset.goto),Number(go.dataset.pct)||0,go.dataset.focus!=null?Number(go.dataset.focus):null);return}
         var item=e.target.closest('[data-sequence]');
         if(item)jump(Number(item.dataset.sequence),0);
       };
@@ -1161,6 +1378,7 @@
       }
       document.addEventListener('mouseup',onRelease);
       document.addEventListener('touchend',onRelease);
+      document.addEventListener('keydown',trapTab);
       document.addEventListener('keydown',function(e){
         if(e.key!=='Escape')return;
         if(composer.hasAttribute('data-open'))closeComposer();
@@ -1213,8 +1431,30 @@
         var d=await api('access',{session:s});
         if(d.has_access!==true||d.content_ready!==true)return null;
         session=s;email=d.email||read(EMAIL);manifest=Array.isArray(d.chapters)?d.chapters:[];
+        writeJ(SHELF,manifest);
         return d;
-      }catch(e){return null}
+      }catch(e){
+        /*
+          Two very different failures wear the same shape here, and telling them
+          apart is the whole of offline reading.
+
+          The service saying this reader no longer holds the book is final: the
+          local copy goes, immediately, before anything is drawn.
+
+          The service being unreachable is not a verdict on anything. A reader on
+          a plane with the book already on their device should get the book, not
+          a lecture about their connection. It reopens from the last manifest and
+          whatever sections are saved, and the next answer the service does give
+          is obeyed — including taking it all away.
+        */
+        if(e&&e.message==='access_required'){libraryClear();removeKey(SHELF);return null}
+        var shelf=readJ(SHELF);
+        if(Array.isArray(shelf)&&shelf.length&&libraryCount()){
+          session=s;email=read(EMAIL);manifest=shelf;
+          return {offline:true};
+        }
+        return null;
+      }
     }
     async function exchange(t){
       var d=await api('exchange',{token:t});
@@ -1248,8 +1488,13 @@
       var p=await bestProgress(),r=rows(),
           first=r.find(function(x){return Number(x.sequence)===Number(p.sequence)})||r[0];
       if(!first){gate('The ebook is not available yet','Please try again shortly.',{email:false});return}
+      if(!p.sequence&&libraryCount()){
+        var saved=r.find(function(x){return !!libraryGet(x.sequence)});
+        if(saved)first=saved;
+      }
       await jump(first.sequence,Number(p.percent)||0);
       bookOpen=true;
+      if(a&&a.offline){document.body.setAttribute('data-offline','');toastMsg('Offline — reading the copy saved on this device')}
       if(fresh)toastMsg('This device is activated — no email needed next time');
       offerInstall(fresh?2200:3200);
     }
