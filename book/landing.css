@@ -419,9 +419,13 @@ img{max-width:100%}
   .book-logo small{max-width:min(62vw,300px);opacity:1;overflow:hidden;
     transition:opacity .3s var(--ease-out),max-height .34s var(--ease-out),font-size .34s var(--ease-out)}
   .book-nav[data-over] .book-logo small{max-height:0;font-size:0;opacity:0}
-  /* The mark is a link to the top of the page and was a 29px target. The box
-     grows around the type rather than the type growing. */
-  .book-logo{min-height:44px;justify-content:center}
+  /* The marks are links to the top of the page. The box grows around the type
+     rather than the type growing. */
+  .book-logo,.footer-logo{min-height:44px;justify-content:center}
+  /* Inline links inside a sentence cannot be 44px without breaking the
+     paragraph, and are exempt under WCAG 2.5.8. Padding still widens the band
+     a reader has to hit, without moving a single line. */
+  body.book-campaign p a:not(.gold-button):not(.text-link){padding:3px 0}
   /* "Explore the Book" was a 17px-tall line of type. */
   .text-link{min-height:44px}
   /* 23px icons in a 14px-gap row are a mis-tap waiting to happen. The icons keep
