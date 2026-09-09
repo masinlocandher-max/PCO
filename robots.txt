@@ -1,36 +1,37 @@
 # Canonical crawler policy for francinemariebautista.com.
-# FMB News is published under /news/, so this root policy governs both the
-# professional site and the newsroom.
+# The CV is temporarily private during redesign. Do not crawl /cv.html.
 
 User-agent: *
 Allow: /
+Disallow: /cv.html
 
-# OpenAI search/discovery. GPTBot is not required for ChatGPT Search; the
-# search and user agents below are explicitly permitted for public discovery.
 User-agent: OAI-SearchBot
 Allow: /
+Disallow: /cv.html
 
 User-agent: ChatGPT-User
 Allow: /
+Disallow: /cv.html
 
-# Perplexity discovery and user-requested retrieval.
 User-agent: PerplexityBot
 Allow: /
+Disallow: /cv.html
 
 User-agent: Perplexity-User
 Allow: /
+Disallow: /cv.html
 
-# Google Search remains allowed, including Search surfaces that rely on the
-# normal Google Search indexing pipeline.
 User-agent: Googlebot
 Allow: /
+Disallow: /cv.html
 
-# Anthropic public-web search/retrieval agents are also allowed.
 User-agent: ClaudeBot
 Allow: /
+Disallow: /cv.html
 
 User-agent: Claude-SearchBot
 Allow: /
+Disallow: /cv.html
 
 Sitemap: https://francinemariebautista.com/sitemap.xml
 Sitemap: https://www.francinemariebautista.com/news/sitemap.xml
