@@ -46,10 +46,20 @@ involved, and what genuinely resulted. One honest paragraph each. Masinloc
 Connect is recorded in the project context; this section is for the work around
 it that has no page of its own.]
 
-## Her philosophy of service, in her own words
+## Her philosophy of service, in her own words — APPROVED
 
-[TO CONFIRM: quoted from her, not paraphrased. A philosophy rewritten by software
-stops being hers, and this is the section most likely to be quoted publicly.]
+Quoted from FMB, verbatim. Do not paraphrase, tighten, modernise, or "improve"
+this. It may be quoted exactly as written or not at all.
+
+> "I don't believe visibility is enough. The work has to make people understand
+> you, remember you, trust you, and know why you matter. Whether I am working
+> with a person, a business, or a community, I want the result to create
+> something useful beyond attention."
+
+**How this is used.** It is the standing test for the whole feed, not only for
+service posts. A draft that buys attention and leaves nothing useful behind fails
+her own stated standard — say so, and name which of the four it misses:
+understand, remember, trust, or know why she matters.
 
 ## How service appears on LinkedIn
 

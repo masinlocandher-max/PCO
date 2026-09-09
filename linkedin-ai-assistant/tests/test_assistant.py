@@ -249,6 +249,46 @@ class MemoryTellsTheTruth(unittest.TestCase):
         self.assertFalse(legend_only,
                          "an agent brief with no real gaps must not report unfilled fields")
 
+    def test_the_standing_brief_is_answered(self):
+        """The three questions that decide what gets written.
+
+        Audience, leading themes and off-limits topics were the fields that
+        blocked merge. If any of them regresses to a placeholder, the assistant
+        goes back to writing for "professionals in general" and the reputation
+        agent goes back to being unable to flag what it was never told.
+        """
+        brief_file = (MODULE / "memory/FMB_LINKEDIN_AGENT.md").read_text()
+        for heading in ("Audiences, in priority order",
+                        "The three that lead",
+                        "What she will not post about"):
+            section = brief_file.split(heading, 1)[1].split("\n## ", 1)[0]
+            self.assertNotIn("TO CONFIRM", section,
+                             f"'{heading}' must stay answered, not drift back to a placeholder")
+
+    def test_private_memory_is_not_publication_permission(self):
+        """The rule the whole module exists to enforce, stated in the memory.
+
+        The assistant is allowed to know things it is not allowed to say.
+        Knowing something is never, on its own, a reason to publish it.
+        """
+        results = knowledge_search.search("what she will not post about off-limits", limit=5)
+        bodies = " ".join(r["body"] for r in results)
+        self.assertIn("Private memory is context", bodies,
+                      "the publication-permission rule must be retrievable, not just written down")
+        self.assertTrue(any(r["confidence"] == "confirmed" for r in results),
+                        "the off-limits rules must read as settled, or an agent may discount them")
+
+    def test_her_philosophy_is_quoted_not_paraphrased(self):
+        """Her own words, verbatim.
+
+        This is the section most likely to be quoted publicly. A philosophy
+        rewritten by software stops being hers.
+        """
+        text = (MODULE / "memory/FMB_COMMUNITY_IMPACT.md").read_text()
+        self.assertIn("I don't believe visibility is enough.", text)
+        self.assertIn("create\n> something useful beyond attention.", text,
+                      "the quote must survive intact, blockquoted and unedited")
+
     def test_brief_states_what_is_missing(self):
         out = knowledge_search.brief("Cognita Institute")
         self.assertGreaterEqual(out["unconfirmed_count"], 1)

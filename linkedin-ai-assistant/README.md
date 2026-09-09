@@ -76,10 +76,22 @@ Institute, FMB News and the book — including the hard rules that go with them
 (Masinloc Connect is not an LGU portal; Cognita is not degree-granting; no
 invented SENZ clients).
 
-Fifteen fields remain marked `[TO CONFIRM: ...]` because nobody has answered
-them yet. Nothing is filled in by inference: a plausible guess would mean the
-assistant later repeats an invention as FMB's own positioning, in public, in her
-voice. An empty field is recoverable; a confident fabrication in her mouth is not.
+The three questions that decide what actually gets written are answered: the
+ranked audience, the three leading themes, and the off-limits list. The rule they
+sit under is stated in the memory and has a test:
+
+> Private memory is context. It is not publication permission.
+
+The assistant is allowed to know things it is not allowed to say. Knowing
+something is never, on its own, a reason to publish it.
+
+Eleven fields remain marked `[TO CONFIRM: ...]` because nobody has answered them
+yet. None of them change what the assistant writes — they are a profile URL, a
+headline, a city, project statuses, a cadence and a reporting preference.
+
+Nothing is filled in by inference. A plausible guess would mean the assistant
+later repeats an invention as FMB's own positioning — in public, in her voice.
+An empty field is recoverable; a confident fabrication in her mouth is not.
 
 Retrieval returns unconfirmed sections flagged with an explicit caution, and
 `memory_health` reports the count — which the dashboard shows on every page.
@@ -98,7 +110,7 @@ from server import knowledge_search as k; print(k.memory_health()['verdict'])"
 ```bash
 cd linkedin-ai-assistant
 cp .env.example .env          # then set FMB_OPERATOR; leave the switches off
-python3 tests/test_assistant.py     # 38 checks, no dependencies
+python3 tests/test_assistant.py     # 41 checks, no dependencies
 
 python3 server/dashboard_server.py  # http://127.0.0.1:8765/
 ```
@@ -133,7 +145,7 @@ server/       config · db · knowledge_search · approval_manager · linkedin_c
 database/     schema.sql — the approval gate lives here, not only in code
 workflows/    approval · publishing · reporting
 dashboard/    approval centre · content calendar · relationships · analytics
-tests/        38 checks, grouped by the promise each one protects
+tests/        41 checks, grouped by the promise each one protects
 ```
 
 ## OFFICIAL LINKEDIN INTEGRATION ROADMAP
