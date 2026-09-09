@@ -1,37 +1,65 @@
 # Canonical crawler policy for francinemariebautista.com.
-# The CV is temporarily private during redesign. Do not crawl /cv.html.
+# Public identity, author profile, book landing page, and public editorial pages are crawlable.
+# Private CV, admin, access, payment callback, and protected ebook routes are excluded.
 
 User-agent: *
 Allow: /
 Disallow: /cv.html
+Disallow: /book-admin/
+Disallow: /ebook-access/
+Disallow: /ebook/
+Disallow: /book/auth-callback.html
+Disallow: /book/payment-success.html
+Disallow: /book/free-access.html
 
 User-agent: OAI-SearchBot
 Allow: /
 Disallow: /cv.html
+Disallow: /book-admin/
+Disallow: /ebook-access/
+Disallow: /ebook/
 
 User-agent: ChatGPT-User
 Allow: /
 Disallow: /cv.html
-
-User-agent: PerplexityBot
-Allow: /
-Disallow: /cv.html
-
-User-agent: Perplexity-User
-Allow: /
-Disallow: /cv.html
+Disallow: /book-admin/
+Disallow: /ebook-access/
+Disallow: /ebook/
 
 User-agent: Googlebot
 Allow: /
 Disallow: /cv.html
+Disallow: /book-admin/
+Disallow: /ebook-access/
+Disallow: /ebook/
 
 User-agent: ClaudeBot
 Allow: /
 Disallow: /cv.html
+Disallow: /book-admin/
+Disallow: /ebook-access/
+Disallow: /ebook/
 
 User-agent: Claude-SearchBot
 Allow: /
 Disallow: /cv.html
+Disallow: /book-admin/
+Disallow: /ebook-access/
+Disallow: /ebook/
+
+User-agent: PerplexityBot
+Allow: /
+Disallow: /cv.html
+Disallow: /book-admin/
+Disallow: /ebook-access/
+Disallow: /ebook/
+
+User-agent: Perplexity-User
+Allow: /
+Disallow: /cv.html
+Disallow: /book-admin/
+Disallow: /ebook-access/
+Disallow: /ebook/
 
 Sitemap: https://francinemariebautista.com/sitemap.xml
 Sitemap: https://www.francinemariebautista.com/news/sitemap.xml
