@@ -43,3 +43,14 @@
   }, {rootMargin:'-12% 0px -40% 0px',threshold:[0,.15,.35,.65]});
   sections.forEach(section => observer.observe(section));
 })();
+
+/* Load the hosted PayMongo checkout enhancer on the book landing page. */
+(() => {
+  if (!/^\/book\/(?:index\.html)?$/i.test(window.location.pathname)) return;
+  if (document.querySelector('script[data-book-paymongo]')) return;
+  const script = document.createElement('script');
+  script.src = '/book/paymongo.js?v=20260910-1';
+  script.async = true;
+  script.setAttribute('data-book-paymongo', '');
+  document.head.appendChild(script);
+})();
