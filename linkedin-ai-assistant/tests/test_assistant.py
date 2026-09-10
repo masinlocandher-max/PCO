@@ -372,6 +372,114 @@ class ContentKeepsItsShape(unittest.TestCase):
                          "prepare-and-paste must be the default mode")
 
 
+class TheDashboardIsNotAnOpenDoor(unittest.TestCase):
+    """The one route that changes an approval must not be forgeable.
+
+    Binding to 127.0.0.1 keeps other machines out. It does not keep out the
+    browser FMB is already using: any page she opens can send a request to her
+    own loopback port. Before this was fixed, an HTML form with
+    enctype="text/plain" could shape a valid JSON body and mark a pending action
+    approved, recorded in the audit log under her name.
+    """
+
+    port = 8797
+
+    @classmethod
+    def setUpClass(cls):
+        import threading
+        import time
+        from server import dashboard_server
+        cls.server = dashboard_server
+        threading.Thread(target=dashboard_server.serve,
+                         kwargs={"port": cls.port}, daemon=True).start()
+        time.sleep(0.6)
+
+    def _pending(self):
+        with db.connection() as conn:
+            aid = approval_manager.draft(conn, action_type="publish_post",
+                                         subject="s", payload="never approved by hand")
+            approval_manager.submit(conn, aid)
+        return aid
+
+    def _status(self, aid):
+        with db.connection() as conn:
+            return db.one(conn, "SELECT status FROM approvals WHERE id = ?", (aid,))["status"]
+
+    def _decide(self, aid, headers):
+        import http.client
+        conn = http.client.HTTPConnection("127.0.0.1", self.port)
+        conn.putrequest("POST", "/api/decide", skip_host=True, skip_accept_encoding=True)
+        for key, value in headers.items():
+            conn.putheader(key, value)
+        body = json.dumps({"approval_id": aid, "decision": "approve"}).encode()
+        conn.putheader("Content-Length", str(len(body)))
+        conn.endheaders()
+        conn.send(body)
+        return conn.getresponse().status
+
+    def test_a_form_on_another_site_cannot_approve(self):
+        """The original bypass: enctype='text/plain' forges JSON without a preflight."""
+        aid = self._pending()
+        status = self._decide(aid, {"Host": f"127.0.0.1:{self.port}",
+                                    "Content-Type": "text/plain;charset=UTF-8",
+                                    "Origin": "https://evil.example"})
+        self.assertEqual(status, 403)
+        self.assertEqual(self._status(aid), "pending_review")
+
+    def test_every_form_encoding_is_refused(self):
+        """A form can only send these three. None of them may decide anything."""
+        for ctype in ("text/plain", "application/x-www-form-urlencoded",
+                      "multipart/form-data"):
+            aid = self._pending()
+            self._decide(aid, {"Host": f"127.0.0.1:{self.port}", "Content-Type": ctype})
+            self.assertEqual(self._status(aid), "pending_review",
+                             f"{ctype} was allowed to approve")
+
+    def test_a_foreign_origin_is_refused_even_claiming_json(self):
+        aid = self._pending()
+        status = self._decide(aid, {"Host": f"127.0.0.1:{self.port}",
+                                    "Content-Type": "application/json",
+                                    "Origin": "https://evil.example"})
+        self.assertEqual(status, 403)
+        self.assertEqual(self._status(aid), "pending_review")
+
+    def test_dns_rebinding_is_refused(self):
+        """attacker.com pointed at 127.0.0.1 is same-origin to the browser.
+
+        The Host header is what still gives it away.
+        """
+        aid = self._pending()
+        status = self._decide(aid, {"Host": "evil.example",
+                                    "Content-Type": "application/json"})
+        self.assertEqual(status, 403)
+        self.assertEqual(self._status(aid), "pending_review")
+
+    def test_rebinding_cannot_read_her_data_either(self):
+        import http.client
+        conn = http.client.HTTPConnection("127.0.0.1", self.port)
+        conn.putrequest("GET", "/api/health", skip_host=True, skip_accept_encoding=True)
+        conn.putheader("Host", "evil.example")
+        conn.endheaders()
+        self.assertEqual(conn.getresponse().status, 403)
+
+    def test_the_real_dashboard_still_works(self):
+        """A guard that blocks FMB gets removed, and takes the protection with it."""
+        aid = self._pending()
+        status = self._decide(aid, {"Host": f"127.0.0.1:{self.port}",
+                                    "Content-Type": "application/json",
+                                    "Origin": f"http://127.0.0.1:{self.port}"})
+        self.assertEqual(status, 200)
+        self.assertEqual(self._status(aid), "approved")
+
+    def test_her_own_terminal_still_works(self):
+        """curl sends no Origin. Absent is not the same as foreign."""
+        aid = self._pending()
+        status = self._decide(aid, {"Host": f"localhost:{self.port}",
+                                    "Content-Type": "application/json"})
+        self.assertEqual(status, 200)
+        self.assertEqual(self._status(aid), "approved")
+
+
 class TwoModesAndOnlyTwo(unittest.TestCase):
     """The official API path is supported and gated. Nothing unofficial exists."""
 

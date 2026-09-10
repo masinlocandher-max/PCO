@@ -96,7 +96,42 @@ class Handler(BaseHTTPRequestHandler):
         self._send(status, json.dumps(obj, default=str, indent=2).encode("utf-8"),
                    "application/json; charset=utf-8")
 
+    #: Binding to 127.0.0.1 keeps other machines out. It does not keep out the
+    #: browser FMB is already using: any page she visits can send a request to
+    #: her own loopback port, and the browser attaches no warning to it. Three
+    #: checks, each closing a different route in, and each failing closed.
+    LOOPBACK_HOSTS = {"127.0.0.1", "localhost", "[::1]", "::1"}
+
+    def _local_host(self) -> bool:
+        """The request must be addressed to loopback by name, not just arrive there.
+
+        A DNS rebinding attack points attacker.com at 127.0.0.1 and the browser
+        then treats this dashboard as same-origin — reads included. The give-away
+        is the Host header, which still says attacker.com.
+        """
+        host = (self.headers.get("Host") or "").rsplit(":", 1)[0].strip().lower()
+        return host in self.LOOPBACK_HOSTS
+
+    def _same_site(self) -> bool:
+        """A cross-site Origin is refused outright.
+
+        A page on the open web can POST here; what it cannot do is lie about
+        Origin. Absent is allowed because a same-origin form or a curl from FMB's
+        own terminal sends none.
+        """
+        origin = self.headers.get("Origin")
+        if not origin:
+            return True
+        host = urlparse(origin).hostname
+        return (host or "").lower() in {"127.0.0.1", "localhost", "::1"}
+
+    def _refuse(self, why: str) -> None:
+        self._json(403, {"error": why})
+
     def do_GET(self) -> None:  # noqa: N802 - BaseHTTPRequestHandler contract
+        if not self._local_host():
+            self._refuse("this dashboard answers only to localhost")
+            return
         parsed = urlparse(self.path)
         path = parsed.path
         if path.startswith("/api/"):
@@ -110,6 +145,24 @@ class Handler(BaseHTTPRequestHandler):
         self._serve_file(path)
 
     def do_POST(self) -> None:  # noqa: N802
+        # The only route in this module that changes an approval, and therefore
+        # the only one worth forging. It was reachable from any website: an HTML
+        # form with enctype="text/plain" can shape a valid JSON body, and nothing
+        # here looked at where the request came from. A page FMB happened to open
+        # could mark a pending action approved, under her name, in the audit log.
+        if not self._local_host():
+            self._refuse("this dashboard answers only to localhost")
+            return
+        if not self._same_site():
+            self._refuse("a decision cannot be submitted from another site")
+            return
+        # A form can only send text/plain, urlencoded or multipart. Requiring
+        # JSON means a cross-origin caller must use fetch(), which the browser
+        # preflights — and nothing here answers a preflight.
+        ctype = (self.headers.get("Content-Type") or "").split(";")[0].strip().lower()
+        if ctype != "application/json":
+            self._refuse("a decision must be sent as application/json")
+            return
         parsed = urlparse(self.path)
         if parsed.path != "/api/decide":
             self._json(404, {"error": "no such endpoint"})
