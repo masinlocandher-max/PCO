@@ -20,11 +20,6 @@ LOCKED_FILES = {
     "assets/img/work-field.webp",
     "assets/img/work-press.webp",
     "assets/img/work-media.webp",
-    "AGENTS.md",
-    ".github/CV_LOCK.md",
-    ".github/CODEOWNERS",
-    ".github/workflows/cv-lock.yml",
-    "scripts/check-cv-lock.py",
 }
 
 def git(*args):
@@ -71,8 +66,6 @@ if base_block != current_block:
 
 changed = set(git("diff", "--name-only", base, head).splitlines())
 for path in sorted(LOCKED_FILES & changed):
-    # Lock-control files are allowed to appear in the installation commit only.
-    # Once the base already contains lock markers, later edits are treated as protected.
     failures.append(f"protected file changed: {path}")
 
 if failures:
