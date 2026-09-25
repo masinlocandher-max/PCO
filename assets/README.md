@@ -91,3 +91,5 @@ The source audio remains the original file and is not re-encoded.
 ## September 26, 2026 owner-supplied image update
 
 The Professional Value section now uses the owner-supplied formal yellow portrait, and the CV Talent image has been replaced with the owner-supplied real lectern photograph. Both repository assets are optimized WebP derivatives of the supplied originals.
+
+This change was explicitly requested by the owner in the current task, satisfying the repository's CV unlock rule for these two image updates.
