@@ -16,7 +16,8 @@ Repository images may be optimized WebP derivatives, but no shipped photograph m
 | `79E0C9FA-F08A-42F6-A106-9DB0B58B19AF.png` | `img/service-02.webp` | CV Service |
 | `8617711D-2CA7-4892-BD87-9FD6FA2A7A66.png` | `img/service-03.webp` | CV Service |
 | `BBFE1445-43B6-46E8-914F-4D85F74576E6.png` | `img/service-04.webp` | CV Service |
-| `F2FAB827-A979-4A04-90AB-09EF2FCCC40C.png` | `img/talent-keynote.webp` | CV Talent + Continuing Journey |
+| `1A7891E3-C53E-43B2-BFB4-0B2622EC6930(8).jpeg` | `img/executive-portrait-yellow.webp` | CV Professional value |
+| `F2FAB827-A979-4A04-90AB-09EF2FCCC40C.jpeg` | `img/talent-keynote.webp` | CV Talent |
 | `03D76DA6-CE9B-4F64-823A-137F40E893BF.png` | `img/work-desk.webp` | CV Selected work |
 | `9FC22779-0496-412A-AA94-E0B77629F479.png` | `img/work-field.webp` | CV Selected work |
 | `A1B4F77E-B428-4BE5-815C-357C515D804F.png` | `img/work-press.webp` | CV Selected work |
@@ -85,3 +86,8 @@ the title, the byline, or the wordmark.
 Photography is converted to WebP without cropping or upscaling. CSS controls framing. Web delivery derivatives may be resized below the source resolution to reduce page weight while preserving the original aspect ratio. The Drive originals remain the source of truth.
 
 The source audio remains the original file and is not re-encoded.
+
+
+## September 26, 2026 owner-supplied image update
+
+The Professional Value section now uses the owner-supplied formal yellow portrait, and the CV Talent image has been replaced with the owner-supplied real lectern photograph. Both repository assets are optimized WebP derivatives of the supplied originals.
