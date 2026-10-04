@@ -8,16 +8,16 @@ Repository images may be optimized WebP derivatives, but no shipped photograph m
 
 | Drive original | Repository asset | Use |
 |---|---|---|
-| `C2C1B846-0226-47B7-A29D-C7EF12EBAD35.png` | `img/portrait-hero.webp` | Homepage + CV Presence |
+| `C2C1B846-0226-47B7-A29D-C7EF12EBAD35.png` | `img/portrait-hero.webp` | Homepage chooser + CV Professional profile |
 | `CB024D51-646A-463D-916D-9A3CA44EEDD1.png` | `img/portrait-close.webp` | CV Professional value |
-| `73351DE4-ED4C-4A06-A2AB-E3600B9D735A.png` | `img/talent-stage.webp` | CV Talent portrait candidate |
+| `73351DE4-ED4C-4A06-A2AB-E3600B9D735A.png` | `img/talent-stage.webp` | CV Communication & presence (portrait) |
 | `IMG_8167.jpg` | `img/education-graduation.webp` | CV Education |
 | `64F14DE6-FFF8-4271-B0A5-24CDD435910D.png` | `img/service-01.webp` | CV Service |
 | `79E0C9FA-F08A-42F6-A106-9DB0B58B19AF.png` | `img/service-02.webp` | CV Service |
 | `8617711D-2CA7-4892-BD87-9FD6FA2A7A66.png` | `img/service-03.webp` | CV Service |
 | `BBFE1445-43B6-46E8-914F-4D85F74576E6.png` | `img/service-04.webp` | CV Service |
 | `1A7891E3-C53E-43B2-BFB4-0B2622EC6930(8).jpeg` | `img/executive-portrait-yellow.webp` | CV Professional value |
-| `F2FAB827-A979-4A04-90AB-09EF2FCCC40C.jpeg` | `img/talent-keynote.webp` | CV Talent |
+| `F2FAB827-A979-4A04-90AB-09EF2FCCC40C.jpeg` | `img/talent-keynote.webp` | CV Communication & presence (cinema / lectern) |
 | `03D76DA6-CE9B-4F64-823A-137F40E893BF.png` | `img/work-desk.webp` | CV Selected work |
 | `9FC22779-0496-412A-AA94-E0B77629F479.png` | `img/work-field.webp` | CV Selected work |
 | `A1B4F77E-B428-4BE5-815C-357C515D804F.png` | `img/work-press.webp` | CV Selected work |
@@ -32,7 +32,7 @@ A production audit found that `portrait-hero.webp` and `portrait-close.webp` on 
 
 The current Drive HD masters above remain the canonical source for the next controlled visual refresh. The active production fallback blobs are intentionally known-good derivatives: `f3d2d9f8…` for `portrait-hero.webp`, `913f11da…` for `portrait-close.webp`, and `d8aca7fc…` for `talent-stage.webp`. Before any future replacement reaches production, the generated files must pass the repository asset validation gate. This prevents a corrupt conversion from replacing a working production portrait again.
 
-The Drive file previously documented as `IMG_0455.JPG` was not present in the current HD master folders during this audit, so it is no longer listed as the current close-portrait source. `73351DE4-ED4C-4A06-A2AB-E3600B9D735A.png` is a studio portrait rather than a lectern photograph; it is therefore treated as a future portrait candidate, not blindly substituted for the current Talent-stage image.
+The Drive file previously documented as `IMG_0455.JPG` was not present in the current HD master folders during this audit, so it is no longer listed as the current close-portrait source. `73351DE4-ED4C-4A06-A2AB-E3600B9D735A.png` is a studio portrait rather than a lectern photograph; as of the October 4, 2026 owner-authorized update it is the tall Communication & presence portrait, while `talent-keynote.webp` remains the lectern cinema frame.
 
 ## Book landing photography — resolved 2026-09-07
 
@@ -93,3 +93,12 @@ The source audio remains the original file and is not re-encoded.
 The Professional Value section now uses the owner-supplied formal yellow portrait, and the CV Talent image has been replaced with the owner-supplied real lectern photograph. Both repository assets are optimized WebP derivatives of the supplied originals.
 
 This change was explicitly requested by the owner in the current task, satisfying the repository's CV unlock rule for these two image updates.
+
+## October 4, 2026 owner-authorized CV flow, content and wording update
+
+Francine Marie Bautista explicitly instructed this agent run to fix the CV, with follow-up direction to improve the flow, the content and the word. Authorization covers protected CV copy and image placement inside the `CV_LOCK` block.
+
+Changes in that update:
+- Tighten hero, profile, education, service, presence, work and value copy so each chapter carries one job without repeating the same dilution/handoff thesis.
+- Restore `portrait-hero.webp` for Professional profile and use `talent-stage.webp` for the tall presence portrait beside `talent-keynote.webp` in the cinema frame, ending the duplicated landscape crop.
+- Renumber the consultation calendar to chapter 07 after the continuing-journey section was removed, and drop past September 2026 slots.
