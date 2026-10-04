@@ -96,9 +96,10 @@ This change was explicitly requested by the owner in the current task, satisfyin
 
 ## October 4, 2026 owner-authorized CV flow, content and wording update
 
-Francine Marie Bautista explicitly instructed this agent run to fix the CV, with follow-up direction to improve the flow, the content and the word. Authorization covers protected CV copy and image placement inside the `CV_LOCK` block.
+Francine Marie Bautista explicitly instructed this agent run to fix the CV, with follow-up direction to improve the flow, the content and the word. Authorization covers protected CV copy and image placement inside the `CV_LOCK` block, plus the runtime fuller-CV overlay in `single-page.js` that previously overwrote locked voice.
 
 Changes in that update:
 - Tighten hero, profile, education, service, presence, work and value copy so each chapter carries one job without repeating the same dilution/handoff thesis.
 - Restore `portrait-hero.webp` for Professional profile and use `talent-stage.webp` for the tall presence portrait beside `talent-keynote.webp` in the cinema frame, ending the duplicated landscape crop.
 - Renumber the consultation calendar to chapter 07 after the continuing-journey section was removed, and drop past September 2026 slots.
+- Stop `single-page.js` from overwriting hero/profile identity; keep Consultant & Strategist voice from locked HTML while tightening injected career, expertise, creative, brand and cultural chapters.

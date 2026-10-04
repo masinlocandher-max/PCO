@@ -130,36 +130,21 @@
   window.addEventListener('hashchange',syncViewFromUrl);
   syncViewFromUrl();
 
-  /* ------------------------------------------------------- fuller CV copy */
-  var role=document.querySelector('.hero-role');
-  if(role){
-    role.innerHTML='Strategic Communications Professional &nbsp;·&nbsp; PR &amp; Brand Strategist &nbsp;·&nbsp; Creative Director &nbsp;·&nbsp; Founder';
-  }
-  var intro=document.querySelector('.hero-intro');
-  if(intro){
-    intro.textContent='I build brands, narratives, platforms and public-facing systems across strategic communications, public relations, identity, digital products, culture and education. My work connects positioning, research, creative direction and execution so the final experience is clear, credible, memorable and useful.';
-  }
-
-  var profile=document.querySelector('.presence-copy');
-  if(profile){
-    var ps=profile.querySelectorAll('p');
-    if(ps[0])ps[0].textContent='My practice spans strategic communications, public relations, brand strategy, creative direction, reputation and perception management, editorial systems, digital products, photography, multimedia, training, research and community-facing communication.';
-    if(ps[1])ps[1].textContent='I work across disciplines because public perception is rarely created by one thing. Positioning, visual identity, language, evidence, user experience, media handling and execution all have to reinforce the same argument.';
-    if(ps[2])ps[2].textContent='My professional path has included teaching units in an academic setting, remote executive and career-development work, sales and acquisitions, political public relations, founder-led strategy, creative direction, photography, storytelling and product building.';
-  }
-
+  /* ------------------------------------------------------- fuller CV copy
+     Keep locked HTML for hero/profile voice. Add factual chapters only,
+     with one job each, so flow and wording stay aligned with the CV spine. */
   var educationItems=document.querySelectorAll('#education .timeline li');
   if(educationItems[2]){
     var h3a=educationItems[2].querySelector('h3');
     var pa=educationItems[2].querySelector('p');
-    if(h3a)h3a.textContent='Teaching Units · Northern Zambales College Inc.';
-    if(pa)pa.textContent='Handled teaching units and classroom-based learning. The experience strengthened my ability to explain complex material clearly, structure information and communicate for understanding.';
+    if(h3a)h3a.textContent='Teaching units · Northern Zambales College Inc.';
+    if(pa)pa.textContent='Classroom instruction that sharpened explanation, structure and communication for understanding.';
   }
   if(educationItems[3]){
     var h3b=educationItems[3].querySelector('h3');
     var pb=educationItems[3].querySelector('p');
-    if(h3b)h3b.textContent='Virtual Professional · Freelance';
-    if(pb)pb.textContent='Worked across executive assistance, career-development direction, and sales and acquisitions in remote professional environments.';
+    if(h3b)h3b.textContent='Training & facilitation';
+    if(pb)pb.textContent='BPO training and local-government instruction across adult learning, pacing and practical communication.';
   }
 
   function section(id,label,title,inner){
@@ -172,28 +157,28 @@
 
   var presence=document.getElementById('presence');
   if(presence && presence.parentNode){
-    var career=section('experience','Career experience','A career built across communication, education, remote professional work, sales and public relations.',
+    var career=section('experience','Career experience','The path that trained judgment under real public pressure.',
       '<div class="career-grid">'+
-        '<article class="career-card cv-reveal"><span class="career-year">2019–2021</span><h3>Teaching Units</h3><p class="career-org">Northern Zambales College Inc.</p><p>Handled teaching units and classroom-based learning, strengthening the communication, facilitation and information-structuring skills that now inform strategic and public-facing work.</p></article>'+
-        '<article class="career-card cv-reveal"><span class="career-year">Freelance</span><h3>Virtual Professional</h3><p class="career-org">Executive Assistant · Director of Career Development · Sales &amp; Acquisitions</p><p>Worked remotely across executive support, career-development direction, and sales and acquisitions, combining coordination, communication and commercial execution.</p></article>'+
-        '<article class="career-card cv-reveal"><span class="career-year">Philippines</span><h3>PR Manager to Politicians</h3><p class="career-org">Political Public Relations</p><p>Managed public relations and communications work for politicians in the Philippines, with attention to public messaging, reputation, media-facing communication and perception.</p></article>'+
-        '<article class="career-card cv-reveal"><span class="career-year">Current practice</span><h3>Founder · Creative Director · Communications Strategist</h3><p class="career-org">Independent founder-led work</p><p>Leads brand, PR, communications, digital product, editorial, cultural and creative initiatives from strategy through execution, with a focus on trust, visibility and long-term brand value.</p></article>'+
+        '<article class="career-card cv-reveal"><span class="career-year">2019–2021</span><h3>Teaching Units</h3><p class="career-org">Northern Zambales College Inc.</p><p>Classroom teaching that built facilitation, clarity and the habit of structuring complex material for other people.</p></article>'+
+        '<article class="career-card cv-reveal"><span class="career-year">Freelance</span><h3>Virtual Professional</h3><p class="career-org">Executive Assistant · Career Development · Sales &amp; Acquisitions</p><p>Remote professional work across coordination, career direction and commercial execution.</p></article>'+
+        '<article class="career-card cv-reveal"><span class="career-year">Philippines</span><h3>PR Manager to Politicians</h3><p class="career-org">Political Public Relations</p><p>Public messaging, reputation, media-facing communication and perception under live political scrutiny.</p></article>'+
+        '<article class="career-card cv-reveal"><span class="career-year">Current practice</span><h3>Consultant &amp; Strategist · Founder</h3><p class="career-org">Independent founder-led work</p><p>Brand, PR, communications, product, editorial and creative work led from first argument through public form.</p></article>'+
       '</div>');
     presence.parentNode.insertBefore(career,presence.nextSibling);
   }
 
   var education=document.getElementById('education');
   if(education && education.parentNode){
-    var expertise=section('expertise','Core expertise','A multidisciplinary communications practice, organized around one outcome: make the message work.',
+    var expertise=section('expertise','Core expertise','Eight capabilities. One outcome: make the message work in public.',
       '<div class="expertise-grid">'+
-        '<article class="expertise-card cv-reveal"><span>01</span><h3>Strategic Communications &amp; PR</h3><p>Message architecture, public information, media strategy, stakeholder communication, campaigns and narrative development.</p></article>'+
-        '<article class="expertise-card cv-reveal"><span>02</span><h3>Brand Strategy &amp; Identity</h3><p>Positioning, naming, identity systems, tone of voice, brand architecture, differentiation and customer-facing expression.</p></article>'+
-        '<article class="expertise-card cv-reveal"><span>03</span><h3>Reputation &amp; Perception</h3><p>Trust signals, public perception, issue framing, credibility, reputation systems and consistency across touchpoints.</p></article>'+
-        '<article class="expertise-card cv-reveal"><span>04</span><h3>Creative Direction</h3><p>Campaign concepts, visual storytelling, photography, editorial art direction, content systems and multimedia production.</p></article>'+
-        '<article class="expertise-card cv-reveal"><span>05</span><h3>Digital Products &amp; UX Direction</h3><p>Information architecture, product positioning, user journeys, mobile-first experiences, websites and platform concepts.</p></article>'+
-        '<article class="expertise-card cv-reveal"><span>06</span><h3>Research &amp; Editorial</h3><p>Source comparison, fact verification, cultural research, explanatory writing and evidence-aware publishing.</p></article>'+
-        '<article class="expertise-card cv-reveal"><span>07</span><h3>Training &amp; Facilitation</h3><p>Workshops, teaching, presentations, speaking, hosting and translating complexity into usable instruction.</p></article>'+
-        '<article class="expertise-card cv-reveal"><span>08</span><h3>Photography, Video &amp; Audio</h3><p>Photography, visual direction, storytelling, music production, songwriting, audio concepts and integrated creative production.</p></article>'+
+        '<article class="expertise-card cv-reveal"><span>01</span><h3>Strategic Communications &amp; PR</h3><p>Message architecture, media strategy, stakeholder communication and narrative development.</p></article>'+
+        '<article class="expertise-card cv-reveal"><span>02</span><h3>Brand Strategy &amp; Identity</h3><p>Positioning, naming, identity systems, tone of voice and brand architecture.</p></article>'+
+        '<article class="expertise-card cv-reveal"><span>03</span><h3>Reputation &amp; Perception</h3><p>Trust signals, issue framing, credibility and consistency across touchpoints.</p></article>'+
+        '<article class="expertise-card cv-reveal"><span>04</span><h3>Creative Direction</h3><p>Campaign concepts, visual storytelling, editorial direction and content systems.</p></article>'+
+        '<article class="expertise-card cv-reveal"><span>05</span><h3>Digital Products &amp; UX</h3><p>Information architecture, journeys, mobile-first experiences and platform concepts.</p></article>'+
+        '<article class="expertise-card cv-reveal"><span>06</span><h3>Research &amp; Editorial</h3><p>Source comparison, verification, cultural research and evidence-aware publishing.</p></article>'+
+        '<article class="expertise-card cv-reveal"><span>07</span><h3>Training &amp; Facilitation</h3><p>Workshops, teaching, hosting and turning complexity into usable instruction.</p></article>'+
+        '<article class="expertise-card cv-reveal"><span>08</span><h3>Photography &amp; Audio</h3><p>Visual direction, storytelling, songwriting and integrated creative production.</p></article>'+
       '</div>');
     education.parentNode.insertBefore(expertise,education.nextSibling);
   }
@@ -201,19 +186,19 @@
   var talent=document.getElementById('talent');
   var identity=document.querySelector('.identity');
   if(talent && talent.parentNode){
-    var creative=section('creative-practice','Creative & media practice','The strategy can become a photograph, a stage presentation, a campaign, a soundtrack or a digital experience.',
+    var creative=section('creative-practice','Creative & media practice','Strategy can become an image, a room, a campaign or a soundtrack.',
       '<div class="creative-grid">'+
-        '<div class="creative-copy cv-reveal"><h3>Visual storytelling</h3><p>Photography and creative direction are part of how I think, not a separate decoration layer. I use imagery to shape attention, hierarchy, emotion and public perception.</p></div>'+
-        '<div class="creative-copy cv-reveal"><h3>Music &amp; audio</h3><p>I also work in songwriting and music production. <em>With Love, FMB</em> is an authored music project written and directed under my creative practice and distributed through major streaming platforms.</p></div>'+
-        '<div class="creative-copy cv-reveal"><h3>Speaking, hosting &amp; presentation</h3><p>Teaching, training, hosting and public presentation extend the same discipline: understand the audience, structure the message, control pacing and make the point land.</p></div>'+
+        '<div class="creative-copy cv-reveal"><h3>Visual storytelling</h3><p>Photography and direction shape attention, hierarchy and public perception — not decoration after the fact.</p></div>'+
+        '<div class="creative-copy cv-reveal"><h3>Music &amp; audio</h3><p><em>With Love, FMB</em> is an authored music project written and directed under the same creative practice, released on major streaming platforms.</p></div>'+
+        '<div class="creative-copy cv-reveal"><h3>Speaking &amp; hosting</h3><p>Teaching, training and presentation use the same discipline: know the audience, structure the point, control the pace.</p></div>'+
       '</div>');
     talent.parentNode.insertBefore(creative,identity||talent.nextSibling);
   }
 
   var work=document.getElementById('work');
   if(work && work.parentNode){
-    var initiatives=section('initiatives','Founder-led brand ecosystem','Four brands. Different missions. One strategic point of view.',
-      '<div class="brand-ecosystem-copy cv-reveal"><p>These are not disconnected side projects. Together they show how the same discipline can move across client services, education, media and community infrastructure: define the purpose, build the system, shape the public experience and protect trust.</p></div>'+
+    var initiatives=section('initiatives','Founder-led brand ecosystem','Four brands. Different missions. One point of view.',
+      '<div class="brand-ecosystem-copy cv-reveal"><p>Client services, education, media and community infrastructure — each built to define purpose, shape the public experience and protect trust.</p></div>'+
       '<div class="brand-icon-row cv-reveal" aria-label="Founder-led brands">'+
         '<div class="brand-icon brand-icon-senz"><span class="brand-icon-mark">S</span><small>SENZ</small></div>'+
         '<div class="brand-icon brand-icon-cognita"><span class="brand-icon-mark">C<span class="brand-dot"></span></span><small>COGNITA</small></div>'+
@@ -221,21 +206,21 @@
         '<div class="brand-icon brand-icon-masinloc"><span class="brand-icon-mark">M</span><small>MASINLOC CONNECT</small></div>'+
       '</div>'+
       '<div class="initiative-grid flagship-grid">'+
-        '<article class="initiative-card flagship-card brand-senz cv-reveal"><span>Strategic communications · Founder-led</span><h3>SENZ Strategic Communications &amp; Digital Solutions</h3><p class="brand-summary">A strategic communications and digital solutions practice built to make organizations clearer, sharper and harder to ignore. SENZ connects brand, reputation, communications and digital execution instead of treating them as separate tasks.</p><div class="brand-inside"><strong>Inside SENZ</strong><ul><li>Brand strategy, positioning and identity systems</li><li>Public relations, media strategy and strategic communications</li><li>Reputation, perception and narrative management</li><li>Marketing, social media and content systems</li><li>Websites, digital experiences and product direction</li><li>Analytics, messaging review and communications strategy</li></ul></div></article>'+
-        '<article class="initiative-card flagship-card brand-cognita cv-reveal"><span>AI education · Founder-led</span><h3>Cognita Institute of AI</h3><p class="brand-summary">A private, non-degree AI training initiative designed around practical competence, critical thinking and responsible use. Cognita turns AI learning into a structured journey rather than a collection of disconnected tutorials.</p><div class="brand-inside"><strong>Inside Cognita</strong><ul><li>AI Foundations and essential AI literacy</li><li>Guided 10-week learning pathways</li><li>Self-paced training for independent learners</li><li>Hands-on projects and real-world application</li><li>Assessments, progress tracking and learner support</li><li>Student learning tools, records and completion credentials</li></ul></div></article>'+
-        '<article class="initiative-card flagship-card brand-fmb cv-reveal"><span>Independent media · Founder &amp; editorial direction</span><h3>FMB News · Filipino Media Bulletin</h3><p class="brand-summary">An independent news and information platform built around verified facts, visible sources, meaningful context and clear explanations. Its editorial system is designed to answer what happened, what the context is, why it matters and what to watch next.</p><div class="brand-inside"><strong>Inside FMB</strong><ul><li>Breaking and developing news coverage</li><li>FMB Worldwide for broader public-interest stories</li><li>FMB Explainer for context and understanding</li><li>FMB Daily Brief for concise news summaries</li><li>Fact checks, source maps and evidence-led reporting</li><li>Editorial formats for carousels, newsletters and public information</li></ul></div></article>'+
-        '<article class="initiative-card flagship-card brand-masinloc cv-reveal"><span>Community technology · Founder-led</span><h3>Masinloc Connect</h3><p class="brand-summary">An independent community platform connecting Masinloqueños to information, opportunity, culture and practical digital services. The website serves as the public source of truth while the app is designed as the action layer.</p><div class="brand-inside"><strong>Inside Masinloc Connect</strong><ul><li>Local discovery, tourism and place information</li><li>Sambal Tina dictionary, learning and language preservation</li><li>Marketplace, ordering and connected local-commerce tools</li><li>Jobs and opportunities for Masinloqueños</li><li>Help Desk and access to practical community assistance</li><li>Masinloc history, culture, bulletins and community information</li></ul></div></article>'+
+        '<article class="initiative-card flagship-card brand-senz cv-reveal"><span>Strategic communications · Founder-led</span><h3>SENZ Strategic Communications &amp; Digital Solutions</h3><p class="brand-summary">A practice that joins brand, reputation, communications and digital execution so organizations become clearer and harder to ignore.</p><div class="brand-inside"><strong>Inside SENZ</strong><ul><li>Brand strategy, positioning and identity</li><li>PR, media strategy and strategic communications</li><li>Reputation and narrative management</li><li>Content systems and digital experiences</li><li>Messaging review and communications strategy</li></ul></div></article>'+
+        '<article class="initiative-card flagship-card brand-cognita cv-reveal"><span>AI education · Founder-led</span><h3>Cognita Institute of AI</h3><p class="brand-summary">Private, non-degree AI training built around practical competence, critical thinking and responsible use — a structured journey, not scattered tutorials.</p><div class="brand-inside"><strong>Inside Cognita</strong><ul><li>AI Foundations and literacy</li><li>Guided 10-week pathways</li><li>Self-paced training</li><li>Hands-on projects and application</li><li>Assessment, progress and credentials</li></ul></div></article>'+
+        '<article class="initiative-card flagship-card brand-fmb cv-reveal"><span>Independent media · Founder &amp; editorial direction</span><h3>FMB News · Filipino Media Bulletin</h3><p class="brand-summary">Independent news built on verified facts, visible sources and clear explanation: what happened, what the context is, why it matters, what to watch next.</p><div class="brand-inside"><strong>Inside FMB</strong><ul><li>Breaking and developing coverage</li><li>FMB Worldwide and FMB Explainer</li><li>FMB Daily Brief</li><li>Fact checks and source maps</li><li>Formats for newsletters and public information</li></ul></div></article>'+
+        '<article class="initiative-card flagship-card brand-masinloc cv-reveal"><span>Community technology · Founder-led</span><h3>Masinloc Connect</h3><p class="brand-summary">A community platform connecting Masinloqueños to information, opportunity, culture and practical digital services — website as source of truth, app as action layer.</p><div class="brand-inside"><strong>Inside Masinloc Connect</strong><ul><li>Local discovery and place information</li><li>Sambal Tina learning and preservation</li><li>Marketplace and local-commerce tools</li><li>Jobs, Help Desk and community assistance</li><li>History, culture and local bulletins</li></ul></div></article>'+
       '</div>'+
-      '<div class="supporting-initiatives cv-reveal"><div><span>Related cultural product</span><h3>MANAMBALI</h3><p>A game-based Sambal Tina language-learning project using word activities, progression and cultural context to make preservation active and repeatable.</p></div><div><span>Research &amp; publishing</span><h3>MABAYANI</h3><p>A local-history and cultural research project built around evidence, attribution, visible uncertainty and a research trail that remains open to correction.</p></div></div>');
+      '<div class="supporting-initiatives cv-reveal"><div><span>Related cultural product</span><h3>MANAMBALI</h3><p>Game-based Sambal Tina learning through word play, progression and cultural context.</p></div><div><span>Research &amp; publishing</span><h3>MABAYANI</h3><p>Local-history research with evidence, attribution, visible uncertainty and an open research trail.</p></div></div>');
     work.parentNode.insertBefore(initiatives,work);
   }
 
   var value=document.getElementById('value');
   if(value && value.parentNode){
-    var cultural=section('cultural-work','Culture, community & public value','Creative work becomes stronger when it understands the people, place and memory it represents.',
+    var cultural=section('cultural-work','Culture, community & public value','Heritage should be usable, visible and honestly represented.',
       '<div class="cultural-grid">'+
-        '<div class="cultural-lead cv-reveal"><p>I work repeatedly with local identity, Tina Sambal language preservation, Philippine cultural storytelling, tourism and place branding, community development and public-facing information.</p><p>The goal is not to turn culture into decoration. It is to make heritage understandable, usable, visible and responsibly represented in contemporary media and digital products.</p></div>'+
-        '<div class="cultural-points cv-reveal"><div><strong>Language preservation</strong><span>Sambal vocabulary, learning systems and digital experiences.</span></div><div><strong>Place &amp; tourism storytelling</strong><span>Identity, destination perception and community representation.</span></div><div><strong>Community communication</strong><span>Practical information, outreach, service and public understanding.</span></div><div><strong>Evidence-aware history</strong><span>Clear separation of documentation, memory, interpretation and uncertainty.</span></div></div>'+
+        '<div class="cultural-lead cv-reveal"><p>Local identity, Tina Sambal preservation, place branding and community information are recurring subjects in the work.</p><p>Culture is not decoration. It becomes media and product that people can understand, trust and use.</p></div>'+
+        '<div class="cultural-points cv-reveal"><div><strong>Language preservation</strong><span>Sambal vocabulary, learning systems and digital experience.</span></div><div><strong>Place &amp; tourism</strong><span>Destination perception and community representation.</span></div><div><strong>Community communication</strong><span>Practical information, outreach and public understanding.</span></div><div><strong>Evidence-aware history</strong><span>Documentation, memory, interpretation and uncertainty kept distinct.</span></div></div>'+
       '</div>');
     value.parentNode.insertBefore(cultural,value);
   }
