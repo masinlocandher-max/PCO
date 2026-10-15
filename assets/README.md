@@ -103,3 +103,14 @@ Changes in that update:
 - Restore `portrait-hero.webp` for Professional profile and use `talent-stage.webp` for the tall presence portrait beside `talent-keynote.webp` in the cinema frame, ending the duplicated landscape crop.
 - Renumber the consultation calendar to chapter 07 after the continuing-journey section was removed, and drop past September 2026 slots.
 - Stop `single-page.js` from overwriting hero/profile identity; keep Consultant & Strategist voice from locked HTML while tightening injected career, expertise, creative, brand and cultural chapters.
+
+## October 16, 2026 owner-requested brand repair
+
+The CV and landing use original assets copied from the respective brand repositories, not generated initials.
+
+- `brands/senz.png`: Senz, `assets/senz-original-mark.png`, original blue S used by senzpr.com.
+- `brands/cognita.webp`: Cognita2.0, `public/images/cognita-institute-logo.webp`. The alternative `brand/logos/cognita-wordmark.webp` failed full image decoding and was not shipped.
+- `brands/masinloc.webp`: Masinloc-Website, `assets/masinloc-logo.webp`.
+- FMB News uses its current text masthead, FMB NEWS. / Filipino Media Bulletin.
+
+Owner instruction explicitly requested fixing the incorrect CV logos and landing page. Protected CV HTML and photography remain unchanged; the corrected logos are in the existing runtime brand section.

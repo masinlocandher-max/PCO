@@ -23,7 +23,7 @@
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="app.css">
   <link rel="stylesheet" href="single-page.css">
-  <link rel="stylesheet" href="route-book.css">
+  <link rel="stylesheet" href="route-book.css?v=20261016-brand-fix">
   <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Person","@id":"https://francinemariebautista.com/#person","name":"Francine Marie Bautista","alternateName":"FMB","url":"https://francinemariebautista.com/","email":"mailto:withlovefmb@gmail.com","jobTitle":"Business, Brand & Strategic Communications Consultant & Strategist","image":"https://francinemariebautista.com/assets/img/portrait-hero.webp","sameAs":["https://ph.linkedin.com/in/francine-marie-bautista-23437a3b5","https://www.senzpr.com/about.html"]},{"@type":"ProfessionalService","@id":"https://francinemariebautista.com/#practice","name":"Francine Marie Bautista Consulting","url":"https://francinemariebautista.com/","provider":{"@id":"https://francinemariebautista.com/#person"},"areaServed":{"@type":"Country","name":"Philippines"},"serviceType":["Brand strategy","Public relations","Strategic communications","Reputation and perception","Creative direction"]},{"@type":"WebSite","@id":"https://francinemariebautista.com/#website","url":"https://francinemariebautista.com/","name":"Francine Marie Bautista","publisher":{"@id":"https://francinemariebautista.com/#person"}}]}</script>
   <noscript><style>#soundGate{display:none!important}body{overflow:auto!important}[data-pf-hero-in],[data-pf-reveal]{opacity:1!important;transform:none!important}[data-mask],[data-mask-text],[data-line]{clip-path:none!important}[data-fade],[data-step]{opacity:1!important;transform:none!important}.identity,.journey{height:auto!important}.identity-sticky,.journey-sticky{position:static!important;height:auto!important}.id-word,.id-name{position:static!important;opacity:1!important;transform:none!important}.journey-frame{position:static!important}.journey-frame img{width:100%!important;height:auto!important}.journey-copy{opacity:1!important}</style></noscript>
 </head>
@@ -35,12 +35,14 @@
     <div class="pf-progress" aria-hidden="true"><span id="pfProgress"></span></div>
     <div class="home-shell pf-shell" id="portfolio">
       <header class="pf-nav">
-        <a class="pf-brand" href="/" aria-label="Francine Marie Bautista portfolio">FMB</a>
+        <a class="pf-brand" href="#portfolio" aria-label="Francine Marie Bautista portfolio"><img src="assets/img/wordmark.webp" alt="Francine Marie Bautista" width="220" height="70"></a>
         <nav aria-label="Portfolio">
-          <a href="#work">Work</a>
-          <a href="#practice">Practice</a>
+          <a href="#selected-work">Work</a>
+          <a href="#brands">Brands</a>
+          <a href="/book/">Book</a>
+          <a href="/news/">News</a>
           <a href="#about">About</a>
-          <a href="#consult">Consult</a>
+          <a href="#consult">Contact</a>
           <button class="pf-nav-cv" id="routeCvNav" type="button">Full CV</button>
         </nav>
       </header>
@@ -53,19 +55,30 @@
         <div class="pf-hero-copy">
           <p class="pf-kicker" data-pf-hero-in>Business · Brand · Strategic Communications</p>
           <h1 class="pf-name" id="routeTitle" data-pf-hero-in>Francine<br>Marie Bautista</h1>
-          <p class="pf-lead" data-pf-hero-in>I help leaders and organizations become clearly understood — in positioning, reputation, and the public form that carries the work.</p>
+          <p class="pf-lead" data-pf-hero-in>I help people, brands and organizations find their position, tell their story, and turn it into work people can see, understand and trust.</p>
           <div class="pf-hero-cta" data-pf-hero-in>
-            <a class="pf-btn pf-btn-primary" href="#consult">Request a consultation</a>
-            <a class="pf-btn pf-btn-ghost" href="#work">View selected work</a>
+            <a class="pf-btn pf-btn-primary" href="#consult">Work with Francine</a>
+            <a class="pf-btn pf-btn-ghost" href="#selected-work">View selected work</a>
           </div>
           <p class="pf-scroll-cue" data-pf-hero-in aria-hidden="true"><i></i>Scroll</p>
         </div>
       </section>
 
-      <section class="pf-work" id="work" aria-label="Selected work">
+<section class="pf-section pf-brands" id="brands" aria-labelledby="brandsTitle">
+<p class="pf-section-label"><span>01</span> Founder-led brands</p>
+<h2 id="brandsTitle">Different missions.<br>A shared purpose.</h2>
+<p class="pf-section-lead">Helping people and ideas become more visible, useful and understood.</p>
+<div class="brand-directory">
+<a href="https://www.senzpr.com/" class="brand-link"><div class="brand-art"><img src="assets/brands/senz.png" alt="SENZ" width="282" height="360"></div><h3>SENZ</h3><p>Strategic communications, branding and digital solutions.</p><span>Explore SENZ ↗</span></a>
+<a href="https://www.thecognitainstitute.com/" class="brand-link"><div class="brand-art"><img src="assets/brands/cognita.webp" alt="Cognita Institute" width="600" height="202"></div><h3>Cognita Institute</h3><p>AI literacy, practical learning and demonstrated competence.</p><span>Explore Cognita ↗</span></a>
+<a href="/news/" class="brand-link"><div class="brand-art news-wordmark"><strong>FMB NEWS.</strong><small>Filipino Media Bulletin</small></div><h3>FMB News</h3><p>Reporting with visible sources, context and clear explanation.</p><span>Read the news ↗</span></a>
+<a href="https://www.masinloc-zambales.com/" class="brand-link"><div class="brand-art"><img src="assets/brands/masinloc.webp" alt="Masinloc Zambales" width="320" height="78"></div><h3>Masinloc Connect</h3><p>Local information, language, culture and community technology.</p><span>Discover Masinloc ↗</span></a>
+</div></section>
+
+      <section class="pf-work" id="selected-work" aria-label="Selected work">
         <div class="pf-work-head" data-pf-reveal>
-          <p class="pf-section-label"><span>01</span> Selected work</p>
-          <h2>Projects that had to hold in public.</h2>
+          <p class="pf-section-label"><span>02</span> Selected work</p>
+          <h2>Ideas, made public.</h2>
         </div>
 
         <article class="pf-case" data-pf-case>
@@ -150,9 +163,9 @@
       </section>
 
       <section class="pf-section pf-practice" id="practice" aria-labelledby="practiceTitle">
-        <p class="pf-section-label" data-pf-reveal><span>02</span> Practice</p>
-        <h2 id="practiceTitle" data-pf-reveal>One judgment across the whole brief.</h2>
-        <p class="pf-section-lead" data-pf-reveal>Capabilities stay under one point of view so positioning, language, evidence and experience do not drift apart.</p>
+        <p class="pf-section-label" data-pf-reveal><span>03</span> Practice</p>
+        <h2 id="practiceTitle" data-pf-reveal>From the first decision to the final detail.</h2>
+        <p class="pf-section-lead" data-pf-reveal>Strategy, communications and creative direction, connected from the start.</p>
         <ol class="pf-skills" data-pf-reveal>
           <li><strong>Brand strategy &amp; positioning</strong><span>Audience, category, differentiation and the position worth protecting.</span></li>
           <li><strong>PR &amp; strategic communications</strong><span>Message architecture, media-facing language and stakeholder narrative.</span></li>
@@ -169,19 +182,19 @@
             <img src="assets/img/executive-portrait-yellow.webp" alt="Formal portrait of Francine Marie Bautista" width="800" height="1000" loading="lazy">
           </figure>
           <div class="pf-about-copy" data-pf-reveal>
-            <p class="pf-section-label"><span>03</span> About</p>
+            <p class="pf-section-label"><span>04</span> About</p>
             <h2 id="aboutTitle">Built through study, teaching, political PR and founder-led practice.</h2>
             <p>I work both behind the system and in front of the room: researching, writing, directing, presenting and testing the result against the audience it must move.</p>
-            <p>For the continuous professional record — education, service, capabilities and career chapters — open the full CV experience.</p>
+            <p>Explore the full professional record, including education, experience, community service and creative practice.</p>
             <button class="pf-btn pf-btn-ghost" id="routeCv" type="button">Open the full CV</button>
           </div>
         </div>
       </section>
 
       <section class="pf-section pf-consult" id="consult" aria-labelledby="consultTitle">
-        <p class="pf-section-label" data-pf-reveal><span>04</span> Private consultation</p>
+        <p class="pf-section-label" data-pf-reveal><span>05</span> Work with Francine</p>
         <h2 id="consultTitle" data-pf-reveal>Ready to discuss the work?</h2>
-        <p class="pf-section-lead" data-pf-reveal>Limited windows in Bonifacio Global City, Taguig. Requests are reviewed personally — not auto-confirmed.</p>
+        <p class="pf-section-lead" data-pf-reveal>Engage Francine directly for consulting, creative direction, speaking or training. For a brand, website or communications project, work with SENZ. Tell us the goal and the right route starts there.</p>
         <div class="pf-consult-panel" data-pf-reveal>
           <div>
             <strong>Bonifacio Global City, Taguig</strong>
@@ -189,7 +202,8 @@
           </div>
           <a class="pf-btn pf-btn-primary" href="mailto:withlovefmb@gmail.com?subject=Consultation%20request%20%E2%80%94%20Francine%20Marie%20Bautista">Email withlovefmb@gmail.com</a>
         </div>
-        <div class="pf-slots" aria-label="Available consultation windows" data-pf-reveal>
+        <p class="pf-section-lead">Prefer a project team? <a href="https://www.senzpr.com/">Explore SENZ services</a>. Building your own digital solutions business? <a href="https://partnership.senzpr.com/">Explore the SENZ Partner Program</a>.</p><p class="pf-section-lead">The windows below are published request times, not a live availability calendar. Saving a Google Calendar event does not confirm a booking. Email your preferred time for confirmation.</p>
+        <div class="pf-slots" aria-label="Published consultation request windows" data-pf-reveal>
           <a class="pf-slot" href="https://calendar.google.com/calendar/render?action=TEMPLATE&amp;text=Private+consultation+request+%E2%80%94+Francine+Marie+Bautista&amp;dates=20261027T020000Z%2F20261027T030000Z&amp;ctz=Asia%2FManila&amp;details=Requested+through+francinemariebautista.com.+This+is+a+consultation+request%2C+not+an+automatic+confirmation.+Please+wait+for+confirmation+from+withlovefmb%40gmail.com.&amp;location=Bonifacio+Global+City%2C+Taguig&amp;add=withlovefmb%40gmail.com" target="_blank" rel="noopener"><b>27 Oct</b><span><strong>Tue · 10:00–11:00 AM</strong><small>Request</small></span></a>
           <a class="pf-slot" href="https://calendar.google.com/calendar/render?action=TEMPLATE&amp;text=Private+consultation+request+%E2%80%94+Francine+Marie+Bautista&amp;dates=20261112T070000Z%2F20261112T080000Z&amp;ctz=Asia%2FManila&amp;details=Requested+through+francinemariebautista.com.+This+is+a+consultation+request%2C+not+an+automatic+confirmation.+Please+wait+for+confirmation+from+withlovefmb%40gmail.com.&amp;location=Bonifacio+Global+City%2C+Taguig&amp;add=withlovefmb%40gmail.com" target="_blank" rel="noopener"><b>12 Nov</b><span><strong>Thu · 3:00–4:00 PM</strong><small>Request</small></span></a>
           <a class="pf-slot" href="https://calendar.google.com/calendar/render?action=TEMPLATE&amp;text=Private+consultation+request+%E2%80%94+Francine+Marie+Bautista&amp;dates=20261126T020000Z%2F20261126T030000Z&amp;ctz=Asia%2FManila&amp;details=Requested+through+francinemariebautista.com.+This+is+a+consultation+request%2C+not+an+automatic+confirmation.+Please+wait+for+confirmation+from+withlovefmb%40gmail.com.&amp;location=Bonifacio+Global+City%2C+Taguig&amp;add=withlovefmb%40gmail.com" target="_blank" rel="noopener"><b>26 Nov</b><span><strong>Thu · 10:00–11:00 AM</strong><small>Request</small></span></a>
@@ -236,7 +250,7 @@
   <audio id="score" preload="none" loop src="assets/audio/portfolio-score.mp3"></audio>
 
   <header class="topbar" id="top">
-    <a class="mark" href="#top" aria-label="Francine Marie Bautista">FMB</a>
+    <a class="mark" href="#portfolio" aria-label="Back to portfolio">FMB</a>
     <nav aria-label="CV chapters">
       <a href="#experience">Experience</a>
       <a href="#education">Education</a>
@@ -385,7 +399,7 @@
   <div class="viewer" id="viewer" aria-hidden="true" role="dialog" aria-label="Image viewer"><button class="viewer-close" id="viewerClose" type="button">Done</button><div class="viewer-stage"><img id="viewerImage" alt=""><p id="viewerCaption"></p></div></div>
 
   <script src="app.js"></script>
-  <script src="single-page.js"></script>
-  <script src="assets/js/portfolio-scroll.js" defer></script>
+  <script src="single-page.js?v=20261016-brand-fix"></script>
+  <script src="assets/js/portfolio-scroll.js?v=20261016-brand-fix" defer></script>
 </body>
 </html>

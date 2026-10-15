@@ -30,7 +30,7 @@
     }
 
     // Active nav section
-    var ids = ['work', 'practice', 'about', 'consult'];
+    var ids = ['brands', 'selected-work', 'practice', 'about', 'consult'];
     var active = '';
     for (var i = 0; i < ids.length; i++) {
       var el = document.getElementById(ids[i]);

@@ -13,7 +13,8 @@
   var KEY='fmb-sound-preference';
   var CV_HASH='#cv';
   var HOME_HASHES={
-    '#work':true,
+    '#selected-work':true,
+    '#brands':true,
     '#practice':true,
     '#about':true,
     '#consult':true,
@@ -61,6 +62,8 @@
   }
   function showHome(opts){
     body.classList.add('route-locked');
+    if(audio)audio.pause();
+    paint(false);
     if(sound){clearClose(sound);sound.hidden=true;sound.classList.remove('is-closing');}
     open(route);
     if(opts&&opts.scrollHash){
@@ -93,25 +96,13 @@
     if(window.location.hash!==CV_HASH){
       history.pushState({fmbView:'cv'},'',CV_HASH);
     }
-    var pref=storedSound();
-    if(pref==='on'){
-      playFromCvGesture();
-      finish();
-      return;
-    }
-    if(pref==='off'){
-      if(audio)audio.pause();
-      paint(false);
-      finish();
-      return;
-    }
-    close(route,260);
-    window.setTimeout(function(){
-      if(window.location.hash!==CV_HASH)return;
-      open(sound);
-      if(withSound)withSound.focus();
-    },180);
+    if(audio)audio.pause();
+    paint(false);
+    revealCv();
+    var title=document.getElementById('heroTitle');
+    if(title){title.setAttribute('tabindex','-1');title.focus({preventScroll:true});}
   }
+
   function syncViewFromUrl(){
     var hash=window.location.hash||'';
     if(hash===CV_HASH){
@@ -122,6 +113,14 @@
       showHome({scrollHash:hash});
       return;
     }
+    var target=/^#[a-zA-Z][\w-]*$/.test(hash)?document.getElementById(hash.slice(1)):null;
+    var cvTarget=target && target.closest('main')?target:null;
+    if(cvTarget){
+      revealCv();
+      requestAnimationFrame(function(){cvTarget.scrollIntoView({block:'start'});});
+      return;
+    }
+    if(hash==='#top'){revealCv();return;}
     showHome();
   }
 
@@ -155,7 +154,6 @@
   }
   window.addEventListener('popstate',syncViewFromUrl);
   window.addEventListener('hashchange',syncViewFromUrl);
-  syncViewFromUrl();
 
   /* ------------------------------------------------------- fuller CV copy
      Keep locked HTML for hero/profile voice. Add factual chapters only,
@@ -164,7 +162,7 @@
   if(educationItems[2]){
     var h3a=educationItems[2].querySelector('h3');
     var pa=educationItems[2].querySelector('p');
-    if(h3a)h3a.textContent='Teaching units · Northern Zambales College Inc.';
+    if(h3a)h3a.textContent='College instructor · Northern Zambales College Inc.';
     if(pa)pa.textContent='Classroom instruction that sharpened explanation, structure and communication for understanding.';
   }
   if(educationItems[3]){
@@ -186,7 +184,7 @@
   if(presence && presence.parentNode){
     var career=section('experience','Career experience','The path that trained judgment under real public pressure.',
       '<div class="career-grid">'+
-        '<article class="career-card cv-reveal"><span class="career-year">2019–2021</span><h3>Teaching Units</h3><p class="career-org">Northern Zambales College Inc.</p><p>Classroom teaching that built facilitation, clarity and the habit of structuring complex material for other people.</p></article>'+
+        '<article class="career-card cv-reveal"><span class="career-year">2019–2021</span><h3>College Instructor</h3><p class="career-org">Northern Zambales College Inc.</p><p>Classroom teaching that built facilitation, clarity and the habit of structuring complex material for other people.</p></article>'+
         '<article class="career-card cv-reveal"><span class="career-year">Freelance</span><h3>Virtual Professional</h3><p class="career-org">Executive Assistant · Career Development · Sales &amp; Acquisitions</p><p>Remote professional work across coordination, career direction and commercial execution.</p></article>'+
         '<article class="career-card cv-reveal"><span class="career-year">Philippines</span><h3>PR Manager to Politicians</h3><p class="career-org">Political Public Relations</p><p>Public messaging, reputation, media-facing communication and perception under live political scrutiny.</p></article>'+
         '<article class="career-card cv-reveal"><span class="career-year">Current practice</span><h3>Consultant &amp; Strategist · Founder</h3><p class="career-org">Independent founder-led work</p><p>Brand, PR, communications, product, editorial and creative work led from first argument through public form.</p></article>'+
@@ -222,15 +220,15 @@
     talent.parentNode.insertBefore(creative,identity||talent.nextSibling);
   }
 
-  var work=document.getElementById('work');
+  var work=document.querySelector('main #work');
   if(work && work.parentNode){
     var initiatives=section('initiatives','Founder-led brand ecosystem','Four brands. Different missions. One point of view.',
       '<div class="brand-ecosystem-copy cv-reveal"><p>Client services, education, media and community infrastructure — each built to define purpose, shape the public experience and protect trust.</p></div>'+
       '<div class="brand-icon-row cv-reveal" aria-label="Founder-led brands">'+
-        '<div class="brand-icon brand-icon-senz"><span class="brand-icon-mark">S</span><small>SENZ</small></div>'+
-        '<div class="brand-icon brand-icon-cognita"><span class="brand-icon-mark">C<span class="brand-dot"></span></span><small>COGNITA</small></div>'+
-        '<div class="brand-icon brand-icon-fmb"><span class="brand-icon-mark">FMB</span><small>FILIPINO MEDIA BULLETIN</small></div>'+
-        '<div class="brand-icon brand-icon-masinloc"><span class="brand-icon-mark">M</span><small>MASINLOC CONNECT</small></div>'+
+        '<a class="brand-icon verified-brand" href="https://www.senzpr.com/"><img src="assets/brands/senz.png" alt="SENZ" width="282" height="360"></a>'+
+        '<a class="brand-icon verified-brand" href="https://www.thecognitainstitute.com/"><img src="assets/brands/cognita.webp" alt="Cognita Institute" width="600" height="202"></a>'+
+        '<a class="brand-icon verified-brand news-wordmark" href="/news/"><strong>FMB NEWS.</strong><small>Filipino Media Bulletin</small></a>'+
+        '<a class="brand-icon verified-brand" href="https://www.masinloc-zambales.com/"><img src="assets/brands/masinloc.webp" alt="Masinloc Zambales" width="320" height="78"></a>'+
       '</div>'+
       '<div class="initiative-grid flagship-grid">'+
         '<article class="initiative-card flagship-card brand-senz cv-reveal"><span>Strategic communications · Founder-led</span><h3>SENZ Strategic Communications &amp; Digital Solutions</h3><p class="brand-summary">A practice that joins brand, reputation, communications and digital execution so organizations become clearer and harder to ignore.</p><div class="brand-inside"><strong>Inside SENZ</strong><ul><li>Brand strategy, positioning and identity</li><li>PR, media strategy and strategic communications</li><li>Reputation and narrative management</li><li>Content systems and digital experiences</li><li>Messaging review and communications strategy</li></ul></div></article>'+
@@ -251,6 +249,26 @@
       '</div>');
     value.parentNode.insertBefore(cultural,value);
   }
+
+  var brandDestinations={senz:'https://www.senzpr.com/',cognita:'https://www.thecognitainstitute.com/',fmb:'/news/',masinloc:'https://www.masinloc-zambales.com/'};
+  Object.keys(brandDestinations).forEach(function(key){
+    var card=document.querySelector('.flagship-card.brand-'+key);
+    if(card){var link=document.createElement('a');link.href=brandDestinations[key];link.className='pf-text-link';link.textContent='Visit website ↗';card.appendChild(link);}
+  });
+  function expireSlots(){
+    document.querySelectorAll('.pf-slot,.calendar-slot').forEach(function(slot){
+      var dates=new URL(slot.href).searchParams.get('dates');
+      var start=dates&&dates.split('/')[0];
+      if(!start || !/^\d{8}T\d{6}Z$/.test(start))return;
+      var iso=start.replace(/^(\d{4})(\d{2})(\d{2})T(\d{2})(\d{2})(\d{2})Z$/,'$1-$2-$3T$4:$5:$6Z');
+      slot.hidden=Date.parse(iso)<=Date.now();
+    });
+    document.querySelectorAll('.calendar-month').forEach(function(month){month.hidden=!month.querySelector('.calendar-slot:not([hidden])');});
+  }
+  expireSlots();
+  window.addEventListener('pageshow',expireSlots);
+  document.addEventListener('visibilitychange',function(){if(!document.hidden)expireSlots();});
+  syncViewFromUrl();
 
   /* Renumber visible CV chapters after the fuller sections are inserted. */
   var chapterNumbers=document.querySelectorAll('main .chapter .chapter-rule .ch-num');
