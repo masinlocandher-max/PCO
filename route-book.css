@@ -218,25 +218,33 @@ html.exp-live .home-hero-scrim{
 }
 .home-name{
   margin:0;
-  max-width:14ch;
+  max-width:min(100%,18ch);
   color:#fff;
   font-family:var(--serif);
   font-weight:500;
-  font-size:clamp(52px,8.2vw,104px);
-  line-height:.92;
+  font-size:clamp(48px,7.6vw,96px);
+  line-height:.94;
   letter-spacing:-.05em;
   text-shadow:0 10px 48px rgba(0,0,0,.45);
   transform-style:preserve-3d;
   will-change:transform;
 }
-.home-name .exp-line{display:inline-block}
+.home-name .exp-line{
+  display:block;
+  white-space:nowrap;
+}
 .home-name .exp-ch{
   display:inline-block;
   opacity:0;
-  transform:translate3d(0,0.85em,0) rotateX(-28deg);
+  transform:translate3d(0,0.7em,0);
   transform-origin:50% 100%;
-  animation:expChar .9s var(--ease) forwards;
-  animation-delay:calc(0.2s + var(--i) * 0.018s);
+  animation:expChar .85s var(--ease) forwards;
+  animation-delay:calc(0.15s + var(--i) * 0.016s);
+}
+html.exp-entered .home-name .exp-ch{
+  opacity:1;
+  transform:none;
+  animation:none;
 }
 @keyframes expChar{
   to{opacity:1;transform:none}

@@ -371,5 +371,5 @@
   document.documentElement.classList.add('exp-booting');
   window.setTimeout(function () {
     document.documentElement.classList.add('exp-entered');
-  }, 80);
+  }, 1600);
 })();
