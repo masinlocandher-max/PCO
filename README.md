@@ -12,10 +12,13 @@ This repository (`masinlocandher-max/PCO`) is the canonical source for the root 
 
 ## Current experiences
 
-- `/` — three-choice entry into the professional CV, FMB News, or the book storefront.
+- `/` — landing portfolio: brand hero with consultation CTAs, then scroll-driven selected work, practice, about, and booking.
+- `/#cv` — one-page executive CV experience (also reachable from “Full CV”).
 - `/cv.html` — compatibility entry that routes into the main one-page CV experience.
 - `/book/` — storefront for *The Right Way to Live*.
 - `/book/reader.html` — protected preview reader with a server-side entitlement integration point for future verified purchase access.
+- `/profile/` — canonical identity / entity page for search and knowledge systems.
+- `/brand-strategy-pr/` — services SEO page for brand strategy and public relations.
 
 ## Asset policy
 
