@@ -435,7 +435,7 @@
   }
   function runIntro() {
     document.documentElement.classList.add('exp-booting');
-    if (!introEl || reduce || coarse) {
+    if (!introEl || reduce || coarse || window.innerWidth < 760) {
       // Mobile / reduced-motion: skip the veil so the portrait lands immediately
       finishIntro();
       return;
