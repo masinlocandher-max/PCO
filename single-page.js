@@ -1,10 +1,9 @@
-/* Three destinations -> optional sound choice -> one-page executive CV. */
+/* Professional home -> optional sound choice -> one-page executive CV. */
 (function(){
   'use strict';
 
   var body=document.body;
   var route=document.getElementById('routeGate');
-  var cv=document.getElementById('routeCv');
   var sound=document.getElementById('soundGate');
   var withSound=document.getElementById('gateSound');
   var silent=document.getElementById('gateSilent');
@@ -13,6 +12,13 @@
   var soundLabel=document.getElementById('soundLabel');
   var KEY='fmb-sound-preference';
   var CV_HASH='#cv';
+  var HOME_HASHES={
+    '#services':true,
+    '#engagements':true,
+    '#practice':true,
+    '#inquire':true,
+    '#home-main':true
+  };
 
   function paint(on){
     if(!soundBtn)return;
@@ -46,11 +52,22 @@
   function scrollTopNow(){
     window.requestAnimationFrame(function(){window.scrollTo(0,0);});
   }
-  function showChooser(){
+  function scrollHomeTarget(hash){
+    if(!hash||!HOME_HASHES[hash])return;
+    window.requestAnimationFrame(function(){
+      var el=document.getElementById(hash.slice(1));
+      if(el)el.scrollIntoView({block:'start',behavior:'smooth'});
+    });
+  }
+  function showHome(opts){
     body.classList.add('route-locked');
     if(sound){clearClose(sound);sound.hidden=true;sound.classList.remove('is-closing');}
     open(route);
-    scrollTopNow();
+    if(opts&&opts.scrollHash){
+      scrollHomeTarget(opts.scrollHash);
+    }else if(!(opts&&opts.keepScroll)){
+      scrollTopNow();
+    }
   }
   function revealCv(){
     if(route){clearClose(route);route.hidden=true;route.classList.remove('is-closing');}
@@ -96,19 +113,29 @@
     },180);
   }
   function syncViewFromUrl(){
-    if(window.location.hash===CV_HASH){
+    var hash=window.location.hash||'';
+    if(hash===CV_HASH){
       revealCv();
-    }else{
-      showChooser();
+      return;
     }
+    if(HOME_HASHES[hash]){
+      showHome({scrollHash:hash});
+      return;
+    }
+    showHome();
   }
 
-  if(cv){
-    cv.addEventListener('click',function(e){
+  function bindCvEntry(el){
+    if(!el)return;
+    el.addEventListener('click',function(e){
       if(e)e.preventDefault();
       enterCvFromChoice();
     });
   }
+  bindCvEntry(document.getElementById('routeCv'));
+  bindCvEntry(document.getElementById('routeCvNav'));
+  bindCvEntry(document.getElementById('routeCvSecondary'));
+
   if(withSound){
     withSound.addEventListener('click',function(){
       try{localStorage.setItem(KEY,'on');}catch(e){}
