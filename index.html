@@ -5,10 +5,10 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#08060b">
   <meta name="robots" content="index,follow">
-  <meta name="description" content="Francine Marie Bautista — immersive professional home for Business, Brand &amp; Strategic Communications consulting. Book a private consultation in BGC.">
+  <meta name="description" content="Francine Marie Bautista — scroll-driven portfolio for Business, Brand &amp; Strategic Communications. Selected work, practice, and private consultations in BGC.">
   <link rel="canonical" href="https://francinemariebautista.com/">
-  <meta property="og:title" content="Francine Marie Bautista | Consultant &amp; Strategist">
-  <meta property="og:description" content="Hire Francine Marie Bautista for brand strategy, public relations, reputation and strategic communications. Private consultations in BGC, by appointment.">
+  <meta property="og:title" content="Francine Marie Bautista | Portfolio">
+  <meta property="og:description" content="Scroll-driven portfolio — brand strategy, public relations, reputation and strategic communications. Selected work and private consultations.">
   <meta property="og:url" content="https://francinemariebautista.com/">
   <meta property="og:type" content="website">
   <meta property="og:image" content="https://francinemariebautista.com/assets/img/fmb-share-card.jpg">
@@ -16,10 +16,10 @@
   <meta property="og:image:height" content="630">
   <meta property="og:image:alt" content="Francine Marie Bautista — Business, Brand &amp; Strategic Communications Consultant &amp; Strategist.">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Francine Marie Bautista | Consultant &amp; Strategist">
-  <meta name="twitter:description" content="Hire Francine Marie Bautista for brand strategy, public relations, reputation and strategic communications.">
+  <meta name="twitter:title" content="Francine Marie Bautista | Portfolio">
+  <meta name="twitter:description" content="Scroll-driven portfolio — brand strategy, public relations, reputation and strategic communications.">
   <meta name="twitter:image" content="https://francinemariebautista.com/assets/img/fmb-share-card.jpg">
-  <title>Francine Marie Bautista | Consultant &amp; Strategist</title>
+  <title>Francine Marie Bautista | Portfolio</title>
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="app.css">
   <link rel="stylesheet" href="single-page.css">
@@ -29,134 +29,181 @@
 </head>
 <body class="route-locked">
   <div class="progress" aria-hidden="true"><span id="progressBar"></span></div>
-  <a class="skip" href="#home-main">Skip to content</a>
+  <a class="skip" href="#portfolio">Skip to portfolio</a>
 
-  <div class="gate route-gate home-gate" id="routeGate" role="region" aria-label="Francine Marie Bautista — professional home">
-    <div class="gate-veil home-veil" aria-hidden="true"></div>
-    <canvas class="exp-canvas" id="expCanvas" data-portrait="assets/img/portrait-hero.webp" aria-hidden="true"></canvas>
-    <div class="exp-cursor" id="expCursor" aria-hidden="true"><span></span></div>
-    <div class="exp-intro" id="expIntro" aria-hidden="true">
-      <div class="exp-intro-mark">FMB</div>
-      <p class="exp-intro-line">Presence before persuasion</p>
-    </div>
-    <div class="exp-leave" id="expLeave" hidden aria-hidden="true"></div>
-    <div class="home-shell" id="home-main">
-      <header class="home-nav">
-        <a class="home-brand" href="/" aria-label="Francine Marie Bautista home">FMB</a>
-        <nav aria-label="Primary">
-          <a href="#services">Services</a>
-          <a href="#engagements">Engagements</a>
-          <a href="#inquire">Consult</a>
-          <button class="home-nav-cv" id="routeCvNav" type="button">CV</button>
+  <div class="gate route-gate pf-root" id="routeGate" role="region" aria-label="Francine Marie Bautista — portfolio">
+    <div class="pf-progress" aria-hidden="true"><span id="pfProgress"></span></div>
+    <div class="home-shell pf-shell" id="portfolio">
+      <header class="pf-nav">
+        <a class="pf-brand" href="/" aria-label="Francine Marie Bautista portfolio">FMB</a>
+        <nav aria-label="Portfolio">
+          <a href="#work">Work</a>
+          <a href="#practice">Practice</a>
+          <a href="#about">About</a>
+          <a href="#consult">Consult</a>
+          <button class="pf-nav-cv" id="routeCvNav" type="button">Full CV</button>
         </nav>
       </header>
 
-      <section class="home-hero" aria-labelledby="routeTitle">
-        <div class="home-hero-media" aria-hidden="true">
+      <section class="pf-hero" aria-labelledby="routeTitle">
+        <div class="pf-hero-media" data-pf-parallax="0.18" aria-hidden="true">
           <img src="assets/img/portrait-hero.webp" alt="" width="922" height="1152" fetchpriority="high">
         </div>
-        <div class="home-hero-scrim" aria-hidden="true"></div>
-        <div class="home-hero-copy">
-          <p class="home-kicker"><span>Business</span><span>Brand</span><span>Strategic Communications</span></p>
-          <h1 class="home-name" id="routeTitle">Francine<br>Marie Bautista</h1>
-          <p class="home-lead">I help leaders and organizations become clearly understood — in positioning, reputation, and the public experience that carries the work.</p>
-          <div class="home-cta">
-            <a class="home-btn home-btn-primary" href="#inquire">Request a consultation</a>
-            <button class="home-btn home-btn-ghost" id="routeCv" type="button">Enter the professional CV</button>
+        <div class="pf-hero-scrim" aria-hidden="true"></div>
+        <div class="pf-hero-copy" data-pf-reveal>
+          <p class="pf-kicker">Portfolio · Consultant &amp; Strategist</p>
+          <h1 class="pf-name" id="routeTitle">Francine<br>Marie Bautista</h1>
+          <p class="pf-lead">Business, brand and strategic communications — strategy held intact from the brief to the public form.</p>
+          <p class="pf-scroll-cue" aria-hidden="true"><i></i>Scroll the work</p>
+        </div>
+      </section>
+
+      <section class="pf-work" id="work" aria-label="Selected work">
+        <div class="pf-work-head" data-pf-reveal>
+          <p class="pf-section-label"><span>01</span> Selected work</p>
+          <h2>Projects that had to hold in public.</h2>
+        </div>
+
+        <article class="pf-case" data-pf-case>
+          <div class="pf-case-sticky">
+            <figure class="pf-case-media">
+              <img src="assets/img/work-desk.webp" alt="Strategy and planning for Masinloc Connect" width="1254" height="1254" loading="lazy">
+            </figure>
+            <div class="pf-case-copy">
+              <p class="pf-case-no">01 · Platform</p>
+              <h3>Masinloc Connect</h3>
+              <p>Community platform across brand, product, editorial systems, cultural research and public communication — local identity joined to practical digital utility.</p>
+              <ul>
+                <li>Brand &amp; positioning</li>
+                <li>Product &amp; UX</li>
+                <li>Sambal Tina language experience</li>
+                <li>Research with visible provenance</li>
+              </ul>
+              <a class="pf-text-link" href="assets/doc/Masinloc-Connect-Case-Study-2026.pdf" target="_blank" rel="noopener">Case study PDF</a>
+            </div>
           </div>
-          <p class="exp-scroll-cue" aria-hidden="true"><i></i><span>Move through the work</span></p>
+        </article>
+
+        <article class="pf-case pf-case-alt" data-pf-case>
+          <div class="pf-case-sticky">
+            <figure class="pf-case-media">
+              <img src="assets/img/work-press.webp" alt="Press and public statement setting" width="1254" height="1254" loading="lazy">
+            </figure>
+            <div class="pf-case-copy">
+              <p class="pf-case-no">02 · Practice</p>
+              <h3>SENZ Strategic Communications</h3>
+              <p>Founder-led studio connecting brand, reputation, PR, creative direction and digital execution so organizations stay clear under public pressure.</p>
+              <ul>
+                <li>Positioning &amp; identity</li>
+                <li>PR &amp; narrative</li>
+                <li>Creative direction</li>
+                <li>Digital communication systems</li>
+              </ul>
+              <a class="pf-text-link" href="https://www.senzpr.com/" rel="noopener">senzpr.com</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="pf-case" data-pf-case>
+          <div class="pf-case-sticky">
+            <figure class="pf-case-media">
+              <img src="assets/img/work-media.webp" alt="Media relations setting" width="1254" height="1254" loading="lazy">
+            </figure>
+            <div class="pf-case-copy">
+              <p class="pf-case-no">03 · Media</p>
+              <h3>FMB News · Filipino Media Bulletin</h3>
+              <p>Independent news built on verified facts, visible sources and clear explanation — what happened, the context, why it matters, what to watch next.</p>
+              <ul>
+                <li>Editorial systems</li>
+                <li>Explainers &amp; briefs</li>
+                <li>Fact checks &amp; source maps</li>
+                <li>Public information formats</li>
+              </ul>
+              <a class="pf-text-link" href="https://www.francinemariebautista.com/news/" rel="noopener">Enter FMB News</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="pf-case pf-case-alt" data-pf-case>
+          <div class="pf-case-sticky">
+            <figure class="pf-case-media">
+              <img src="assets/img/book-hero-portrait.webp" alt="Author portrait for The Right Way to Live" width="1200" height="1500" loading="lazy">
+            </figure>
+            <div class="pf-case-copy">
+              <p class="pf-case-no">04 · Publishing</p>
+              <h3>The Right Way to Live</h3>
+              <p>Authored book on judgment, boundaries, work and becoming capable — carried from manuscript into a designed storefront and protected reader experience.</p>
+              <ul>
+                <li>Author identity</li>
+                <li>Storefront &amp; product</li>
+                <li>Editorial voice</li>
+                <li>Reader experience</li>
+              </ul>
+              <a class="pf-text-link" href="/book/">Open the book storefront</a>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <section class="pf-section pf-practice" id="practice" aria-labelledby="practiceTitle">
+        <p class="pf-section-label" data-pf-reveal><span>02</span> Practice</p>
+        <h2 id="practiceTitle" data-pf-reveal>One judgment across the whole brief.</h2>
+        <p class="pf-section-lead" data-pf-reveal>Capabilities stay under one point of view so positioning, language, evidence and experience do not drift apart.</p>
+        <ol class="pf-skills" data-pf-reveal>
+          <li><strong>Brand strategy &amp; positioning</strong><span>Audience, category, differentiation and the position worth protecting.</span></li>
+          <li><strong>PR &amp; strategic communications</strong><span>Message architecture, media-facing language and stakeholder narrative.</span></li>
+          <li><strong>Reputation &amp; perception</strong><span>How claims, timing and public behavior harden into trust or doubt.</span></li>
+          <li><strong>Creative &amp; digital direction</strong><span>Identity, content systems and experiences that carry the same argument.</span></li>
+          <li><strong>Research &amp; editorial</strong><span>Evidence, provenance and publishing that stays honest under scrutiny.</span></li>
+          <li><strong>Training &amp; presence</strong><span>Facilitation, presentation and rooms that need the point to land.</span></li>
+        </ol>
+      </section>
+
+      <section class="pf-section pf-about" id="about" aria-labelledby="aboutTitle">
+        <div class="pf-about-grid">
+          <figure class="pf-about-media" data-pf-reveal>
+            <img src="assets/img/executive-portrait-yellow.webp" alt="Formal portrait of Francine Marie Bautista" width="800" height="1000" loading="lazy">
+          </figure>
+          <div class="pf-about-copy" data-pf-reveal>
+            <p class="pf-section-label"><span>03</span> About</p>
+            <h2 id="aboutTitle">Built through study, teaching, political PR and founder-led practice.</h2>
+            <p>I work both behind the system and in front of the room: researching, writing, directing, presenting and testing the result against the audience it must move.</p>
+            <p>For the continuous professional record — education, service, capabilities and career chapters — open the full CV experience.</p>
+            <button class="pf-btn pf-btn-ghost" id="routeCv" type="button">Open the full CV</button>
+          </div>
         </div>
       </section>
 
-      <section class="home-moment" aria-label="Point of view">
-        <p class="home-moment-quote">The brief is not finished until the public understands it the same way you do.</p>
-      </section>
-
-      <section class="home-section home-services" id="services" aria-labelledby="servicesTitle">
-        <div class="home-section-rule"><span>01</span><span>What clients hire me for</span></div>
-        <h2 id="servicesTitle">Strategy that stays intact from the brief to the public form.</h2>
-        <p class="home-section-lead">One practice across brand, communications and creative direction — so meaning does not drift between the decision and what people actually encounter.</p>
-        <ul class="home-service-list">
-          <li>
-            <strong>Brand strategy &amp; positioning</strong>
-            <span>Clarify who you are for, what you own, and the boundaries that protect trust.</span>
-          </li>
-          <li>
-            <strong>Public relations &amp; strategic communications</strong>
-            <span>Message architecture, media-facing language, stakeholder communication and narrative control.</span>
-          </li>
-          <li>
-            <strong>Reputation &amp; perception</strong>
-            <span>Shape how decisions, claims and public behavior are interpreted before they harden into opinion.</span>
-          </li>
-          <li>
-            <strong>Creative &amp; digital direction</strong>
-            <span>Identity, content systems, websites and campaign direction that carry the same argument.</span>
-          </li>
-        </ul>
-      </section>
-
-      <section class="home-section home-engagements" id="engagements" aria-labelledby="engagementsTitle">
-        <div class="home-section-rule"><span>02</span><span>Who this is for</span></div>
-        <h2 id="engagementsTitle">When the stakes are public, clarity is not optional.</h2>
-        <p class="home-section-lead">Best suited for founders, executives, institutions and public-facing teams who need judgment — not a pile of disconnected deliverables.</p>
-        <div class="home-engage-rows">
-          <p><strong>Leaders &amp; public figures</strong> — messaging, presence and reputation under scrutiny.</p>
-          <p><strong>Brands &amp; organizations</strong> — positioning, identity and communications that hold together.</p>
-          <p><strong>Institutions &amp; communities</strong> — public understanding, cultural accuracy and useful information design.</p>
-        </div>
-      </section>
-
-      <section class="home-section home-proof" id="practice" aria-labelledby="practiceTitle">
-        <div class="home-section-rule"><span>03</span><span>Practice &amp; platforms</span></div>
-        <h2 id="practiceTitle">Founder-led work across communications, media and culture.</h2>
-        <p class="home-section-lead">The same point of view runs through client consulting and the platforms built to carry public information, education and community utility.</p>
-        <ul class="home-proof-list">
-          <li><a href="https://www.senzpr.com/" rel="noopener">SENZ Strategic Communications</a><span>Founder &amp; Creative Director</span></li>
-          <li><a href="https://www.francinemariebautista.com/news/" rel="noopener">FMB News</a><span>Independent media</span></li>
-          <li><a href="/book/">The Right Way to Live</a><span>Author · 2026</span></li>
-          <li><a href="https://ph.linkedin.com/in/francine-marie-bautista-23437a3b5" rel="noopener">LinkedIn</a><span>Professional profile</span></li>
-        </ul>
-      </section>
-
-      <section class="home-section home-inquire" id="inquire" aria-labelledby="inquireTitle">
-        <div class="home-section-rule"><span>04</span><span>Private consultation</span></div>
-        <h2 id="inquireTitle">Ready to discuss the work?</h2>
-        <p class="home-section-lead">Limited consultation windows in Bonifacio Global City, Taguig. Requests are reviewed personally — not auto-confirmed.</p>
-        <div class="home-inquire-panel">
+      <section class="pf-section pf-consult" id="consult" aria-labelledby="consultTitle">
+        <p class="pf-section-label" data-pf-reveal><span>04</span> Private consultation</p>
+        <h2 id="consultTitle" data-pf-reveal>Ready to discuss the work?</h2>
+        <p class="pf-section-lead" data-pf-reveal>Limited windows in Bonifacio Global City, Taguig. Requests are reviewed personally — not auto-confirmed.</p>
+        <div class="pf-consult-panel" data-pf-reveal>
           <div>
             <strong>Bonifacio Global City, Taguig</strong>
-            <span>Private consultations · by appointment · Philippine Time (UTC+8)</span>
+            <span>By appointment · Philippine Time (UTC+8)</span>
           </div>
-          <a class="home-btn home-btn-primary" href="mailto:withlovefmb@gmail.com?subject=Consultation%20request%20%E2%80%94%20Francine%20Marie%20Bautista">Email withlovefmb@gmail.com</a>
+          <a class="pf-btn pf-btn-primary" href="mailto:withlovefmb@gmail.com?subject=Consultation%20request%20%E2%80%94%20Francine%20Marie%20Bautista">Email withlovefmb@gmail.com</a>
         </div>
-        <div class="home-slots" aria-label="Available consultation windows">
-          <a class="home-slot" href="https://calendar.google.com/calendar/render?action=TEMPLATE&amp;text=Private+consultation+request+%E2%80%94+Francine+Marie+Bautista&amp;dates=20261027T020000Z%2F20261027T030000Z&amp;ctz=Asia%2FManila&amp;details=Requested+through+francinemariebautista.com.+This+is+a+consultation+request%2C+not+an+automatic+confirmation.+Please+wait+for+confirmation+from+withlovefmb%40gmail.com.&amp;location=Bonifacio+Global+City%2C+Taguig&amp;add=withlovefmb%40gmail.com" target="_blank" rel="noopener"><b>27 Oct</b><span><strong>Tuesday · 10:00–11:00 AM</strong><small>Request this window</small></span></a>
-          <a class="home-slot" href="https://calendar.google.com/calendar/render?action=TEMPLATE&amp;text=Private+consultation+request+%E2%80%94+Francine+Marie+Bautista&amp;dates=20261112T070000Z%2F20261112T080000Z&amp;ctz=Asia%2FManila&amp;details=Requested+through+francinemariebautista.com.+This+is+a+consultation+request%2C+not+an+automatic+confirmation.+Please+wait+for+confirmation+from+withlovefmb%40gmail.com.&amp;location=Bonifacio+Global+City%2C+Taguig&amp;add=withlovefmb%40gmail.com" target="_blank" rel="noopener"><b>12 Nov</b><span><strong>Thursday · 3:00–4:00 PM</strong><small>Request this window</small></span></a>
-          <a class="home-slot" href="https://calendar.google.com/calendar/render?action=TEMPLATE&amp;text=Private+consultation+request+%E2%80%94+Francine+Marie+Bautista&amp;dates=20261126T020000Z%2F20261126T030000Z&amp;ctz=Asia%2FManila&amp;details=Requested+through+francinemariebautista.com.+This+is+a+consultation+request%2C+not+an+automatic+confirmation.+Please+wait+for+confirmation+from+withlovefmb%40gmail.com.&amp;location=Bonifacio+Global+City%2C+Taguig&amp;add=withlovefmb%40gmail.com" target="_blank" rel="noopener"><b>26 Nov</b><span><strong>Thursday · 10:00–11:00 AM</strong><small>Request this window</small></span></a>
-          <a class="home-slot" href="https://calendar.google.com/calendar/render?action=TEMPLATE&amp;text=Private+consultation+request+%E2%80%94+Francine+Marie+Bautista&amp;dates=20261210T070000Z%2F20261210T080000Z&amp;ctz=Asia%2FManila&amp;details=Requested+through+francinemariebautista.com.+This+is+a+consultation+request%2C+not+an+automatic+confirmation.+Please+wait+for+confirmation+from+withlovefmb%40gmail.com.&amp;location=Bonifacio+Global+City%2C+Taguig&amp;add=withlovefmb%40gmail.com" target="_blank" rel="noopener"><b>10 Dec</b><span><strong>Thursday · 3:00–4:00 PM</strong><small>Request this window</small></span></a>
+        <div class="pf-slots" aria-label="Available consultation windows" data-pf-reveal>
+          <a class="pf-slot" href="https://calendar.google.com/calendar/render?action=TEMPLATE&amp;text=Private+consultation+request+%E2%80%94+Francine+Marie+Bautista&amp;dates=20261027T020000Z%2F20261027T030000Z&amp;ctz=Asia%2FManila&amp;details=Requested+through+francinemariebautista.com.+This+is+a+consultation+request%2C+not+an+automatic+confirmation.+Please+wait+for+confirmation+from+withlovefmb%40gmail.com.&amp;location=Bonifacio+Global+City%2C+Taguig&amp;add=withlovefmb%40gmail.com" target="_blank" rel="noopener"><b>27 Oct</b><span><strong>Tue · 10:00–11:00 AM</strong><small>Request</small></span></a>
+          <a class="pf-slot" href="https://calendar.google.com/calendar/render?action=TEMPLATE&amp;text=Private+consultation+request+%E2%80%94+Francine+Marie+Bautista&amp;dates=20261112T070000Z%2F20261112T080000Z&amp;ctz=Asia%2FManila&amp;details=Requested+through+francinemariebautista.com.+This+is+a+consultation+request%2C+not+an+automatic+confirmation.+Please+wait+for+confirmation+from+withlovefmb%40gmail.com.&amp;location=Bonifacio+Global+City%2C+Taguig&amp;add=withlovefmb%40gmail.com" target="_blank" rel="noopener"><b>12 Nov</b><span><strong>Thu · 3:00–4:00 PM</strong><small>Request</small></span></a>
+          <a class="pf-slot" href="https://calendar.google.com/calendar/render?action=TEMPLATE&amp;text=Private+consultation+request+%E2%80%94+Francine+Marie+Bautista&amp;dates=20261126T020000Z%2F20261126T030000Z&amp;ctz=Asia%2FManila&amp;details=Requested+through+francinemariebautista.com.+This+is+a+consultation+request%2C+not+an+automatic+confirmation.+Please+wait+for+confirmation+from+withlovefmb%40gmail.com.&amp;location=Bonifacio+Global+City%2C+Taguig&amp;add=withlovefmb%40gmail.com" target="_blank" rel="noopener"><b>26 Nov</b><span><strong>Thu · 10:00–11:00 AM</strong><small>Request</small></span></a>
+          <a class="pf-slot" href="https://calendar.google.com/calendar/render?action=TEMPLATE&amp;text=Private+consultation+request+%E2%80%94+Francine+Marie+Bautista&amp;dates=20261210T070000Z%2F20261210T080000Z&amp;ctz=Asia%2FManila&amp;details=Requested+through+francinemariebautista.com.+This+is+a+consultation+request%2C+not+an+automatic+confirmation.+Please+wait+for+confirmation+from+withlovefmb%40gmail.com.&amp;location=Bonifacio+Global+City%2C+Taguig&amp;add=withlovefmb%40gmail.com" target="_blank" rel="noopener"><b>10 Dec</b><span><strong>Thu · 3:00–4:00 PM</strong><small>Request</small></span></a>
         </div>
-        <p class="home-inquire-note">Prefer the full portfolio first? Open the professional CV, then use the calendar there.</p>
-        <button class="home-text-btn" id="routeCvSecondary" type="button">Open the professional CV →</button>
+        <button class="pf-text-link pf-text-btn" id="routeCvSecondary" type="button">Or open the full CV with calendar →</button>
       </section>
 
-      <section class="home-section home-destinations" aria-label="Other destinations">
-        <div class="home-section-rule"><span>05</span><span>Also on this site</span></div>
-        <div class="home-dest-links">
-          <a href="/book/"><strong>The Right Way to Live</strong><span>Book storefront</span></a>
-          <a href="https://www.francinemariebautista.com/news/"><strong>FMB News</strong><span>Filipino Media Bulletin</span></a>
-          <a href="/profile/"><strong>Canonical profile</strong><span>Entity &amp; identity page</span></a>
-        </div>
-      </section>
-
-      <footer class="home-footer">
+      <footer class="pf-footer">
         <div>
           <strong>Francine Marie Bautista</strong>
           <span>Business, Brand &amp; Strategic Communications Consultant &amp; Strategist</span>
         </div>
-        <div>
+        <div class="pf-footer-links">
           <a href="mailto:withlovefmb@gmail.com">withlovefmb@gmail.com</a>
-          <span>Philippines · By appointment</span>
+          <a href="/book/">Book</a>
+          <a href="https://www.francinemariebautista.com/news/">News</a>
+          <a href="/profile/">Profile</a>
         </div>
       </footer>
     </div>
@@ -325,8 +372,8 @@
     </div>
     <div>
       <a href="mailto:withlovefmb@gmail.com">withlovefmb@gmail.com</a>
-      <a href="/">Home</a>
-      <a href="/#inquire">Consult</a>
+      <a href="/">Portfolio</a>
+      <a href="/#consult">Consult</a>
       <span>Philippines · By appointment</span>
     </div>
   </footer>
@@ -335,6 +382,6 @@
 
   <script src="app.js"></script>
   <script src="single-page.js"></script>
-  <script src="assets/js/home-experience.js" defer></script>
+  <script src="assets/js/portfolio-scroll.js" defer></script>
 </body>
 </html>

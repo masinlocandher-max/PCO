@@ -1,4 +1,4 @@
-/* Professional home -> optional sound choice -> one-page executive CV. */
+/* Scroll-driven portfolio -> optional sound choice -> full executive CV. */
 (function(){
   'use strict';
 
@@ -13,11 +13,11 @@
   var KEY='fmb-sound-preference';
   var CV_HASH='#cv';
   var HOME_HASHES={
-    '#services':true,
-    '#engagements':true,
+    '#work':true,
     '#practice':true,
-    '#inquire':true,
-    '#home-main':true
+    '#about':true,
+    '#consult':true,
+    '#portfolio':true
   };
 
   function paint(on){
