@@ -12,7 +12,7 @@ This repository (`masinlocandher-max/PCO`) is the canonical source for the root 
 
 ## Current experiences
 
-- `/` — scroll-driven modern portfolio: selected work, practice, about, and consultation booking.
+- `/` — landing portfolio: brand hero with consultation CTAs, then scroll-driven selected work, practice, about, and booking.
 - `/#cv` — one-page executive CV experience (also reachable from “Full CV”).
 - `/cv.html` — compatibility entry that routes into the main one-page CV experience.
 - `/book/` — storefront for *The Right Way to Live*.
