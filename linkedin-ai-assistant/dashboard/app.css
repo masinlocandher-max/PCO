@@ -1,0 +1,43 @@
+/* FMB Chief of Staff — local dashboard.
+   Same warm palette as francinemariebautista.com so it feels like her tool. */
+:root{--bg:#fbf6ec;--paper:#fffdf8;--ink:#241d17;--soft:#3a2f26;--muted:#7a6c5e;
+  --line:rgba(143,105,50,.22);--gold:#8f6a32;--ok:#3f6b45;--warn:#8a5a1f;--bad:#8c3b32;
+  --serif:"Playfair Display",Georgia,serif;--ui:system-ui,-apple-system,"Segoe UI",sans-serif}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 var(--ui)}
+header{position:sticky;top:0;z-index:5;padding:16px 22px 0;background:var(--bg);border-bottom:1px solid var(--line)}
+.mark{font-family:var(--serif);font-size:21px;line-height:1.1}
+.mark small{display:block;font-size:12px;font-style:italic;color:var(--gold)}
+nav{display:flex;gap:4px;flex-wrap:wrap;margin-top:14px}
+nav a{padding:10px 14px;min-height:44px;display:inline-flex;align-items:center;border-radius:10px 10px 0 0;
+  color:var(--muted);text-decoration:none;font-weight:500;font-size:14px}
+nav a[aria-current]{color:var(--ink);background:var(--paper);box-shadow:inset 0 -2px 0 var(--gold)}
+main{max-width:960px;margin:0 auto;padding:22px}
+h1{margin:0 0 4px;font-family:var(--serif);font-weight:400;font-size:clamp(26px,5vw,34px)}
+.sub{margin:0 0 20px;color:var(--muted)}
+.banner{margin:0 0 18px;padding:12px 14px;border-radius:12px;border:1px solid var(--line);background:var(--paper);font-size:14px}
+.banner b{color:var(--gold)}
+.card{margin:0 0 14px;padding:16px;border:1px solid var(--line);border-radius:14px;background:var(--paper)}
+.card h3{margin:0 0 6px;font-family:var(--serif);font-weight:400;font-size:19px}
+.meta{display:flex;flex-wrap:wrap;gap:8px 14px;margin:0 0 10px;color:var(--muted);font-size:12.5px}
+.pill{display:inline-block;padding:3px 10px;border-radius:999px;font-size:11px;font-weight:600;
+  letter-spacing:.06em;text-transform:uppercase}
+.pill.low{background:rgba(63,107,69,.14);color:var(--ok)}
+.pill.medium{background:rgba(138,90,31,.14);color:var(--warn)}
+.pill.high{background:rgba(140,59,50,.14);color:var(--bad)}
+.payload{margin:10px 0;padding:12px 14px;border-left:3px solid var(--gold);background:rgba(143,105,50,.06);
+  white-space:pre-wrap;font-size:14.5px}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+button{min-height:44px;padding:0 18px;border:0;border-radius:999px;font:600 12px/1 var(--ui);
+  letter-spacing:.1em;text-transform:uppercase;cursor:pointer}
+.yes{background:var(--gold);color:#fff8ec}
+.no{background:transparent;color:var(--soft);box-shadow:inset 0 0 0 1px var(--line)}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{padding:11px 8px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.num{text-align:right;font-variant-numeric:tabular-nums}
+.empty{padding:44px 8px;text-align:center;color:var(--muted)}
+.empty strong{display:block;margin-bottom:6px;font-family:var(--serif);font-size:20px;color:var(--ink)}
+.bar{height:6px;border-radius:3px;background:rgba(143,105,50,.16);overflow:hidden}
+.bar i{display:block;height:100%;background:var(--gold)}
+@media(max-width:560px){main{padding:16px}.card{padding:14px}}

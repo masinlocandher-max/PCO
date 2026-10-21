@@ -1,0 +1,26 @@
+# The assistant's working store never enters git.
+#
+# It holds FMB's contacts, unpublished drafts, opportunity notes and her
+# approval history. This repository deploys to GitHub Pages, and git history is
+# retrievable even after a deletion — so the rule is that it never arrives, not
+# that it gets removed later.
+database/*.db
+database/*.db-wal
+database/*.db-shm
+*.sqlite
+*.sqlite3
+
+# Secrets live in the environment. .env is for local convenience only and is
+# never committed; .env.example carries names with empty values.
+.env
+.env.*
+!.env.example
+
+# Exports and reports may quote drafts or contacts.
+exports/
+reports/
+*.log
+
+__pycache__/
+*.py[cod]
+.pytest_cache/
