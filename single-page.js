@@ -16,6 +16,7 @@
     '#selected-work':true,
     '#brands':true,
     '#practice':true,
+    '#writing':true,
     '#about':true,
     '#consult':true,
     '#portfolio':true
@@ -57,7 +58,7 @@
     if(!hash||!HOME_HASHES[hash])return;
     window.requestAnimationFrame(function(){
       var el=document.getElementById(hash.slice(1));
-      if(el)el.scrollIntoView({block:'start',behavior:'smooth'});
+      if(el)el.scrollIntoView({block:'start',behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
     });
   }
   function showHome(opts){
