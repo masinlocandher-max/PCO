@@ -30,3 +30,9 @@ Removed a stale reveal-animation flag that could hide consultation slots. Correc
 Repeat browser checks with `node scripts/verify-portfolio.cjs` where Playwright and Chromium are installed. `PORTFOLIO_CHROMIUM_PATH` optionally selects an existing Chromium binary. The test starts its own local HTTP server on port 8766.
 
 Physical iPhone/Safari verification and production deployment are not covered by the local Chromium checks. No merge or deployment has been performed.
+
+## Button and destination audit
+
+All distinct homepage section anchors and CV buttons were exercised in Chromium. Book, profile, services, reader preview, ebook-access and legal pages return HTTP 200 on the local repository server, with no JavaScript errors. Book mobile menu, purchase-section navigation, FAQ, email-order destinations and the case-study PDF pass. Added a portfolio return link to the book footer. Contact and book-order actions use existing email destinations; no message was sent and no order or calendar event was created.
+
+External HTTP checks: Cognita and Masinloc responded 200. SENZ and canonical FMB domain routes returned 403 to automated requests; Partner Program returned 503. These responses do not establish an end-user outage, but external availability is not verified. FMB News is owned by its separate edge-routed repository and must not be copied into PCO.
