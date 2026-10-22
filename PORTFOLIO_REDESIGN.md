@@ -18,6 +18,15 @@ The homepage preserves the existing contact email, external initiative destinati
 - `BASE_SHA=2070149965644182aee627e05278760cef53a7cd python scripts/check-cv-lock.py`: passed; protected CV block unchanged.
 - JavaScript syntax checks: passed.
 - Static homepage anchor / local asset checks: passed.
-- Browser screenshots and interaction checks remain pending: Playwright is available, but the Chromium download returned truncated archives in the implementation environment.
+- Headless Chromium verification at 1440, 768, 390, and 320 px: passed. All homepage images decode after natural scrolling; no horizontal overflow or JavaScript exceptions.
+- CV entry and return, consultation disclosure and visible request windows: passed at all four widths.
+- Reduced motion, direct writing anchor position, keyboard skip link, email/book destinations, and JavaScript-disabled homepage: passed.
+- Desktop and mobile screenshots were visually inspected. The original photography, clear ivory/plum section sequence, typography and book treatment are retained. Sculptural forms use a lightweight local SVG with separate face, inner-surface and edge shading, replacing the initial flat CSS rings. This is a responsive interpretation of the concept, not a pixel-identical reproduction of the generated mockup.
 
-Before release, verify desktop and phone rendering, section anchors, contact, `/#cv` and return navigation, keyboard focus, reduced motion, and consultation disclosure. The site has not been deployed by this change.
+## Verification follow-up fixes
+
+Removed a stale reveal-animation flag that could hide consultation slots. Corrected the legacy route-hiding rule to expose the keyboard skip link. Prevented CV scroll padding from adding a second offset to homepage section links. Enlarged mobile navigation touch targets to 44 px.
+
+Repeat browser checks with `node scripts/verify-portfolio.cjs` where Playwright and Chromium are installed. `PORTFOLIO_CHROMIUM_PATH` optionally selects an existing Chromium binary. The test starts its own local HTTP server on port 8766.
+
+Physical iPhone/Safari verification and production deployment are not covered by the local Chromium checks. No merge or deployment has been performed.
