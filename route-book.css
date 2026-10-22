@@ -25,7 +25,7 @@ body.route-locked{
 
 /* Hide CV chrome while the portfolio landing is active.
    Do not reuse .gate here — that class is the modal sound prompt in app.css. */
-body.route-locked > :not(#routeGate):not(#soundGate):not(script){display:none!important}
+body.route-locked > :not(#routeGate):not(#soundGate):not(script):not(.skip){display:none!important}
 
 body.route-locked > #routeGate,
 body.route-locked > .route-gate{
