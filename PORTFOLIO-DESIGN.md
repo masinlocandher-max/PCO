@@ -39,3 +39,7 @@ Rebuilt the homepage presentation around the owner's supplied violet-and-gold re
 Generated a new hero with the built-in image generator using the existing Francine portrait as identity reference and the owner screenshot as art direction. Prompt: preserve face, hairstyle, pearl earrings, yellow Filipiniana and hand-under-chin pose; place portrait on right with midnight-violet negative space on left and flowing golden silk; no text, UI, stars, diamonds, or sparkles. Optimized the generated asset as assets/img/portfolio/francine-silk-hero.webp. The original portraits remain unchanged.
 
 Validated local references and protected CV; checked desktop composition and mobile/tablet iframe layouts without horizontal overflow. Reduced-motion and pause behavior retained from existing motion script.
+
+## Owner correction: retain the interior
+
+Latest owner reference supersedes the abstract silk backdrop. Generated a wide extension of the existing portrait with the warm wooden interior, flowers, Philippine flag, original pose and yellow dress preserved as references. Gold fabric is restricted to the lower edge. Hero asset: assets/img/portfolio/francine-interior-hero.webp. Soft lighting gradients connect section edges; no stars or diamonds. Work uses the existing SENZ, Masinloc Connect and FMB News assets in a compact three-project gallery linking to their full case studies. No sample pageant images or invented work claims were added.

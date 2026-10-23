@@ -78,3 +78,56 @@
 }
 @media(prefers-reduced-motion:reduce){.fmb-site .fmb-photo-window img{transform:none!important}}
 @media(min-width:761px){.fmb-site .fmb-hero{height:clamp(640px,50vw,800px);min-height:640px}.fmb-site .fmb-hero-copy{padding-top:70px}.fmb-site .fmb-hero-intro{max-width:44ch}.fmb-site .fmb-actions{gap:14px}.fmb-site .fmb-hero h1{font-size:clamp(64px,7vw,110px)}}
+/* Continuous fabric: preserve imagery, soften lighting and section seams. */
+.fmb-site .fmb-hero:after{background:linear-gradient(90deg,#29002485,transparent 62%),linear-gradient(0deg,#775533 0%,#77553365 9%,transparent 27%)}
+.fmb-site .fmb-evidence{position:relative;z-index:2;background:linear-gradient(180deg,#775533,#775533ed);border-block:0;box-shadow:inset 0 1px #e3dea425}
+.fmb-site .fmb-about{position:relative;isolation:isolate;background-color:#f2f5e2;background-image:linear-gradient(180deg,#775533 0,transparent 90px),url('../img/book-silk-field.webp');background-position:center top,center bottom;background-size:100% 100%,100% auto;background-repeat:no-repeat}
+.fmb-site .fmb-about>figure:after{background:linear-gradient(180deg,#775533 0,transparent 75px),linear-gradient(90deg,transparent 57%,#f2f5e2e0 95%,#f2f5e2),linear-gradient(0deg,#d4954d55,transparent 22%)}
+.fmb-site .fmb-about-copy{background:transparent;position:relative;z-index:1;padding-bottom:90px}
+.fmb-site .fmb-about-copy:before{content:'';position:absolute;inset:30px -20px 25px;z-index:-1;background:#f2f5e2df;filter:blur(28px);pointer-events:none}
+.fmb-site .fmb-about:after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:78px;z-index:2;pointer-events:none;background:linear-gradient(0deg,#321526,transparent)}
+.fmb-site .fmb-practice{background:linear-gradient(180deg,#321526,#290024d9 18%,#290024e8 78%,#21151b),url('../img/book-silk-field.webp') center/cover}
+.fmb-site .fmb-work{background:linear-gradient(180deg,#21151b 85%,#775533)}
+.fmb-site .fmb-speaking{background:linear-gradient(180deg,#775533 80%,#e3dea4);padding-bottom:100px}
+.fmb-site .fmb-writing{background:linear-gradient(180deg,#e3dea4 80%,#290024);padding-bottom:120px}
+.fmb-site .fmb-statement{background:linear-gradient(180deg,#290024 82%,#f2f5e2);padding-bottom:120px}
+.fmb-site .fmb-world{background:linear-gradient(180deg,#f2f5e2 85%,#775533);padding-bottom:110px}
+.fmb-site .fmb-consult{background:linear-gradient(180deg,#775533 0,transparent 95px,#290024 100%),linear-gradient(90deg,#290024ed,#29002490),url('../img/book-silk-field.webp') center/cover}
+@media(max-width:760px){.fmb-site .fmb-hero:after{background:linear-gradient(180deg,transparent 250px,#290024 470px,#290024 calc(100% - 80px),#775533)}.fmb-site .fmb-about{background-size:100% 100%,auto 100%}.fmb-site .fmb-about>figure:after{background:linear-gradient(180deg,#775533,transparent 60px),linear-gradient(0deg,#f2f5e2,transparent 30%)}.fmb-site .fmb-about-copy{padding-bottom:85px}.fmb-site .fmb-about-copy:before{inset:0 0 25px;filter:blur(15px)}.fmb-site .fmb-writing,.fmb-site .fmb-statement,.fmb-site .fmb-world{padding-bottom:100px}}
+/* Retain the photographic interior requested by the owner. */
+.fmb-site .fmb-nav{background:#211510f2}
+.fmb-site .fmb-hero{background:#211510}
+.fmb-site .fmb-hero:after{background:linear-gradient(90deg,#160d08b0,transparent 65%),linear-gradient(0deg,#493320,transparent 18%)}
+.fmb-site .fmb-evidence{background:linear-gradient(180deg,#493320,#775533);box-shadow:none}
+.fmb-site .fmb-about>figure{height:auto;min-height:590px;align-self:stretch}
+.fmb-site .fmb-about>figure img{position:absolute;inset:0;height:100%;object-position:center 25%;mask-image:linear-gradient(90deg,#000 65%,transparent),linear-gradient(0deg,transparent,#000 22%);mask-composite:intersect}
+.fmb-site .fmb-about>figure:after{background:linear-gradient(180deg,#775533,transparent 65px)}
+.fmb-site .fmb-about:after{background:linear-gradient(0deg,#211510,transparent)}
+.fmb-site .fmb-practice{background:linear-gradient(180deg,#211510,#211510e8 20%,#211510ee 85%,#211510),url('../img/portfolio/francine-interior-hero.webp') left center/cover}
+.fmb-site .fmb-service{background:#211510!important}
+.fmb-site .fmb-work{background:linear-gradient(180deg,#211510 88%,#775533)}
+.fmb-site .fmb-consult{background:linear-gradient(180deg,#775533,transparent 90px,#211510 100%),linear-gradient(90deg,#211510ee,#211510b0),url('../img/portfolio/francine-interior-hero.webp') left center/cover}
+.fmb-site .fmb-footer{background:#211510}
+@media(max-width:760px){.fmb-site .fmb-hero{background:#211510}.fmb-site .fmb-hero:after{background:linear-gradient(180deg,transparent 250px,#211510 470px,#211510 calc(100% - 80px),#493320)}.fmb-site .fmb-about>figure{height:420px;min-height:420px}.fmb-site .fmb-about>figure img{mask-image:linear-gradient(0deg,transparent,#000 25%);mask-composite:add}}
+/* A compact project gallery, with links to the complete case studies. */
+.fmb-site .fmb-work{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}
+.fmb-site .fmb-section-head,.fmb-site .fmb-work-end{grid-column:1/-1}
+.fmb-site .fmb-case{display:block;position:relative;top:auto;min-height:0;margin:0;transform:none!important;background:#f2f5e2}
+.fmb-site .fmb-case-visual{height:270px;min-height:0}
+.fmb-site .fmb-case-copy{padding:26px}
+.fmb-site .fmb-case h3{font-size:33px}
+.fmb-site .fmb-case-deck{font-size:19px;margin-top:14px}
+.fmb-site .fmb-case dl,.fmb-site .fmb-delivery{display:none}
+.fmb-site .fmb-case-copy>.fmb-eyebrow{font-size:9px;margin-bottom:14px}
+.fmb-site .fmb-case-links{margin-top:22px;gap:10px}
+.fmb-site .fmb-case-links a{font-size:12px}
+.fmb-site .fmb-senz-cover,.fmb-site .fmb-news-cover{padding:24px}
+.fmb-site .fmb-senz-cover>img{width:44px;height:55px}
+.fmb-site .fmb-senz-cover p{font-size:34px}
+.fmb-site .fmb-cover-bottom{font-size:9px}
+.fmb-site .fmb-news-wordmark{font-size:62px}
+.fmb-site .fmb-masinloc-cover .fmb-community-photo{height:165px}
+.fmb-site .fmb-place-label{padding:18px 24px}
+.fmb-site .fmb-place-label strong{font-size:29px}
+.fmb-site .fmb-work-end{padding-top:24px}
+@media(max-width:760px){.fmb-site .fmb-work{grid-template-columns:1fr}.fmb-site .fmb-case-visual{height:300px}.fmb-site .fmb-section-head,.fmb-site .fmb-work-end{grid-column:1}.fmb-site .fmb-senz-cover p{font-size:40px}}
