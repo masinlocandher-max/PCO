@@ -31,3 +31,11 @@ Beige hero canvas with arched portrait panel, pill navigation CTA, four-point de
 
 ## Owner correction
 Removed all decorative four-point stars and diamond motifs, including their SVG asset. Retained the approved palette, curved panels, photographic composition, and service layout.
+
+## Silk editorial reference update
+
+Rebuilt the homepage presentation around the owner's supplied violet-and-gold reference: edge-to-edge portrait hero, editorial serif headings, cream About section before services, photographic Social/Media/AI panels, and dark project/contact sections. Stars and diamond motifs remain removed. Existing project links, CV, booking requests, motion controls, and ecosystem links are retained.
+
+Generated a new hero with the built-in image generator using the existing Francine portrait as identity reference and the owner screenshot as art direction. Prompt: preserve face, hairstyle, pearl earrings, yellow Filipiniana and hand-under-chin pose; place portrait on right with midnight-violet negative space on left and flowing golden silk; no text, UI, stars, diamonds, or sparkles. Optimized the generated asset as assets/img/portfolio/francine-silk-hero.webp. The original portraits remain unchanged.
+
+Validated local references and protected CV; checked desktop composition and mobile/tablet iframe layouts without horizontal overflow. Reduced-motion and pause behavior retained from existing motion script.
