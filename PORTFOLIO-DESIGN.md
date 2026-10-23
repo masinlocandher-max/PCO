@@ -25,3 +25,6 @@ Project summaries derive from the existing portfolio and brand descriptions. Mas
 
 ## Owner-directed service and identity refinement
 Services now lead with Social, Media, and AI, each with visible deliverables and a dedicated email inquiry. The contemporary sans-serif hierarchy emphasizes independent female creative leadership. Owner-supplied palette: Beige #F2F5E2, Vanilla Custard #E3DEA4, Golden Apricot #D4954D, Olive Wood #775533, Midnight Violet #290024. Midnight violet anchors the site, beige carries reading surfaces, and apricot buttons use violet labels for contrast. Original venture marks retain their identity colors.
+
+## Palette-led layout redesign
+Beige hero canvas with arched portrait panel, pill navigation CTA, four-point decorative motif, rounded proof strip and statement panel. Social, Media, and AI are three distinct service panels in custard, apricot, and violet. Rounded project frames and shaped supporting sections carry the visual language through the journey. Motifs are decorative CSS masks, not emoji.
