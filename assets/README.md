@@ -114,3 +114,12 @@ The CV and landing use original assets copied from the respective brand reposito
 - FMB News uses its current text masthead, FMB NEWS. / Filipino Media Bulletin.
 
 Owner instruction explicitly requested fixing the incorrect CV logos and landing page. Protected CV HTML and photography remain unchanged; the corrected logos are in the existing runtime brand section.
+
+## October 23, 2026 homepage portraits
+
+Original JPG files from the FMB About Me Consultant Drive folder, copied without alteration. CSS controls framing.
+
+| Drive original | Drive file ID | Repository asset |
+|---|---|---|
+| IMG_0947.JPG | 1TlTUpl-f_r8saSTeyFiC1hT4kuvOaljj | img/portfolio/francine-portrait.jpg |
+| IMG_0946.JPG | 1cyn1m8BydyHqbvcVO0hkCEzjP384ZnTQ | img/portfolio/francine-seated.jpg |
