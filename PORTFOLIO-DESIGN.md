@@ -28,3 +28,6 @@ Services now lead with Social, Media, and AI, each with visible deliverables and
 
 ## Palette-led layout redesign
 Beige hero canvas with arched portrait panel, pill navigation CTA, four-point decorative motif, rounded proof strip and statement panel. Social, Media, and AI are three distinct service panels in custard, apricot, and violet. Rounded project frames and shaped supporting sections carry the visual language through the journey. Motifs are decorative CSS masks, not emoji.
+
+## Owner correction
+Removed all decorative four-point stars and diamond motifs, including their SVG asset. Retained the approved palette, curved panels, photographic composition, and service layout.
