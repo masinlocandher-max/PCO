@@ -22,3 +22,6 @@ Existing homepage motion provides progressive opening reveals, portrait movement
 
 ## Content provenance
 Project summaries derive from the existing portfolio and brand descriptions. Masinloc's extended narrative derives from the repository's 2026 case-study PDF. No new claim of measured commercial or audience impact is made. The homepage Person schema omits unverified completed-degree fields previously inconsistent with its CV wording.
+
+## Owner-directed service and identity refinement
+Services now lead with Social, Media, and AI, each with visible deliverables and a dedicated email inquiry. The contemporary sans-serif hierarchy emphasizes independent female creative leadership. Owner-supplied palette: Beige #F2F5E2, Vanilla Custard #E3DEA4, Golden Apricot #D4954D, Olive Wood #775533, Midnight Violet #290024. Midnight violet anchors the site, beige carries reading surfaces, and apricot buttons use violet labels for contrast. Original venture marks retain their identity colors.
