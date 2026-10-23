@@ -131,3 +131,7 @@
 .fmb-site .fmb-place-label strong{font-size:29px}
 .fmb-site .fmb-work-end{padding-top:24px}
 @media(max-width:760px){.fmb-site .fmb-work{grid-template-columns:1fr}.fmb-site .fmb-case-visual{height:300px}.fmb-site .fmb-section-head,.fmb-site .fmb-work-end{grid-column:1}.fmb-site .fmb-senz-cover p{font-size:40px}}
+.fmb-site .fmb-case-stack{grid-column:1/-1;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}
+.fmb-site .fmb-news-manifesto{display:none}
+.fmb-site .fmb-place-label strong br{display:none}
+@media(max-width:760px){.fmb-site .fmb-case-stack{grid-template-columns:1fr}}
