@@ -14,6 +14,7 @@
   var CV_HASH='#cv';
   var HOME_HASHES={
     '#selected-work':true,
+    '#ecosystem':true,
     '#brands':true,
     '#practice':true,
     '#writing':true,
