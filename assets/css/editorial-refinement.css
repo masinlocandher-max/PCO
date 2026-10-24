@@ -125,3 +125,16 @@ body:not(.route-locked) .topbar nav a.active,body:not(.route-locked) .topbar nav
 /* Preserve architectural proportions in the palace-inspired column. */
 @media screen and (min-width:761px){.professional-cv::before{background:linear-gradient(180deg,#cbb68b40,#77553325 65%,transparent);mask-image:linear-gradient(90deg,transparent,#000 18%)}.cv-column-art{display:block;height:min(900px,calc(100svh - 48px));background-size:cover;background-position:center;mask-image:linear-gradient(180deg,transparent,#000 5%,#000 93%,transparent)}.cv-design-column{align-self:stretch}.cv-photo img{mask-image:linear-gradient(#000 85%,transparent)}}
 @media print{.cv-column-art{display:none}}
+
+/* Unified Filipino heritage photography and non-blocking audio choice. */
+.fmb-site .fmb-service:nth-child(1) summary{background-image:linear-gradient(0deg,#211510e0,transparent 75%),url('../img/portfolio/service-social-heritage.webp')}
+.fmb-site .fmb-service:nth-child(2) summary{background-image:linear-gradient(0deg,#211510e0,transparent 75%),url('../img/portfolio/service-media-heritage.webp')}
+.fmb-site .fmb-service:nth-child(3) summary{background-image:linear-gradient(0deg,#211510e0,transparent 75%),url('../img/portfolio/service-ai-heritage.webp')}
+.fmb-site .fmb-practice{background:linear-gradient(180deg,#211510,#211510eb 25%,#211510ed 85%,#211510),url('../img/portfolio/service-social-heritage.webp') center/cover}
+.cv-audio-choice{max-width:1240px;margin:0 auto;padding:105px 50px 0;display:flex;align-items:center;gap:10px;font:11px var(--fmb-reading);color:#775533}
+.cv-audio-choice span{margin-right:10px}.cv-audio-choice button{font:inherit;color:#290024;background:transparent;border:1px solid #77553350;padding:10px 14px;min-height:44px;cursor:pointer}.cv-audio-choice button[aria-pressed=true]{background:#e3dea470;border-color:#775533}.cv-audio-choice button:focus-visible{outline:2px solid #775533;outline-offset:3px}
+.route-locked .cv-audio-choice{display:none}
+body:not(.route-locked) .professional-cv{padding-top:0}
+@media(max-width:760px){.cv-audio-choice{padding:160px 24px 0;flex-wrap:wrap;gap:8px}.cv-audio-choice span{flex-basis:100%}}
+@media print{.cv-audio-choice{display:none!important}}
+@media(max-width:760px){.fmb-site .fmb-portrait{top:55px;height:350px}.fmb-site .fmb-hero-copy{padding-top:370px;padding-bottom:90px}.fmb-site .fmb-hero h1{font-size:clamp(48px,12vw,66px)}.fmb-site .fmb-hero .fmb-eyebrow{font-size:9px;line-height:1.65;max-width:36ch}.fmb-site .fmb-hero{min-height:800px}.fmb-site .fmb-hero:after{background:linear-gradient(180deg,transparent 280px,#211510 410px,#211510 calc(100% - 65px),#493320)}}

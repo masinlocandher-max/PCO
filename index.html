@@ -31,7 +31,7 @@
   <link rel="stylesheet" href="assets/css/portfolio-silk.css?v=20261024-backgrounds-final">
   <link rel="stylesheet" href="assets/css/professional-cv.css?v=20261024">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="assets/css/editorial-refinement.css?v=20261024-palace">
+  <link rel="stylesheet" href="assets/css/editorial-refinement.css?v=20261024-unified">
 </head>
 <body class="route-locked">
   <div class="progress" aria-hidden="true"><span id="progressBar"></span></div>
@@ -47,11 +47,11 @@
       </header>
       <section class="fmb-hero" aria-labelledby="routeTitle">
         <div class="fmb-hero-copy">
-          <p class="fmb-eyebrow" data-enter="0">Creative strategist · Communicator · Educator</p>
+          <p class="fmb-eyebrow" data-enter="0">Francine Marie Bautista · Creative director &amp; communications strategist</p>
           <h1 id="routeTitle" aria-label="Ideas people remember."><span class="fmb-line"><span data-enter="1">Ideas</span></span><span class="fmb-line"><span data-enter="2">people <em>remember.</em></span></span></h1>
-          <div class="fmb-hero-intro" data-enter="4"><p>Social strategy. Media and storytelling. Practical AI solutions. Led by a creative director who connects the thinking with the work.</p><div class="fmb-actions"><a class="fmb-button" href="#selected-work">Explore my work</a><a class="fmb-text-link" href="#consult">Discuss a project</a></div></div>
+          <div class="fmb-hero-intro" data-enter="4"><p>Brand strategy, social media, media production, and practical AI. Thoughtful direction, carried through to the finished work.</p><div class="fmb-actions"><a class="fmb-button" href="#selected-work">Explore my work</a><a class="fmb-text-link" href="#consult">Discuss a project</a></div></div>
         </div>
-        <figure class="fmb-portrait" data-enter="2"><div class="fmb-photo-window"><img src="assets/img/portfolio/francine-interior-hero.webp" alt="Francine Marie Bautista in yellow Filipiniana, seated with her hand resting beneath her chin" width="1672" height="941" fetchpriority="high"></div><figcaption><span>Francine Marie Bautista</span><span>Strategist &amp; creative director</span></figcaption></figure>
+        <figure class="fmb-portrait" data-enter="2"><div class="fmb-photo-window"><img src="assets/img/portfolio/francine-heritage-hero.webp" alt="Francine Marie Bautista in yellow Filipiniana, seated with her hand resting beneath her chin" width="1672" height="941" fetchpriority="high"></div><figcaption><span>Francine Marie Bautista</span><span>Strategist &amp; creative director</span></figcaption></figure>
         <div class="fmb-hero-foot"><span>Independent mind. Clear direction.</span><a href="#selected-work">Scroll to discover</a><button type="button" class="fmb-motion" aria-pressed="false" hidden>Pause motion</button></div>
       </section>
       <section class="fmb-evidence" aria-label="Experience at a glance">
@@ -101,19 +101,7 @@
     </div>
   </div>
 
-  <div class="gate" id="soundGate" role="dialog" aria-modal="true" aria-labelledby="soundGateTitle" hidden>
-    <div class="gate-veil" aria-hidden="true"></div>
-    <div class="gate-sheet">
-      <img class="gate-mark" src="assets/img/wordmark.webp" alt="Francine Marie Bautista">
-      <h2 class="gate-title" id="soundGateTitle">Experience with music?</h2>
-      <p class="gate-copy">The CV includes an optional cinematic score. Your choice does not change the content.</p>
-      <div class="gate-actions">
-        <button class="gate-primary" id="gateSound" type="button">Enter with music</button>
-        <button class="gate-secondary" id="gateSilent" type="button">Continue without music</button>
-      </div>
-      <p class="gate-note">You can change sound at any time.</p>
-    </div>
-  </div>
+  <aside class="cv-audio-choice" aria-label="CV music preference"><span>While you explore</span><button id="gateSound" type="button" aria-pressed="false">With music</button><button id="gateSilent" type="button" aria-pressed="true">Without music</button></aside>
 
   <button class="sound" id="soundToggle" type="button" hidden aria-pressed="false" aria-label="Turn sound on">
     <span class="sound-icon" aria-hidden="true">
@@ -125,7 +113,7 @@
 
   <header class="topbar" id="top">
     <a class="mark" href="#portfolio" aria-label="Back to portfolio">FMB</a>
-    <nav aria-label="CV chapters"><a href="#experience">Experience</a><a href="#education">Education</a><a href="#expertise">Skills</a><a href="#initiatives">Initiatives</a><a href="#service">Community</a></nav>
+    <nav aria-label="CV chapters"><a href="#portfolio">Portfolio</a><a href="#experience">Experience</a><a href="#education">Education</a><a href="#expertise">Skills</a><a href="#initiatives">Initiatives</a><a href="#service">Community</a></nav>
   </header>
 
   <main class="professional-cv">
@@ -191,8 +179,8 @@
 
   <div class="viewer" id="viewer" aria-hidden="true" role="dialog" aria-label="Image viewer"><button class="viewer-close" id="viewerClose" type="button">Done</button><div class="viewer-stage"><img id="viewerImage" alt=""><p id="viewerCaption"></p></div></div>
 
-  <script src="app.js"></script>
-  <script src="single-page.js?v=20261024-cv"></script>
+  <script src="app.js?v=20261024-direct"></script>
+  <script src="single-page.js?v=20261024-direct"></script>
   <script src="assets/js/portfolio-scroll.js?v=20261024-portfolio" defer></script>
 </body>
 </html>

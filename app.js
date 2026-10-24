@@ -224,7 +224,7 @@
       }
       var current = '';
       navTargets.forEach(function (sec, i) {
-        if (sec && sec.getBoundingClientRect().top <= vh * 0.42) current = navLinks[i].getAttribute('href');
+        if (sec && sec.closest(".professional-cv") && sec.getClientRects().length && sec.getBoundingClientRect().top <= vh * 0.42) current = navLinks[i].getAttribute('href');
       });
       navLinks.forEach(function (a) { a.classList.toggle('active', a.getAttribute('href') === current); });
 
