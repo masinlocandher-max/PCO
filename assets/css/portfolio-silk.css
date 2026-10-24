@@ -135,3 +135,22 @@
 .fmb-site .fmb-news-manifesto{display:none}
 .fmb-site .fmb-place-label strong br{display:none}
 @media(max-width:760px){.fmb-site .fmb-case-stack{grid-template-columns:1fr}}
+/* New photographic section assets and modern, understated typography. */
+.fmb-site{--sans:'Avenir Next',Avenir,'Helvetica Neue',Arial,sans-serif;--serif:var(--sans);font-family:var(--sans)}
+.fmb-site :is(h1,h2,h3){font-family:var(--sans);font-weight:400;letter-spacing:-.045em}
+.fmb-site .fmb-hero h1{font-family:var(--sans);font-weight:400;font-size:clamp(58px,6.7vw,105px);line-height:1.02;letter-spacing:-.055em}
+.fmb-site .fmb-hero h1 em{font-weight:300;letter-spacing:-.055em}
+.fmb-site .fmb-monogram{font-family:Georgia,'Times New Roman',serif}
+.fmb-site .fmb-about{display:block;min-height:680px;padding:65px var(--gutter);background:#f2f5e2 url('../img/portfolio/francine-about-background.webp') center/cover no-repeat}
+.fmb-site .fmb-about>figure{display:none}
+.fmb-site .fmb-about-copy{margin-left:52%;padding:10px 0 65px;min-width:0}
+.fmb-site .fmb-about-copy:before{display:none}
+.fmb-site .fmb-about-copy h2{font-size:clamp(36px,3.8vw,59px);line-height:1.1;text-transform:none}
+.fmb-site .fmb-about-copy>p:not(.fmb-eyebrow){font-size:15px}
+.fmb-site .fmb-about:after{height:55px}
+.fmb-site .fmb-practice-intro h2{font-size:clamp(32px,3.6vw,52px);text-transform:none}
+.fmb-site .fmb-service h3{font-size:32px;letter-spacing:-.025em;text-transform:none}
+.fmb-site .fmb-consult{background:linear-gradient(90deg,#211510de,transparent 85%),linear-gradient(180deg,#775533 0,transparent 70px,#211510 100%),url('../img/portfolio/contact-interior-background.webp') center/cover}
+.fmb-site .fmb-consult h2{text-transform:none;font-size:clamp(58px,7vw,105px)}
+.fmb-site .fmb-contact-bottom{max-width:800px}
+@media(max-width:760px){.fmb-site .fmb-hero h1{font-size:clamp(46px,11vw,78px)}.fmb-site .fmb-about{min-height:0;padding:430px 24px 65px;background-size:auto 480px;background-position:26% top;background-color:#f2f5e2}.fmb-site .fmb-about-copy{margin:0;padding:25px 0 35px;background:#f2f5e2;box-shadow:0 -24px 30px 12px #f2f5e2}.fmb-site .fmb-about-copy h2{font-size:40px}.fmb-site .fmb-consult{background-position:65% center}.fmb-site .fmb-consult h2{font-size:56px}}
