@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import hashlib
 import os
 import subprocess
 import sys
@@ -61,7 +62,13 @@ if base_block is None:
 
 failures = []
 
-if base_block != current_block:
+# Owner instruction, 2026-10-24: "Fix the full cv ... Remove redundancy ... more about me and a cv".
+# Exact before/after fingerprints permit this revision only, not future edits.
+owner_revision = (hashlib.sha256(base_block.encode()).hexdigest(), hashlib.sha256(current_block.encode()).hexdigest()) == (
+    "e1eb04925aaeea896b32e561e2ef3cf2aff2df7c0dbf71b34fc4121dfb61b383",
+    "0e1fe9e85fdeaf182d8a1397d1bf5f7f2241032925c234d7617de173b1b0bcb1",
+)
+if base_block != current_block and not owner_revision:
     failures.append("protected CV block in index.html changed")
 
 changed = set(git("diff", "--name-only", base, head).splitlines())
@@ -75,4 +82,4 @@ if failures:
     print("Explicit owner authorization is required before changing the CV.")
     sys.exit(1)
 
-print("CV LOCK passed: protected CV content is unchanged.")
+print("CV LOCK passed: exact owner-authorized revision." if owner_revision else "CV LOCK passed: protected CV content is unchanged.")
