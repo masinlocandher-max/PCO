@@ -93,6 +93,7 @@
     if(sound){clearClose(sound);sound.hidden=true;sound.classList.remove('is-closing');}
     body.classList.remove('route-locked');
     scrollTopNow();
+    requestAnimationFrame(function(){window.dispatchEvent(new Event('scroll'));});
   }
   function finish(){
     revealCv();
