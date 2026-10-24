@@ -1,0 +1,81 @@
+@font-face {
+  font-family: 'Cormorant Garamond';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/cormorantgaramond/v21/co3umX5slCNuHLi8bLeY9MK7whWMhyjypVO7abI26QOD_s06GnM.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Cormorant Garamond';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/cormorantgaramond/v21/co3umX5slCNuHLi8bLeY9MK7whWMhyjypVO7abI26QOD_iE9GnM.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Manrope';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/manrope/v20/xn7_YHE41ni1AdIRqAuZuw1Bx9mbZk79FO_F.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Manrope';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/manrope/v20/xn7_YHE41ni1AdIRqAuZuw1Bx9mbZk7PFO_F.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Manrope';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/manrope/v20/xn7_YHE41ni1AdIRqAuZuw1Bx9mbZk4jE-_F.ttf) format('truetype');
+}
+
+/* Owner-requested transparent menus and editorial type, shared by portfolio and CV. */
+:root{--fmb-display:'Cormorant Garamond',Georgia,serif;--fmb-reading:'Manrope','Avenir Next',Arial,sans-serif}
+.fmb-site{--sans:var(--fmb-reading);--serif:var(--fmb-display);font-family:var(--fmb-reading)}
+.fmb-site :is(h1,h2,h3),.fmb-site .fmb-hero h1,.fmb-site .fmb-monogram{font-family:var(--fmb-display);font-weight:500;letter-spacing:-.035em}
+.fmb-site .fmb-hero h1{font-size:clamp(68px,7.6vw,118px);line-height:.95}
+.fmb-site .fmb-hero h1 em{font-weight:500;letter-spacing:-.035em}
+.fmb-site .fmb-about-copy h2{font-size:clamp(44px,4.5vw,70px);line-height:1}
+.fmb-site .fmb-practice-intro h2{font-size:clamp(40px,4.4vw,65px)}
+.fmb-site .fmb-service h3{font-size:40px}
+.fmb-site .fmb-nav{position:relative;background:transparent;border:0;box-shadow:none;backdrop-filter:none;margin-bottom:-82px;color:#f2f5e2}
+.fmb-site .fmb-nav nav a,.fmb-site .fmb-monogram{text-shadow:0 1px 10px #160d08}
+.fmb-site .fmb-hero-copy{padding-top:150px}
+.fmb-site .fmb-hero{height:clamp(720px,56vw,890px);max-height:890px}
+body:not(.route-locked) .topbar{position:absolute;background:transparent;border:0;box-shadow:none;backdrop-filter:none;color:#290024}
+body:not(.route-locked) .topbar .mark{color:#290024;font-family:var(--fmb-display);font-size:36px;font-weight:600}
+body:not(.route-locked) .topbar nav a{color:#290024;font-family:var(--fmb-reading);font-weight:500}
+body:not(.route-locked) .topbar nav a.active,body:not(.route-locked) .topbar nav a:hover{color:#775533}
+.professional-cv{font-family:var(--fmb-reading);display:grid;grid-template-columns:minmax(0,1fr) 260px;column-gap:52px}
+.professional-cv :is(h1,h2){font-family:var(--fmb-display);font-weight:500;letter-spacing:-.03em}
+.professional-cv h1{font-size:clamp(58px,6.4vw,88px);line-height:.98}
+.professional-cv h2{font-size:38px}
+.professional-cv h3{font-family:var(--fmb-reading);font-size:19px;letter-spacing:-.025em;font-weight:600}
+.cv-intro{grid-column:1/-1}
+.cv-section{grid-column:1;min-width:0}
+.cv-entry{grid-template-columns:1fr;gap:15px}
+.cv-skills{grid-template-columns:1fr;gap:25px}
+.cv-portrait-column{grid-column:2;grid-row:2 / 7;padding-top:42px;display:flex;flex-direction:column;gap:90px}
+.cv-portrait-column figure{margin:0}
+.cv-portrait-column img{width:100%;height:auto;display:block;aspect-ratio:4/5;object-fit:cover}
+.cv-portrait-column figcaption{font-size:10px;letter-spacing:.08em;line-height:1.5;color:#775533;margin-top:14px}
+@media(max-width:900px){.professional-cv{column-gap:30px;grid-template-columns:minmax(0,1fr) 210px}.cv-education,.cv-projects{grid-template-columns:1fr}}
+@media(max-width:760px){
+.fmb-site .fmb-nav{margin-bottom:-108px;background:transparent}
+.fmb-site .fmb-hero{height:auto;max-height:none;min-height:900px}
+.fmb-site .fmb-hero-copy{padding-top:450px}
+.fmb-site .fmb-hero h1{font-size:clamp(56px,12.5vw,86px)}
+.fmb-site .fmb-about-copy h2{font-size:49px}
+.professional-cv{display:block}.professional-cv h1{font-size:56px}.professional-cv h2{font-size:34px}
+.cv-portrait-column{display:grid;grid-template-columns:1fr 1fr;gap:18px;padding-top:20px;padding-bottom:30px}
+.cv-portrait-column figcaption{font-size:9px;letter-spacing:0}
+}
+@media print{.professional-cv{display:block}.cv-portrait-column{display:none}.professional-cv h1{font-size:30pt}.professional-cv h2{font-size:18pt}.professional-cv h3{font-size:12pt}.cv-entry{grid-template-columns:1fr 1.2fr}.cv-skills{grid-template-columns:repeat(3,1fr)}}
+/* Keep the transparent masthead precisely aligned with the photograph. */
+.fmb-site .fmb-nav{height:82px;box-sizing:border-box}
+@media(max-width:760px){.fmb-site .fmb-nav{height:108px}}
