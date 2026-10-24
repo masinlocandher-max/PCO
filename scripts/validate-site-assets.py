@@ -36,7 +36,7 @@ MANUSCRIPT_FORMATS = {'.docx', '.doc', '.odt', '.rtf', '.epub', '.mobi', '.pages
 # Narrow allowlist of .txt files that are published on purpose. Keep this a
 # list of exact known-safe filenames — never relax the .txt rule itself, or
 # a manuscript dropped in as a .txt would sail through.
-TEXT_ALLOWED = {'robots.txt', 'llms.txt', 'ads.txt', 'security.txt', 'humans.txt'}
+TEXT_ALLOWED = {'robots.txt', 'llms.txt', 'llms-full.txt', 'ads.txt', 'security.txt', 'humans.txt'}
 MANUSCRIPT_WORDS = ('manuscript', 'chapter-draft', 'full-text', 'fulltext')
 
 BOOK_ALLOWED = {
