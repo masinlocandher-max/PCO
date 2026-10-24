@@ -37,3 +37,6 @@ document.getElementById('cvPrint').addEventListener('click',function(){window.pr
   document.addEventListener('visibilitychange',function(){if(!document.hidden)expireSlots();});
 syncViewFromUrl();
 })();
+
+// Version the refreshed portrait without altering the protected CV record.
+document.querySelectorAll('img[src="assets/img/portfolio/francine-seated.jpg"]').forEach(img => { img.src = "assets/img/portfolio/francine-seated.jpg?v=heritage-20261024"; });
