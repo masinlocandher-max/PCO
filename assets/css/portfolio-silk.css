@@ -154,3 +154,5 @@
 .fmb-site .fmb-consult h2{text-transform:none;font-size:clamp(58px,7vw,105px)}
 .fmb-site .fmb-contact-bottom{max-width:800px}
 @media(max-width:760px){.fmb-site .fmb-hero h1{font-size:clamp(46px,11vw,78px)}.fmb-site .fmb-about{min-height:0;padding:430px 24px 65px;background-size:auto 480px;background-position:26% top;background-color:#f2f5e2}.fmb-site .fmb-about-copy{margin:0;padding:25px 0 35px;background:#f2f5e2;box-shadow:0 -24px 30px 12px #f2f5e2}.fmb-site .fmb-about-copy h2{font-size:40px}.fmb-site .fmb-consult{background-position:65% center}.fmb-site .fmb-consult h2{font-size:56px}}
+.fmb-site .fmb-nav{background:#211510}
+@media(max-width:760px){.fmb-site .fmb-about{background-position:10% top}}
