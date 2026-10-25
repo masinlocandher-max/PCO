@@ -1,0 +1,30 @@
+/* Original brand assets, displayed in white without altering source files. */
+.fmb-site .fmb-brand-gallery{position:relative;isolation:isolate;margin:0;padding:48px clamp(20px,5vw,88px) 40px;background:#290024;color:#fff;border-block:1px solid rgba(255,255,255,.18)}
+.fmb-brand-gallery-heading{text-align:center;margin-bottom:26px}
+.fmb-brand-gallery-heading .fmb-eyebrow{color:#fff;opacity:.8;margin:0 0 8px}
+.fmb-brand-gallery-heading h2{margin:0;font:400 clamp(26px,3vw,38px)/1.15 Georgia,serif;color:#fff}
+.fmb-brand-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));max-width:1120px;margin:0 auto}
+.fmb-brand-grid .fmb-brand-item{min-width:0;margin:0;padding:24px 22px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;border-bottom:1px solid rgba(255,255,255,.15)}
+.fmb-brand-grid .fmb-brand-item:nth-child(n+4){border-bottom:0}
+.fmb-brand-grid .fmb-brand-item:not(:nth-child(3n)){border-right:1px solid rgba(255,255,255,.15)}
+.fmb-brand-item>img{display:block;width:100%;max-width:265px;height:88px;object-fit:contain;filter:brightness(0) invert(1);opacity:1}
+.fmb-brand-item figcaption{font:400 12px/1.5 Arial,sans-serif;letter-spacing:.04em;color:#fff;text-align:center}
+.fmb-news-brand{height:88px;display:flex;align-items:center;justify-content:center;font-family:"Bodoni Moda","Bodoni MT",Didot,Georgia,serif;font-weight:900;font-size:clamp(24px,3.1vw,42px);letter-spacing:-.035em;white-space:nowrap;color:#fff}
+.fmb-fox-lockup{height:88px;display:flex;align-items:center;justify-content:center;gap:14px;color:#fff}
+.fmb-fox-lockup img{width:61px;height:68px;object-fit:contain;filter:brightness(0) invert(1)}
+.fmb-fox-lockup span{font:500 clamp(22px,2.8vw,34px)/1.1 Arial,sans-serif;letter-spacing:-.04em;white-space:nowrap}
+@media(max-width:760px){
+ .fmb-site .fmb-brand-gallery{padding:32px 16px 24px}
+ .fmb-brand-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .fmb-brand-grid .fmb-brand-item{padding:22px 12px;gap:14px}
+ .fmb-brand-grid .fmb-brand-item:not(:nth-child(3n)){border-right:0}
+ .fmb-brand-grid .fmb-brand-item:nth-child(odd){border-right:1px solid rgba(255,255,255,.15)}
+ .fmb-brand-grid .fmb-brand-item:nth-child(4){border-bottom:1px solid rgba(255,255,255,.15)}
+ .fmb-brand-item>img,.fmb-news-brand,.fmb-fox-lockup{height:70px}
+ .fmb-brand-item figcaption{font-size:11px;letter-spacing:0;max-width:100%}
+ .fmb-news-brand{font-size:clamp(20px,6vw,34px)}
+ .fmb-fox-lockup{gap:8px}
+ .fmb-fox-lockup img{width:40px;height:48px}
+ .fmb-fox-lockup span{font-size:clamp(20px,5vw,28px)}
+}
+@media print{.fmb-brand-gallery{display:none!important}}
