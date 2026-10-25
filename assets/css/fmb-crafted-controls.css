@@ -61,3 +61,5 @@ body:not(.route-locked) .topbar .mark{min-width:136px}
 .fmb-site :is(.fmb-button,.fmb-text-link,.fmb-service-action)::before{display:none}
 .fmb-site :is(.fmb-button,.fmb-text-link,.fmb-service-action),.fmb-site .fmb-world-links a,.fmb-site .fmb-control-arrow svg{transition:none!important;transform:none!important}
 }
+
+.fmb-site .fmb-nav .fmb-button{border-radius:12px 27px 27px 12px}
