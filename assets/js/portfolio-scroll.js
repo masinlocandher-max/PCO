@@ -40,6 +40,7 @@
   function enabled() { return !reduced.matches && !paused; }
   function syncMotion() {
     site.classList.toggle('motion-paused', !enabled());
+    document.body.classList.toggle('fmb-motion-off', !enabled());
     if (toggle) {
       toggle.hidden = reduced.matches;
       toggle.setAttribute('aria-pressed', String(paused));
@@ -53,12 +54,12 @@
     if (gate.hidden || !document.body.classList.contains('route-locked')) return;
     var viewport = window.innerHeight;
     var max = Math.max(1, document.documentElement.scrollHeight - viewport);
-    if (progress) progress.style.width = clamp(window.scrollY / max * 100, 0, 100) + '%';
+    if (progress) progress.style.transform = 'scaleX(' + clamp(window.scrollY / max, 0, 1) + ')';
     var motion = enabled();
     if (portrait && hero) {
       var heroTop = hero.getBoundingClientRect().top;
-      var amount = motion ? clamp(-heroTop / viewport, 0, 1) : 0;
-      portrait.style.setProperty('--portrait-scale', String(motion ? 1.035 + amount * .035 : 1));
+      var amount = motion && !small.matches ? clamp(-heroTop / viewport, 0, 1) : 0;
+      portrait.style.setProperty('--portrait-scale', String(motion && !small.matches ? 1.015 + amount * .02 : 1));
       portrait.style.setProperty('--portrait-shift', (motion ? -amount * 14 : 0) + 'px');
     }
     if (statement) {
@@ -87,7 +88,11 @@
         if (entry.isIntersecting) { entry.target.classList.add('is-visible'); observer.unobserve(entry.target); }
       });
     }, { threshold: .08, rootMargin: '0px 0px -24px 0px' });
-    site.querySelectorAll('[data-reveal]').forEach(function (element) { observer.observe(element); });
+    site.querySelectorAll('[data-reveal]').forEach(function (element) {
+      // Keep keyboard destinations visible before focus arrives.
+      element.addEventListener('focusin', function () { element.classList.add('is-visible'); });
+      observer.observe(element);
+    });
     site.classList.add('motion-ready');
   }
   if (toggle) {
