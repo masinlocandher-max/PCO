@@ -157,3 +157,55 @@ body.fmb-motion-off *,body.fmb-motion-off *::before,body.fmb-motion-off *::after
 .fmb-site.motion-paused [data-enter],.fmb-site.motion-paused [data-reveal]{opacity:1!important;transform:none!important}
 @media(max-width:760px){.fmb-site.motion-ready [data-enter]{animation-duration:420ms}.fmb-site.motion-ready [data-reveal]{transition-duration:380ms;transform:translateY(8px)}.fmb-site.motion-ready [data-reveal].is-visible{transform:none}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto!important}*,*::before,*::after{animation:none!important;transition:none!important}.fmb-site.motion-ready [data-enter],.fmb-site.motion-ready [data-reveal]{opacity:1!important;transform:none!important}}
+
+/* FMB: tactile Filipino materials with clear, touch-friendly controls. */
+@media screen {
+body:not(.route-locked){background:radial-gradient(ellipse at 90% 5%,#e3dea480,transparent 48%),#f2f5e2}
+.professional-cv{--cv-edge:#b89a6850;--cv-glass:#fffff5c9}
+.professional-cv .cv-intro{padding-bottom:66px}
+.professional-cv .cv-photo{border:1px solid #fff9;border-radius:28px;background:#fff7;box-shadow:0 18px 50px #3e27151c,inset 0 1px #fff;overflow:visible;padding:10px;isolation:isolate}
+.professional-cv .cv-photo img{border-radius:20px;mask-image:none}
+.professional-cv .cv-photo figcaption{padding:15px 8px 8px;background:none;letter-spacing:.04em}
+.professional-cv .cv-photo::after{content:'';position:absolute;z-index:-1;inset:25px -17px -24px 28px;border:1px solid #b797605c;border-radius:30px;background:url('../img/portfolio/cv-solihiya-silk.webp') center/cover;transform:rotate(3deg);pointer-events:none}
+.professional-cv .cv-section{background:var(--cv-glass);border:1px solid #fff;border-radius:26px;padding:32px;margin-bottom:24px;box-shadow:0 12px 35px #44251208,inset 0 1px 0 #fff;position:relative}
+.professional-cv .cv-section::after{display:none}
+.professional-cv .cv-section-heading{gap:16px;align-items:center;margin-bottom:28px}
+.professional-cv .cv-section-heading>span{display:grid;place-items:center;width:38px;height:38px;min-width:38px;border:1px solid #c6a67770;border-radius:13px;background:linear-gradient(145deg,#fffdf2,#e3dea475);padding:0;font-size:11px;box-shadow:inset 0 1px #fff}
+.professional-cv .cv-section h2{font-size:clamp(29px,3vw,38px)}
+.professional-cv .cv-entry{padding:27px 0;border-color:#77553320}
+.professional-cv .cv-label{letter-spacing:.12em;font-size:10px}
+.professional-cv .cv-column-art{display:block;border-radius:120px 120px 26px 26px;border:1px solid #b89a6860;background:url('../img/portfolio/cv-solihiya-silk.webp') center/cover;mask-image:none;box-shadow:0 20px 55px #3e271522;top:28px;height:min(720px,calc(100svh - 56px));overflow:visible}
+.professional-cv .cv-column-art::after{content:'';position:absolute;left:-32px;right:-18px;bottom:-28px;height:180px;background:url('../img/portfolio/cv-solihiya-silk.webp') center bottom/100% auto;mask-image:linear-gradient(180deg,transparent,#000 35%,#000 85%,transparent);border-radius:50% 8% 30% 15%;pointer-events:none}
+.professional-cv::before{background:linear-gradient(180deg,#e3dea430,transparent)!important;border:0;mask-image:none!important}
+.professional-cv .cv-actions{gap:12px}
+.professional-cv .cv-actions :is(a,button),.professional-cv .cv-projects a{display:inline-flex;align-items:center;justify-content:center;gap:14px;min-height:48px;padding:13px 22px;border-radius:999px;border:1px solid #77553335;background:linear-gradient(160deg,#fffef7,#ece6d3);box-shadow:inset 0 1px 0 #fff,0 5px 15px #37211910;text-decoration:none;font:500 12px var(--fmb-reading);color:#290024;transition:transform 160ms ease,box-shadow 160ms ease}
+.professional-cv .cv-actions button{background:linear-gradient(145deg,#582b4c,#290024 75%);color:#fffbed;border-color:#79526a;box-shadow:inset 0 1px 0 #ffffff30,0 8px 22px #29002428}
+.professional-cv .cv-actions a::after,.professional-cv .cv-projects a::after{content:'↗';font-size:16px}
+.professional-cv .cv-actions button::after{content:'↓';font-size:17px}
+.professional-cv :is(.cv-actions a,.cv-actions button,.cv-projects a):active{transform:scale(.97)}
+body:not(.route-locked) .topbar nav{gap:4px;padding:5px;border:1px solid #fff9;border-radius:999px;background:#fffff580;backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);box-shadow:inset 0 1px #fff,0 6px 20px #37211908}
+body:not(.route-locked) .topbar nav a{padding:10px 15px;border-radius:999px;min-height:44px;display:flex;align-items:center;font-size:10px;text-decoration:none}
+body:not(.route-locked) .topbar nav a.active{background:#290024;color:#fffbed;box-shadow:0 3px 8px #29002420}
+.cv-audio-choice{gap:6px}
+.cv-audio-choice button{border-radius:999px;background:#fff7;border:1px solid #77553325;padding:10px 18px;box-shadow:inset 0 1px #fff}
+.cv-audio-choice button[aria-pressed=true]{background:#290024;color:#fffbed;border-color:#290024;box-shadow:0 4px 12px #29002420}
+body:not(.route-locked) .sound{border-radius:999px;padding:13px 21px;box-shadow:0 8px 25px #29002425,inset 0 1px #fff3}
+@media(hover:hover){.professional-cv :is(.cv-actions a,.cv-actions button,.cv-projects a):hover{transform:translateY(-2px);box-shadow:0 10px 22px #29002420}}
+@media(max-width:760px){
+.professional-cv{padding:0 20px 40px}
+.professional-cv .cv-intro{padding-top:30px}
+.professional-cv .cv-photo{max-width:290px;width:80%;justify-self:center;margin:0 0 15px}
+.professional-cv .cv-photo img{max-height:310px;object-position:50% 25%}
+.professional-cv .cv-section{padding:25px 20px;margin-bottom:22px;border-radius:22px}
+.professional-cv .cv-section-heading{gap:12px}
+.professional-cv .cv-section h2{font-size:30px}
+.professional-cv .cv-section-heading>span{width:32px;height:32px;min-width:32px}
+.professional-cv::before{display:none}
+.professional-cv .cv-section::before{content:'';position:absolute;z-index:-1;top:20px;bottom:20px;left:-8px;width:18px;border-radius:12px;background:url('../img/portfolio/cv-solihiya-silk.webp') left top/90px auto;pointer-events:none}
+body:not(.route-locked) .topbar nav{border-radius:22px;justify-content:center;gap:0;padding:4px}
+body:not(.route-locked) .topbar nav a{padding:8px 10px;min-height:38px;font-size:9px}
+.cv-audio-choice{padding:156px 24px 0}
+.cv-audio-choice span{flex-basis:auto;width:100%;margin-bottom:4px}
+.cv-actions :is(a,button){flex:1}
+}
+}
