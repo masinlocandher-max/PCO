@@ -1,0 +1,64 @@
+/* Small screens: explicit header rows, readable controls, and contained CV artwork. */
+@media screen and (max-width:760px){
+.fmb-site{--gutter:20px}
+.fmb-site .fmb-nav{display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-rows:68px auto;height:auto;min-height:136px;padding:8px 20px 10px;gap:6px 12px;margin-bottom:-136px;align-items:center}
+.fmb-site .fmb-nav .fmb-monogram{width:124px;min-width:0}
+.fmb-site .fmb-nav img.fmb-handwritten{width:124px;height:54px;max-width:124px}
+.fmb-site .fmb-nav nav{grid-column:1/-1;grid-row:2;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));width:100%;min-width:0;padding:3px;gap:0}
+.fmb-site .fmb-nav nav a{justify-content:center;white-space:nowrap;min-height:44px;padding:7px 2px;font-size:11px;letter-spacing:0}
+.fmb-site .fmb-nav .fmb-contact{grid-column:2;grid-row:1;min-height:48px;padding:6px 7px 6px 14px;gap:10px;font-size:11px}
+.fmb-site .fmb-hero{height:auto;min-height:0;max-height:none}
+.fmb-site .fmb-portrait{top:85px;height:350px}
+.fmb-site .fmb-photo-window img{object-position:80% center}
+.fmb-site .fmb-hero-copy{width:100%;padding:400px 20px 28px}
+.fmb-site .fmb-hero::after{background:linear-gradient(180deg,#21151055,transparent 155px,transparent 290px,#211510 435px,#211510 calc(100% - 65px),#493320)}
+.fmb-site .fmb-hero h1{font-size:clamp(43px,11.5vw,64px);line-height:.98;letter-spacing:-.04em}
+.fmb-site .fmb-hero .fmb-eyebrow{font-size:10px;max-width:36ch;letter-spacing:.09em}
+.fmb-site .fmb-hero-intro>p{font-size:15px;line-height:1.7}
+.fmb-site .fmb-hero .fmb-actions{display:grid;grid-template-columns:minmax(0,1fr);gap:12px}
+.fmb-site .fmb-hero .fmb-actions a{width:100%;min-height:54px;padding:7px 8px 7px 20px;font-size:12px;letter-spacing:.025em}
+.fmb-site .fmb-hero-foot{position:relative;inset:auto;margin:0 20px;min-height:62px;flex-wrap:wrap;gap:8px;padding:8px 0}
+.fmb-site .fmb-hero-foot>span{font-size:10px;flex:1;min-width:130px}
+.fmb-site .fmb-motion{font-size:11px;padding-inline:12px;min-height:44px}
+.fmb-site :is(.fmb-case-copy,.fmb-service>div){padding-inline:20px;min-width:0}
+.fmb-site :is(.fmb-text-link,.fmb-service-action){max-width:100%;min-height:50px;font-size:12px;letter-spacing:0}
+.fmb-site .fmb-case-copy .fmb-text-link{font-size:12px;max-width:100%}
+.fmb-site .fmb-case-links{display:grid;grid-template-columns:minmax(0,1fr);gap:12px}
+.fmb-site .fmb-control-label{min-width:0;white-space:normal;text-align:left}
+.fmb-site .fmb-service :is(p,li){font-size:15px;line-height:1.7}
+.fmb-site .fmb-case-visual{height:270px;min-width:0}
+.fmb-site .fmb-world-links a{min-width:0;padding:22px 66px 22px 20px}
+.fmb-site .fmb-world-links strong{font-size:25px;overflow-wrap:anywhere}
+.fmb-site .fmb-email{font-size:clamp(17px,5vw,23px);overflow-wrap:anywhere}
+.fmb-site .fmb-contact-bottom,.fmb-site .pf-slots{display:grid;grid-template-columns:minmax(0,1fr);gap:16px}
+.fmb-site .pf-slot{min-width:0}
+.fmb-site .fmb-footer{padding:30px 20px 40px;gap:24px}
+.fmb-site .fmb-footer>div{display:flex;flex-wrap:wrap;gap:6px 20px}
+.fmb-site .fmb-footer>div a{min-height:44px;font-size:13px}
+body:not(.route-locked) .topbar{height:auto;min-height:176px;display:grid;grid-template-columns:minmax(0,1fr);gap:8px;padding:8px 20px 12px;align-items:start}
+body:not(.route-locked) .topbar .mark{justify-self:start;min-width:0}
+body:not(.route-locked) .topbar img.fmb-handwritten{width:124px;height:54px}
+body:not(.route-locked) .topbar nav{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));width:100%;min-width:0;gap:0;padding:4px;border-radius:20px}
+body:not(.route-locked) .topbar nav a{display:flex;align-items:center;justify-content:center;min-height:44px;padding:8px 3px;font-size:10px;letter-spacing:.015em;white-space:nowrap}
+body:not(.route-locked) .cv-audio-choice{padding:192px 20px 0;gap:8px}
+.cv-audio-choice span{font-size:11px}
+.cv-audio-choice button{min-height:44px;font-size:12px;padding:10px 16px}
+body:not(.route-locked) .professional-cv{padding:0 20px 88px;max-width:100%;min-width:0}
+.professional-cv .cv-intro{padding-top:28px;gap:24px}
+.professional-cv .cv-intro::before{top:-300px}
+.professional-cv .cv-photo{width:62%;max-width:230px}
+.professional-cv .cv-photo img{max-height:265px}
+.professional-cv .cv-intro h1{font-size:clamp(44px,12vw,64px);line-height:1;overflow-wrap:normal}
+.professional-cv .cv-intro-copy{min-width:0;width:100%}
+.professional-cv .cv-intro::after{width:100%;right:0;bottom:-48px;height:150px}
+.professional-cv .cv-facts>div{grid-template-columns:minmax(80px,.7fr) minmax(0,1.3fr);gap:12px}
+.professional-cv .cv-facts dd{min-width:0;overflow-wrap:anywhere}
+.professional-cv .cv-actions{display:grid;grid-template-columns:minmax(0,1fr);gap:12px}
+.professional-cv .cv-actions :is(a,button){width:100%;min-height:52px;font-size:13px}
+.professional-cv .cv-section{padding:26px 20px;min-width:0}
+.professional-cv .cv-section h2{font-size:clamp(30px,8.3vw,38px);overflow-wrap:normal}
+.professional-cv .cv-entry h3{font-size:20px;overflow-wrap:anywhere}
+.professional-cv .cv-entry ul{font-size:15px}
+.professional-cv .cv-section :is(p,article,ul){min-width:0}
+body:not(.route-locked) .sound{right:max(14px,env(safe-area-inset-right));bottom:max(14px,env(safe-area-inset-bottom));min-height:44px}
+}
