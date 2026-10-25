@@ -1,7 +1,7 @@
 /* FMB bespoke controls: brass inlay, inset arrow, quiet physical feedback. */
 .fmb-brand-filter{position:absolute;pointer-events:none;overflow:hidden}
-.fmb-handwritten{display:block;width:154px;height:67px;object-fit:contain;filter:url(#fmb-signature-ink)}
-.fmb-site .fmb-monogram{display:flex;flex-direction:column;align-items:center;gap:0;text-decoration:none;line-height:1}
+.fmb-site img.fmb-handwritten,body .topbar img.fmb-handwritten{display:block;width:154px;height:67px;max-width:154px;object-fit:contain;filter:brightness(0) invert(1)}
+.fmb-site .fmb-monogram{width:154px;flex:0 0 154px;display:flex;flex-direction:column;align-items:center;gap:0;text-decoration:none;line-height:1}
 .fmb-site .fmb-monogram>span{font:500 7px/1.4 var(--fmb-reading);letter-spacing:.19em;text-transform:uppercase;margin-top:-4px}
 body:not(.route-locked) .topbar .mark{display:flex;align-items:center;min-width:154px}
 .fmb-site .fmb-nav{height:100px;margin-bottom:-100px;gap:24px}
@@ -18,7 +18,7 @@ body:not(.route-locked) .topbar .mark{display:flex;align-items:center;min-width:
 .fmb-site .fmb-text-link,.fmb-site .fmb-service-action{background:linear-gradient(125deg,#fffdf4cc,#e3dea430);--control-edge:#77553350;box-shadow:inset 0 1px #fff9,0 6px 18px #2900240a}
 .fmb-site :is(.fmb-hero,.fmb-practice,.fmb-speaking,.fmb-work-end) .fmb-text-link,.fmb-site .fmb-service-action{--control-ink:#f2f5e2;--control-edge:#e3dea455;background:#f2f5e20b;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);box-shadow:inset 0 1px #ffffff26,0 6px 18px #0001}
 .fmb-site :is(.fmb-hero,.fmb-practice,.fmb-speaking,.fmb-work-end) .fmb-text-link .fmb-control-arrow,.fmb-site .fmb-service-action .fmb-control-arrow{background:linear-gradient(135deg,#f2f5e2,#d4954d);color:#290024;border-color:#e3dea4}
-.fmb-site .fmb-nav .fmb-button{min-height:50px;padding-left:20px;gap:18px;font-size:10px}
+.fmb-site .fmb-nav .fmb-button{white-space:nowrap;min-height:50px;padding-left:20px;gap:18px;font-size:10px}
 .fmb-site .fmb-nav .fmb-control-arrow{width:32px;height:32px;flex-basis:32px}
 .fmb-site .fmb-actions{gap:14px;align-items:center;flex-wrap:wrap}
 .fmb-site .fmb-hero-intro{max-width:46ch}
@@ -47,7 +47,7 @@ body:not(.route-locked) .topbar .mark{display:flex;align-items:center;min-width:
 @media(max-width:760px){
 .fmb-site .fmb-nav{height:144px;margin-bottom:-144px;padding-top:10px;padding-bottom:8px;gap:7px;grid-template-columns:1fr auto}
 .fmb-site .fmb-monogram{align-items:flex-start}
-.fmb-handwritten{width:136px;height:59px}
+.fmb-site img.fmb-handwritten,body .topbar img.fmb-handwritten{width:136px;height:59px;max-width:136px}.fmb-site .fmb-monogram{width:136px;flex-basis:136px}
 .fmb-site .fmb-monogram>span{font-size:6px;letter-spacing:.13em;margin-top:-2px}
 .fmb-site .fmb-nav nav{grid-column:1/-1;padding:3px 5px;justify-content:space-between;gap:0;width:100%;box-sizing:border-box}
 .fmb-site .fmb-nav nav a{font-size:10px;padding:8px 10px;min-height:40px}
