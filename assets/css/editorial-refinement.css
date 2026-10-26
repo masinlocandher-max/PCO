@@ -43,14 +43,14 @@
 .fmb-site .fmb-about-copy h2{font-size:clamp(44px,4.5vw,70px);line-height:1}
 .fmb-site .fmb-practice-intro h2{font-size:clamp(40px,4.4vw,65px)}
 .fmb-site .fmb-service h3{font-size:40px}
-.fmb-site .fmb-nav{position:relative;background:transparent;border:0;box-shadow:none;backdrop-filter:none;margin-bottom:-82px;color:#f2f5e2}
+.fmb-site .fmb-nav{position:relative;background:transparent;border:0;box-shadow:none;backdrop-filter:none;margin-bottom:-82px;color:#f3ede3}
 .fmb-site .fmb-nav nav a,.fmb-site .fmb-monogram{text-shadow:0 1px 10px #160d08}
 .fmb-site .fmb-hero-copy{padding-top:150px}
 .fmb-site .fmb-hero{height:clamp(720px,56vw,890px);max-height:890px}
-body:not(.route-locked) .topbar{position:absolute;background:transparent;border:0;box-shadow:none;backdrop-filter:none;color:#290024}
-body:not(.route-locked) .topbar .mark{color:#290024;font-family:var(--fmb-display);font-size:36px;font-weight:600}
-body:not(.route-locked) .topbar nav a{color:#290024;font-family:var(--fmb-reading);font-weight:500}
-body:not(.route-locked) .topbar nav a.active,body:not(.route-locked) .topbar nav a:hover{color:#775533}
+body:not(.route-locked) .topbar{position:absolute;background:transparent;border:0;box-shadow:none;backdrop-filter:none;color:#1e1813}
+body:not(.route-locked) .topbar .mark{color:#1e1813;font-family:var(--fmb-display);font-size:36px;font-weight:600}
+body:not(.route-locked) .topbar nav a{color:#1e1813;font-family:var(--fmb-reading);font-weight:500}
+body:not(.route-locked) .topbar nav a.active,body:not(.route-locked) .topbar nav a:hover{color:#655342}
 .professional-cv{font-family:var(--fmb-reading);display:grid;grid-template-columns:minmax(0,1fr) 260px;column-gap:52px}
 .professional-cv :is(h1,h2){font-family:var(--fmb-display);font-weight:500;letter-spacing:-.03em}
 .professional-cv h1{font-size:clamp(58px,6.4vw,88px);line-height:.98}
@@ -63,7 +63,7 @@ body:not(.route-locked) .topbar nav a.active,body:not(.route-locked) .topbar nav
 .cv-portrait-column{grid-column:2;grid-row:2 / 7;padding-top:42px;display:flex;flex-direction:column;gap:90px}
 .cv-portrait-column figure{margin:0}
 .cv-portrait-column img{width:100%;height:auto;display:block;aspect-ratio:4/5;object-fit:cover}
-.cv-portrait-column figcaption{font-size:10px;letter-spacing:.08em;line-height:1.5;color:#775533;margin-top:14px}
+.cv-portrait-column figcaption{font-size:10px;letter-spacing:.08em;line-height:1.5;color:#655342;margin-top:14px}
 @media(max-width:900px){.professional-cv{column-gap:30px;grid-template-columns:minmax(0,1fr) 210px}.cv-education,.cv-projects{grid-template-columns:1fr}}
 @media(max-width:760px){
 .fmb-site .fmb-nav{margin-bottom:-108px;background:transparent}
@@ -82,7 +82,7 @@ body:not(.route-locked) .topbar nav a.active,body:not(.route-locked) .topbar nav
 /* A continuous portrait margin connects the personal introduction and CV chapters. */
 @media screen and (min-width:761px){
 .professional-cv{position:relative;isolation:isolate;grid-template-columns:minmax(0,1fr) 300px;column-gap:52px}
-.professional-cv::before{content:'';position:absolute;z-index:-1;top:150px;bottom:65px;right:50px;width:300px;background:linear-gradient(180deg,#e3dea480,#e3dea440 40%,#f2f5e200);border-left:1px solid #b78b5155;pointer-events:none}
+.professional-cv::before{content:'';position:absolute;z-index:-1;top:150px;bottom:65px;right:50px;width:300px;background:linear-gradient(180deg,#d6c39f80,#d6c39f40 40%,#f3ede300);border-left:1px solid #b78b5155;pointer-events:none}
 .cv-intro{grid-template-columns:minmax(0,1fr) 300px;gap:52px}
 .cv-photo{padding:18px 18px 0;position:relative}
 .cv-photo img{aspect-ratio:4/5;object-fit:cover;mask-image:linear-gradient(#000 85%,transparent 100%)}
@@ -93,7 +93,7 @@ body:not(.route-locked) .topbar nav a.active,body:not(.route-locked) .topbar nav
 .cv-portrait-column figure{position:relative}
 .cv-portrait-column img{mask-image:linear-gradient(180deg,transparent,#000 7%,#000 84%,transparent)}
 .cv-portrait-column figcaption{margin-top:0;padding:2px 0 20px;border-bottom:1px solid #b78b5140}
-.cv-section-heading>span{color:#775533;border-top:2px solid #b78b51;padding-top:9px;min-width:24px}
+.cv-section-heading>span{color:#655342;border-top:2px solid #b78b51;padding-top:9px;min-width:24px}
 }
 @media screen and (min-width:761px) and (max-width:1000px){
 .professional-cv{grid-template-columns:minmax(0,1fr) 230px;column-gap:30px}
@@ -102,12 +102,12 @@ body:not(.route-locked) .topbar nav a.active,body:not(.route-locked) .topbar nav
 .cv-section::after{right:-30px;width:30px}
 }
 @media screen and (max-width:760px){
-.cv-photo{padding:14px 14px 0;background:linear-gradient(180deg,#e3dea480,#e3dea430,transparent);border-top:1px solid #b78b5180}
+.cv-photo{padding:14px 14px 0;background:linear-gradient(180deg,#d6c39f80,#d6c39f30,transparent);border-top:1px solid #b78b5180}
 .cv-photo img{mask-image:linear-gradient(#000 82%,transparent)}
 .cv-intro{gap:18px}
 .cv-section{border-top-color:#b78b5160}
 .cv-section-heading>span{border-top:2px solid #b78b51;padding-top:8px;min-width:22px}
-.cv-portrait-column{position:relative;gap:0;padding:22px 12px;background:linear-gradient(180deg,#e3dea440,#e3dea480,transparent);border-top:1px solid #b78b5180}
+.cv-portrait-column{position:relative;gap:0;padding:22px 12px;background:linear-gradient(180deg,#d6c39f40,#d6c39f80,transparent);border-top:1px solid #b78b5180}
 .cv-portrait-column figure{padding:0 9px}
 .cv-portrait-column figure+figure{border-left:1px solid #b78b5155;padding-top:35px}
 .cv-portrait-column img{mask-image:linear-gradient(#000 82%,transparent)}
@@ -117,13 +117,13 @@ body:not(.route-locked) .topbar nav a.active,body:not(.route-locked) .topbar nav
 /* One portrait, followed by a single continuous material study. */
 .cv-design-column{grid-column:2;grid-row:2 / 7;min-width:0;position:relative}
 .cv-column-art{position:sticky;top:24px;height:min(1000px,calc(100svh - 48px));background:url('../img/portfolio/cv-palace-interior.webp') center/cover no-repeat;mask-image:linear-gradient(180deg,transparent,#000 7%,#000 88%,transparent)}
-@media screen and (min-width:761px){.professional-cv::before{border-left:0;background:linear-gradient(180deg,#e3dea440,#e3dea425 70%,transparent)}.cv-photo{padding:0}.cv-photo img{mask-image:linear-gradient(#000 80%,transparent)}.cv-photo figcaption{padding:0 18px 20px}.cv-section::after{background:linear-gradient(90deg,#b78b5155,transparent)}}
+@media screen and (min-width:761px){.professional-cv::before{border-left:0;background:linear-gradient(180deg,#d6c39f40,#d6c39f25 70%,transparent)}.cv-photo{padding:0}.cv-photo img{mask-image:linear-gradient(#000 80%,transparent)}.cv-photo figcaption{padding:0 18px 20px}.cv-section::after{background:linear-gradient(90deg,#b78b5155,transparent)}}
 @media screen and (max-width:760px){.cv-design-column{display:none}.professional-cv{position:relative;isolation:isolate}.professional-cv::before{content:'';position:absolute;z-index:-1;right:0;top:150px;bottom:35px;width:18px;background:url('../img/portfolio/cv-palace-interior.webp') center/100% 100% no-repeat;opacity:.65;mask-image:linear-gradient(transparent,#000 10%,#000 90%,transparent);pointer-events:none}}
 @media print{.cv-design-column,.professional-cv::before,.cv-section::after{display:none!important}.cv-photo img{mask-image:none}}
-@media screen and (min-width:761px){.professional-cv::before{background:linear-gradient(180deg,transparent 92%,#f2f5e2),url('../img/portfolio/cv-palace-interior.webp') center top/100% 100% no-repeat;mask-image:linear-gradient(90deg,transparent,#000 12%)}.cv-column-art{display:none}.cv-photo figcaption{background:#f2f5e280}}
+@media screen and (min-width:761px){.professional-cv::before{background:linear-gradient(180deg,transparent 92%,#f3ede3),url('../img/portfolio/cv-palace-interior.webp') center top/100% 100% no-repeat;mask-image:linear-gradient(90deg,transparent,#000 12%)}.cv-column-art{display:none}.cv-photo figcaption{background:#f3ede380}}
 
 /* Preserve architectural proportions in the palace-inspired column. */
-@media screen and (min-width:761px){.professional-cv::before{background:linear-gradient(180deg,#cbb68b40,#77553325 65%,transparent);mask-image:linear-gradient(90deg,transparent,#000 18%)}.cv-column-art{display:block;height:min(900px,calc(100svh - 48px));background-size:cover;background-position:center;mask-image:linear-gradient(180deg,transparent,#000 5%,#000 93%,transparent)}.cv-design-column{align-self:stretch}.cv-photo img{mask-image:linear-gradient(#000 85%,transparent)}}
+@media screen and (min-width:761px){.professional-cv::before{background:linear-gradient(180deg,#cbb68b40,#65534225 65%,transparent);mask-image:linear-gradient(90deg,transparent,#000 18%)}.cv-column-art{display:block;height:min(900px,calc(100svh - 48px));background-size:cover;background-position:center;mask-image:linear-gradient(180deg,transparent,#000 5%,#000 93%,transparent)}.cv-design-column{align-self:stretch}.cv-photo img{mask-image:linear-gradient(#000 85%,transparent)}}
 @media print{.cv-column-art{display:none}}
 
 /* Unified Filipino heritage photography and non-blocking audio choice. */
@@ -131,8 +131,8 @@ body:not(.route-locked) .topbar nav a.active,body:not(.route-locked) .topbar nav
 .fmb-site .fmb-service:nth-child(2) summary{background-image:linear-gradient(0deg,#211510e0,transparent 75%),url('../img/portfolio/service-media-heritage.webp')}
 .fmb-site .fmb-service:nth-child(3) summary{background-image:linear-gradient(0deg,#211510e0,transparent 75%),url('../img/portfolio/service-ai-heritage.webp')}
 .fmb-site .fmb-practice{background:linear-gradient(180deg,#211510,#211510eb 25%,#211510ed 85%,#211510),url('../img/portfolio/service-social-heritage.webp') center/cover}
-.cv-audio-choice{max-width:1240px;margin:0 auto;padding:105px 50px 0;display:flex;align-items:center;gap:10px;font:11px var(--fmb-reading);color:#775533}
-.cv-audio-choice span{margin-right:10px}.cv-audio-choice button{font:inherit;color:#290024;background:transparent;border:1px solid #77553350;padding:10px 14px;min-height:44px;cursor:pointer}.cv-audio-choice button[aria-pressed=true]{background:#e3dea470;border-color:#775533}.cv-audio-choice button:focus-visible{outline:2px solid #775533;outline-offset:3px}
+.cv-audio-choice{max-width:1240px;margin:0 auto;padding:105px 50px 0;display:flex;align-items:center;gap:10px;font:11px var(--fmb-reading);color:#655342}
+.cv-audio-choice span{margin-right:10px}.cv-audio-choice button{font:inherit;color:#1e1813;background:transparent;border:1px solid #65534250;padding:10px 14px;min-height:44px;cursor:pointer}.cv-audio-choice button[aria-pressed=true]{background:#d6c39f70;border-color:#655342}.cv-audio-choice button:focus-visible{outline:2px solid #655342;outline-offset:3px}
 .route-locked .cv-audio-choice{display:none}
 body:not(.route-locked) .professional-cv{padding-top:0}
 @media(max-width:760px){.cv-audio-choice{padding:160px 24px 0;flex-wrap:wrap;gap:8px}.cv-audio-choice span{flex-basis:100%}}
@@ -160,7 +160,7 @@ body.fmb-motion-off *,body.fmb-motion-off *::before,body.fmb-motion-off *::after
 
 /* FMB: tactile Filipino materials with clear, touch-friendly controls. */
 @media screen {
-body:not(.route-locked){background:radial-gradient(ellipse at 90% 5%,#e3dea480,transparent 48%),#f2f5e2}
+body:not(.route-locked){background:radial-gradient(ellipse at 90% 5%,#d6c39f80,transparent 48%),#f3ede3}
 .professional-cv{--cv-edge:#b89a6850;--cv-glass:#fffff5c9}
 .professional-cv .cv-intro{padding-bottom:66px}
 .professional-cv .cv-photo{border:1px solid #fff9;border-radius:28px;background:#fff7;box-shadow:0 18px 50px #3e27151c,inset 0 1px #fff;overflow:visible;padding:10px;isolation:isolate}
@@ -170,27 +170,27 @@ body:not(.route-locked){background:radial-gradient(ellipse at 90% 5%,#e3dea480,t
 .professional-cv .cv-section{background:var(--cv-glass);border:1px solid #fff;border-radius:26px;padding:32px;margin-bottom:24px;box-shadow:0 12px 35px #44251208,inset 0 1px 0 #fff;position:relative}
 .professional-cv .cv-section::after{display:none}
 .professional-cv .cv-section-heading{gap:16px;align-items:center;margin-bottom:28px}
-.professional-cv .cv-section-heading>span{display:grid;place-items:center;width:38px;height:38px;min-width:38px;border:1px solid #c6a67770;border-radius:13px;background:linear-gradient(145deg,#fffdf2,#e3dea475);padding:0;font-size:11px;box-shadow:inset 0 1px #fff}
+.professional-cv .cv-section-heading>span{display:grid;place-items:center;width:38px;height:38px;min-width:38px;border:1px solid #c6a67770;border-radius:13px;background:linear-gradient(145deg,#fffdf2,#d6c39f75);padding:0;font-size:11px;box-shadow:inset 0 1px #fff}
 .professional-cv .cv-section h2{font-size:clamp(29px,3vw,38px)}
-.professional-cv .cv-entry{padding:27px 0;border-color:#77553320}
+.professional-cv .cv-entry{padding:27px 0;border-color:#65534220}
 .professional-cv .cv-label{letter-spacing:.12em;font-size:10px}
 .professional-cv .cv-column-art{display:block;border-radius:120px 120px 26px 26px;border:1px solid #b89a6860;background:url('../img/portfolio/cv-solihiya-silk.webp') center/cover;mask-image:none;box-shadow:0 20px 55px #3e271522;top:28px;height:min(720px,calc(100svh - 56px));overflow:visible}
 .professional-cv .cv-column-art::after{content:'';position:absolute;left:-32px;right:-18px;bottom:-28px;height:180px;background:url('../img/portfolio/cv-solihiya-silk.webp') center bottom/100% auto;mask-image:linear-gradient(180deg,transparent,#000 35%,#000 85%,transparent);border-radius:50% 8% 30% 15%;pointer-events:none}
-.professional-cv::before{background:linear-gradient(180deg,#e3dea430,transparent)!important;border:0;mask-image:none!important}
+.professional-cv::before{background:linear-gradient(180deg,#d6c39f30,transparent)!important;border:0;mask-image:none!important}
 .professional-cv .cv-actions{gap:12px}
-.professional-cv .cv-actions :is(a,button),.professional-cv .cv-projects a{display:inline-flex;align-items:center;justify-content:center;gap:14px;min-height:48px;padding:13px 22px;border-radius:999px;border:1px solid #77553335;background:linear-gradient(160deg,#fffef7,#ece6d3);box-shadow:inset 0 1px 0 #fff,0 5px 15px #37211910;text-decoration:none;font:500 12px var(--fmb-reading);color:#290024;transition:transform 160ms ease,box-shadow 160ms ease}
-.professional-cv .cv-actions button{background:linear-gradient(145deg,#582b4c,#290024 75%);color:#fffbed;border-color:#79526a;box-shadow:inset 0 1px 0 #ffffff30,0 8px 22px #29002428}
+.professional-cv .cv-actions :is(a,button),.professional-cv .cv-projects a{display:inline-flex;align-items:center;justify-content:center;gap:14px;min-height:48px;padding:13px 22px;border-radius:999px;border:1px solid #65534235;background:linear-gradient(160deg,#fffef7,#ece6d3);box-shadow:inset 0 1px 0 #fff,0 5px 15px #37211910;text-decoration:none;font:500 12px var(--fmb-reading);color:#1e1813;transition:transform 160ms ease,box-shadow 160ms ease}
+.professional-cv .cv-actions button{background:linear-gradient(145deg,#453326,#1e1813 75%);color:#fffbed;border-color:#79526a;box-shadow:inset 0 1px 0 #ffffff30,0 8px 22px #1e181328}
 .professional-cv .cv-actions a::after,.professional-cv .cv-projects a::after{content:'↗';font-size:16px}
 .professional-cv .cv-actions button::after{content:'↓';font-size:17px}
 .professional-cv :is(.cv-actions a,.cv-actions button,.cv-projects a):active{transform:scale(.97)}
 body:not(.route-locked) .topbar nav{gap:4px;padding:5px;border:1px solid #fff9;border-radius:999px;background:#fffff580;backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);box-shadow:inset 0 1px #fff,0 6px 20px #37211908}
 body:not(.route-locked) .topbar nav a{padding:10px 15px;border-radius:999px;min-height:44px;display:flex;align-items:center;font-size:10px;text-decoration:none}
-body:not(.route-locked) .topbar nav a.active{background:#290024;color:#fffbed;box-shadow:0 3px 8px #29002420}
+body:not(.route-locked) .topbar nav a.active{background:#1e1813;color:#fffbed;box-shadow:0 3px 8px #1e181320}
 .cv-audio-choice{gap:6px}
-.cv-audio-choice button{border-radius:999px;background:#fff7;border:1px solid #77553325;padding:10px 18px;box-shadow:inset 0 1px #fff}
-.cv-audio-choice button[aria-pressed=true]{background:#290024;color:#fffbed;border-color:#290024;box-shadow:0 4px 12px #29002420}
-body:not(.route-locked) .sound{border-radius:999px;padding:13px 21px;box-shadow:0 8px 25px #29002425,inset 0 1px #fff3}
-@media(hover:hover){.professional-cv :is(.cv-actions a,.cv-actions button,.cv-projects a):hover{transform:translateY(-2px);box-shadow:0 10px 22px #29002420}}
+.cv-audio-choice button{border-radius:999px;background:#fff7;border:1px solid #65534225;padding:10px 18px;box-shadow:inset 0 1px #fff}
+.cv-audio-choice button[aria-pressed=true]{background:#1e1813;color:#fffbed;border-color:#1e1813;box-shadow:0 4px 12px #1e181320}
+body:not(.route-locked) .sound{border-radius:999px;padding:13px 21px;box-shadow:0 8px 25px #1e181325,inset 0 1px #fff3}
+@media(hover:hover){.professional-cv :is(.cv-actions a,.cv-actions button,.cv-projects a):hover{transform:translateY(-2px);box-shadow:0 10px 22px #1e181320}}
 @media(max-width:760px){
 .professional-cv{padding:0 20px 40px}
 .professional-cv .cv-intro{padding-top:30px}
@@ -220,10 +220,10 @@ body:not(.route-locked) .topbar nav a{color:#fff6df}
 body:not(.route-locked) .topbar nav a:hover{background:#ffffff15;color:#fff}
 body:not(.route-locked) .cv-audio-choice{position:relative;z-index:2;color:#ead8b5}
 body:not(.route-locked) .cv-audio-choice button{color:#fff6df;background:#ffffff0d;border-color:#ffffff40;box-shadow:inset 0 1px #ffffff25}
-body:not(.route-locked) .cv-audio-choice button[aria-pressed=true]{color:#290024;background:linear-gradient(135deg,#fff5d7,#d6b77b);border-color:#ecd5a6}
+body:not(.route-locked) .cv-audio-choice button[aria-pressed=true]{color:#1e1813;background:linear-gradient(135deg,#fff5d7,#d6b77b);border-color:#ecd5a6}
 .professional-cv{max-width:1320px;column-gap:60px;position:relative;isolation:isolate}
 .professional-cv .cv-intro{position:relative;isolation:isolate;padding:80px 0 160px;grid-template-columns:minmax(0,1fr) 350px;gap:60px;margin-bottom:65px}
-.professional-cv .cv-intro::before{content:'';position:absolute;z-index:-2;top:-230px;bottom:0;left:50%;width:100vw;transform:translateX(-50%);background:linear-gradient(100deg,#23061ff5 12%,#2a1425e8 60%,#2115108c),url('../img/portfolio/cv-palace-interior.webp') right center/cover;border-bottom:1px solid #b3925d;pointer-events:none}
+.professional-cv .cv-intro::before{content:'';position:absolute;z-index:-2;top:-230px;bottom:0;left:50%;width:100vw;transform:translateX(-50%);background:linear-gradient(100deg,#1e1813f5 12%,#30251be8 60%,#2115108c),url('../img/portfolio/cv-palace-interior.webp') right center/cover;border-bottom:1px solid #b3925d;pointer-events:none}
 .professional-cv .cv-intro::after{content:'';position:absolute;z-index:2;bottom:-87px;right:-45px;width:min(850px,75vw);height:265px;background:url('../img/portfolio/cv-sculptural-silk.webp') center/contain no-repeat;pointer-events:none}
 .professional-cv .cv-intro h1{color:#fff7e5;font-size:clamp(70px,7.2vw,106px);line-height:.9;letter-spacing:-.045em;margin:24px 0 30px}
 .professional-cv .cv-intro .cv-label{color:#d9bc83;font-size:10px;letter-spacing:.22em}
@@ -236,7 +236,7 @@ body:not(.route-locked) .cv-audio-choice button[aria-pressed=true]{color:#290024
 .professional-cv .cv-photo::after{inset:35px -20px -26px 25px;border-radius:160px 160px 30px 30px;transform:rotate(4deg);opacity:.75}
 .professional-cv .cv-photo figcaption{position:relative;color:#ffefd1;background:#291b20db;border-radius:0 0 15px 15px;text-align:center;font-size:10px;padding:14px 5px}
 .professional-cv .cv-actions{margin-top:30px;position:relative;z-index:3}
-.professional-cv .cv-actions button{background:linear-gradient(130deg,#fff6dc 0%,#e7cf9c 48%,#b98c4b 100%);color:#290024;border:1px solid #f8e3b7;box-shadow:inset 0 2px #fff9,0 10px 30px #0003;font-weight:600;padding:16px 28px;min-height:54px}
+.professional-cv .cv-actions button{background:linear-gradient(130deg,#fff6dc 0%,#e7cf9c 48%,#b98c4b 100%);color:#1e1813;border:1px solid #f8e3b7;box-shadow:inset 0 2px #fff9,0 10px 30px #0003;font-weight:600;padding:16px 28px;min-height:54px}
 .professional-cv .cv-actions a{background:#ffffff0d;color:#fff2d7;border-color:#ffffff4a;box-shadow:inset 0 1px #ffffff25;min-height:54px;padding:16px 26px}
 .professional-cv .cv-section{padding:40px;border-radius:5px 30px 30px 30px;background:linear-gradient(135deg,#fffefa,#f5f0e5);border:1px solid #d2bd973d;box-shadow:0 20px 60px #4a2a1510;margin-bottom:36px}
 .professional-cv .cv-section-heading{position:relative;display:block;padding-left:0;margin-bottom:34px}
@@ -245,15 +245,15 @@ body:not(.route-locked) .cv-audio-choice button[aria-pressed=true]{color:#290024
 .professional-cv .cv-entry{padding:30px 0}
 .professional-cv .cv-entry h3{font-size:21px}
 .professional-cv .cv-entry ul{line-height:1.85;font-size:14px}
-.professional-cv #expertise{background:linear-gradient(135deg,#39102f,#21101f);border-color:#71513d;box-shadow:0 20px 50px #29002422}
+.professional-cv #expertise{background:linear-gradient(135deg,#30251b,#1e1813);border-color:#71513d;box-shadow:0 20px 50px #1e181322}
 .professional-cv #expertise :is(h2,h3,li){color:#fff4de}
 .professional-cv #expertise .cv-section-heading>span{color:#cfad70}
 .professional-cv #expertise .cv-skills article{border-top:1px solid #ffffff26;padding-top:24px}
 .professional-cv .cv-column-art{border-radius:150px 150px 24px 24px;top:35px;box-shadow:0 25px 65px #44251220}
 .professional-cv .cv-column-art::after{left:-75px;right:-50px;bottom:-50px;height:250px;background:url('../img/portfolio/cv-sculptural-silk.webp') center/contain no-repeat;mask-image:none;border-radius:0}
-.professional-cv .cv-projects a{background:linear-gradient(135deg,#4e2444,#290024);color:#fff2d5;border-color:#734d61;box-shadow:inset 0 1px #ffffff30,0 7px 18px #29002420}
-.professional-cv .cv-projects article{padding-bottom:25px;border-bottom:1px solid #77553325}
-.professional-cv .cv-section a:focus-visible,.professional-cv .cv-actions :is(a,button):focus-visible{outline:3px solid #d4954d;outline-offset:5px}
+.professional-cv .cv-projects a{background:linear-gradient(135deg,#453326,#1e1813);color:#fff2d5;border-color:#734d61;box-shadow:inset 0 1px #ffffff30,0 7px 18px #1e181320}
+.professional-cv .cv-projects article{padding-bottom:25px;border-bottom:1px solid #65534225}
+.professional-cv .cv-section a:focus-visible,.professional-cv .cv-actions :is(a,button):focus-visible{outline:3px solid #b59a69;outline-offset:5px}
 @media(max-width:1000px) and (min-width:761px){.professional-cv .cv-intro{grid-template-columns:minmax(0,1fr) 260px;gap:30px}.professional-cv .cv-intro h1{font-size:74px}.professional-cv .cv-section{padding:28px}}
 @media(max-width:760px){
 .professional-cv .cv-intro{display:flex;flex-direction:column;padding:45px 0 105px;gap:30px;margin-bottom:55px}

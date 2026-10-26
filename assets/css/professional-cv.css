@@ -1,48 +1,48 @@
 /* Personal CV: one factual record, independent of the portfolio presentation. */
-body:not(.route-locked){background:#f2f5e2;color:#290024}
+body:not(.route-locked){background:#f3ede3;color:#1e1813}
 body:not(.route-locked)>.backdrop,body:not(.route-locked)>.grain{display:none}
 body.cv-choice-open{overflow:hidden}
 #soundGate{z-index:500}
-body:not(.route-locked) .topbar{background:#290024;color:#f2f5e2;border-bottom:1px solid #77553350}
-.professional-cv{max-width:1240px;margin:0 auto;padding:0 50px 65px;font:16px/1.65 'Avenir Next','Helvetica Neue',Arial,sans-serif;color:#290024}
+body:not(.route-locked) .topbar{background:#1e1813;color:#f3ede3;border-bottom:1px solid #65534250}
+.professional-cv{max-width:1240px;margin:0 auto;padding:0 50px 65px;font:16px/1.65 'Avenir Next','Helvetica Neue',Arial,sans-serif;color:#1e1813}
 .professional-cv *{box-sizing:border-box}
 .professional-cv :is(h1,h2,h3,p,figure,dl,dd){margin:0}
-.professional-cv :is(h1,h2,h3){font-family:inherit;letter-spacing:-.035em;color:#290024}
+.professional-cv :is(h1,h2,h3){font-family:inherit;letter-spacing:-.035em;color:#1e1813}
 .professional-cv h1{font-size:clamp(44px,5vw,72px);line-height:1.05;font-weight:500;margin:20px 0}
 .professional-cv h2{font-size:30px;line-height:1.2;font-weight:500}
 .professional-cv h3{font-size:21px;line-height:1.35;font-weight:500}
 .professional-cv a{color:inherit;text-underline-offset:4px;overflow-wrap:anywhere}
-.professional-cv a:focus-visible,.professional-cv button:focus-visible{outline:2px solid #775533;outline-offset:5px}
+.professional-cv a:focus-visible,.professional-cv button:focus-visible{outline:2px solid #655342;outline-offset:5px}
 .cv-intro{display:grid;grid-template-columns:1.4fr 1fr;gap:65px;align-items:start;padding:70px 0 60px}
 .cv-intro-copy>p:not(.cv-label){margin-bottom:20px;max-width:60ch}
-.professional-cv .cv-position{font-size:21px;line-height:1.45;color:#775533;margin-bottom:25px}
-.professional-cv .cv-label{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#775533;margin-bottom:9px}
+.professional-cv .cv-position{font-size:21px;line-height:1.45;color:#655342;margin-bottom:25px}
+.professional-cv .cv-label{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#655342;margin-bottom:9px}
 .cv-photo img{width:100%;height:auto;max-height:570px;object-fit:cover;object-position:50% 20%;display:block}
-.cv-photo figcaption{padding-top:12px;font-size:11px;color:#775533}
-.cv-facts{border-top:1px solid #77553340;padding-top:18px;display:grid;gap:10px;font-size:14px}
+.cv-photo figcaption{padding-top:12px;font-size:11px;color:#655342}
+.cv-facts{border-top:1px solid #65534240;padding-top:18px;display:grid;gap:10px;font-size:14px}
 .cv-facts>div{display:grid;grid-template-columns:145px 1fr;gap:12px}
-.cv-facts dt{color:#775533}
+.cv-facts dt{color:#655342}
 .cv-actions{display:flex;flex-wrap:wrap;gap:25px;align-items:center;margin-top:24px}
 .cv-actions a,.cv-actions button{font:inherit;font-size:13px;min-height:44px;display:inline-flex;align-items:center}
-.cv-actions button{border:1px solid #290024;background:#290024;color:#f2f5e2;padding:10px 20px;cursor:pointer}
-.cv-section{padding:42px 0;border-top:1px solid #77553350;scroll-margin-top:110px}
+.cv-actions button{border:1px solid #1e1813;background:#1e1813;color:#f3ede3;padding:10px 20px;cursor:pointer}
+.cv-section{padding:42px 0;border-top:1px solid #65534250;scroll-margin-top:110px}
 .cv-section-heading{display:flex;align-items:baseline;gap:20px;margin-bottom:30px}
-.cv-section-heading>span{font-size:12px;color:#775533}
-.cv-entry{display:grid;grid-template-columns:1fr 1.2fr;gap:50px;padding:25px 0;border-bottom:1px solid #77553325}
+.cv-section-heading>span{font-size:12px;color:#655342}
+.cv-entry{display:grid;grid-template-columns:1fr 1.2fr;gap:50px;padding:25px 0;border-bottom:1px solid #65534225}
 .cv-entry:first-child{padding-top:0}.cv-entry:last-child{border:0;padding-bottom:0}
-.professional-cv .cv-organization{font-size:14px;color:#775533;margin-top:8px;max-width:38ch}
+.professional-cv .cv-organization{font-size:14px;color:#655342;margin-top:8px;max-width:38ch}
 .professional-cv ul{padding-left:18px;margin:0;font-size:15px}
 .professional-cv li{padding-left:4px;margin-bottom:8px}
 .cv-education,.cv-projects{display:grid;grid-template-columns:1fr 1fr;gap:30px 50px}
 .cv-education p,.cv-projects p{margin-top:10px;font-size:15px}
-.professional-cv .cv-secondary{color:#775533}
+.professional-cv .cv-secondary{color:#655342}
 .cv-skills{display:grid;grid-template-columns:repeat(3,1fr);gap:35px}
 .cv-skills h3{margin-bottom:18px}
 .cv-projects a{display:inline-block;margin-top:12px;font-size:13px;min-height:44px}
 .cv-community{max-width:85ch}
 .professional-cv .cv-contact-line{margin-top:20px;font-size:14px}
-body:not(.route-locked)>footer{background:#290024;color:#f2f5e2}
-body:not(.route-locked) .sound{background:#290024;color:#f2f5e2;border-color:#e3dea4;z-index:100}
+body:not(.route-locked)>footer{background:#1e1813;color:#f3ede3}
+body:not(.route-locked) .sound{background:#1e1813;color:#f3ede3;border-color:#d6c39f;z-index:100}
 @media(max-width:760px){.professional-cv{padding:0 24px 35px}.cv-intro{grid-template-columns:1fr;gap:30px;padding:40px 0}.cv-photo{grid-row:1}.cv-photo img{max-height:340px;object-position:50% 25%}.cv-photo figcaption{display:none}.professional-cv h1{font-size:44px}.professional-cv .cv-position{font-size:19px}.cv-entry,.cv-education,.cv-projects,.cv-skills{grid-template-columns:1fr;gap:20px}.cv-entry{padding:24px 0}.cv-section-heading{gap:14px}.professional-cv h2{font-size:26px}.cv-facts>div{grid-template-columns:110px 1fr}.cv-section{scroll-margin-top:140px}.cv-skills{gap:30px}}
 @media print{body:not(.route-locked){background:#fff;color:#000}body:not(.route-locked)>:not(main){display:none!important}.professional-cv{display:block!important;max-width:none;padding:0;font-size:10pt;color:#000}.professional-cv :is(h1,h2,h3){color:#000}.professional-cv h1{font-size:27pt}.professional-cv h2{font-size:16pt}.professional-cv h3{font-size:12pt}.cv-intro{padding:0 0 18px;gap:25px;grid-template-columns:2fr 1fr}.cv-photo img{max-height:230px}.cv-actions{display:none}.cv-section{padding:18px 0}.cv-section-heading{margin-bottom:15px}.cv-entry{gap:25px;padding:12px 0;break-inside:avoid}.professional-cv ul,.cv-education p,.cv-projects p{font-size:10pt}.cv-projects article,.cv-education article,.cv-skills article{break-inside:avoid}.cv-projects a{min-height:0}.cv-label,.cv-organization,.cv-secondary{color:#333!important}@page{margin:15mm}}
 body:not(.route-locked) .topbar{position:fixed;inset:0 0 auto;z-index:110}
@@ -50,6 +50,6 @@ body:not(.route-locked) .professional-cv{padding-top:80px}
 .professional-cv #heroTitle{scroll-margin-top:120px}
 @media(max-width:760px){body:not(.route-locked) .professional-cv{padding-top:110px}}
 @media print{body:not(.route-locked) .professional-cv{padding-top:0}}
-body:not(.route-locked) .topbar nav a{color:#f2f5e2;letter-spacing:.04em;font-size:12px}
-body:not(.route-locked) .topbar nav a.active{color:#e3dea4;text-decoration:underline;text-underline-offset:6px}
+body:not(.route-locked) .topbar nav a{color:#f3ede3;letter-spacing:.04em;font-size:12px}
+body:not(.route-locked) .topbar nav a.active{color:#d6c39f;text-decoration:underline;text-underline-offset:6px}
 @media(max-width:760px){body:not(.route-locked) .topbar nav{gap:8px 14px;flex-wrap:wrap;overflow:visible;padding-bottom:0}body:not(.route-locked) .topbar nav a{font-size:10px;min-height:32px;letter-spacing:.02em}}

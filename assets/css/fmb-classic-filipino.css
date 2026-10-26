@@ -1,0 +1,148 @@
+/* FMB: classic Filipino interiors. Shared portfolio and CV presentation. */
+@media screen {
+:root{--heritage-ink:#241d17;--heritage-dark:#1e1813;--heritage-paper:#f3ede3;--heritage-brass:#b59a69;--heritage-muted:#716353;--heritage-rule:#b59a6945;--gold:#b59a69;--gold-soft:#dcc9a6}
+body,.fmb-site{background:var(--heritage-dark);color:var(--heritage-paper)}
+.fmb-site{--paper:#f3ede3;--quiet:#716353;--line:#b59a6945;--accent:#d6c39f;--gutter:clamp(24px,6vw,96px);--ink:#241d17;--muted:#716353;--hair:#b59a6945;--serif:var(--fmb-display);--sans:var(--fmb-reading)}
+.fmb-site :is(h1,h2,h3),.professional-cv :is(h1,h2){font-family:var(--fmb-display);font-weight:500}
+.fmb-site :is(h2,h3){letter-spacing:-.025em}
+.fmb-site .fmb-eyebrow{font-size:10px;letter-spacing:.18em;line-height:1.6}
+.fmb-site .fmb-nav nav,body:not(.route-locked) .topbar nav{border-radius:2px;background:#1e181325;border-color:#dcc9a64a;box-shadow:none;backdrop-filter:blur(12px)}
+.fmb-site .fmb-nav nav a,body:not(.route-locked) .topbar nav a{border-radius:0}
+.fmb-site .fmb-hero,.fmb-site .fmb-portrait,.fmb-site .fmb-photo-window{background:#1e1813}
+.fmb-site .fmb-hero:after{background:linear-gradient(90deg,#130f0cc2,transparent 67%),linear-gradient(0deg,#1e1813,transparent 22%)}
+.fmb-site .fmb-hero h1{font-size:clamp(70px,7.3vw,112px);letter-spacing:-.04em;line-height:.94}
+.fmb-site .fmb-hero h1 em{color:#dcc9a6}
+.fmb-site .fmb-hero :is(.fmb-eyebrow,.fmb-hero-foot,.fmb-motion){color:#dcc9a6}
+.fmb-site .fmb-hero-intro>p{color:#f3ede3}
+.fmb-site :is(.fmb-button,.fmb-text-link,.fmb-service-action),.fmb-site .fmb-nav .fmb-button{border-radius:2px;box-shadow:none;min-height:50px;--control-ink:#241d17;--control-edge:#b59a6970;letter-spacing:.06em}
+.fmb-site .fmb-button,.fmb-site :is(.fmb-nav,.fmb-hero,.fmb-speaking) .fmb-button{background:#d6c39f!important;color:#241d17!important;border:1px solid #d6c39f}
+.fmb-site .fmb-text-link{background:transparent;box-shadow:none}
+.fmb-site :is(.fmb-button,.fmb-text-link,.fmb-service-action)::before{display:none}
+.fmb-site .fmb-control-arrow{background:transparent!important;color:inherit!important;border:0;border-left:1px solid currentColor;border-radius:0;box-shadow:none;width:36px;height:28px;flex-basis:36px}
+.fmb-site :is(.fmb-hero,.fmb-practice,.fmb-speaking,.fmb-work-end) .fmb-text-link,.fmb-site .fmb-service-action{background:transparent;--control-ink:#f3ede3;--control-edge:#b59a6980;box-shadow:none}
+.fmb-site :is(.fmb-button,.fmb-text-link,.fmb-service-action):hover{box-shadow:none;border-color:#b59a69}
+.fmb-site :is(a,button):focus-visible,.professional-cv :is(a,button):focus-visible{outline:2px solid #b59a69;outline-offset:5px}
+/* Small white marks on a dark timber threshold, bridging the hero and biography. */
+.fmb-site .fmb-brand-gallery{position:relative;z-index:3;margin:-1px 0 0;padding:24px var(--gutter);background:#1e1813;border:0;border-bottom:1px solid #b59a6960}
+.fmb-brand-gallery-heading,.fmb-brand-item figcaption{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip-path:inset(50%);white-space:nowrap}
+.fmb-brand-grid{grid-template-columns:repeat(6,minmax(0,1fr));gap:clamp(18px,3vw,48px);max-width:1240px;align-items:center}
+.fmb-brand-grid .fmb-brand-item{padding:8px 0;border:0!important;gap:0;min-height:44px}
+.fmb-brand-item>img{height:38px;width:100%;max-width:142px;object-fit:contain}
+.fmb-news-brand{height:38px;font-size:clamp(17px,1.7vw,25px)}
+.fmb-fox-lockup{height:38px;gap:7px}.fmb-fox-lockup img{width:29px;height:33px}.fmb-fox-lockup span{font-size:19px}
+.fmb-site .fmb-brand-gallery::after{content:'';position:absolute;left:var(--gutter);right:var(--gutter);bottom:-16px;height:26px;background:linear-gradient(#241d1740,#241d1740),url('../img/portfolio/cv-solihiya-silk.webp') center 16%/420px auto repeat-x;border-block:3px solid #4b3524;box-shadow:0 7px 12px #1e181320;pointer-events:none}
+.fmb-site .fmb-evidence{background:#ece3d4;color:#241d17;padding:36px var(--gutter) 22px;gap:28px;border-bottom:1px solid #b59a6940}
+.fmb-site .fmb-evidence :is(span,small){color:#716353}.fmb-site .fmb-evidence a{border-color:#b59a6945}.fmb-site .fmb-evidence strong{font-size:24px}
+.fmb-site .fmb-about{background-color:#f3ede3;min-height:620px;background-image:linear-gradient(90deg,transparent 38%,#f3ede350 48%,#f3ede3 61%),url('../img/portfolio/francine-about-background.webp')}
+.fmb-site .fmb-about-copy{color:#241d17;margin-left:51%;padding-block:35px 45px}
+.fmb-site .fmb-about-copy :is(h2,p){color:#241d17}.fmb-site .fmb-about-copy .fmb-eyebrow{color:#716353}
+.fmb-site .fmb-about:after{display:none}
+.fmb-site .fmb-about-facts{border-color:#b59a6945}.fmb-site .fmb-about-facts span{color:#716353}
+.fmb-site .fmb-community-story{background:#f3ede3;color:#241d17;padding-block:80px;position:relative;border-top:1px solid #b59a6945}
+.fmb-community-intro{grid-template-columns:1fr 1fr;gap:64px;margin-bottom:38px}
+.fmb-community-intro h2{font-family:var(--fmb-display);color:#241d17;font-size:clamp(48px,5.8vw,82px)}
+.fmb-community-intro .fmb-eyebrow,.fmb-community-photos figcaption span{color:#716353}
+.fmb-community-note p{font-family:var(--fmb-reading);color:#4f443a;font-size:14px}
+.fmb-community-note p:first-child{font-family:var(--fmb-display);color:#241d17;font-size:30px}
+.fmb-community-photos{grid-template-columns:.83fr 1.17fr;gap:32px}
+.fmb-community-photos img{border-radius:0;border:6px solid #fffaf1;box-shadow:0 8px 24px #241d1710;box-sizing:border-box}
+.fmb-community-photos figcaption{color:#716353;font-family:var(--fmb-reading);font-size:12px}
+.fmb-site .fmb-community-story::after{content:'';position:absolute;z-index:2;bottom:-19px;left:0;width:100%;height:36px;background:linear-gradient(#241d1760,#241d1760),url('../img/portfolio/cv-solihiya-silk.webp') center 20%/480px auto repeat-x;border-block:4px solid #453022;pointer-events:none}
+.fmb-site .fmb-practice{background:linear-gradient(#1e1813ec,#1e1813f2),url('../img/portfolio/service-social-heritage.webp') center/cover;color:#f3ede3;padding-block:90px 76px}
+.fmb-site .fmb-practice-intro{max-width:760px;margin-bottom:38px}.fmb-site .fmb-practice-intro h2{text-transform:none;font-size:clamp(42px,4.6vw,66px)}
+.fmb-site .fmb-practice-intro>p:not(.fmb-eyebrow){color:#d2c5b4}
+.fmb-site .fmb-service{background:#231c16!important;border:1px solid #b59a6950;border-radius:0;box-shadow:none}
+.fmb-site .fmb-service :is(p,li,a){color:#eee5d7}.fmb-site .fmb-service li{border-color:#b59a6930}
+.fmb-site .fmb-service summary>span:first-child{background:#1e1813a0;color:#dcc9a6}
+.fmb-site .fmb-service summary{border-radius:0}.fmb-site .fmb-service h3{font-size:38px}
+.fmb-site .fmb-work{background:#f3ede3;color:#241d17;padding-block:76px}
+.fmb-site .fmb-section-head>p:last-child,.fmb-site .fmb-work-end{color:#716353}
+.fmb-site .fmb-section-head h2{font-size:clamp(44px,4.8vw,70px)}
+.fmb-site .fmb-case-stack{gap:26px}.fmb-site .fmb-case{border:0;border-radius:0;box-shadow:none;background:transparent;overflow:visible}
+.fmb-site .fmb-case-copy{padding:26px 0 0;border-top:1px solid #b59a6960;color:#241d17}
+.fmb-site .fmb-case h3{font-size:36px}.fmb-site .fmb-case-deck{color:#4f443a;font-family:var(--fmb-display);font-size:23px;line-height:1.25}
+.fmb-site .fmb-case-visual{border:1px solid #b59a6945}.fmb-site .fmb-case-copy>.fmb-eyebrow{color:#716353}
+.fmb-site .fmb-case dl{display:block;margin-top:24px;padding-top:16px;border-top:1px solid #b59a6935}
+.fmb-site .fmb-case dl>div:first-child{display:none}.fmb-site .fmb-case dl>div{display:block}.fmb-site .fmb-case dt{color:#716353;font-size:10px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px}.fmb-site .fmb-case dd{color:#4f443a;font-size:13px;line-height:1.7;margin:0}
+.fmb-site .fmb-case-copy .fmb-text-link{color:#241d17!important;border-color:#b59a6970;background:transparent}
+.fmb-site .fmb-work-end .fmb-text-link{--control-ink:#241d17}
+.fmb-site .fmb-speaking{background:#30251b;color:#f3ede3;padding-block:76px}.fmb-site .fmb-speaking p{color:#ded2c1}
+.fmb-site .fmb-speaking h2{color:#f3ede3}.fmb-site .fmb-speaking figure{border:1px solid #b59a69;padding:8px;background:#1e1813}
+.fmb-site .fmb-writing{background:#e7dccb;color:#241d17;padding-block:76px}
+.fmb-site .fmb-writing p{color:#5f5143}.fmb-site .fmb-writing h2{color:#241d17}
+.fmb-site .fmb-statement{background:#1e1813;color:#f3ede3;padding-block:88px}
+.fmb-site .fmb-statement h2{color:#f3ede3}.fmb-site .fmb-statement p{color:#d2c5b4}
+.fmb-site .fmb-world{background:#f3ede3;color:#241d17;padding-block:76px}
+.fmb-site .fmb-world p{color:#716353}.fmb-site .fmb-world h2{color:#241d17}
+.fmb-site .fmb-world-links a,.fmb-site .fmb-world-links a:nth-child(2n){background:none;border:0!important;border-bottom:1px solid #b59a6960!important;border-radius:0;box-shadow:none;padding:24px 64px 24px 0;color:#241d17}
+.fmb-site .fmb-world-links a span{color:#716353}.fmb-site .fmb-world-links a:after{color:#655342;border-radius:0;border:0;right:8px}
+.fmb-site .fmb-consult{background:linear-gradient(90deg,#1e1813ed,#1e181380),url('../img/portfolio/contact-interior-background.webp') center/cover;color:#f3ede3;padding-block:88px}
+.fmb-site .fmb-footer{background:#1e1813;color:#f3ede3;border-top:1px solid #b59a6940}
+.fmb-site .fmb-request summary,.fmb-site .pf-slot{border-radius:2px;box-shadow:none;background:#f3ede308;border-color:#b59a6950}
+/* The same architectural language carries into the curriculum vitae. */
+body:not(.route-locked){background:#f3ede3;color:#241d17}
+.professional-cv{--cv-glass:transparent;--cv-edge:#b59a6945;color:#241d17;grid-template-columns:minmax(0,1fr) 210px;column-gap:60px;max-width:1260px}
+.professional-cv::before{display:none!important}
+.professional-cv .cv-intro{grid-template-columns:minmax(0,1fr) 300px;gap:70px;padding:64px 0 88px;margin-bottom:64px}
+.professional-cv .cv-intro::before{background:linear-gradient(90deg,#1e1813f7 15%,#1e1813dc 65%,#1e181370),url('../img/portfolio/cv-palace-interior.webp') right center/cover;border-bottom:1px solid #b59a69}
+.professional-cv .cv-intro::after{left:0;right:0;bottom:-16px;width:100%;height:32px;background:linear-gradient(#241d1740,#241d1740),url('../img/portfolio/cv-solihiya-silk.webp') center 16%/420px auto repeat-x;border-block:3px solid #4b3524;mask-image:none;box-shadow:0 6px 12px #241d1720}
+.professional-cv .cv-intro h1{font-size:clamp(62px,6.8vw,96px);color:#f3ede3;line-height:.97}
+.professional-cv .cv-intro .cv-label,.professional-cv .cv-facts dt{color:#cdbb99}
+.professional-cv .cv-intro-copy>p:not(.cv-label){color:#e7ddcf}
+.professional-cv .cv-intro-copy .cv-position{color:#d6c39f!important}
+.professional-cv .cv-photo{border-radius:2px;padding:9px;background:#2e2118;border:1px solid #b59a6970;box-shadow:0 14px 35px #0003}
+.professional-cv .cv-photo img{border-radius:0;mask-image:none;aspect-ratio:3/4}
+.professional-cv .cv-photo:after{border-radius:0;inset:18px -16px -16px 18px;transform:none;background:url('../img/portfolio/cv-solihiya-silk.webp') center 15%/cover;opacity:.85;border:1px solid #b59a69}
+.professional-cv .cv-photo figcaption{background:none;border-radius:0;color:#e7ddcf}
+.professional-cv .cv-section{background:transparent;border:0;border-top:1px solid #b59a6970;border-radius:0;box-shadow:none;padding:36px 0 24px;margin-bottom:16px}
+.professional-cv .cv-section:before,.professional-cv .cv-section:after{display:none}
+.professional-cv .cv-section-heading{display:flex;align-items:baseline;gap:20px;margin-bottom:30px}
+.professional-cv .cv-section-heading>span{font:500 29px/1 var(--fmb-display);color:#8b754f;margin:0;min-width:32px}
+.professional-cv .cv-section h2{color:#241d17;font-size:clamp(34px,3.3vw,46px)}
+.professional-cv :is(h3,p,li){color:#3e342a}.professional-cv .cv-section h3{font-size:18px}
+.professional-cv :is(.cv-label,.cv-organization,.cv-secondary){color:#716353}
+.professional-cv .cv-entry{border-color:#b59a6935;padding:24px 0}
+.professional-cv #expertise{background:#30251b;margin:20px 0 40px;padding:34px;border:1px solid #b59a6960;box-shadow:none;border-radius:0}
+.professional-cv #expertise :is(h2,h3,li){color:#f3ede3}
+.professional-cv #expertise .cv-section-heading>span{color:#cdbb99}
+.professional-cv .cv-column-art{border-radius:0;background:linear-gradient(#241d171a,#241d171a),url('../img/portfolio/cv-solihiya-silk.webp') center/cover;filter:saturate(.55);border:8px solid #453022;box-shadow:inset 0 0 0 1px #b59a69,12px 16px 0 #ded0bc;height:min(650px,calc(100svh - 80px));top:40px;mask-image:none}
+.professional-cv .cv-column-art:after{display:none}
+.professional-cv .cv-actions :is(a,button),.professional-cv .cv-projects a{border-radius:2px;box-shadow:none;min-height:48px;font-size:12px}
+.professional-cv .cv-actions button{background:#d6c39f;color:#241d17;border-color:#d6c39f}
+.professional-cv .cv-actions a{background:transparent;color:#f3ede3;border-color:#b59a6970}
+.professional-cv .cv-projects a{background:#30251b;color:#f3ede3;border-color:#30251b;padding:10px 18px}
+body:not(.route-locked) .topbar nav a.active{background:#d6c39f;color:#241d17;box-shadow:none}
+body:not(.route-locked) .cv-audio-choice{color:#dcc9a6}
+body:not(.route-locked) .cv-audio-choice button{border-radius:2px;box-shadow:none;background:transparent;border-color:#b59a6970;color:#f3ede3}
+body:not(.route-locked) .cv-audio-choice button[aria-pressed=true]{background:#d6c39f;color:#241d17;border-color:#d6c39f}
+body:not(.route-locked)>footer,body:not(.route-locked) .sound{background:#1e1813;color:#f3ede3;border-color:#b59a6960;box-shadow:none}
+body:not(.route-locked) .sound{border-radius:2px}
+@media(max-width:1000px) and (min-width:761px){.professional-cv{grid-template-columns:minmax(0,1fr) 170px;gap:30px}.professional-cv .cv-intro{grid-template-columns:minmax(0,1fr) 250px;gap:36px}.fmb-brand-grid{gap:18px}.fmb-fox-lockup span{font-size:16px}}
+@media(max-width:760px){
+ .fmb-site .fmb-hero h1{font-size:clamp(48px,12vw,68px)}
+ .fmb-site .fmb-hero:after{background:linear-gradient(180deg,transparent 280px,#1e1813 435px,#1e1813)}
+ .fmb-site .fmb-nav nav{border-radius:0}
+ .fmb-site .fmb-brand-gallery{padding:18px 22px 24px}
+ .fmb-brand-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:16px 22px}
+ .fmb-brand-grid .fmb-brand-item{min-height:32px;padding:0}
+ .fmb-brand-item>img{height:32px;max-width:118px}.fmb-news-brand{font-size:clamp(14px,4vw,20px);height:32px}
+ .fmb-fox-lockup{height:32px;gap:5px}.fmb-fox-lockup img{width:23px;height:28px}.fmb-fox-lockup span{font-size:15px}
+ .fmb-site .fmb-evidence{padding:28px 24px 12px}.fmb-site .fmb-evidence a{padding:13px 0}
+ .fmb-site .fmb-about{background-image:linear-gradient(0deg,#f3ede3,transparent 35%),url('../img/portfolio/francine-about-background.webp');background-size:auto 480px;background-position:10% top;background-repeat:no-repeat;padding-top:420px;min-height:0}
+ .fmb-site .fmb-about-copy{margin:0;padding:22px 0 30px;background:#f3ede3;box-shadow:0 -20px 25px 10px #f3ede3}
+ .fmb-site .fmb-about-copy h2{font-size:46px}
+ .fmb-site .fmb-community-story{padding:48px 24px 60px}.fmb-community-intro{grid-template-columns:1fr;gap:24px}.fmb-community-photos{grid-template-columns:1fr;gap:28px}.fmb-community-intro h2{font-size:52px}
+ .fmb-site :is(.fmb-practice,.fmb-work,.fmb-speaking,.fmb-writing,.fmb-statement,.fmb-world,.fmb-consult){padding-block:60px}
+ .fmb-site .fmb-case-stack{gap:40px}.fmb-site .fmb-case-copy{padding-top:22px}
+ .professional-cv{display:block;padding-inline:24px}
+ .professional-cv .cv-intro{display:flex;gap:28px;padding:36px 0 68px;margin-bottom:44px}
+ .professional-cv .cv-intro h1{font-size:clamp(46px,12vw,68px)}
+ .professional-cv .cv-photo{width:62%;max-width:225px;margin-bottom:12px}
+ .professional-cv .cv-photo img{border-radius:0;max-height:300px}
+ .professional-cv .cv-section{padding:28px 0 18px;margin-bottom:10px}
+ .professional-cv .cv-section-heading{gap:14px}.professional-cv .cv-section h2{font-size:34px}
+ .professional-cv #expertise{padding:26px 20px;margin-inline:-4px}
+ .professional-cv .cv-design-column{display:none}
+ body:not(.route-locked) .topbar nav{border-radius:2px}
+}
+}
