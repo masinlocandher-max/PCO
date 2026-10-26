@@ -1,0 +1,62 @@
+/* Commissioned material studies and FMB's tactile control system. */
+@media screen {
+/* Each new artwork has one placement, with no repeated image strips. */
+.fmb-site .fmb-brand-gallery{padding-bottom:38px}
+.fmb-site .fmb-brand-gallery::after{left:auto;right:5%;bottom:-48px;width:clamp(240px,36vw,540px);height:130px;background:url('../img/atelier/rattan-ribbon.webp') center/contain no-repeat;border:0;box-shadow:none;filter:drop-shadow(0 12px 8px #1e18132a)}
+.fmb-site .fmb-evidence{padding-top:56px}
+.fmb-site .fmb-community-story::after,.professional-cv .cv-intro::after{display:none}
+.professional-cv .cv-photo::after{background:#36271d;border:1px solid #ad9060;box-shadow:inset 0 0 0 5px #231a13}
+.professional-cv .cv-column-art{background:url('../img/atelier/cv-cane-panel.webp') center/100% 100% no-repeat;filter:none;border:0;box-shadow:10px 16px 24px #241d171c;height:auto;aspect-ratio:737/2135;max-height:640px;border-radius:3px;mask-image:none}
+/* A raised brass face, inset perimeter and dark, sculpted arrow medallion. */
+.fmb-site :is(.fmb-button,.fmb-text-link,.fmb-service-action),.fmb-site .fmb-nav .fmb-button,.professional-cv .cv-actions :is(a,button),.professional-cv .cv-projects a{
+ --face:linear-gradient(115deg,#f0e2c5 0%,#d3bb8c 48%,#e7d5af 72%,#b59964 100%);
+ position:relative;isolation:isolate;border:1px solid #ddc79c;border-bottom-color:#9b7e4e;border-radius:6px 22px 6px 22px;background:var(--face)!important;color:#261d13!important;min-height:56px;padding:9px 10px 9px 24px;gap:22px;font-weight:600;letter-spacing:.035em;text-decoration:none;overflow:hidden;
+ box-shadow:inset 0 1px 0 #fff8,inset 0 -3px 0 #73532e33,0 4px 0 #755a37,0 12px 22px #17110c30;
+ transition:translate .3s cubic-bezier(.2,.8,.2,1),box-shadow .3s ease,filter .3s ease;transform:none;translate:0 0;
+}
+.fmb-site :is(.fmb-button,.fmb-text-link,.fmb-service-action)::before{display:block;content:'';position:absolute;inset:4px;z-index:0;border:1px solid #fff5;border-radius:3px 18px 3px 18px;background:none;transform:none;transition:none;pointer-events:none}
+.fmb-site .fmb-control-arrow{position:relative;z-index:1;display:grid;place-items:center;flex:0 0 36px;width:36px;height:36px;border-radius:50%;border:1px solid #a78a57;background:linear-gradient(135deg,#58412d,#211811)!important;color:#efe0bf!important;box-shadow:inset 0 1px #f3dfac45,0 2px 3px #38251040;transition:rotate .3s ease}
+.fmb-site .fmb-control-arrow svg{width:20px;height:20px;transition:transform .3s ease}
+.fmb-site .fmb-nav .fmb-button{min-height:50px;font-size:10px;padding-left:18px;gap:16px}
+.fmb-site .fmb-nav .fmb-control-arrow{width:30px;height:30px;flex-basis:30px}
+.fmb-site .fmb-text-link,.fmb-site .fmb-service-action{--face:linear-gradient(125deg,#483829,#2a2017 65%,#3b2d20);color:#f5e8cf!important;border-color:#9e8358;border-bottom-color:#4a3420;box-shadow:inset 0 1px #e6c89255,inset 0 -3px #0002,0 4px #1c140e,0 12px 22px #17110c28}
+.fmb-site .fmb-case-copy .fmb-text-link{color:#f5e8cf!important}
+.fmb-site .fmb-text-link .fmb-control-arrow,.fmb-site .fmb-service-action .fmb-control-arrow{background:linear-gradient(130deg,#ecdbb8,#b69b6c)!important;color:#302216!important;border-color:#d6bf96;box-shadow:inset 0 1px #fff8,0 2px 5px #0003}
+.fmb-site .fmb-service-action{margin-top:22px}
+.professional-cv .cv-actions :is(a,button),.professional-cv .cv-projects a{padding:12px 22px;justify-content:space-between;font-size:12px}
+.professional-cv .cv-actions :is(a,button)::after,.professional-cv .cv-projects a::after{display:grid;place-items:center;width:28px;height:28px;flex:0 0 28px;border:1px solid #a48a5a;border-radius:50%;background:#302216;color:#ead9b6}
+@media(hover:hover) and (pointer:fine){
+ .fmb-site :is(.fmb-button,.fmb-text-link,.fmb-service-action):hover,.professional-cv .cv-actions :is(a,button):hover,.professional-cv .cv-projects a:hover{opacity:1;transform:none;translate:0 -5px;box-shadow:inset 0 1px #fff7,inset 0 -3px #73532e33,0 4px #755a37,0 21px 28px #17110c38;filter:brightness(1.04)}
+ .fmb-site :is(.fmb-button,.fmb-text-link,.fmb-service-action):hover::before{transform:none}
+ .fmb-site :is(.fmb-button,.fmb-text-link,.fmb-service-action):hover .fmb-control-arrow{rotate:-30deg}
+}
+.fmb-site :is(.fmb-button,.fmb-text-link,.fmb-service-action):active,.professional-cv .cv-actions :is(a,button):active,.professional-cv .cv-projects a:active{transform:none;translate:0 3px;box-shadow:inset 0 2px 5px #0002,0 1px #755a37,0 5px 9px #17110c25}
+@keyframes fmb-levitate{0%,100%{translate:0 0}50%{translate:0 -3px}}
+.fmb-site .fmb-hero .fmb-button,.fmb-site .fmb-book-copy .fmb-button{animation:fmb-levitate 5s ease-in-out 1s 3}
+.fmb-site :is(.fmb-button,.fmb-text-link,.fmb-service-action):is(:hover,:focus-visible,:active){animation:none}
+/* The book receives a three-part editorial feature and a useful information column. */
+.fmb-site .fmb-writing{display:grid;grid-template-columns:minmax(0,1fr) minmax(230px,1fr) minmax(200px,.7fr);align-items:center;gap:clamp(24px,3.5vw,60px);padding:90px var(--gutter);background:#e9dfce;position:relative;overflow:visible}
+.fmb-site .fmb-book-copy h2{font-size:clamp(48px,4.8vw,76px);line-height:.98;margin:18px 0 24px}
+.fmb-site .fmb-book-copy>p:not(.fmb-eyebrow){font-size:14px;line-height:1.85;max-width:32ch}
+.fmb-site .fmb-book-copy .fmb-button{margin-top:20px}
+.fmb-site .fmb-writing .fmb-book-stage{position:relative;isolation:isolate;margin:-26px 0;aspect-ratio:2/3;align-self:center;width:100%;background:url('../img/atelier/book-alcove.webp') center/cover no-repeat;border:1px solid #a38b64;box-shadow:0 20px 40px #30221625;overflow:hidden}
+.fmb-site .fmb-writing .fmb-book-stage img{position:absolute;left:23%;bottom:21%;width:54%;height:auto;max-height:none;object-fit:contain;border-radius:0;transform:perspective(700px) rotateY(-9deg) rotateZ(-2deg);box-shadow:-5px 2px 0 #c9bd9c,-8px 3px 0 #6b4b2f,12px 16px 22px #0008}
+.fmb-site .fmb-book-info{align-self:stretch;border-left:1px solid #a28b674d;padding:22px 0 12px 28px;display:flex;flex-direction:column;justify-content:center;min-width:0}
+.fmb-site .fmb-book-info h3{font:500 31px/1.1 var(--fmb-display);color:#302216;margin:12px 0 22px}
+.fmb-site .fmb-book-info dl{display:block;margin:0 0 24px}
+.fmb-site .fmb-book-info dl>div{padding:15px 0;border-top:1px solid #a28b674d}
+.fmb-site .fmb-book-info dt{font:600 9px/1.5 var(--fmb-reading);letter-spacing:.12em;text-transform:uppercase;color:#75654f}
+.fmb-site .fmb-book-info dd{margin:6px 0 0;font:400 13px/1.7 var(--fmb-reading);color:#302216}
+.fmb-site .fmb-book-info .fmb-text-link{font-size:11px;gap:12px;padding-left:16px;align-self:flex-start;max-width:100%}
+.fmb-site .fmb-book-info .fmb-book-editions{display:inline-block;margin-top:22px;min-height:44px;font:500 12px/1.6 var(--fmb-reading);color:#493721;text-decoration:underline;text-underline-offset:5px}
+@media(max-width:1100px){.fmb-site .fmb-writing{grid-template-columns:minmax(0,1fr) minmax(230px,1fr)}.fmb-site .fmb-book-info{grid-column:1/-1;display:block;border-left:0;border-top:1px solid #a28b674d;padding:30px 0 0}.fmb-site .fmb-book-info dl{display:grid;grid-template-columns:repeat(3,1fr);gap:30px}.fmb-site .fmb-book-info .fmb-book-editions{margin-left:25px}}
+@media(max-width:760px){
+ .fmb-site .fmb-brand-gallery{padding-bottom:36px}.fmb-site .fmb-brand-gallery::after{width:240px;height:80px;right:18px;bottom:-31px}.fmb-site .fmb-evidence{padding-top:38px}
+ .fmb-site .fmb-writing{grid-template-columns:1fr;padding:60px 24px;gap:38px}.fmb-site .fmb-book-copy h2{font-size:56px}.fmb-site .fmb-book-copy>p:not(.fmb-eyebrow){max-width:40ch}
+ .fmb-site .fmb-writing .fmb-book-stage{width:min(100%,340px);margin:0 auto}
+ .fmb-site .fmb-book-info{grid-column:auto}.fmb-site .fmb-book-info dl{grid-template-columns:1fr;gap:0}.fmb-site .fmb-book-info .fmb-book-editions{margin-left:20px}
+ .fmb-site :is(.fmb-button,.fmb-text-link,.fmb-service-action){min-height:54px;gap:16px;padding-left:20px}.fmb-site .fmb-nav .fmb-button{gap:9px;padding-left:14px}
+}
+.fmb-motion-off .fmb-site :is(.fmb-button,.fmb-text-link,.fmb-service-action),.fmb-site.motion-paused :is(.fmb-button,.fmb-text-link,.fmb-service-action){animation:none;transition:none}
+@media(prefers-reduced-motion:reduce){.fmb-site :is(.fmb-button,.fmb-text-link,.fmb-service-action),.fmb-site .fmb-control-arrow,.professional-cv .cv-actions :is(a,button),.professional-cv .cv-projects a{animation:none!important;transition:none!important;translate:none!important;rotate:none!important}}
+}
