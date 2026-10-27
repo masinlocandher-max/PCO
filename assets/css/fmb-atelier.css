@@ -7,33 +7,36 @@
 .fmb-site .fmb-community-story::after,.professional-cv .cv-intro::after{display:none}
 .professional-cv .cv-photo::after{background:#36271d;border:1px solid #ad9060;box-shadow:inset 0 0 0 5px #231a13}
 .professional-cv .cv-column-art{background:url('../img/atelier/cv-cane-panel.webp') center/100% 100% no-repeat;filter:none;border:0;box-shadow:10px 16px 24px #241d171c;height:auto;aspect-ratio:737/2135;max-height:640px;border-radius:3px;mask-image:none}
-/* A raised brass face, inset perimeter and dark, sculpted arrow medallion. */
+/* FMB controls: pale brass, precise edges and quiet elevation. */
 .fmb-site :is(.fmb-button,.fmb-text-link,.fmb-service-action),.fmb-site .fmb-nav .fmb-button,.professional-cv .cv-actions :is(a,button),.professional-cv .cv-projects a{
- --face:linear-gradient(115deg,#f0e2c5 0%,#d3bb8c 48%,#e7d5af 72%,#b59964 100%);
- position:relative;isolation:isolate;border:1px solid #ddc79c;border-bottom-color:#9b7e4e;border-radius:6px 22px 6px 22px;background:var(--face)!important;color:#261d13!important;min-height:56px;padding:9px 10px 9px 24px;gap:22px;font-weight:600;letter-spacing:.035em;text-decoration:none;overflow:hidden;
- box-shadow:inset 0 1px 0 #fff8,inset 0 -3px 0 #73532e33,0 4px 0 #755a37,0 12px 22px #17110c30;
- transition:translate .3s cubic-bezier(.2,.8,.2,1),box-shadow .3s ease,filter .3s ease;transform:none;translate:0 0;
+ --face:linear-gradient(145deg,#f1e6d0,#d9c7a3);position:relative;isolation:isolate;display:inline-flex;align-items:center;justify-content:space-between;gap:20px;min-height:54px;padding:9px 10px 9px 21px;border:1px solid #ddc9a1;border-radius:9px;background:var(--face)!important;color:#2b2118!important;font:600 12px/1.4 var(--fmb-reading);letter-spacing:.015em;text-decoration:none;text-transform:none;overflow:hidden;box-shadow:inset 0 1px #fff8,0 7px 18px #130e0926;transform:none;translate:0 0;animation:none;transition:translate .22s ease,box-shadow .22s ease,border-color .22s ease
 }
-.fmb-site :is(.fmb-button,.fmb-text-link,.fmb-service-action)::before{display:block;content:'';position:absolute;inset:4px;z-index:0;border:1px solid #fff5;border-radius:3px 18px 3px 18px;background:none;transform:none;transition:none;pointer-events:none}
-.fmb-site .fmb-control-arrow{position:relative;z-index:1;display:grid;place-items:center;flex:0 0 36px;width:36px;height:36px;border-radius:50%;border:1px solid #a78a57;background:linear-gradient(135deg,#58412d,#211811)!important;color:#efe0bf!important;box-shadow:inset 0 1px #f3dfac45,0 2px 3px #38251040;transition:rotate .3s ease}
-.fmb-site .fmb-control-arrow svg{width:20px;height:20px;transition:transform .3s ease}
-.fmb-site .fmb-nav .fmb-button{min-height:50px;font-size:10px;padding-left:18px;gap:16px}
+.fmb-site :is(.fmb-button,.fmb-text-link,.fmb-service-action)::before{content:none;display:none}
+.fmb-site .fmb-control-label{position:relative;z-index:1}
+.fmb-site .fmb-control-arrow{display:grid;place-items:center;position:relative;flex:0 0 32px;width:32px;height:32px;border:1px solid #80653b4d;border-radius:50%;background:transparent!important;color:inherit!important;box-shadow:none;rotate:0;transition:translate .22s ease}
+.fmb-site .fmb-control-arrow svg{width:18px;height:18px;transform:none;transition:none}
+.fmb-site .fmb-text-link,.fmb-site .fmb-service-action,.professional-cv .cv-actions a,.professional-cv .cv-projects a{--face:linear-gradient(145deg,#3b3025,#251e17);border-color:#af95645e;color:#f4e8d2!important;box-shadow:inset 0 1px #e3cca21c,0 6px 18px #130e091c}
+.fmb-site .fmb-case-copy .fmb-text-link{color:#f4e8d2!important;border-color:#af95645e}
+.fmb-site :is(.fmb-text-link,.fmb-service-action) .fmb-control-arrow{border-color:#d0b58655;background:transparent!important;color:inherit!important;box-shadow:none}
+.fmb-site .fmb-nav .fmb-button{min-height:48px;padding:7px 8px 7px 16px;font-size:11px;gap:14px}
 .fmb-site .fmb-nav .fmb-control-arrow{width:30px;height:30px;flex-basis:30px}
-.fmb-site .fmb-text-link,.fmb-site .fmb-service-action{--face:linear-gradient(125deg,#483829,#2a2017 65%,#3b2d20);color:#f5e8cf!important;border-color:#9e8358;border-bottom-color:#4a3420;box-shadow:inset 0 1px #e6c89255,inset 0 -3px #0002,0 4px #1c140e,0 12px 22px #17110c28}
-.fmb-site .fmb-case-copy .fmb-text-link{color:#f5e8cf!important}
-.fmb-site .fmb-text-link .fmb-control-arrow,.fmb-site .fmb-service-action .fmb-control-arrow{background:linear-gradient(130deg,#ecdbb8,#b69b6c)!important;color:#302216!important;border-color:#d6bf96;box-shadow:inset 0 1px #fff8,0 2px 5px #0003}
-.fmb-site .fmb-service-action{margin-top:22px}
-.professional-cv .cv-actions :is(a,button),.professional-cv .cv-projects a{padding:12px 22px;justify-content:space-between;font-size:12px}
-.professional-cv .cv-actions :is(a,button)::after,.professional-cv .cv-projects a::after{display:grid;place-items:center;width:28px;height:28px;flex:0 0 28px;border:1px solid #a48a5a;border-radius:50%;background:#302216;color:#ead9b6}
+.fmb-site .fmb-service-action{margin-top:20px}
+.professional-cv .cv-actions :is(a,button),.professional-cv .cv-projects a{padding:10px 13px 10px 20px;justify-content:space-between;font-size:12px}
+.professional-cv .cv-actions :is(a,button)::after,.professional-cv .cv-projects a::after{display:grid;place-items:center;width:30px;height:30px;flex:0 0 30px;border:1px solid #b59a6966;border-radius:50%;background:transparent;color:inherit;font-size:16px}
+.fmb-site :is(.fmb-button,.fmb-text-link,.fmb-service-action):focus-visible,.professional-cv .cv-actions :is(a,button):focus-visible,.professional-cv .cv-projects a:focus-visible{outline:2px solid #dcc49a;outline-offset:4px}
 @media(hover:hover) and (pointer:fine){
- .fmb-site :is(.fmb-button,.fmb-text-link,.fmb-service-action):hover,.professional-cv .cv-actions :is(a,button):hover,.professional-cv .cv-projects a:hover{opacity:1;transform:none;translate:0 -5px;box-shadow:inset 0 1px #fff7,inset 0 -3px #73532e33,0 4px #755a37,0 21px 28px #17110c38;filter:brightness(1.04)}
- .fmb-site :is(.fmb-button,.fmb-text-link,.fmb-service-action):hover::before{transform:none}
- .fmb-site :is(.fmb-button,.fmb-text-link,.fmb-service-action):hover .fmb-control-arrow{rotate:-30deg}
+ .fmb-site :is(.fmb-button,.fmb-text-link,.fmb-service-action):hover,.professional-cv .cv-actions :is(a,button):hover,.professional-cv .cv-projects a:hover{opacity:1;transform:none;translate:0 -3px;box-shadow:inset 0 1px #fff4,0 12px 24px #130e0933;border-color:#d7c097;filter:none}
+ .fmb-site :is(.fmb-button,.fmb-text-link,.fmb-service-action):hover .fmb-control-arrow{translate:2px 0;rotate:0}
+ .fmb-site :is(.fmb-button,.fmb-text-link,.fmb-service-action):hover svg{transform:none}
 }
-.fmb-site :is(.fmb-button,.fmb-text-link,.fmb-service-action):active,.professional-cv .cv-actions :is(a,button):active,.professional-cv .cv-projects a:active{transform:none;translate:0 3px;box-shadow:inset 0 2px 5px #0002,0 1px #755a37,0 5px 9px #17110c25}
-@keyframes fmb-levitate{0%,100%{translate:0 0}50%{translate:0 -3px}}
-.fmb-site .fmb-hero .fmb-button,.fmb-site .fmb-book-copy .fmb-button{animation:fmb-levitate 5s ease-in-out 1s 3}
-.fmb-site :is(.fmb-button,.fmb-text-link,.fmb-service-action):is(:hover,:focus-visible,:active){animation:none}
+.fmb-site :is(.fmb-button,.fmb-text-link,.fmb-service-action):active,.professional-cv .cv-actions :is(a,button):active,.professional-cv .cv-projects a:active{transform:none;translate:0 1px;box-shadow:inset 0 1px 3px #0002,0 2px 6px #130e091a}
+/* Music is a preference, presented as one grouped control. */
+body:not(.route-locked) .cv-audio-choice{gap:14px}
+.cv-audio-options{display:inline-flex;align-items:center;gap:3px;padding:4px;border:1px solid #b59a6952;border-radius:10px;background:#211b15c9;box-shadow:inset 0 1px #fff08;max-width:100%;box-sizing:border-box}
+body:not(.route-locked) .cv-audio-options button,body:not(.route-locked) .cv-audio-options button:first-of-type,body:not(.route-locked) .cv-audio-options button:last-of-type{min-height:44px;padding:9px 16px;margin:0;border:1px solid transparent;border-radius:6px;background:transparent;color:#e2d5bf;font:500 11px/1.3 var(--fmb-reading);box-shadow:none;letter-spacing:0;transition:background .18s ease,color .18s ease;cursor:pointer}
+body:not(.route-locked) .cv-audio-options button[aria-pressed=true]{background:#e7d8b9;border-color:#eddfc2;color:#30251a;box-shadow:0 2px 5px #0002}
+body:not(.route-locked) .cv-audio-options button:focus-visible{outline:2px solid #e7d8b9;outline-offset:2px}
+body:not(.route-locked) .cv-audio-options button:active{translate:0 1px}
 /* The book receives a three-part editorial feature and a useful information column. */
 .fmb-site .fmb-writing{display:grid;grid-template-columns:minmax(0,1fr) minmax(230px,1fr) minmax(200px,.7fr);align-items:center;gap:clamp(24px,3.5vw,60px);padding:90px var(--gutter);background:#e9dfce;position:relative;overflow:visible}
 .fmb-site .fmb-book-copy h2{font-size:clamp(48px,4.8vw,76px);line-height:.98;margin:18px 0 24px}
@@ -91,7 +94,7 @@
  .professional-cv .cv-facts{margin:6px 0 0;padding-top:18px;font-size:12px}
  .professional-cv .cv-facts>div{grid-template-columns:100px minmax(0,1fr);gap:12px}
  .professional-cv .cv-actions{margin:8px 0 4px;gap:14px}
- .professional-cv .cv-actions :is(a,button){font-size:12px;min-height:52px;border-radius:4px 14px 4px 14px;padding:10px 18px;box-shadow:inset 0 1px #fff5,0 2px #755a37,0 5px 12px #0002}
+
  .professional-cv .cv-section{scroll-margin-top:24px}
 }
 
