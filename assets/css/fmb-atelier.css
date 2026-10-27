@@ -94,3 +94,12 @@
  .professional-cv .cv-actions :is(a,button){font-size:12px;min-height:52px;border-radius:4px 14px 4px 14px;padding:10px 18px;box-shadow:inset 0 1px #fff5,0 2px #755a37,0 5px 12px #0002}
  .professional-cv .cv-section{scroll-margin-top:24px}
 }
+
+@media screen and (max-width:760px){
+ body:not(.route-locked) .topbar{flex-wrap:nowrap;justify-content:flex-start}
+ body:not(.route-locked) .topbar .mark{flex:0 0 50px}
+ body:not(.route-locked) .topbar nav{flex:0 0 44px;height:44px;min-height:44px;max-height:44px;margin:0;overflow-y:hidden;scrollbar-width:none;box-sizing:border-box}
+ body:not(.route-locked) .topbar nav::-webkit-scrollbar{display:none}
+ body:not(.route-locked) .topbar nav a{height:44px;box-sizing:border-box}
+ .professional-cv .cv-intro h1:focus{outline:none}
+}
