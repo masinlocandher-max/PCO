@@ -78,7 +78,7 @@ Only compiled public HTML/CSS/JavaScript is placed into
 `_site/filipinomediabulletin/`; no newsroom draft, source registry state,
 editorial audit log, or private data is copied into the public website.
 
-**Current pinned release:** `cbfebc3f966b4b13b6a56b30fc5d0aa4f96ee560`.
+**Current pinned release:** `2bc987a5dd41d78cbccf4e3710e420bdbd6e4f0c`.
 
 The bulletin remains in **prelaunch/noindex** mode until real articles have
 editorial approval and the publisher has explicitly enabled launch.
@@ -89,3 +89,12 @@ and review production smoke checks.
 This route is **not** the preserved FMB News archive. The Cloudflare Worker
 `/news/` archive and its URLs must continue to work unchanged. FMB-Ecosystem
 has no deployment role here. The PCO CV lock is unaffected.
+
+## Design approval
+
+The Filipino Media Bulletin November 2026 publication design is implemented at
+`/filipinomediabulletin/` using the exact version pinned in the Pages workflow.
+The visible masthead is the full publication name; the design uses no decorative emoji.
+The implementation retains prelaunch source verification and noindex safeguards.
+The separate legacy `/news/` archive, the root portfolio and owner-locked CV
+remain independent and unchanged.
