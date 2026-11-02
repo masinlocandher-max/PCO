@@ -49,7 +49,7 @@ jobs:
         uses: actions/checkout@v6
         with:
           repository: masinlocandher-max/FilipinoMediaBulletin
-          ref: 2bc987a5dd41d78cbccf4e3710e420bdbd6e4f0c
+          ref: b51decd513f7955d130d94c0719446c2c0bcf916
           path: _fmb-bulletin-source
           persist-credentials: false
 

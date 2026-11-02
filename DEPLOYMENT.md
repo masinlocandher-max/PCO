@@ -78,7 +78,7 @@ Only compiled public HTML/CSS/JavaScript is placed into
 `_site/filipinomediabulletin/`; no newsroom draft, source registry state,
 editorial audit log, or private data is copied into the public website.
 
-**Current pinned release:** `2bc987a5dd41d78cbccf4e3710e420bdbd6e4f0c`.
+**Current pinned release:** `b51decd513f7955d130d94c0719446c2c0bcf916`.
 
 The bulletin remains in **prelaunch/noindex** mode until real articles have
 editorial approval and the publisher has explicitly enabled launch.
