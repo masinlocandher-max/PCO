@@ -45,6 +45,31 @@ jobs:
           set -euxo pipefail
           python3 scripts/validate-site-assets.py
 
+      - name: Checkout pinned Filipino Media Bulletin source
+        uses: actions/checkout@v6
+        with:
+          repository: masinlocandher-max/FilipinoMediaBulletin
+          ref: cbfebc3f966b4b13b6a56b30fc5d0aa4f96ee560
+          path: _fmb-bulletin-source
+          persist-credentials: false
+
+      - name: Build independent FMB bulletin at /filipinomediabulletin
+        shell: bash
+        env:
+          FMB_SITE_URL: https://francinemariebautista.com/filipinomediabulletin
+          FMB_LAUNCH: 'false'
+        run: |
+          set -euo pipefail
+          cd _fmb-bulletin-source
+          npm test
+          npm run build
+          test -f dist/index.html
+          test -f dist/archive/index.html
+          test -f dist/sources/index.html
+          grep -q 'noindex, nofollow' dist/index.html
+          grep -q 'href="/filipinomediabulletin/styles.css"' dist/index.html
+          grep -q 'src="/filipinomediabulletin/client.js"' dist/index.html
+
       - name: Stage canonical PCO root only
         shell: bash
         run: |
@@ -54,10 +79,21 @@ jobs:
           rsync -a ./ _site/ \
             --exclude '.git' \
             --exclude '.github' \
-            --exclude '_site'
+            --exclude '_site' \
+            --exclude '_fmb-bulletin-source'
           test "$(tr -d '\r\n' < _site/CNAME)" = "francinemariebautista.com"
           test -f _site/index.html
           test ! -d _site/news
+          # Mount only FMB's compiled public files; the PCO portfolio and
+          # legacy Cloudflare /news archive stay separately owned.
+          mkdir -p _site/filipinomediabulletin
+          rsync -a _fmb-bulletin-source/dist/ _site/filipinomediabulletin/ --exclude 'robots.txt'
+          test -f _site/filipinomediabulletin/index.html
+          test -f _site/filipinomediabulletin/archive/index.html
+          test ! -d _site/filipinomediabulletin/.git
+          test ! -d _site/filipinomediabulletin/data
+          grep -q 'noindex, nofollow' _site/filipinomediabulletin/index.html
+
 
       - name: Configure Pages
         uses: actions/configure-pages@v5
@@ -91,6 +127,30 @@ jobs:
             cat /tmp/pco-root.h
             exit 1
           fi
+
+          echo "=== Filipino Media Bulletin independent route ==="
+          fmb_confirmed=0
+          for attempt in 1 2 3 4 5 6 7 8; do
+            if curl --fail --location --silent --show-error \
+              --connect-timeout 10 --max-time 30 \
+              -H 'Cache-Control: no-cache' \
+              "https://francinemariebautista.com/filipinomediabulletin/?release=${GITHUB_SHA}-${attempt}" \
+              -o /tmp/fmb-bulletin.html; then
+              if grep -qi 'Filipino Media Bulletin' /tmp/fmb-bulletin.html && \
+                grep -q '/filipinomediabulletin/styles.css' /tmp/fmb-bulletin.html && \
+                grep -q 'noindex, nofollow' /tmp/fmb-bulletin.html; then
+                fmb_confirmed=1
+                break
+              fi
+            fi
+            sleep 5
+          done
+          test "$fmb_confirmed" = "1" || { echo '::error::FMB subpath not reachable from canonical PCO origin'; exit 1; }
+          curl --fail --location --silent --show-error \
+            "https://francinemariebautista.com/filipinomediabulletin/styles.css" \
+            -o /tmp/fmb-bulletin.css
+          test -s /tmp/fmb-bulletin.css
+          echo 'FMB subpath home and stylesheet verified; legacy /news remains separate.'
 
           echo "=== FMB News edge route ==="
           for attempt in 1 2 3 4 5 6; do
