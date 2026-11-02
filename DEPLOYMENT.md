@@ -64,3 +64,28 @@ DNS remains responsible for sending the root site to the intended Pages origin w
 ## Deployment
 
 GitHub Pages is configured from GitHub Actions on `main`. A fresh push is the correct way to validate the custom-domain deployment state. FMBNews deployment remains independent and is validated by the FMBNews repository's Cloudflare workflow.
+
+## Filipino Media Bulletin mounted publication
+
+The newer reader-first bulletin is sourced independently from
+`masinlocandher-max/FilipinoMediaBulletin` and served at
+`https://francinemariebautista.com/filipinomediabulletin/`.
+
+The PCO GitHub Pages release pipeline checks out an exact pinned FMB source
+commit, runs its tests, and builds using
+`FMB_SITE_URL=https://francinemariebautista.com/filipinomediabulletin`.
+Only compiled public HTML/CSS/JavaScript is placed into
+`_site/filipinomediabulletin/`; no newsroom draft, source registry state,
+editorial audit log, or private data is copied into the public website.
+
+**Current pinned release:** `cbfebc3f966b4b13b6a56b30fc5d0aa4f96ee560`.
+
+The bulletin remains in **prelaunch/noindex** mode until real articles have
+editorial approval and the publisher has explicitly enabled launch.
+To update the mounted edition, verify a new commit in the FMB source repository,
+update the pinned SHA in `.github/workflows/deploy-pages.yml`, run the pipeline,
+and review production smoke checks.
+
+This route is **not** the preserved FMB News archive. The Cloudflare Worker
+`/news/` archive and its URLs must continue to work unchanged. FMB-Ecosystem
+has no deployment role here. The PCO CV lock is unaffected.
