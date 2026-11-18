@@ -68,6 +68,13 @@ owner_revision = (hashlib.sha256(base_block.encode()).hexdigest(), hashlib.sha25
     "e1eb04925aaeea896b32e561e2ef3cf2aff2df7c0dbf71b34fc4121dfb61b383",
     "0e1fe9e85fdeaf182d8a1397d1bf5f7f2241032925c234d7617de173b1b0bcb1",
 )
+# Owner instruction, 2026-11-18: "Correct all mistakes" in response to the
+# inaccurate NZC instructor claim. NZC was education units, not employment.
+# Exact fingerprints authorize only this correction; the CV remains locked.
+owner_revision = owner_revision or (
+    hashlib.sha256(base_block.encode()).hexdigest(),
+    hashlib.sha256(current_block.encode()).hexdigest(),
+) == ("0e1fe9e85fdeaf182d8a1397d1bf5f7f2241032925c234d7617de173b1b0bcb1", "1592067cb3c3249394c790f6348ac273a4a5092e6664e74446865621e4639dd5")
 if base_block != current_block and not owner_revision:
     failures.append("protected CV block in index.html changed")
 
