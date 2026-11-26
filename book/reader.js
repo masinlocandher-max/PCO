@@ -140,14 +140,6 @@
   }
   initInstall();
 
-  function normalizePreviewCopy(){
-    var card=document.querySelector('.unlock-card');if(!card)return;
-    var heading=card.querySelector('h2');if(heading)heading.textContent='Continue with your full copy.';
-    var paragraphs=card.querySelectorAll('p');if(paragraphs[0])paragraphs[0].textContent='Your full reader opens after your copy is activated. Paid and complimentary copies use the same protected reader.';
-    var note=card.querySelector('.unlock-note');if(note)note.innerHTML='Already have access? Open <b>Reader access</b> and use the email attached to your copy.';
-  }
-  normalizePreviewCopy();
-
   function parseJwt(token){try{var raw=token.split('.')[1].replace(/-/g,'+').replace(/_/g,'/');raw=raw.padEnd(Math.ceil(raw.length/4)*4,'=');return JSON.parse(decodeURIComponent(Array.prototype.map.call(atob(raw),function(c){return '%'+('00'+c.charCodeAt(0).toString(16)).slice(-2);}).join('')));}catch(e){return {};}}
   function sessionFromHash(){
     if(!location.hash||location.hash.indexOf('access_token=')<0)return null;
@@ -405,7 +397,7 @@
     restoreScroll(restorePercent||0);scheduleProgressSave();
   }
   async function openChapter(sequence,restorePercent){
-    if(!entitled){showToast('This section opens once your copy is activated.');return;}
+    if(!entitled){showToast('Read the full ebook free using the link at the end of the preview.');return;}
     document.body.classList.add('reader-changing');
     try{
       flushProgress(false);var data=await api('chapter',{sequence:Number(sequence)});renderChapter(data.chapter,data.watermark,restorePercent||0);closePanel(document.getElementById('tocPanel'));
@@ -415,7 +407,7 @@
       else showToast('This section could not be opened right now.');
     }
   }
-  var toc=document.getElementById('tocPanel');if(toc)toc.addEventListener('click',function(e){var b=e.target.closest('[data-reader-sequence]');if(b)openChapter(Number(b.dataset.readerSequence),0);else if(e.target.closest('[data-locked]'))showToast('This section opens once your copy is activated.');else if(e.target.closest('[data-preview-chapter]')){closePanel(toc);scrollTo({top:0,behavior:'smooth'});}});
+  var toc=document.getElementById('tocPanel');if(toc)toc.addEventListener('click',function(e){var b=e.target.closest('[data-reader-sequence]');if(b)openChapter(Number(b.dataset.readerSequence),0);else if(e.target.closest('[data-locked]'))showToast('Read the full ebook free using the link at the end of the preview.');else if(e.target.closest('[data-preview-chapter]')){closePanel(toc);scrollTo({top:0,behavior:'smooth'});}});
 
   async function activateReader(){
     var session=await usableSession();

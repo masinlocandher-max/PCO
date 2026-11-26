@@ -25,7 +25,15 @@ const { once } = require("node:events");
       });
       await page.goto(url + "/book/");
       assert.match(await page.locator("#buyPocketbook").getAttribute("href"),/^mailto:/);
-      await page.locator(".hero-buy").click();
+      const heroRead = page.locator(".hero-buy");
+      assert.equal(await heroRead.getAttribute("href"),"/book/read/");
+      await page.locator(".hero-preview").click();
+      await page.waitForURL("**/book/reader.html");
+      const preview = page.locator(".unlock-card");
+      assert.match(await preview.innerText(),/No account or payment needed/);
+      assert.doesNotMatch(await preview.innerText(),/499|activated/i);
+      assert.equal(await preview.getByRole("link",{name:"access support"}).getAttribute("href"),"/ebook-access/");
+      await preview.getByRole("link",{name:"Read the Ebook Free"}).click();
       await page.getByRole("heading", {name:"First sample"}).waitFor();
       assert.equal(await page.evaluate(() => document.documentElement.scrollWidth), width);
       assert.equal(await page.evaluate(() => {
