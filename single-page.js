@@ -42,6 +42,8 @@ document.getElementById('cvPrint').addEventListener('click',function(){window.pr
       var iso=start.replace(/^(\d{4})(\d{2})(\d{2})T(\d{2})(\d{2})(\d{2})Z$/,'$1-$2-$3T$4:$5:$6Z');
       slot.hidden=Date.parse(iso)<=Date.now();
     });
+    var fallback=document.querySelector('.gold-no-slots');
+    if(fallback)fallback.hidden=!!document.querySelector('.pf-slot:not([hidden])');
     document.querySelectorAll('.calendar-month').forEach(function(month){month.hidden=!month.querySelector('.calendar-slot:not([hidden])');});
   }
   expireSlots();

@@ -21,11 +21,27 @@ const server = spawn('python3', ['-m', 'http.server', '8766', '--bind', '127.0.0
     page.on('response', response => {
       if (response.url().startsWith(url) && response.status() >= 400) errors.push(response.status() + ' ' + response.url());
     });
+    await page.clock.setFixedTime(new Date('2026-11-26T16:00:00Z'));
     for (const width of [1440,1024,768,390,320]) {
-      await page.setViewportSize({width,height:900});
+      await page.setViewportSize({width,height:width<400?568:900});
       await page.goto(url);
       assert.equal(await page.locator('#routeTitle').isVisible(),true);
       assert.equal(await page.evaluate(() => document.documentElement.scrollWidth),width);
+      assert.equal(await page.locator('.gold-main > :first-child').getAttribute('id'),'selected-work');
+      assert.equal(await page.locator('.gold-main > :nth-child(2) [data-appointment]').count(),1);
+      for (const name of ['Book an introductory call','View portfolio','See full CV']) {
+        const button = page.locator('.gold-actions').getByRole('link',{name,exact:true});
+        const box = await button.boundingBox();
+        assert.ok(box && box.y >= 0 && box.y + box.height <= page.viewportSize().height, name + ' not visible before scrolling at ' + width);
+      }
+      await page.locator('.gold-actions').getByRole('link',{name:'See full CV',exact:true}).click();
+      await page.waitForURL('**/#cv');
+      assert.equal(await page.locator('#heroTitle').isVisible(),true);
+      await page.locator('.topbar .mark').click();
+      await page.waitForURL('**/#portfolio');
+      await page.locator('.gold-actions').getByRole('link',{name:'View portfolio',exact:true}).click();
+      await page.waitForURL('**/#selected-work');
+      assert.equal(await page.locator('#selected-work').isVisible(),true);
       assert.equal(await page.locator('.gold-services a').count(),5);
       assert.equal(await page.locator('.gold-shot').count(),6);
       await page.locator('.gold-track').scrollIntoViewIfNeeded();
@@ -47,7 +63,8 @@ const server = spawn('python3', ['-m', 'http.server', '8766', '--bind', '127.0.0
       await page.waitForURL('**/#consult');
       assert.equal(await page.locator('#booking-panel').evaluate(el => el.open),true);
       assert.equal(await page.locator('.fmb-request').evaluate(el => el.open),true);
-      assert.equal(await page.locator('.pf-slot').count(),4);
+      assert.equal(await page.locator('.pf-slot:not([hidden])').count(),1);
+      assert.equal(await page.locator('.gold-no-slots').isVisible(),false);
       assert.match(await page.locator('.pf-slot').last().getAttribute('href'),/calendar\.google\.com/);
       assert.match(await page.locator('.fmb-email').getAttribute('href'),/^mailto:withlovefmb@gmail\.com/);
       await page.locator('.gold-cv-nav a[href="#education"]').click();
@@ -69,6 +86,17 @@ const server = spawn('python3', ['-m', 'http.server', '8766', '--bind', '127.0.0
       assert.equal(await page.locator('#buyEbook').count(),1);
       assert.equal(await page.locator('#buyPocketbook').count(),1);
       console.log('PASS',width,'px: no horizontal overflow, carousel, details, menu, booking links, CV sections and print, podcast link, book storefront');
+    }
+    await page.clock.setFixedTime(new Date('2026-12-11T00:00:00Z'));
+    await page.goto(url + '/#consult');
+    assert.equal(await page.locator('.pf-slot:not([hidden])').count(),0);
+    assert.equal(await page.locator('.gold-no-slots').isVisible(),true);
+    assert.match(await page.locator('.fmb-email').getAttribute('href'),/^mailto:withlovefmb@gmail\.com/);
+    for (const path of ['/work/senz/','/work/fmb-news/','/work/masinloc-connect/','/profile/','/brand-strategy-pr/','/book/']) {
+      await page.goto(url + path);
+      assert.equal(await page.locator('.heritage-links').isVisible(),true);
+      assert.equal(await page.locator('.heritage-links').evaluate(el => getComputedStyle(el).backgroundColor),'rgb(60, 36, 21)');
+      assert.equal(await page.evaluate(() => document.documentElement.scrollWidth),320);
     }
     await page.goto(url + '/cv.html');
     await page.waitForURL('**/#cv');
