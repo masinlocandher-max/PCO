@@ -1,0 +1,6 @@
+# Free online edition
+Uses the reviewed 57-section release already stored in Supabase. No manuscript or PDF in the site's files. The original personal-link reader, customer data, and pocketbook checkout are separate.
+
+Test with `CHROMIUM_PATH=/usr/bin/chromium node .github/ebook-public/verify.cjs`. This uses synthetic chapters. For a rollout, apply and check the service-role-only SQL, then deploy the separate `book-public-reader` function (JWT verification off). Keep it disabled until authorized; set its book-specific `BOOK_FREE_ONLINE=on` switch only when ready to expose the approved edition publicly. Origin restrictions are not authentication. Verify anonymous mobile access from the owner site, individual chapter response, no full-book or PDF endpoint, and preserved print purchase and private reader. If rolling back, turn the switch off and revert the Pages change. Already extracted text cannot be recalled.
+
+The reader uses semantic text and scoped clipboard/drag deterrents, not DRM. Screenshots, OCR, source inspection, and scripted per-chapter retrieval are still possible. Do not claim otherwise. The chapter body never goes into persistent browser storage; only the chapter number is stored. No account data is collected by this reader.
