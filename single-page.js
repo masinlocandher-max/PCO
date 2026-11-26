@@ -3,7 +3,7 @@
 'use strict';
 var body=document.body,route=document.getElementById('routeGate'),audio=document.getElementById('score');
 var withMusic=document.getElementById('gateSound'),withoutMusic=document.getElementById('gateSilent');
-var homeHashes=['#portfolio','#selected-work','#ecosystem','#brands','#practice','#writing','#about','#consult'];
+
 function musicState(){var on=audio&&!audio.paused;withMusic.setAttribute('aria-pressed',String(on));withoutMusic.setAttribute('aria-pressed',String(!on));var btn=document.getElementById('soundToggle');btn.setAttribute('aria-pressed',String(on));btn.setAttribute('aria-label',on?'Turn sound off':'Turn sound on');document.getElementById('soundLabel').textContent=on?'Sound on':'Sound';}
 withMusic.addEventListener('click',function(){if(audio.paused)document.getElementById('soundToggle').click();});
 withoutMusic.addEventListener('click',function(){if(!audio.paused)document.getElementById('soundToggle').click();});
@@ -13,8 +13,20 @@ function syncViewFromUrl(){
  var cv=hash==='#cv'||hash==='#top'||(target&&target.closest('.professional-cv'));
  body.classList.toggle('route-locked',!cv);route.hidden=!!cv;route.classList.remove('is-closing');
  if(!cv&&audio)audio.pause();musicState();
+ if(!cv&&target&&route.contains(target)){
+  for(var panel=target.parentElement.closest('details');panel;panel=panel.parentElement.closest('details'))panel.open=true;
+  if(target.matches('.fmb-service'))target.open=true;
+  if(hash==='#consult'||hash==='#appointment-details'){
+   var booking=route.querySelector('#booking-panel');
+   if(booking){
+    booking.open=true;
+    var windows=booking.querySelector('.fmb-request');
+    if(windows)windows.open=true;
+   }
+  }
+ }
  requestAnimationFrame(function(){
-  var destination=cv?(hash==='#cv'||hash==='#top'?document.getElementById('heroTitle'):target):(homeHashes.indexOf(hash)>=0?target:null);
+  var destination=cv?(hash==='#cv'||hash==='#top'?document.getElementById('heroTitle'):target):(target&&route.contains(target)?target:null);
   if(hash==='#cv'||hash==='#portfolio'||hash==='#top'||!destination)window.scrollTo(0,0);else destination.scrollIntoView({block:'start'});
   if(cv&&destination){destination.setAttribute('tabindex','-1');destination.focus({preventScroll:true});}
   window.dispatchEvent(new Event('scroll'));
@@ -37,6 +49,3 @@ document.getElementById('cvPrint').addEventListener('click',function(){window.pr
   document.addEventListener('visibilitychange',function(){if(!document.hidden)expireSlots();});
 syncViewFromUrl();
 })();
-
-// Version the refreshed portrait without altering the protected CV record.
-document.querySelectorAll('img[src="assets/img/portfolio/francine-seated.jpg"]').forEach(img => { img.src = "assets/img/portfolio/francine-seated.jpg?v=heritage-20261024"; });
