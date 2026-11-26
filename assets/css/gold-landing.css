@@ -1,9 +1,13 @@
 /* Homepage only. The separately routed professional CV keeps its existing styles. */
-.gold-home {
+:root {
   --gold-ink:#3c2415; --gold-paper:#f8f1e8; --gold-brown:#805016;
   --gold-display:Georgia, 'Times New Roman', serif;
   --gold-sans: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
   --gold-gutter:clamp(24px,3.2vw,54px);
+  --gold-panel:linear-gradient(132deg,#f3e4d2ed,#fffaf0ce 62%,#f2e2ceab);
+  --gold-button-fill:linear-gradient(169deg,#a3651a 0%,#845018 46%,#663a12 100%);
+}
+.gold-home {
   background:var(--gold-paper); color:var(--gold-ink); font:16px/1.4 var(--gold-display);
 }
 .gold-home *, .gold-home *::before, .gold-home *::after {box-sizing:border-box}
@@ -32,7 +36,7 @@
 .gold-menu nav a:hover,.gold-menu nav a:focus-visible {background:#f3e2c9}
 .gold-button {display:inline-flex;align-items:center;justify-content:center;gap:.65em;min-height:clamp(44px,3.35vw,51px);padding:.55em 1.35em;border:1px solid currentColor;border-radius:100px;text-decoration:none;white-space:nowrap;font:600 clamp(13px,1.22vw,17px)/1.15 var(--gold-display);transition:box-shadow .18s,background-color .18s}
 .gold-button:hover {background-color:#ffebcb33;box-shadow:0 4px 16px #381d1944}
-.gold-button.gold-primary {color:#fffaf0;background:linear-gradient(169deg,#a3651a 0%,#845018 46%,#663a12 100%);border-color:#ffce77;box-shadow:inset 0 1px 2px #ffdfa5ad,inset 0 0 12px #e9ad5382,0 4px 12px #371c1233;text-shadow:0 1px 2px #4e2b0c}
+.gold-button.gold-primary {color:#fffaf0;background:var(--gold-button-fill);border-color:#ffce77;box-shadow:inset 0 1px 2px #ffdfa5ad,inset 0 0 12px #e9ad5382,0 4px 12px #371c1233;text-shadow:0 1px 2px #4e2b0c}
 .gold-button.gold-primary:hover {background:linear-gradient(169deg,#b4762b,#754212)}
 .gold-button.gold-outline {border-color:#a66c32;color:#4c2a12}
 .gold-hero {position:relative;isolation:isolate;overflow:hidden;color:#fffaf2;background:#664324 url('../img/landing-gold/gold-silk-upper.webp') 0% 0%/76% 100% no-repeat}
@@ -52,7 +56,7 @@
 .gold-actions {display:flex;gap:clamp(8px,1.25vw,20px);flex-wrap:wrap;margin-top:clamp(14px,1.6vw,24px)}
 .gold-main {position:relative;z-index:1;margin-top:calc(-1 * clamp(31px,4.3vw,65px));display:grid;gap:clamp(18px,2.15vw,37px);padding-bottom:18px}
 .gold-main::before {content:"";position:absolute;z-index:-1;inset:45px 0 0;background:url('../img/book-silk-field.webp') center top/100% auto no-repeat;opacity:.12;pointer-events:none}
-.gold-glass {border:1px solid #fff;border-radius:clamp(15px,2.1vw,31px);background:linear-gradient(132deg,#f3e4d2ed,#fffaf0ce 62%,#f2e2ceab);box-shadow:inset 0 1px #fff8,0 10px 22px -11px #8c603f70;backdrop-filter:blur(13px)}
+.gold-glass {border:1px solid #fff;border-radius:clamp(15px,2.1vw,31px);background:var(--gold-panel);box-shadow:inset 0 1px #fff8,0 10px 22px -11px #8c603f70;backdrop-filter:blur(13px)}
 .gold-services {display:grid;grid-template-columns:repeat(5,minmax(0,1fr));padding:clamp(16px,1.8vw,29px) clamp(9px,1.2vw,18px)}
 .gold-services a {text-align:center;padding:0 clamp(7px,1.15vw,17px);display:block;text-decoration:none;color:#25170e}
 .gold-services a+a,.gold-cv-nav a+a,.gold-brand-row a+a {border-left:1px solid #bd967057}
@@ -174,4 +178,95 @@
 }
 @media(prefers-reduced-motion:reduce) {
   .gold-home *, .gold-home *::before, .gold-home *::after {scroll-behavior:auto!important;transition:none!important}
+}
+
+/* The online CV shares the portfolio's design tokens and original silk plate.
+   Screen-only rules leave the protected content and existing print layout alone. */
+@media screen {
+  body:not(.route-locked) {background:var(--gold-paper);color:var(--gold-ink)}
+  body:not(.route-locked) .topbar {background:#3a2113e8;border-bottom:1px solid #efc58c75;color:#fff9ec}
+  body:not(.route-locked) .topbar .mark img {filter:brightness(0) invert(1)}
+  body:not(.route-locked) .topbar nav {background:#462a1980;border-color:#f5d5ab50;border-radius:999px}
+  body:not(.route-locked) .topbar nav a {color:#fff8eb;border-radius:999px}
+  body:not(.route-locked) .topbar nav a.active {background:#f2dfbe;color:#382116}
+  body:not(.route-locked) .topbar nav a:first-child {color:#ffdfab;text-decoration:underline;text-underline-offset:5px}
+  body:not(.route-locked) .topbar nav a:first-child.active {color:#382116}
+
+  .professional-cv {color:var(--gold-ink)}
+  .professional-cv .cv-design-column {display:none}
+  body:not(.route-locked) .professional-cv {display:block;max-width:1320px}
+  .professional-cv .cv-intro {
+    grid-template-columns:minmax(0,1fr) minmax(210px,33%);gap:clamp(28px,5vw,72px);
+    padding-bottom:clamp(46px,5.5vw,85px);margin-bottom:clamp(23px,3.6vw,52px)
+  }
+  .professional-cv .cv-intro::before {
+    background:linear-gradient(100deg,#301b10f2 0%,#432810e9 48%,#64381838 100%),
+      url('../img/landing-gold/gold-silk-upper.webp') center 42%/cover;
+    border-bottom:1px solid #e4bb7f
+  }
+  .professional-cv .cv-intro::after {display:none}
+  .professional-cv .cv-intro h1 {
+    font-family:var(--gold-display);font-weight:400;letter-spacing:-.045em;color:#fff7eb;
+    font-size:clamp(49px,6.25vw,93px);line-height:.94
+  }
+  .professional-cv .cv-intro .cv-label {color:#ffe0ac;letter-spacing:.24em;font-family:var(--gold-sans)}
+  .professional-cv .cv-intro-copy .cv-position {color:#ffe0ac!important}
+  .professional-cv .cv-intro-copy>p:not(.cv-label):not(.cv-position) {color:#fff2df}
+  .professional-cv .cv-facts {border-color:#f0cf9760}
+  .professional-cv .cv-facts dt {color:#f0d5ac}
+  .professional-cv .cv-photo {width:100%;max-width:360px;padding:8px;border:1px solid #ffe7b087;border-radius:20px;background:#fff2cb20;justify-self:end}
+  .professional-cv .cv-photo::after {display:none}
+  .professional-cv .cv-photo img {border-radius:14px}
+  .professional-cv .cv-photo figcaption {color:#ffedcf}
+  .professional-cv .cv-actions :is(a,button),.professional-cv .cv-projects a {border-radius:999px}
+  .professional-cv .cv-actions a {--face:#fff5df0f;border-color:#f8ddac94;color:#fff8ef!important}
+  .professional-cv .cv-actions button {--face:var(--gold-button-fill);border-color:#ffce77;color:#fffaf0!important}
+  .professional-cv .cv-projects a {--face:#fff8ed;border-color:#a66c32;color:var(--gold-ink)!important}
+  .professional-cv .cv-section,.professional-cv #expertise {
+    background:var(--gold-panel);border:1px solid #fff;border-radius:clamp(16px,2.1vw,29px);
+    box-shadow:inset 0 1px #fff8,0 10px 22px -11px #8c603f70;
+    padding:clamp(18px,3vw,42px);margin:0 0 clamp(17px,2.2vw,30px)
+  }
+  .professional-cv .cv-section h2,.professional-cv #expertise h2 {
+    font-family:var(--gold-display);font-weight:400;letter-spacing:-.04em;color:var(--gold-ink);max-width:none
+  }
+  .professional-cv .cv-section :is(h3,p,li),.professional-cv #expertise :is(h3,li) {color:var(--gold-ink)}
+  .professional-cv .cv-section :is(.cv-label,.cv-secondary,.cv-organization) {color:#6d5138}
+  .professional-cv .cv-section-heading {align-items:center;gap:clamp(10px,1.5vw,22px)}
+  .professional-cv .cv-section-heading>span,.professional-cv #expertise .cv-section-heading>span {
+    display:grid;place-items:center;min-width:38px;width:38px;height:38px;border-radius:50%;margin:0;
+    border:1px solid #aa733970;background:#fffbf0;color:#754513;font:600 12px/1 var(--gold-sans)
+  }
+  .professional-cv #expertise .cv-skills article {border-color:#b68d5c70}
+  body:not(.route-locked)>footer {
+    background:linear-gradient(95deg,#613e26b8,#3d2718ed),
+      url('../img/landing-gold/gold-silk-lower.webp') center 61%/cover no-repeat,#56371c;
+    color:#fff7e8;border-color:#d9b184
+  }
+  body:not(.route-locked)>footer span {color:#f0d5b1}
+  body:not(.route-locked)>footer a {color:#fff6e7}
+}
+@media screen and (min-width:761px) and (max-width:990px) {
+  body:not(.route-locked) .topbar {gap:12px}
+  body:not(.route-locked) .topbar nav a {padding-inline:9px}
+}
+@media screen and (max-width:760px) {
+  body:not(.route-locked) .topbar {height:155px}
+  body:not(.route-locked) .topbar nav {
+    display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0 4px;
+    flex:0 0 88px;min-height:88px;height:88px;max-height:88px;overflow:visible;
+    background:transparent;border-radius:0
+  }
+  body:not(.route-locked) .topbar nav a {justify-content:center;letter-spacing:.025em}
+  body:not(.route-locked) .topbar nav a.active {color:#ffe4b8}
+  body:not(.route-locked) .cv-audio-choice {padding-top:168px}
+  .professional-cv .cv-intro-copy>p:not(.cv-label):not(.cv-position) {line-height:1.65}
+  .professional-cv .cv-actions :is(a,button) {min-height:46px}
+  .professional-cv .cv-intro {grid-template-columns:minmax(0,1fr) 76px;gap:14px 12px}
+  .professional-cv .cv-intro h1 {font-size:clamp(35px,9.6vw,51px);line-height:1}
+  .professional-cv .cv-intro .cv-label {letter-spacing:.15em}
+  .professional-cv .cv-photo {width:76px;max-width:76px;padding:3px;border-radius:11px}
+  .professional-cv .cv-photo img {width:100%;height:95px;border-radius:8px}
+  .professional-cv .cv-section h2,.professional-cv #expertise h2 {font-size:clamp(27px,7.1vw,36px)}
+  .professional-cv .cv-section-heading>span,.professional-cv #expertise .cv-section-heading>span {min-width:32px;width:32px;height:32px}
 }
