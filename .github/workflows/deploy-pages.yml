@@ -8,6 +8,7 @@ on:
 
 permissions:
   contents: read
+  actions: read
   pages: write
   id-token: write
 
@@ -18,6 +19,8 @@ concurrency:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    env:
+      PAGES_ARTIFACT_NAME: github-pages-${{ github.run_attempt }}
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -104,16 +107,38 @@ jobs:
         uses: actions/configure-pages@v5
 
       - name: Upload PCO root artifact
+        id: pages_upload
         uses: actions/upload-pages-artifact@v4
         with:
+          name: ${{ env.PAGES_ARTIFACT_NAME }}
           path: '_site'
+
+      - name: Wait for the Pages artifact to be indexed
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ARTIFACT_ID: ${{ steps.pages_upload.outputs.artifact_id }}
+          ARTIFACT_NAME: ${{ env.PAGES_ARTIFACT_NAME }}
+        run: |
+          set -euo pipefail
+          for attempt in {1..8}; do
+            if gh api "/repos/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID/artifacts?name=$ARTIFACT_NAME" \
+              --jq '.artifacts[].id' | grep -Fxq "$ARTIFACT_ID"; then
+              exit 0
+            fi
+            sleep 4
+          done
+          echo "::error::GitHub has not indexed Pages artifact $ARTIFACT_ID"
+          exit 1
 
       - name: Deploy PCO root to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+        with:
+          artifact_name: ${{ env.PAGES_ARTIFACT_NAME }}
 
       - name: Verify production ownership and routing
-        if: always()
+        if: success()
         shell: bash
         run: |
           set -euo pipefail
