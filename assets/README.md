@@ -123,3 +123,14 @@ Original JPG files from the FMB About Me Consultant Drive folder, copied without
 |---|---|---|
 | IMG_0947.JPG | 1TlTUpl-f_r8saSTeyFiC1hT4kuvOaljj | img/portfolio/francine-portrait.jpg |
 | IMG_0946.JPG | 1cyn1m8BydyHqbvcVO0hkCEzjP384ZnTQ | img/portfolio/francine-seated.jpg |
+
+## November 26, 2026 homepage refresh
+
+The homepage gold hero and About portrait are WebP derivatives of original photographs supplied by Francine in the redesign conversation. No generative editing, face retouching or generated replacement photography was used.
+
+| Owner-supplied original | Homepage derivative |
+| --- | --- |
+| `93BD73D3-89A0-430E-A89B-4408C3001DDD(2).jpeg` | `img/landing-gold/portrait-hero.webp`, `gold-silk-upper.webp`, `gold-silk-lower.webp` |
+| `C9C8922A-6170-49A0-BDB4-AC62B03C64E5(3).jpeg` | `img/landing-gold/portrait-about.webp` |
+
+The featured work carousel reuses the repository's existing `talent-stage.webp`, `work-desk.webp`, `work-media.webp`, `service-01.webp`, `work-field.webp` and `talent-keynote.webp` unchanged. The book cover and handwritten signature also reuse existing brand artwork. The locked CV block and files are outside the change.
