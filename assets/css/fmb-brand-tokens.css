@@ -1,0 +1,9 @@
+/* Shared visual tokens for the FMB portfolio, CV and public navigation. */
+:root {
+  --gold-ink:#3c2415; --gold-paper:#f8f1e8; --gold-brown:#805016;
+  --gold-display:Georgia, 'Times New Roman', serif;
+  --gold-sans: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  --gold-gutter:clamp(24px,3.2vw,54px);
+  --gold-panel:linear-gradient(132deg,#f3e4d2ed,#fffaf0ce 62%,#f2e2ceab);
+  --gold-button-fill:linear-gradient(169deg,#a3651a 0%,#845018 46%,#663a12 100%);
+}

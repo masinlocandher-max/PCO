@@ -51,3 +51,19 @@ body.heritage-page{background:#f2f5e2;color:#290024;font-family:'Manrope',Arial,
 @media(max-width:760px){.heritage-page:is(.page-profile,.page-bsp)>.topbar{display:none}.heritage-page:is(.page-profile,.page-bsp) .shell{padding-top:24px}.heritage-page .panel .h1{font-size:44px}}
 
 .heritage-page:is(.page-profile,.page-bsp)>.topbar{display:none}
+
+/* Keep the public navigation and selected-work pages in the homepage brand. */
+.heritage-page .heritage-links {background:#3c2415;color:#fff9ee;font-family:var(--gold-sans,system-ui)}
+.heritage-page .heritage-links>a {font-family:var(--gold-display,Georgia,serif)}
+.heritage-page :is(.project-nav,.project-evidence) {background:var(--gold-ink,#3c2415);color:#fff9ee}
+.heritage-page .project-meta {background:var(--gold-panel,#f8f1e8);color:var(--gold-ink,#3c2415)}
+.heritage-page .project-hero :is(h1,.project-deck),.heritage-page :is(.project-section,.project-evidence) h2 {font-family:var(--gold-display,Georgia,serif)}
+body.heritage-page:has(.project-hero) {background:var(--gold-paper,#f8f1e8);color:var(--gold-ink,#3c2415);font-family:var(--gold-sans,system-ui)}
+.heritage-page .heritage-links a:focus-visible {outline-color:#ffe4b8}
+.heritage-page .project-hero {background:linear-gradient(90deg,#f8f1e8 42%,#f8f1e8c9),url('/assets/img/portfolio/cv-palace-interior.webp') right center/auto 100% no-repeat}
+body.heritage-page:is(.page-profile,.page-bsp) {background:var(--gold-paper,#f8f1e8);color:var(--gold-ink,#3c2415);font-family:var(--gold-sans,system-ui)}
+.heritage-page:is(.page-profile,.page-bsp) :is(h1,h2,.card-title) {font-family:var(--gold-display,Georgia,serif)}
+.heritage-page:is(.page-profile,.page-bsp) .card {border-radius:16px;background:var(--gold-panel,#fff9ee)}
+.heritage-page:is(.page-profile,.page-bsp) .btn {border-radius:100px}
+.heritage-page:is(.page-profile,.page-bsp) .btn.primary {background:var(--gold-button-fill,#805016);color:#fffaf0}
+.heritage-page:is(.page-profile,.page-bsp) .shell :is(p,li) a {overflow-wrap:anywhere}

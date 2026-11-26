@@ -1,12 +1,4 @@
 /* Homepage only. The separately routed professional CV keeps its existing styles. */
-:root {
-  --gold-ink:#3c2415; --gold-paper:#f8f1e8; --gold-brown:#805016;
-  --gold-display:Georgia, 'Times New Roman', serif;
-  --gold-sans: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-  --gold-gutter:clamp(24px,3.2vw,54px);
-  --gold-panel:linear-gradient(132deg,#f3e4d2ed,#fffaf0ce 62%,#f2e2ceab);
-  --gold-button-fill:linear-gradient(169deg,#a3651a 0%,#845018 46%,#663a12 100%);
-}
 .gold-home {
   background:var(--gold-paper); color:var(--gold-ink); font:16px/1.4 var(--gold-display);
 }
@@ -269,4 +261,20 @@
   .professional-cv .cv-photo img {width:100%;height:95px;border-radius:8px}
   .professional-cv .cv-section h2,.professional-cv #expertise h2 {font-size:clamp(27px,7.1vw,36px)}
   .professional-cv .cv-section-heading>span,.professional-cv #expertise .cv-section-heading>span {min-width:32px;width:32px;height:32px}
+}
+
+/* The first action and both alternatives stay on-screen on compact phones. */
+.gold-main {margin-top:0;padding-top:clamp(22px,3vw,46px)}
+.gold-work-cta {display:flex;align-items:center;justify-content:space-between;gap:14px;padding:16px clamp(18px,3vw,40px)}
+.gold-work-cta p {font-size:clamp(16px,1.6vw,21px)}
+.gold-shot small {display:block;margin-top:3px;font:500 .75em/1.3 var(--gold-sans)}
+.gold-home .gold-booking .gold-no-slots {margin-block:12px}
+@media(max-width:760px) {
+  .gold-hero .gold-frame {padding-top:78px;padding-bottom:36px}
+  .gold-work-cta {flex-wrap:wrap}
+}
+@media(max-width:420px) {
+  .gold-actions {display:grid;grid-template-columns:repeat(2,max-content)}
+  .gold-actions .gold-primary {grid-column:1/-1;margin-right:0;justify-self:start}
+  .gold-actions .gold-button {padding-inline:1em}
 }
