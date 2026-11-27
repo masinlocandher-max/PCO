@@ -1,0 +1,44 @@
+:root{color-scheme:light;--call-paper:#f8f1e8;--call-card:#fffaf3;--call-ink:#38271b;--call-muted:#645248;--call-line:#d8c6b3;--call-gold:#805016;--call-display:Georgia,"Times New Roman",serif}
+*,*::before,*::after{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:var(--call-paper);color:var(--call-ink);font:1rem/1.55 system-ui,-apple-system,BlinkMacSystemFont,sans-serif}
+a{color:inherit;text-underline-offset:.22em}
+button,input{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--call-gold);outline-offset:3px}
+.call-frame{width:min(100% - 36px,68rem);margin-inline:auto}
+.call-header,.call-footer{border-block-end:1px solid var(--call-line)}
+.call-header .call-frame,.call-footer{display:flex;justify-content:space-between;align-items:center;gap:.75rem;min-height:4rem}
+.call-brand{font:1.6rem/1 var(--call-display);letter-spacing:.17em;text-decoration:none}
+.call-header nav{display:flex;gap:clamp(.75rem,3vw,1.75rem);font-size:.86rem}
+.call-header nav a{text-decoration:none}
+.call-header nav a:hover{text-decoration:underline}
+.call-main{display:grid;align-items:start;gap:2rem clamp(2rem,7vw,5rem);padding-block:clamp(3rem,8vw,6.5rem) 3.75rem}
+.call-label{font-size:.78rem;font-weight:650;letter-spacing:.17em;text-transform:uppercase;color:var(--call-gold)}
+.call-intro h1{margin:.4rem 0 1rem;font:400 clamp(2.6rem,6vw,5rem)/1.02 var(--call-display);letter-spacing:-.04em;text-wrap:balance}
+.call-intro>p:not(.call-label){max-width:34ch}
+.call-expectation{margin-top:1.65rem;padding-inline-start:.9rem;border-inline-start:2px solid var(--call-gold);color:var(--call-muted)}
+.call-panel{background:var(--call-card);border:1px solid var(--call-line);padding:clamp(.8rem,3vw,2rem);border-radius:.6rem;min-width:0}
+.call-panel h2,.call-fallback h2{margin:0;font:400 1.6rem/1.2 var(--call-display)}
+.call-timezone{margin:.25rem 0 1rem;color:var(--call-muted);font-size:.85rem}
+.call-month-bar{display:grid;grid-template-columns:44px 1fr 44px;align-items:center;gap:.35rem;border-block:1px solid var(--call-line);padding-block:.3rem;text-align:center}
+.call-month-bar p{margin:0;font-weight:650}
+.call-month-bar button,.call-days button{background:transparent;border:1px solid transparent;border-radius:.3rem;min-height:44px;cursor:pointer;padding:0}
+.call-month-bar button{font-size:1.5rem}
+.call-weekdays,.call-days{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:2px;text-align:center}
+.call-weekdays{font-size:.7rem;color:var(--call-muted);margin-block:.7rem .25rem}
+.call-days button{font-size:.91rem}
+.call-month-bar button:disabled,.call-days button:disabled{color:#786b61;cursor:default;opacity:.65}
+.call-month-bar button:not(:disabled):hover,.call-days button:not(:disabled):hover{border-color:var(--call-gold)}
+.call-days button[aria-pressed="true"]{background:#754418;color:white}
+#call-selection{margin:.9rem 0 0;font-size:.91rem;font-weight:600}
+.call-request{display:grid;gap:.65rem;margin-top:1rem}
+.call-request label,.call-request p,.call-fallback p{font-size:.88rem;color:var(--call-muted)}
+.call-request input{min-width:0;min-height:44px;padding:.4rem .65rem;background:#fff;border:1px solid #917c66;border-radius:.25rem;max-width:100%}
+.call-request p,.call-fallback p{margin:.1rem 0 0}
+.call-primary{justify-self:start;min-height:44px;padding:.65rem 1rem;border-radius:.3rem;background:#754418;color:white;font-weight:650;text-decoration:none}
+.call-primary:hover{background:#5f3511}
+.call-fallback{border-block-start:1px solid var(--call-line);padding-block-start:1rem;overflow-wrap:anywhere}
+.call-footer{border-block-end:0;border-block-start:1px solid var(--call-line);font-size:.83rem;color:var(--call-muted)}
+.call-sr,.call-skip:not(:focus){position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap;border:0}
+.call-skip:focus{position:absolute;z-index:2;inset:0 auto auto 0;background:white;padding:.5rem}
+@media(min-width:44rem){.call-main{grid-template-columns:minmax(0,1fr) minmax(0,1.16fr)}.call-fallback{grid-column:1;grid-row:2}.call-panel{grid-column:2;grid-row:1 / span 2}}

@@ -21,12 +21,13 @@ const server = spawn('python3', ['-m', 'http.server', '8766', '--bind', '127.0.0
     page.on('response', response => {
       if (response.url().startsWith(url) && response.status() >= 400) errors.push(response.status() + ' ' + response.url());
     });
-    for (const width of [1440,1024,768,390,320]) {
+    for (const width of [1440,1024,820,768,390,320]) {
       await page.setViewportSize({width,height:900});
       await page.goto(url);
       assert.equal(await page.locator('#routeTitle').isVisible(),true);
       assert.equal(await page.evaluate(() => document.documentElement.scrollWidth),width);
-      assert.equal(await page.locator('.gold-services a').count(),5);
+      assert.equal(await page.locator('.gold-wordmark').innerText(),'FMB');
+      assert.equal(await page.locator('.gold-editorial-rows article').count(),2);
       assert.equal(await page.locator('.gold-shot').count(),6);
       await page.locator('.gold-track').scrollIntoViewIfNeeded();
       await page.locator('[data-next]').click();
@@ -34,8 +35,10 @@ const server = spawn('python3', ['-m', 'http.server', '8766', '--bind', '127.0.0
       await page.locator('[data-prev]').click();
       await page.waitForFunction(() => document.querySelector('.gold-track').scrollLeft === 0);
       await page.locator('.gold-work-intro a').click();
-      await page.waitForURL('**/#full-portfolio');
-      assert.equal(await page.locator('#full-portfolio').isVisible(),true);
+      await page.waitForURL('**/portfolio/');
+      assert.equal(await page.locator('#social-branding').isVisible(),true);
+      assert.equal(await page.locator('#media-communications').isVisible(),true);
+      assert.equal(await page.evaluate(() => document.documentElement.scrollWidth),width);
       await page.goto(url + '/#service-ai');
       assert.equal(await page.locator('#service-ai').isVisible(),true);
       await page.goto(url);
@@ -43,13 +46,13 @@ const server = spawn('python3', ['-m', 'http.server', '8766', '--bind', '127.0.0
       assert.equal(await page.locator('.gold-menu nav').isVisible(),true);
       await page.keyboard.press('Escape');
       assert.equal(await page.locator('.gold-menu nav').isVisible(),false);
-      await page.locator('.gold-hero [data-appointment]').click();
-      await page.waitForURL('**/#consult');
-      assert.equal(await page.locator('#booking-panel').evaluate(el => el.open),true);
-      assert.equal(await page.locator('.fmb-request').evaluate(el => el.open),true);
-      assert.equal(await page.locator('.pf-slot').count(),4);
-      assert.match(await page.locator('.pf-slot').last().getAttribute('href'),/calendar\.google\.com/);
-      assert.match(await page.locator('.fmb-email').getAttribute('href'),/^mailto:withlovefmb@gmail\.com/);
+      await page.locator('.gold-hero a[href="/book-a-call/"]').click();
+      await page.waitForURL('**/book-a-call/');
+      assert.equal(await page.locator('#call-picker').isVisible(),true);
+      assert.equal(await page.evaluate(() => document.documentElement.scrollWidth),width);
+      await page.locator('#call-days button:not([disabled])').first().click();
+      assert.match(await page.locator('#call-email').getAttribute('href'),/^mailto:withlovefmb@gmail\.com.*body=/);
+      await page.goto(url);
       await page.locator('.gold-cv-nav a[href="#education"]').click();
       await page.waitForURL('**/#education');
       assert.equal(await page.locator('#education').isVisible(),true);
