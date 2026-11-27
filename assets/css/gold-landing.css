@@ -27,6 +27,17 @@
 .gold-nav {display:flex;gap:clamp(12px,2.4vw,36px);align-items:center}
 .gold-nav a {display:flex;align-items:center;min-height:44px;text-decoration:none}
 .gold-nav a:hover,.gold-footer a:hover {text-decoration:underline}
+.gold-editorial-services {display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.6fr);gap:clamp(24px,6vw,92px);padding:clamp(24px,4vw,60px) clamp(14px,3.8vw,58px);background:#fffaf0;color:#2d2117;border-top:1px solid #decbb1;border-bottom:1px solid #decbb1}
+.gold-editorial-lead>p:last-child,.gold-editorial-rows p,.gold-portfolio-note p {max-width:59ch;line-height:1.55;color:#594332}
+.gold-editorial-lead h2,.gold-portfolio-note h2 {font:400 clamp(30px,4vw,53px)/1 var(--gold-display);letter-spacing:-.04em;margin:.22em 0 .4em}
+.gold-editorial-rows article {display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.9fr);align-items:baseline;gap:clamp(9px,2vw,22px);border-bottom:1px solid #e1d3be;padding:14px 0}
+.gold-editorial-rows article:first-child {padding-top:0}
+.gold-editorial-rows h3 {font:500 clamp(19px,2.1vw,28px)/1.05 var(--gold-display);margin:0}
+.gold-editorial-rows p {margin:0}
+.gold-editorial-rows .gold-related-services {margin-top:14px;font-size:.92em}
+.gold-related-services a {text-decoration:underline;text-underline-offset:.2em}
+.gold-portfolio-note {padding:clamp(24px,4vw,58px);background:#fffaf0;color:#2d2117;border-block:1px solid #decbb1}
+@media(max-width:760px){.gold-editorial-services,.gold-editorial-rows article {grid-template-columns:minmax(0,1fr)}}
 .gold-menu {position:relative}
 .gold-menu summary {display:grid;place-items:center;cursor:pointer;list-style:none;width:44px;height:44px;border-radius:8px}
 .gold-menu summary::-webkit-details-marker,.gold-deeper summary::-webkit-details-marker,.gold-booking>summary::-webkit-details-marker {display:none}

@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#f8f1e8">
+  <meta name="description" content="Choose a preferred date for an introductory call with Francine Marie Bautista about branding, communications, or creative direction. Requests are confirmed by email.">
+  <title>Request an Introductory Call | Francine Marie Bautista</title>
+  <link rel="canonical" href="https://francinemariebautista.com/book-a-call/">
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/assets/css/fmb-book-a-call.css">
+  <script defer src="/assets/js/fmb-book-a-call.js"></script>
+</head>
+<body>
+  <a class="call-skip" href="#call-content">Skip to booking</a>
+  <header class="call-header">
+    <div class="call-frame">
+      <a href="/" class="call-brand" aria-label="Francine Marie Bautista home">FMB</a>
+      <nav aria-label="Main navigation">
+        <a href="/">Home</a><a href="/portfolio/">Portfolio</a><a href="/cv.html">CV</a>
+      </nav>
+    </div>
+  </header>
+  <main class="call-frame call-main" id="call-content">
+    <div class="call-intro">
+      <p class="call-label">Work with Francine</p>
+      <h1>Request an introductory call.</h1>
+      <p>Tell me what you’re working on and what you need help with. We can use the first conversation to see whether I’m the right fit.</p>
+      <p class="call-expectation">Choose a date that works for you. The calendar does not show live availability. A call is confirmed only after you receive an email confirmation.</p>
+    </div>
+    <section class="call-panel" id="call-picker" aria-labelledby="call-picker-title" hidden>
+      <h2 id="call-picker-title">Choose a preferred date</h2>
+      <p class="call-timezone">Philippine time (UTC+8)</p>
+      <div class="call-month-bar">
+        <button type="button" id="call-prev" aria-label="Previous month">&lsaquo;</button>
+        <p id="call-month" aria-live="polite"></p>
+        <button type="button" id="call-next" aria-label="Next month">&rsaquo;</button>
+      </div>
+      <div class="call-weekdays" aria-hidden="true"><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span></div>
+      <div class="call-days" id="call-days" role="group" aria-label="Choose a date" aria-describedby="call-keyboard"></div>
+      <p id="call-keyboard" class="call-sr">Use the arrow keys to move between days and Enter or Space to select.</p>
+      <p id="call-selection" role="status">No date selected.</p>
+      <div class="call-request" id="call-request" hidden>
+        <label for="call-time">Preferred time <span>(optional, Philippine time)</span></label>
+        <input type="time" id="call-time">
+        <a class="call-primary" id="call-email" href="mailto:withlovefmb@gmail.com?subject=Introductory%20call%20request">Open email draft</a>
+        <p>The button opens your email app. Review and send the draft yourself.</p>
+      </div>
+    </section>
+    <section class="call-fallback" aria-labelledby="call-fallback-title">
+      <h2 id="call-fallback-title">Prefer to email directly?</h2>
+      <p>Write to <a href="mailto:withlovefmb@gmail.com?subject=Introductory%20call%20request">withlovefmb@gmail.com</a> with your preferred date and time (Philippine time) and a short note about your project.</p>
+    </section>
+  </main>
+  <footer class="call-footer call-frame"><span>Francine Marie Bautista</span><a href="/privacy/">Privacy</a></footer>
+</body>
+</html>

@@ -4,7 +4,6 @@
   const home = document.getElementById('portfolio');
   if (!home) return;
   const menu = home.querySelector('.gold-menu');
-  const booking = document.getElementById('booking-panel');
   const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)');
 
   menu.addEventListener('click', event => {
@@ -18,12 +17,6 @@
       menu.open = false;
       menu.querySelector('summary').focus();
     }
-  });
-  home.querySelectorAll('[data-appointment]').forEach(link => {
-    link.addEventListener('click', event => {
-      if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
-      booking.open = true;
-    });
   });
   home.querySelector('[data-print-cv]').addEventListener('click', event => {
     if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
