@@ -29,6 +29,17 @@ const server = spawn('python3', ['-m', 'http.server', '8766', '--bind', '127.0.0
       assert.equal(await page.locator('.gold-wordmark').innerText(),'FMB');
       assert.equal(await page.locator('.gold-editorial-rows article').count(),2);
       assert.equal(await page.locator('.gold-shot').count(),6);
+      assert.deepEqual(await page.locator('#main-content > :is(section,details)').evaluateAll(nodes => nodes.map(node => node.id || node.getAttribute('aria-labelledby'))),
+        ['practice','selected-work','about','publishing-title','more-work','consult']);
+      assert.equal(await page.locator('#about h2').isVisible(),true);
+      assert.equal(await page.locator('.gold-case-grid a').count(),2);
+      assert.equal(await page.locator('#more-work').evaluate(el => el.open),false);
+      await page.locator('.gold-case-grid a').first().click();
+      await page.waitForURL('**/portfolio/#social-branding');
+      await page.goto(url + '/#ecosystem');
+      assert.equal(await page.locator('#more-work').evaluate(el => el.open),true);
+      assert.equal(await page.locator('#ecosystem').isVisible(),true);
+      assert.equal(await page.evaluate(() => document.documentElement.scrollWidth),width);
       await page.locator('.gold-track').scrollIntoViewIfNeeded();
       await page.locator('[data-next]').click();
       await page.waitForFunction(() => document.querySelector('.gold-track').scrollLeft > 0);
@@ -53,7 +64,9 @@ const server = spawn('python3', ['-m', 'http.server', '8766', '--bind', '127.0.0
       await page.locator('#call-days button:not([disabled])').first().click();
       assert.match(await page.locator('#call-email').getAttribute('href'),/^mailto:withlovefmb@gmail\.com.*body=/);
       await page.goto(url);
-      await page.locator('.gold-cv-nav a[href="#education"]').click();
+      await page.locator('#about a[href="#cv"]').first().click();
+      await page.waitForURL('**/#cv');
+      await page.locator('.topbar a[href="#education"]').click();
       await page.waitForURL('**/#education');
       assert.equal(await page.locator('#education').isVisible(),true);
       assert.equal(await page.locator('#routeGate').evaluate(el => el.hidden),true);
@@ -71,7 +84,14 @@ const server = spawn('python3', ['-m', 'http.server', '8766', '--bind', '127.0.0
       await page.waitForURL('**/book/');
       assert.equal(await page.locator('#buyEbook').count(),1);
       assert.equal(await page.locator('#buyPocketbook').count(),1);
-      console.log('PASS',width,'px: no horizontal overflow, carousel, details, menu, booking links, CV sections and print, podcast link, book storefront');
+      console.log('PASS',width,'px: no horizontal overflow, homepage order, work links, archive, menu, calendar, CV and print, podcast, book');
+    }
+    if (process.env.FMB_QA_SCREENSHOTS) {
+      for (const width of [390,820,1440]) {
+        await page.setViewportSize({width,height:900});
+        await page.goto(url);
+        await page.screenshot({ path: process.env.FMB_QA_SCREENSHOTS + '/home-' + width + '.png', fullPage:true });
+      }
     }
     await page.goto(url + '/cv.html');
     await page.waitForURL('**/#cv');

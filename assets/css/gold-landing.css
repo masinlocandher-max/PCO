@@ -281,3 +281,49 @@
   .professional-cv .cv-section h2,.professional-cv #expertise h2 {font-size:clamp(27px,7.1vw,36px)}
   .professional-cv .cv-section-heading>span,.professional-cv #expertise .cv-section-heading>span {min-width:32px;width:32px;height:32px}
 }
+
+/* Homepage hierarchy: services, evidence, background, then publications. */
+.gold-home .gold-main {width:min(100%,1340px);gap:clamp(36px,5.2vw,76px);margin-top:0;padding-block:clamp(35px,5vw,74px)}
+.gold-home .gold-main::before {display:none}
+.gold-home .gold-section-title,.gold-home .gold-editorial-lead h2,.gold-home .gold-work h2 {font:400 clamp(32px,4.2vw,60px)/1.04 var(--gold-display);letter-spacing:-.04em;margin:.27em 0 .35em}
+.gold-home .gold-editorial-services,.gold-home .gold-organization-work {padding:0 0 clamp(30px,4vw,56px);border:0;border-bottom:1px solid #ccb79e;background:none;gap:clamp(24px,4vw,68px);grid-template-columns:minmax(0,1fr) minmax(0,1.58fr)}
+.gold-home .gold-work-intro p:not(.gold-kicker) {font-size:1.06rem;line-height:1.45;max-width:34ch}
+.gold-case-grid {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;align-self:stretch}
+.gold-case-grid a {border:1px solid #d9c6b0;border-radius:14px;padding:clamp(16px,2vw,28px);display:flex;flex-direction:column;gap:.55em;text-decoration:none;color:var(--gold-ink);background:#fffaf2}
+.gold-case-grid a:hover strong,.gold-case-grid a:focus-visible strong {text-decoration:underline}
+.gold-case-grid strong {font:400 clamp(23px,2.65vw,37px)/1.03 var(--gold-display);overflow-wrap:anywhere}
+.gold-case-grid span:first-child,.gold-project-directory li span {font:600 .72rem/1.3 var(--gold-sans);letter-spacing:.09em;text-transform:uppercase;color:#674528}
+.gold-case-grid span:last-child {font-size:1rem;line-height:1.4}
+.gold-home .gold-main > .fmb-about {display:grid;grid-template-columns:minmax(140px,.65fr) minmax(0,1.5fr);align-items:center;gap:clamp(24px,5vw,75px);margin:0;padding:0;max-width:none;background:transparent}
+.gold-home .gold-main > .fmb-about figure {margin:0;max-width:370px}
+.gold-home .gold-main > .fmb-about figure img {width:100%;height:auto;max-height:375px;aspect-ratio:4/4.3;object-fit:cover;object-position:center 20%;display:block;border-radius:14px}
+.gold-home .gold-main > .fmb-about figcaption {margin-top:.45rem;font:500 .78rem/1.4 var(--gold-sans);color:#695342}
+.gold-home .gold-main > .fmb-about h2 {font:400 clamp(31px,4.1vw,54px)/1.04 var(--gold-display);letter-spacing:-.04em;margin:.24em 0 .38em}
+.gold-home .gold-main > .fmb-about p:not(.fmb-eyebrow) {font-size:1.06rem;line-height:1.55;max-width:57ch;margin-bottom:.65rem}
+.gold-home .gold-main > .fmb-about .fmb-about-facts {margin-top:1rem;gap:16px;display:flex;flex-wrap:wrap}
+.gold-home .gold-main > .fmb-about .fmb-about-facts span,.gold-home .gold-main > .fmb-about .fmb-about-facts strong {display:block;font-size:.83rem;line-height:1.5}
+.gold-bio-actions {display:flex;align-items:center;flex-wrap:wrap;gap:6px 16px;margin-top:1rem}
+.gold-bio-actions a:last-child {min-height:44px;display:inline-flex;align-items:center;text-decoration:underline}
+.gold-publishing .gold-media-card h3 {font:400 clamp(24px,3.15vw,41px)/1.07 var(--gold-display);margin:.18em 0 .15em;letter-spacing:-.035em}
+.gold-home .gold-media-card {background:#fffaf2;border:1px solid #e0cdb6;box-shadow:none}
+.gold-home .gold-media-card .gold-button {justify-self:start;min-height:44px}
+.gold-home .gold-deeper {margin:0;border-block:1px solid #ccb79e}
+.gold-home .gold-deeper > summary {justify-content:space-between;padding:9px 4px;text-align:left;font-size:clamp(16px,2vw,23px);min-height:56px}
+.gold-home .gold-deeper > summary span {font:400 1.65rem/1 var(--gold-sans);padding-right:.25rem}
+.gold-home .gold-deeper[open] > summary span {transform:rotate(45deg)}
+.gold-home .gold-deeper .gold-archive {border:0;border-radius:0}
+.gold-project-directory,.gold-photo-archive {padding:clamp(18px,3.3vw,46px)}
+.gold-project-directory ul {padding:0;list-style:none}
+.gold-project-directory li {display:flex;flex-wrap:wrap;gap:.4rem 1rem;justify-content:space-between;align-items:center;min-height:44px;border-bottom:1px solid #d9c6b0}
+.gold-project-directory li a {min-height:44px;display:inline-flex;align-items:center;text-decoration:underline;line-height:1.25}
+.gold-home .gold-menu nav a {min-height:44px}
+.gold-home [id]:focus-visible {outline-offset:4px}
+@media(max-width:760px) {
+  .gold-home .gold-editorial-services,.gold-home .gold-organization-work,.gold-home .gold-main > .fmb-about {grid-template-columns:minmax(0,1fr)}
+  .gold-home .gold-main > .fmb-about figure {max-width:240px}
+}
+@media(max-width:460px) {
+  .gold-case-grid {grid-template-columns:minmax(0,1fr)}
+  .gold-home .gold-media-card h3 {font-size:clamp(19px,6vw,27px)}
+  .gold-home .gold-media-card .gold-button {padding-inline:.8em}
+}
