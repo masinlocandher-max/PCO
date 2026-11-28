@@ -30,9 +30,16 @@ const server = spawn('python3', ['-m', 'http.server', '8766', '--bind', '127.0.0
       assert.equal(await page.locator('.gold-editorial-rows article').count(),2);
       assert.equal(await page.locator('.gold-shot').count(),6);
       assert.deepEqual(await page.locator('#main-content > :is(section,details)').evaluateAll(nodes => nodes.map(node => node.id || node.getAttribute('aria-labelledby'))),
-        ['practice','selected-work','about','publishing-title','more-work','consult']);
+        ['practice','selected-work','about','publishing-title','ecosystemTitle','more-work','consult']);
       assert.equal(await page.locator('#about h2').isVisible(),true);
       assert.equal(await page.locator('.gold-case-grid a').count(),2);
+      const ecosystemLogos = page.locator('section[aria-labelledby="ecosystemTitle"] .gold-brand-row');
+      assert.equal(await ecosystemLogos.locator(':scope > a').count(), 5);
+      assert.equal(await ecosystemLogos.locator('img').count(), 4);
+      assert.equal(await ecosystemLogos.isVisible(), true);
+      for (const logo of await ecosystemLogos.locator('img').all()) {
+        assert.ok(await logo.evaluate(img => img.decode().then(() => img.naturalWidth > 0)));
+      }
       assert.equal(await page.locator('#more-work').evaluate(el => el.open),false);
       await page.locator('.gold-case-grid a').first().click();
       await page.waitForURL('**/portfolio/#social-branding');
