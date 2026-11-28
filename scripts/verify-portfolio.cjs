@@ -79,7 +79,7 @@ const server = spawn('python3', ['-m', 'http.server', '8766', '--bind', '127.0.0
       assert.equal(await page.locator('#heroTitle').isVisible(),true);
       await page.locator('.topbar .mark').click();
       await page.waitForURL('**/#portfolio');
-      assert.match(await page.locator('#podcast a').getAttribute('href'),/^https:\/\/www\.youtube\.com\/@francinemariebautista/);
+      assert.equal(await page.locator('#podcast a').getAttribute('href'),'https://www.youtube.com/@madebyfmb');
       await page.locator('#writing a').click();
       await page.waitForURL('**/book/');
       assert.equal(await page.locator('#buyEbook').count(),1);
